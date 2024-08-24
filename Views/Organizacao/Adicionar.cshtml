@@ -1,0 +1,344 @@
+﻿@model FarmPlannerClient.Organizacao.OrganizacaoViewModel
+
+
+@{
+
+    var usu = ViewData["usuarios"] as SelectList;
+}
+
+<link rel="stylesheet" href="~/sweetalert2.min.css">
+<!-- Toastr -->
+<link rel="stylesheet" href="~/toastr.min.css">
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>@ViewBag.Titulo</h1>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+@{
+    if (ViewBag.idacao == 2)
+    {
+        <div class="modal fade" id="editarusuario" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+
+                <div class="modal-content">
+                    <div class="modal-body">
+
+                        <label class="control-label">Escolha o usuário</label>
+                        <select class="form-control" id="idusu">
+                            @foreach (var item in usu)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" onclick="gravarusuario()">Gravar</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+}
+
+<div class="wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-primary card-outline">
+
+                <div class="card-body">
+                    <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="custom-content-above-home-tab" data-toggle="pill" href="#custom-content-above-home" role="tab" aria-controls="custom-content-above-home" aria-selected="true">Principal</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="custom-content-above-consolida-tab" data-toggle="pill" href="#custom-content-above-consolida" role="tab" aria-controls="custom-content-above-consolida" aria-selected="false">Usuários</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="custom-content-above-tabContent">
+                        <div class="tab-pane fade show active" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <form asp-action="@ViewBag.Acao">
+                                <div class="card">
+                                    <div class="card-body">
+
+                                        <div class="form-group">
+                                            <label asp-for="id" class="control-label"></label>
+                                            <input asp-for="id" class="form-control" id="idorg" readonly />
+                                            <span asp-validation-for="id" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="nome" class="control-label"></label>
+                                            @{
+                                                if (ViewBag.idacao <= 2)
+                                                {
+                                                    <input asp-for="nome" class="form-control" />
+                                                }
+                                                else
+                                                {
+                                                    <input asp-for="nome" class="form-control" readonly />
+                                                }
+
+                                            }
+                                            <span asp-validation-for="nome" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label asp-for="mascara" class="control-label"></label>
+                                            @{
+                                                if (ViewBag.idacao <= 2)
+                                                {
+                                                    <input asp-for="mascara" class="form-control" />
+                                                }
+                                                else
+                                                {
+                                                    <input asp-for="mascara" class="form-control" readonly />
+                                                }
+
+                                            }
+
+                                            <span asp-validation-for="mascara" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="tipoPessoa" class="control-label"></label>
+                                            @{
+                                                if (ViewBag.idacao <= 2)
+                                                {
+                                                    <select asp-for="tipoPessoa"  id="idtipo" class="form-control" asp-items="@ViewBag.TiposPessoas"></select>
+                                                }
+                                                else
+                                                {
+                                                    <select asp-for="tipoPessoa" id="idtipo" class="form-control" asp-items="@ViewBag.TiposPessoas" readonly></select>
+                                                }
+
+                                            }
+
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="registro" class="control-label"></label>
+                                            @{
+                                                if (ViewBag.idacao <= 2)
+                                                {
+                                                    <input asp-for="registro" class="form-control" id="registro" oninput="formatCpfCnpj(this)" maxlength="18" />
+                                                }
+                                                else
+                                                {
+                                                    <input asp-for="registro" class="form-control" id="registro" oninput="formatCpfCnpj(this)" maxlength="18" readonly />
+                                                }
+
+                                            }
+                                            <span asp-validation-for="registro" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <!-- /.card-body -->
+                                    <div class="card-footer">
+                                        <div class="row">
+                                            <div class="col text-right">
+                                                @{
+                                                    if (ViewBag.idacao <= 2)
+                                                    {
+                                                        <button type="submit" class="btn btn-primary">Salvar</button>
+                                                    }
+                                                    else
+                                                    {
+                                                        if (ViewBag.idacao == 3)
+                                                        {
+                                                            <button type="submit" class="btn btn-primary">Excluir</button>
+                                                        }
+                                                    }
+                                                }
+
+                                                <a href="/organizacao/index" class="btn btn-danger">Voltar</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        @{
+                            if (ViewBag.idacao == 2)
+                            {
+                                <div class="tab-pane fade" id="custom-content-above-consolida" role="tabpanel" aria-labelledby="custom-content-above-cosolida-tab">
+
+                                    <div class="card-body table-responsive p-0">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        
+
+                                            <div class="col text-right">
+                                                <button class=" btn btn-primary"><i class="fas fa-plus" onclick="addusuario()"></i></button>
+                                            </div>
+
+                                            <div class="card-body table-responsive p-0">
+
+                                                <div id="jsGrid"></div>
+                                            </div>
+                                        
+                                    </div>
+
+                                </div>
+                            }
+                        }
+
+
+                    </div>
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+
+</div>
+
+@section scripts
+    {
+    <!--
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/css/adminlte.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+        -->
+    <!-- Bootstrap 4 -->
+    @*<script src="~/js/jquery.min.js"></script>*@
+
+    <style>
+        .custom-no-data {
+            text-align: center;
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+
+    <script src="~/js/formataregistro.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    @*    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>*@
+
+
+
+    <script>
+        var acao;
+
+        $(function () {
+            $("#jsGrid").jsGrid({
+                width: "100%",
+                height: "400px",
+
+                sorting: true,
+                paging: true,
+                noDataContent: "<div class='custom-no-data'>Nenhum dado encontrado</div>",
+                autoload: true,
+
+                controller: {
+                    loadData: function () {
+                        return $.ajax({
+                            type: "GET",
+                            async: false,
+                            url: "/organizacao/GetUsuarios?idorg=" + $("#idorg").val(),
+                            dataType: "json"
+                        });
+                    }
+                },
+
+                fields: [
+                    { name: "id", type: "number", width: 30, title: "ID", visible:false },
+                    { name: "uid", type: "text", width: 100, title: "UID" },
+                    { name: "nome", type: "text", width: 140, title: "Usuário" },
+                    {
+                        type: "control",
+                        itemTemplate: function (_, item) {
+                            var $result = $("<div>").addClass("dropdown");
+
+                            var $button = $("<button>").addClass("btn btn-info dropdown-toggle")
+                                .attr("type", "button")
+                                .attr("id", "dropdownMenuButton")
+                                .attr("data-toggle", "dropdown")
+                                .text("Ações");
+
+                            var $menu = $("<div>").addClass("dropdown-menu")
+                                .attr("aria-labelledby", "dropdownMenuButton");
+
+                            var $delete = $("<a>").addClass("dropdown-item")
+                                .attr("href", "#")
+                                .text("Excluir")
+                                .on("click", function () {
+                                    $.ajax({
+                                        type: "GET",
+                                        async: false,
+                                        url: "/organizacao/delusuario?id=" + item.id + "&idorg=" + $("#idorg").val(),
+                                        dataType: "json"
+                                    });
+                                    $("#jsGrid").jsGrid("loadData");
+                                });
+
+                            $menu.append($delete);
+                            $result.append($button).append($menu);
+
+                            return $result;
+                        }
+                    }]
+            });
+        });
+
+        function addusuario() {
+            acao = 1;
+            var x = $("#editarusuario");
+            x.modal('show');
+        }
+
+        function gravarusuario() {
+
+            var selectElement = document.getElementById("idusu");
+            var uid = selectElement.value;
+            var idorg = $("#idorg").val();
+            $.ajax({
+                type: "GET",
+                url: "/organizacao/addusuario?uid=" + uid + "&idorg=" + idorg,
+                dataType: "json",
+                async: false,
+                success: function (response) {
+                    if (response.success) 
+                    {
+                        var x = $("#editarusuario");
+                        x.modal('hide');
+                        $("#jsGrid").jsGrid("loadData");
+                    }
+                    else {
+                        alert(response.message);
+                    }
+                },
+                error: function (error) {
+                    alert("Erro ao incluir usuário");
+                }
+
+            });
+        }
+
+        $(document).ready(function () {
+
+            if ($("#idtipo").val() == "Física") {
+                $('#registro').mask('000.000.000-00');
+            }
+            else {
+                $('#registro').mask('00.000.000/0000-00');
+            }
+        });
+
+
+    </script>
+}
+<!-- /.content -->

@@ -1,0 +1,116 @@
+﻿@model FarmPlannerClient.Parceiro.ParceiroViewModel
+
+
+<link rel="stylesheet" href="~/sweetalert2.min.css">
+<!-- Toastr -->
+<link rel="stylesheet" href="~/toastr.min.css">
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Adicionar um Parceiro de Negócio</h1>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+
+
+<div class="wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-primary card-outline">
+                <div class="card-body">
+                    <div class="tab-content" id="custom-content-above-tabContent">
+                        <div class="tab-pane fade show active" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab">
+                            <form asp-action="adicionar">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <div class="form-group">
+                                            <label asp-for="id" class="control-label"></label>
+                                            <input asp-for="id" class="form-control" readonly />
+                                            <span asp-validation-for="id" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="razaoSocial" class="control-label"></label>
+                                            <input asp-for="razaoSocial" class="form-control" />
+                                            <span asp-validation-for="razaoSocial" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="fantasia" class="control-label"></label>
+                                            <input asp-for="fantasia" class="form-control" />
+                                            <span asp-validation-for="fantasia" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label asp-for="tipodePessoa" class="control-label" ></label>
+                                            <select asp-for="tipodePessoa" class="form-control" asp-items="@ViewBag.TiposPessoa" ></select>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="registro" class="control-label"></label>
+                                            <input asp-for="registro" class="form-control" id="registro" oninput="formatCpfCnpj(this)" maxlength="18" />
+                                            <span asp-validation-for="registro" class="text-danger"></span>
+                                        </div>
+
+
+
+                                    </div>
+                                    <!-- /.card-body -->
+                                    <div class="card-footer">
+                                        <div class="row">
+                                            <div class="col text-right">
+                                                <button type="submit" class="btn btn-primary">Salvar</button>
+                                                <a href="/parceiro/index" class="btn btn-danger">Voltar</a>
+                                            </div>                                     
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>                      
+                        
+
+                    </div>
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+
+</div>
+
+@section scripts {
+    <script>
+
+        function formatCpfCnpj(input) {
+            let value = input.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+            let formattedValue;
+
+            if (value.length <= 11) { // Formatação de CPF
+                formattedValue = value.replace(/(\d{3})(\d)/, '$1.$2')
+                    .replace(/(\d{3})(\d)/, '$1.$2')
+                    .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            } else { // Formatação de CNPJ
+                formattedValue = value.replace(/^(\d{2})(\d)/, '$1.$2')
+                    .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
+                    .replace(/\.(\d{3})(\d)/, '.$1/$2')
+                    .replace(/(\d{4})(\d{1,2})$/, '$1-$2');
+            }
+
+            input.value = formattedValue;
+        }
+
+       
+
+    </script>
+}
+
+<!-- /.content -->

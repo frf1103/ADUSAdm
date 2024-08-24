@@ -1,0 +1,194 @@
+﻿@model FarmPlannerClient.Maquina.MaquinaViewModel
+
+
+
+
+<link rel="stylesheet" href="~/sweetalert2.min.css">
+<!-- Toastr -->
+<link rel="stylesheet" href="~/toastr.min.css">
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>@ViewBag.Titulo</h1>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+
+
+
+<div class="wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-primary card-outline">
+
+                <div class="card-body">
+                    <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="custom-content-above-home-tab" data-toggle="pill" href="#custom-content-above-home" role="tab" aria-controls="custom-content-above-home" aria-selected="true">Dados Cadastrais</a>
+                        </li>
+
+                    </ul>
+
+                    <div class="tab-content" id="custom-content-above-tabContent">
+                        <div class="tab-pane fade show active" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                              <form asp-action="@ViewBag.Acao">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-3">   
+                                                <div class="form-group">
+                                                    <label asp-for="id" class="control-label"></label>
+                                                     <input asp-for="id" class="form-control" id="idfazenda" readonly />
+                                                    <span asp-validation-for="id" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <label asp-for="descricao" class="control-label"></label>
+                                                    @{
+                                                        if (ViewBag.idacao <= 2)
+                                                        {
+                                                                <input asp-for="descricao" class="form-control" />
+                                                        }
+                                                        else
+                                                        {
+                                                                <input asp-for="descricao" class="form-control" readonly />
+                                                        }
+
+                                                    }
+                                                    <span asp-validation-for="descricao" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="idModeloMaquina" class="control-label"></label>
+                                                    @{
+                                                        if (ViewBag.idacao <= 2)
+                                                        {
+
+                                                            <select asp-for="idModeloMaquina" id="iduf" class="form-control" asp-items="@ViewBag.modelos"></select>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <select asp-for="idModeloMaquina" id="iduf" class="form-control" asp-items="@ViewBag.modelos" disabled></select>
+                                                        }
+                                                        <span asp-validation-for="idModeloMaquina" class="text-danger"></span>
+
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label asp-for="ano" class="control-label"></label>
+                                                    @{
+                                                        if (ViewBag.idacao <= 2)
+                                                        {
+                                                            <input asp-for="ano" class="form-control" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <input asp-for="ano" class="form-control" readonly />
+                                                        }
+
+                                                    }
+                                                    <span asp-validation-for="ano" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label asp-for="codigoExterno" class="control-label"></label>
+                                                    @{
+                                                        if (ViewBag.idacao <= 2)
+                                                        {
+                                                            <input asp-for="codigoExterno" class="form-control" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <input asp-for="codigoExterno" class="form-control" readonly />
+                                                        }
+
+                                                    }
+                                                    <span asp-validation-for="codigoExterno" class="text-danger"></span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- /.card-body -->
+                                    <div class="card-footer">
+                                        <div class="row">
+                                            <div class="col text-right">
+                                                @{
+                                                    if (ViewBag.idacao <= 2)
+                                                    {
+                                                                <button type="submit" class="btn btn-primary">Salvar</button>
+                                                    }
+                                                    else
+                                                    {
+                                                        if (ViewBag.idacao == 3)
+                                                        {
+                                                                        <button type="submit" class="btn btn-primary">Excluir</button>
+                                                        }
+                                                    }
+                                                }
+
+                                                <a href="/maquina/index" class="btn btn-danger">Voltar</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                             </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+
+</div>
+
+<style>
+    .custom-no-data {
+        text-align: center;
+        color: red;
+        font-weight: bold;
+    }
+
+    .align-right {
+        text-align: right;
+    }
+</style>
+
+@section scripts
+    {
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+    @*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>*@
+        <script src="https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid.min.js"></script>
+
+
+        <script>
+            $(document).ready(function () {
+                // Adiciona um listener para o evento change
+
+
+                // Simula a mudança de valor
+            });
+
+        </script>
+}
+<!-- /.content -->

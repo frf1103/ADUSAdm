@@ -1,0 +1,123 @@
+@model IEnumerable<FarmPlannerAdm.ViewModel.Usuario.ListaUsuarioViewModel>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Usuários</h1>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<input id="stringParaCopiar" hidden value="@ViewBag.linkcopia"</input>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    @{
+                        if (TempData["msg"] != null)
+                        {
+                            <div class="text-danger">@TempData["msg"].ToString()</div>
+                        }
+                    }
+                    <div class="col text-right">
+                      <a href="/usuarios/adicionar" class=" btn btn-primary"><i class="fas fa-plus icon-default"></i></a>
+                   </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-head-fixed text-nowrap">
+                        <thead>
+                            <tr>                                
+                                <th>Username</th>
+                                <th>E-mail</th>
+                                <th>Telefone</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          @foreach (var usuario in Model)
+                          {
+                            <tr>
+                             
+                              <td>@usuario.Username</td>
+                              <td>@usuario.Email</td>
+                              <td>@usuario.Telefone</td>
+                              <td>
+                                <a
+                                  asp-controller="Usuarios"
+                                  asp-action="Editar"
+                                  asp-route-id="@usuario.Id"
+                                  class="btn btn-sm btn-secondary mr-1"
+                                  title="Editar"
+                                >
+                                  <span class="fas fa-edit"></span>
+                                </a>
+
+                                <a
+                                  asp-controller="Usuarios"
+                                  asp-action="Excluir"
+                                  asp-route-id="@usuario.Id"
+                                  onclick="return confirm('Tem certeza que deseja excluir o usuario?')"
+                                  class="btn btn-sm btn-danger"
+                                  title="Excluir"
+                                >
+                                  <span class="fas fa-trash"></span>
+                                </a>
+
+                                <a asp-controller="Usuarios"
+                                   asp-action="enviaremail"
+                                   asp-route-id="@usuario.Id"
+                                   onclick=""
+                                   class="btn btn-sm btn-danger"
+                                   title="Enviar Email">
+                                   <span class="fas fa-envelope"></span>
+                                </a>
+                                <a asp-controller="Usuarios"
+                                   asp-action="copiarlink"
+                                   asp-route-id="@usuario.Id"
+                                   onclick="copiarlink"
+                                       class="btn btn-sm btn-outline-info"
+                                   title="Link do convite">
+                                   <span class="fas fa-copy"></span>
+                                </a>
+
+                              </td>
+                            </tr>
+                          }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+</section>
+
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            if (document.getElementById("stringParaCopiar").value!="") {
+                copiarParaAreaDeTransferencia();
+            }
+            
+        });
+
+
+        function copiarParaAreaDeTransferencia() 
+        {
+            var textoParaCopiar = document.getElementById("stringParaCopiar").value;
+            navigator.clipboard.writeText(textoParaCopiar).then(function () {
+                alert("link do convite copiado pra area de trasnferência!");
+            }, function (err) {
+                console.error("Erro ao copiar texto: ", err);
+            });
+        }
+    </script>
+}
+<!-- /.content -->

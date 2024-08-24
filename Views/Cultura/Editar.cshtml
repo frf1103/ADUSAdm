@@ -1,0 +1,182 @@
+﻿@model FarmPlannerClient.Cultura.CulturaViewModel
+
+
+<link rel="stylesheet" href="~/sweetalert2.min.css">
+<!-- Toastr -->
+<link rel="stylesheet" href="~/toastr.min.css">
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Editar Dados da Cultura</h1>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+
+
+<div class="wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-primary card-outline">
+                <div class="card-body">
+                    <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="principal" data-toggle="pill" href="#custom-content-above-home" role="tab" aria-controls="custom-content-above-home" aria-selected="true">Principal</a>
+                        </li>                        
+                        <li class="nav-item">
+                            <a class="nav-link" id="custom-content-above-consolida-tab" data-toggle="pill" href="#custom-content-above-consolida" role="tab" aria-controls="custom-content-above-consolida" aria-selected="false">Variedades</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="custom-content-above-tabContent">
+                        <div class="tab-pane fade show active" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab">
+                            <form asp-action="Editar">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <div class="form-group">
+                                            <label asp-for="id" class="control-label"></label>
+                                            <input asp-for="id" class="form-control" readonly />
+                                            <span asp-validation-for="id" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="descricao" class="control-label"></label>
+                                            <input asp-for="descricao" class="form-control" />
+                                            <span asp-validation-for="descricao" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label asp-for="unidadeProdutiva" class="control-label"></label>
+                                            <input asp-for="unidadeProdutiva" class="form-control" />
+                                            <span asp-validation-for="unidadeProdutiva" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="nomeProduto" class="control-label"></label>
+                                            <input asp-for="nomeProduto" class="form-control" />
+                                            <span asp-validation-for="nomeProduto" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label asp-for="codigoExterno" class="control-label"></label>
+                                            <input asp-for="codigoExterno" class="form-control" />
+                                            <span asp-validation-for="codigoExterno" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="diasEstimadosEmergencia" class="control-label"></label>
+                                            <input asp-for="diasEstimadosEmergencia" class="form-control" />
+                                            <span asp-validation-for="diasEstimadosEmergencia" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <!-- /.card-body -->
+                                    <div class="card-footer">
+                                        <div class="row">
+                                            <div class="col text-right">
+                                                <button type="submit" class="btn btn-primary">Salvar</button>
+                                                <a href="/cultura/index" class="btn btn-danger">Voltar</a>
+                                            </div>                                     
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>                              
+                        
+
+                        
+
+                        </div>
+                        <div class="tab-pane fade" id="custom-content-above-consolida" role="tabpanel" aria-labelledby="custom-content-above-cosolida-tab">                       
+                            
+                            <form asp-action=editarvariedades>
+                                <div class="input-group input-group-sm" style="width: 300px;">
+                                    <input type="text" class="form-control" placeholder="Buscar variedade" name="filtro" id="searchInput" onkeyup="searchTable()">
+                                </div>
+
+                                <div class="col text-right">
+                                    <a href="/cultura/adicionarvariedade?idcultura=@Model!.id&desccultura=@Model.descricao" button type="submit" class="btn btn-primary">Nova</a>
+                                </div>
+                                
+
+                                <div class="card-body table-responsive p-0">
+
+                                    <table class="table table-head-fixed text-nowrap" id="dataTable">
+
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 200px">ID</th>                                                
+                                                <th>Descrição</th>
+                                                <th style="width: 40px"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Model.listVariedade != null)
+                                            {
+                                                foreach (var m in Model!.listVariedade)
+                                                {
+                                                    <tr>
+                                                        <td>@m.id</td>
+                                                        <td>@m.descricao</td>
+                                                        <td>
+                                                            <a href="/cultura/editarvariedade?idcultura=@m.idCultura&id=@m.id&desccultura=@Model.descricao" class="btn btn-secondary btn-sm mr-1" title="Editar">
+                                                                <span class="fas fa-edit"></span>
+                                                                <a href="/cultura/excluirvariedade?idcultura=@m.idCultura&id=@m.id&desccultura=@Model.descricao" class="btn btn-secondary btn-sm mr-1" title="Excluir">
+                                                                    <span class="fas fa-trash"></span>
+
+                                                                </a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </form>
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+
+</div>
+
+@section scripts {
+    <script>
+        function searchTable() {
+            var input, filter, table, tr, td, i, j, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("dataTable");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 1; i < tr.length; i++) {
+                tr[i].style.display = "none";
+                td = tr[i].getElementsByTagName("td");
+                for (j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        txtValue = td[j].textContent || td[j].innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+    </script>
+}
+
+<!-- /.content -->

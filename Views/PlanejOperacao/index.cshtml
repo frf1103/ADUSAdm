@@ -1,0 +1,339 @@
+﻿<!-- Content Header (Page header) -->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+
+
+<style>
+    /* Estilo padrão para o ícone */
+    .icon-default {
+        color: 38b6ff;
+    }
+
+    .select2-container {
+        width: 250px !important; /* Ajuste o tamanho conforme necessário */
+        display: inline-block;
+    }
+
+    .form-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .submit-button {
+        margin-left: 10px; /* Espaço entre o select e o botão */
+    }
+
+    .select2-container {
+        width: 100% !important; /* Força a largura de 100% */
+    }
+
+    .select2-selection {
+        width: 100% !important; /* Força a largura do container de seleção */
+    }
+</style>
+
+
+<!-- Main content -->
+<section class="content">
+    <form asp-action="Index">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary collapsed-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Filtro</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-filter"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-container">
+
+                                    <select class="select2" name="idsafra" id="idsafra" data-placeholder="escolha uma safra" onchange="changesafra()"style="width: 100%;">
+                                        <option value="0">escolha uma safra</option>
+                                        @foreach (var item in ViewBag.safras)
+                                        {
+                                            if (@item.Value == ViewBag.SelectedOptionS)
+                                            {
+                                                <option value="@item.Value" selected>@item.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                    <select class="select2" name="idvariedade" id="idvariedade" data-placeholder="escolha a variedade" style="width: 100%;">
+                                    </select>
+
+
+                                    <select class="select2" name="idfazenda" id="idfaz" data-placeholder="escolha a fazenda" onchange="changefaz()"  style="width: 100%;">
+                                        <option value="0">escolha a fazenda</option>
+                                        @foreach (var item in ViewBag.fazendas)
+                                        {
+                                            if (@item.Value == ViewBag.SelectedOptionF)
+                                            {
+                                                <option value="@item.Value" selected>@item.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        }
+                                    </select>                                    
+                                    <select class="select2" name="idtalhao" id="idtalhao" data-placeholder="escolha o talhão" style="width: 100%;">
+                                    </select>
+
+                                </div>
+                         
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7">                                
+
+                                    <select class="select2" name="idoperacao" id="idoperacao" data-placeholder="escolha uma operacao"  style="width: 100%;">
+                                        <option value="0">escolha uma operacao</option>
+                                        @foreach (var item in ViewBag.operacoes)
+                                        {
+                                            if (@item.Value == ViewBag.SelectedOptionO)
+                                            {
+                                                <option value="@item.Value" selected>@item.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        }
+                                    </select>
+
+                                
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-container">
+
+                                    <input type="date" class="form-control" id="dtinicio" value="@ViewBag.dtinicio" name="dtinicio" placeholder="inicio">
+                                    <input type="date" class="form-control" id="dtfim" value="@ViewBag.dtfim" name="dtfim" placeholder="fim">
+
+                                    <button type="submit" class="btn btn-md btn-default">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </form>
+
+    <h2>Planejamento de Operações</h2>
+    <div class="col text-right">
+        <a href="/planejoperacao/adicionar?acao=1&idaz=@ViewBag.SelectedOptionF&idsafra=@ViewBag.SelectedOptionS" class=" btn btn-primary"><i class="fas fa-plus icon-default"></i></a>
+        <a href="/planejoperacao/assistente" class=" btn btn-primary">Assistente</a>
+    </div>
+    
+    <div id="jsGrid"></div>
+
+
+</section>
+<!-- /.content -->
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/css/adminlte.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/tempus-dominus/5.39.0/css/tempus-dominus.min.css" rel="stylesheet">
+
+<style>
+    .custom-no-data {
+        text-align: center;
+        color: red;
+        font-weight: bold;
+    }
+</style>
+<!-- Bootstrap 4 -->
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tempus-dominus/5.39.0/js/tempus-dominus.min.js"></script>
+
+
+<script src="~/js/loadtalhoes.js"></script>
+<script src="~/js/loadvariedades.js"></script>
+
+<script>
+
+    
+
+    $(document).ready(function () {
+
+        $('#idsafra').select2({
+            theme: "bootstrap-5",
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            closeOnSelect: true
+
+
+        });
+        $('#idfaz').select2({
+            theme: "bootstrap-5",
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            closeOnSelect: true
+
+
+        });
+        $('#idtalhao').select2({
+            theme: "bootstrap-5",
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            closeOnSelect: true
+
+
+        });
+
+
+
+
+        $('#idvariedade').select2({
+            theme: "bootstrap-5",
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            closeOnSelect: true
+
+
+        });
+
+        $('#idoperacao').select2({
+            theme: "bootstrap-5",
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            closeOnSelect: true,
+            width: '100%'
+
+
+        });
+
+      
+
+
+        $("#idfaz").val(@ViewBag.SelectedOptionF);
+        //$('#idfazenda').trigger("change");
+        changefaz();
+        $("#idsafra").val(@ViewBag.SelectedOptionS);
+        //$('#idsafra').trigger("change");
+        changesafra();
+        //class=" btn btn-primary" > <i class="fas fa-plus icon-default" > </i></a >
+
+    });
+
+   function changefaz()
+   {
+       loadtalhoes(@ViewBag.SelectedOptionT,true);
+   }
+
+    function changesafra() {
+        loadvariedades(@ViewBag.SelectedOptionV,true);
+    }
+   
+
+
+    $(function () {
+        $("#jsGrid").jsGrid({
+            width: "100%",
+            height: "400px",
+
+            sorting: true,
+            paging: true,
+
+            autoload: true,
+            noDataContent: "<div class='custom-no-data'>Nenhum dado encontrado</div>",
+
+            controller: {
+                loadData: function () {
+                    return $.ajax({
+                        type: "GET",
+                        url: "/planejoperacao/GetData?idsafra=" + $("#idsafra").val() + "&idfazenda=" + $('#idfaz').val() + "&idtalhao=" + @ViewBag.SelectedOptionT+"&idvariedade=" + @ViewBag.SelectedOptionV+"&idoperacao="+@ViewBag.SelectedOptionO+"&ini="+$("#dtinicio").val()+"&fim="+$("#dtfim").val(),
+                        dataType: "json"
+                    });
+                }
+            },
+
+            fields: [
+                { name: "id", type: "number", width: 20, title: "ID", visible: false },
+                { name: "descconfig", type: "text", width: 100, title: "Fazenda/Talhão/Variedade" },
+                { name: "descoperacao", type: "text", width: 50, title: "Operação" },
+                { name: "dataPrevista", type: "text", width: 40, title: "Data Prevista" },
+                
+                {
+                    type: "control",
+                    itemTemplate: function (_, item) {
+                        var $result = $("<div>").addClass("dropdown");
+
+                        var $button = $("<button>").addClass("btn btn-info dropdown-toggle")
+                            .attr("type", "button")
+                            .attr("id", "dropdownMenuButton")
+                            .attr("data-toggle", "dropdown")
+                            .text("Ações");
+
+                        var $menu = $("<div>").addClass("dropdown-menu")
+                            .attr("aria-labelledby", "dropdownMenuButton");
+
+                        var $details = $("<a>").addClass("dropdown-item")
+                            .attr("href", "#")
+                            .text("Visualizar")
+                            .on("click", function () {
+                                window.location.href = '/ConfigArea/adicionar/' + item.id + '?acao=4';
+                            });
+
+                        var $edit = $("<a>").addClass("dropdown-item")
+                            .attr("href", "#")
+                            .text("Editar")
+                            .on("click", function () {
+                                window.location.href = '/ConfigArea/adicionar/' + item.id + '?acao=2';
+                            });
+
+                        var $delete = $("<a>").addClass("dropdown-item")
+                            .attr("href", "#")
+                            .text("Excluir")
+                            .on("click", function () {
+                                window.location.href = '/ConfigArea/adicionar/' + item.id + '?acao=3';
+                            });
+
+                        $menu.append($details).append($edit).append($delete);
+                        $result.append($button).append($menu);
+
+                        return $result;
+                    }
+                }]
+        });
+    });
+
+
+
+
+
+</script>
+
+
+

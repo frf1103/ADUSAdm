@@ -1,0 +1,108 @@
+﻿@model List<FarmPlannerClient.Cultura.CulturaViewModel>
+
+@{
+    ViewBag.Title = "Culturas";
+}
+
+<form asp-action="Index">
+    <div class="input-group input-group-sm" style="width: 300px;">
+        <input type="text" class="form-control" placeholder="Buscar Cultura" name="filtro" value="@ViewBag.Filtro">
+        <div class="input-group-append">
+            <button type="submit" class="btn btn-default">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+    <div>
+        @Html.ValidationSummary(true)
+    </div>
+
+</form>
+
+
+<h2>Culturas</h2>
+                        <div class="col text-right">
+                            <a href="/cultura/adicionar" class=" btn btn-primary">Nova Cultura</a>                        
+                         
+                        </div>
+
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Descrição</th>
+            <th>Und</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cult in Model)
+        {
+            <tr data-toggle="collapse" data-target="#orderDetails-@cult.id" class="accordion-toggle">
+                <td>@cult.id</td>
+                <td>@cult.descricao</td>
+                <td>@cult.unidadeProdutiva</td>
+                <td><button class="btn btn-info">Variedades</button>
+                
+                    <a href="/cultura/editar/@cult.id" class="btn btn-secondary btn-sm mr-1" title="Editar">
+                        <span class="fas fa-edit"></span>
+                    </a>
+
+                    <a href="/cultura/excluir/@cult.id" class="btn btn-secondary btn-sm mr-1" title="Excluir">
+                        <span class="fas fa-trash"></span>
+                    </a>
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="4" class="hiddenRow">
+                    <div class="collapse" id="orderDetails-@cult.id">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Descrição</th>
+                                    <th>Tecnologia</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var detail in cult.listVariedade)
+                                {
+                                    <tr>
+                                        <td>@detail.id</td>
+                                        <td>@detail.descricao</td>
+                                        <td>@detail.desctecnologia</td>                                        
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="card-footer clearfix">
+    <ul class="pagination pagination-sm m-0 float-right">
+        @if (ViewBag.NumeroPagina > 1)
+        {
+            <li class="page-item"><a class="page-link" href="@Url.Action("Index", "Cultura", new { Filtro = ViewBag.Filtro, Pagina = ViewBag.NumeroPagina - 1 })">&laquo;</a></li>
+        }
+        <li class="page-item page-link">Página @ViewBag.NumeroPagina de @ViewBag.TotalPaginas</li>
+        @if (ViewBag.NumeroPagina < ViewBag.TotalPaginas)
+        {
+            <li class="page-item"><a class="page-link" href="@Url.Action("Index", "Cultura", new { Filtro = ViewBag.Filtro, Pagina = ViewBag.NumeroPagina + 1 })">&raquo;</a></li>
+        }
+    </ul>
+</div>
+
+
+
+@section scripts {
+<script>
+    
+   
+</script>
+}

@@ -1,0 +1,217 @@
+﻿<!-- Content Header (Page header) -->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+<link rel="stylesheet" type="text/css" href="~/dist/css/bootstrap-duallistbox.css" />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css" />
+
+<style>
+    /* Estilo padrão para o ícone */
+    .icon-default {
+        color: 38b6ff;
+    }
+
+    .select2-container {
+        width: 250px !important; /* Ajuste o tamanho conforme necessário */
+        display: inline-block;
+    }
+
+    .form-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .submit-button {
+        margin-left: 10px; /* Espaço entre o select e o botão */
+    }
+
+    .bootstrap-duallistbox-container .box1,
+    .bootstrap-duallistbox-container .box2 {
+        width: 300px; /* Defina a largura desejada aqui */
+    }
+</style>
+
+<!-- Main content -->
+<section class="content">
+    <form asp-action="assistente">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Filtro</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" disabled>
+                                <i class="fas fa-filter"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-container">
+
+                                    <select class="select2" name="idfazenda" id="idfaz" data-placeholder="escolha a fazenda"  style="width: 100%;">
+
+                                        @foreach (var item in ViewBag.fazendas)
+                                        {
+                                            if (@item.Value == ViewBag.SelectedOptionF)
+                                            {
+                                                <option value="@item.Value" selected>@item.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        }
+                                    </select>
+
+                                    <button type="submit" class="btn btn-md btn-default">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+
+
+        </div>
+    </form>
+
+    <h2>Assistente de Configuração de Áreas</h2>
+
+    @if (ViewBag.talhoes != "0")
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-container">
+
+                    <select class="select2" name="idsafra" id="idsafra" data-placeholder="escolha uma safra" onchange="changesafra()" style="width: 100%;">
+                        <option></option>
+                        @foreach (var item in ViewBag.safras)
+                        {
+                           <option value="@item.Value">@item.Text</option>
+
+                        }
+                    </select>
+
+                <select class="select2" name="idvariedade" id="idvariedade" data-placeholder="fixe uma variedade" style="width: 100%;">
+                        
+                </select>
+
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="col text-right">
+        <a href="/ConfigArea/adicionar?acao=1&idaz=@ViewBag.SelectedOptionF&idsafra=@ViewBag.SelectedOptionS" class=" btn btn-primary"><i class="fas fa-plus icon-default"></i></a>
+        <a href="/ConfigArea/assistente" class=" btn btn-primary">Assistente</a>
+    </div>
+    @if (ViewBag.talhoes != "0")
+    {
+        <div class="row">
+            <div class="col-md-07">
+                <select multiple="multiple" size="10" name="duallistbox_demo2" class="demo2" title="duallistbox_demo2" ondblclick="teste()">
+                    @if (ViewBag.talhoes != "0")
+                    {
+                        @foreach (var item in ViewBag.talhoes)
+                        {
+
+                            <option value="@item.Value">@item.Text</option>
+
+                        }
+                    }
+
+            </select>
+        </div>
+    </div>
+    }
+</section>
+<!-- /.content -->
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/css/adminlte.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+
+<style>
+    .custom-no-data {
+        text-align: center;
+        color: red;
+        font-weight: bold;
+    }
+</style>
+<!-- Bootstrap 4 -->
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+
+
+<script src="~/dist/js/jquery.bootstrap-duallistbox.js"></script>
+<script src="~/js/loadtalhoes.js"></script>
+<script src="~/js/loadvariedades.js"></script>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<script>
+
+    var demo2 = $('.demo2').bootstrapDualListbox({
+        nonSelectedListLabel: 'Talhões Disponíveis',
+        selectedListLabel: 'Talhões Selecionados',
+        preserveSelectionOnMove: 'moved',
+        moveOnSelect: false,
+        nonSelectedFilter: '',
+        infoText: "Mostrando {0}",
+        infoTextEmpty: "Sem informações",
+        filterPlaceHolder: "Busque um talhão"
+
+    });
+    $(document).ready(function () {
+
+        $('#idsafra').select2({
+            theme: "bootstrap-5",
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            closeOnSelect: true
+
+        });
+        $('#idfaz').select2({
+            theme: "bootstrap-5",
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            closeOnSelect: true
+
+        });
+
+        $('#idvariedade').select2({
+            theme: "bootstrap-5",
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            closeOnSelect: true
+
+        });
+
+        
+  
+        
+    });
+
+    function changesafra() {
+        loadvariedades("0", true);
+    } 
+
+   
+      
+        
+</script>

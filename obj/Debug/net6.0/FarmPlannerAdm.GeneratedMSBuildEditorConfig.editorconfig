@@ -1,0 +1,293 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = FarmPlannerAdm
+build_property.RootNamespace = FarmPlannerAdm
+build_property.ProjectDir = C:\Users\user\source\repos\FarmPlannerAdm\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\user\source\repos\FarmPlannerAdm
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Areas/Identity/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Auth/AlterarSenha.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxBbHRlcmFyU2VuaGEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Auth/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Auth/PreferUsu.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxQcmVmZXJVc3UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Auth/resetarsenha.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxyZXNldGFyc2VuaGEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/ClasseConta/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhc3NlQ29udGFcQWRpY2lvbmFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/ClasseConta/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhc3NlQ29udGFcRWRpdGFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/ClasseConta/Excluir.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhc3NlQ29udGFcRXhjbHVpci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/ClasseConta/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhc3NlQ29udGFcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Conta/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFcQWRpY2lvbmFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Conta/assinaturaconfirmada.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFcYXNzaW5hdHVyYWNvbmZpcm1hZGEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Conta/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFcRWRpdGFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Conta/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Cultura/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VsdHVyYVxBZGljaW9uYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Cultura/AdicionarVariedade.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VsdHVyYVxBZGljaW9uYXJWYXJpZWRhZGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Cultura/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VsdHVyYVxFZGl0YXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Cultura/EditarVariedade.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VsdHVyYVxFZGl0YXJWYXJpZWRhZGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Cultura/Excluir.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VsdHVyYVxFeGNsdWlyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Cultura/ExcluirVariedade.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VsdHVyYVxFeGNsdWlyVmFyaWVkYWRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Cultura/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VsdHVyYVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/GrupoProduto/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3J1cG9Qcm9kdXRvXEFkaWNpb25hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/GrupoProduto/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3J1cG9Qcm9kdXRvXEVkaXRhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/GrupoProduto/Excluir.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3J1cG9Qcm9kdXRvXEV4Y2x1aXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/GrupoProduto/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3J1cG9Qcm9kdXRvXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/MarcaMaquina/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFyY2FNYXF1aW5hXEFkaWNpb25hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/MarcaMaquina/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFyY2FNYXF1aW5hXEVkaXRhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/MarcaMaquina/Excluir.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFyY2FNYXF1aW5hXEV4Y2x1aXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/MarcaMaquina/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFyY2FNYXF1aW5hXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/ModeloMaquina/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9kZWxvTWFxdWluYVxBZGljaW9uYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/ModeloMaquina/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9kZWxvTWFxdWluYVxFZGl0YXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/ModeloMaquina/Excluir.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9kZWxvTWFxdWluYVxFeGNsdWlyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/ModeloMaquina/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9kZWxvTWFxdWluYVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Moeda/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9lZGFcQWRpY2lvbmFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Moeda/AdicionarCotacao.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9lZGFcQWRpY2lvbmFyQ290YWNhby5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Moeda/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9lZGFcRWRpdGFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Moeda/Excluir.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9lZGFcRXhjbHVpci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Moeda/ExcluirCotacao.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9lZGFcRXhjbHVpckNvdGFjYW8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Moeda/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9lZGFcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Parceiro/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFyY2Vpcm9cQWRpY2lvbmFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Parceiro/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFyY2Vpcm9cRWRpdGFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Parceiro/Excluir.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFyY2Vpcm9cRXhjbHVpci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Parceiro/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFyY2Vpcm9cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/PrincipioAtivo/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJpbmNpcGlvQXRpdm9cQWRpY2lvbmFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/PrincipioAtivo/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJpbmNpcGlvQXRpdm9cRWRpdGFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/PrincipioAtivo/Excluir.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJpbmNpcGlvQXRpdm9cRXhjbHVpci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/PrincipioAtivo/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJpbmNpcGlvQXRpdm9cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Regiao/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVnaWFvXEFkaWNpb25hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Regiao/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVnaWFvXEVkaXRhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Regiao/Excluir.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVnaWFvXEV4Y2x1aXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Regiao/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVnaWFvXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Shared/_LoginPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Mb2dpblBhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Tecnologia/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVjbm9sb2dpYVxBZGljaW9uYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Tecnologia/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVjbm9sb2dpYVxFZGl0YXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Tecnologia/Excluir.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVjbm9sb2dpYVxFeGNsdWlyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Tecnologia/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVjbm9sb2dpYVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/TipoOperacao/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlwb09wZXJhY2FvXEFkaWNpb25hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/TipoOperacao/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlwb09wZXJhY2FvXEVkaXRhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/TipoOperacao/Excluir.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlwb09wZXJhY2FvXEV4Y2x1aXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/TipoOperacao/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlwb09wZXJhY2FvXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Usuarios/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb3NcQWRpY2lvbmFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Usuarios/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb3NcRWRpdGFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Usuarios/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb3NcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-55dk9m0rdf
