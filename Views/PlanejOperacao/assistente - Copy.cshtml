@@ -1,0 +1,739 @@
+﻿
+
+<!-- Content Header (Page header) -->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+<link href="~/css/jsgridplanner.css" rel="stylesheet">
+
+
+<style>
+
+
+  
+
+    /* Estilo padrão para o ícone */
+    .icon-default {
+        color: 38b6ff;
+    }
+
+    .select2-container {
+        width: 350px !important; /* Ajuste o tamanho conforme necessário */
+        display: inline-block;
+    }
+
+    .form-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .submit-button {
+        margin-left: 10px; /* Espaço entre o select e o botão */
+    }
+
+    .my-icon {
+        color: blue; /* Define a cor do ícone */
+    }
+
+    .action-btn {
+        margin-left: 10px;
+        font-size: 12px;
+    }
+
+    .grid-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: left;
+    }
+
+    .js-grid {
+        width: 50%;
+    }
+
+    .button-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .button-container button {
+            margin: 10px;
+            padding: 10px;
+    }
+
+    .h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-family: Arial, sans-serif;
+    }
+   
+
+.jsgrid .jsgrid-grid-body tr {
+            height: 10px !important; /* Define a altura desejada */
+        }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type="number"] {
+        -moz-appearance: textfield; /* Firefox */
+    }
+
+    .input-number {
+        width: 80px; /* Define a largura do campo de entrada numérica */
+        padding: 5px; /* Ajusta o preenchimento interno */
+        font-size: 16px; /* Ajusta o tamanho da fonte */
+    }
+
+</style>
+
+<!-- Main content -->
+<section class="content">
+    <form asp-action="assistente">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary collapsed-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Filtro</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-filter"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-container">
+
+                                    <select class="select2" name="idsafra" id="idsafra" data-placeholder="escolha uma safra" onchange="changesafra()" style="width: 100%;">
+                                        <option value="0">escolha uma safra</option>
+                                        @foreach (var item in ViewBag.safras)
+                                        {
+                                            if (@item.Value == ViewBag.SelectedOptionS)
+                                            {
+                                                <option value="@item.Value" selected>@item.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        }
+                                    </select>
+
+                                    <select class="select2" name="idfazenda" id="idfaz" data-placeholder="escolha a fazenda" onchange="changefaz()" style="width: 100%;">
+                                        <option value="0">escolha a fazenda</option>
+                                        @foreach (var item in ViewBag.fazendas)
+                                        {
+                                            if (@item.Value == ViewBag.SelectedOptionF)
+                                            {
+                                                <option value="@item.Value" selected>@item.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                    <select class="select2" name="idtalhao" id="idtalhao" data-placeholder="escolha o talhão" style="width: 100%;">
+                                    </select>
+                                    <select class="select2" name="idvariedade" id="idvariedade" data-placeholder="escolha a variedade" style="width: 100%;">
+                                    </select>
+
+                                    <button type="submit" class="btn btn-md btn-default">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </form>
+
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Configurações de Áreas Disponíveis</h3>
+
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="jstalhoes" class="js-grid"></div> 
+                        </div>
+
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Áreas Selecionados</h3>
+
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="jstalhoesSelecionados" class="js-grid"></div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+
+
+    <div class="col-md-12">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Escolha os produtos/princípios ativos e quantidades aplicados</h3>
+
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="form-container">
+
+                            <select class="select2" name="idprincipio" id="idprincipio" data-placeholder="escolha um principio ativo"   onchange="changeprincipio()" >
+                                <option value="0">escolha um princípio</option>
+                                @foreach (var item in ViewBag.principios)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            </select>
+                            <select class="select2" name="idproduto" id="idproduto" data-placeholder="escolha um produto" >
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-container">                    
+                            <input type="number" id="qtd" name="qtd" class="form-control" style="text-align: right;" />
+                            
+
+                            <button type="button" class="btn btn-md btn-primary" onclick="addprodutos()">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Produtos Aplicados</h3>
+
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="jsprodutos" class="js-grid"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+</section>
+<!-- /.content -->
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/css/adminlte.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+
+<style>
+    .custom-no-data {
+        text-align: center;
+        color: red;
+        font-weight: bold;
+    }
+</style>
+<!-- Bootstrap 4 -->
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+
+
+
+<script src="~/js/loadtalhoes.js"></script>
+<script src="~/js/loadvariedades.js"></script>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<script src="~/js/Comuns.js"></script>
+<script src="~/js/loadprodutos.js"></script>
+
+<script>
+    var talhoesSel=[];
+    var talhoesDisp = [];
+    var produtos=[]
+    $(document).ready(function () {
+
+        $('#idsafra').select2({
+            theme: "bootstrap-5",
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            closeOnSelect: true
+
+        });
+        $('#idfaz').select2({
+            theme: "bootstrap-5",
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            closeOnSelect: true
+
+        });
+
+        $('#idvariedade').select2({
+            theme: "bootstrap-5",
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            closeOnSelect: true
+
+        });
+
+        $('#idtalhao').select2({
+            theme: "bootstrap-5",
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            closeOnSelect: true
+
+
+        });
+
+        $('#idprincipio').select2({
+            theme: "bootstrap-5",
+            
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            closeOnSelect: true
+
+
+        });
+        $('#idproduto').select2({
+            theme: "bootstrap-5",
+            
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            closeOnSelect: true
+
+
+        });
+
+
+        ajustafontselect2();
+        $("#idfaz").val(@ViewBag.SelectedOptionF);
+        //$('#idfazenda').trigger("change");
+        changefaz();
+        $("#idsafra").val(@ViewBag.SelectedOptionS);
+        //$('#idsafra').trigger("change");
+        changesafra();
+
+        loadtalhoesdisp();   
+  
+    });
+
+    function changeprincipio()
+    {
+        loadprodutos($("#idproduto"),"0", true, $("#idprincipio").val(),0,0,"");
+    }
+
+    function loadtalhoesdisp()
+    {
+        $.ajax({
+            type: "get",
+            url: "/ConfigArea/GetData?idsafra=" + $("#idsafra").val() + "&idfazenda=" + $('#idfaz').val() + "&idtalhao=" + @ViewBag.SelectedOptionT+"&idvariedade=" + @ViewBag.SelectedOptionV,
+            data: {},
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            success: function (obj) {
+                if (obj != null) {
+                    var data = obj;
+                    $.each(data, function (i, d) {
+                      talhoesDisp.push({"id":d.id,"descconfig":d.descconfig,"area":d.area,"areaDisp":d.area,"marcado":false});  
+                    });
+
+                }
+                $("#jstalhoes").jsGrid("refresh");
+            }
+        });
+
+    }
+    
+
+    function changefaz() {
+        loadtalhoes(@ViewBag.SelectedOptionT, true);
+    }
+
+    function changesafra() {
+        loadvariedades(@ViewBag.SelectedOptionV, true);
+    }
+
+
+    $(function () {
+        $("#jstalhoes").jsGrid({
+            width: "100%",
+            height: "400px",
+
+            sorting: true,
+            paging: true,   
+            editing:true,
+           // autoload:true,
+
+            //autoload: true,
+            noDataContent: "<div class='custom-no-data'>Nenhum dado encontrado</div>",
+            data:talhoesDisp,
+
+            /*
+            
+            controller: {
+                loadData: function () {
+                    return $.ajax({
+                        type: "GET",
+                        url: "/ConfigArea/GetData?idsafra=" + $("#idsafra").val() + "&idfazenda=" + $('#idfaz').val() + "&idtalhao=" + @ViewBag.SelectedOptionT+"&idvariedade=" + @ViewBag.SelectedOptionV,
+                        dataType: "json"
+                    });
+                }
+            },*/
+
+            fields: [
+                { name: "id", type: "number", width: 20, title: "ID", visible: false },
+                { name: "descconfig", type: "text", width: 100, title: "Identificação", editing: false },
+                { name: "area", type: "number", width: 50, title: "Área" ,visible: true,editing:false },
+                //{ name: "areaProdutiva", type: "number", width: 60, title: "Área Total", editing: false },
+                
+                {
+                itemTemplate: function (value, item) {
+                    // Criando um botão para cada linha
+                    var $button = $("<button>")
+                        .addClass("btn btn-primary")
+                        .append($("<i>").addClass("fas fa-chevron-right"))
+                        //.text("Transferir")
+                        .on("click", function () {
+                            // Ação ao clicar no botão
+                            //alert("Nome: " + item.Name + "\nIdade: " + item.Age + "\nPaís: " + item.Country);
+                        //args.item.marcado=(!args.item.marcado);
+                        //i = talhoesDisp.findIndex(x => x.id == item.id);
+                        talhoesSel.push({ "id": item.id, "descricao": item.descconfig, "areaDisp": item.area,"areaorig":item.area,"percent":100});
+                        j = talhoesDisp.findIndex(x => x.id == item.id);
+                        talhoesDisp.splice(j, 1);
+                        $("#jstalhoes").jsGrid("refresh");
+                        $("#jstalhoesSelecionados").jsGrid("refresh");
+
+                        });
+
+                    return $button;
+                }
+                //{ name: "marcado", type: "checkbox", width: 40, title: "Transf",editing:true }              
+                }
+
+            ]
+        });
+     
+    });
+
+    $(function () {
+        $("#jstalhoesSelecionados").jsGrid({
+            width: "100%",
+            height: "400px",
+
+            sorting: true,
+            paging: true,
+            editing:true,
+            deleting:false,
+            
+
+            autoload: true,
+            noDataContent: "<div class='custom-no-data'>Nenhum dado encontrado</div>",
+            /*
+            controller: {
+                loadData: function () {
+                    return talhoeselecionados;
+                }
+            },*/
+            data:talhoesSel,
+            onItemUpdating: function (args) {
+                // Validando se o salário é maior que zero
+                if (args.item.areaDisp > args.item.areaorig || args.item.percent>100 || args.item.percent<=0) {
+                    alert("Área aplicada deverá ser menor que área configurada ou percentual inválido");
+                    args.cancel = true;  // Cancelando a atualização
+                }
+            },
+            onItemUpdated: function (args) {
+                j = talhoesSel.findIndex(x => x.id == args.item.id);
+                talhoesSel[j].areaDisp=args.item.areaDisp;    
+                talhoesSel[j].percent=args.item.percent;
+                $("#jstalhoesSelecionados").jsGrid("refresh");
+
+            },
+
+
+            fields: [
+                { name: "id", type: "number", width: 20, title: "ID", visible: false },
+                { name: "descricao", type: "text", width: 200, title: "Ident", editing:false },
+                { name: "areaorig", type: "number", width: 40, title: "Área Total", visible: false, editing: false },
+                { name: "areaDisp", type: "number", width: 50, title: "Área " ,visible: true , editing:true,
+                    itemTemplate: function (value) {
+                        return value.toFixed(2); // Formata o número com 2 casas decimais
+                    },
+                    editTemplate: function(value) {
+                        var $input = $("<input>").attr("type", "number").attr("step", "0.01").val(value);
+                        this._editControl = $input;
+                        return $input;
+                    }
+                    ,editValue: function () {
+                        return parseFloat(this._editControl.val());
+                    }
+                },               
+                { name: "percent", type: "number", width: 50, title: "% " ,visible: true , editing:true,
+                    itemTemplate: function (value) {
+                        return value.toFixed(2); // Formata o número com 2 casas decimais
+                    },
+                    editTemplate: function(value) {
+                        var $input = $("<input>").attr("type", "number").attr("step", "0.01").val(value);
+                        this._editControl = $input;
+                        return $input;
+                    }
+                    ,editValue: function () {
+                        return parseFloat(this._editControl.val());
+                    }
+                },               
+
+
+                {
+                    title:"Ações",
+                    width: 50,
+                    itemTemplate: function (value, item) {
+                        // Criando um botão para cada linha
+                        var $button = $("<button>")
+                            .addClass("btn btn-primary")
+                            .append($("<i>").addClass("fas fa-chevron-left"))
+                            
+                            .on("click", function () {
+                                // Ação ao clicar no botão
+                                //alert("Nome: " + item.Name + "\nIdade: " + item.Age + "\nPaís: " + item.Country);
+                                //args.item.marcado=(!args.item.marcado);
+                                //i = talhoesDisp.findIndex(x => x.id == item.id);
+                                talhoesDisp.push({ "id": item.id, "descconfig": item.descricao,  "area": item.areaorig });
+                                j = talhoesSel.findIndex(x => x.id == item.id);
+                                talhoesSel.splice(j, 1);
+                                $("#jstalhoes").jsGrid("refresh");
+                                $("#jstalhoesSelecionados").jsGrid("refresh");
+
+                            });
+
+                        return $button;
+                    }
+                },              
+                
+                {
+                    type: "control",deleteButton:false,editButton:true
+                  /*  
+                    itemTemplate: function (_, item) {
+                        var $result = $("<div>").addClass("dropdown");
+
+                        var $button = $("<button>").addClass("btn btn-info dropdown-toggle")
+                            .attr("type", "button")
+                            .attr("id", "dropdownMenuButton")
+                            .attr("data-toggle", "dropdown")
+                            .text("Ações");
+
+                        var $menu = $("<div>").addClass("dropdown-menu")
+                            .attr("aria-labelledby", "dropdownMenuButton");
+
+                        var $edit = $("<a>").addClass("dropdown-item")
+                            .attr("href", "#")
+                            .text("Editar Área")
+                            .on("click", function () {
+                                
+                            });                       
+
+                        $menu.append($edit);
+                        $result.append($button).append($menu);
+
+                        return $result;
+                        
+                    }*/
+                }
+                ]
+        });
+
+    });
+
+    $(function () {
+            $("#jsprodutos").jsGrid({
+                width: "100%",
+                height: "400px",
+
+                sorting: true,
+                paging: true,
+                editing: false,     
+                deleting:true,
+
+                autoload: true,
+                noDataContent: "<div class='custom-no-data'>Nenhum dado encontrado</div>",
+                /*
+                controller: {
+                    loadData: function () {
+                        return talhoeselecionados;
+                    }
+                },*/
+                data: produtos,
+            onItemDeleting: function (args) {
+                var item = args.item;
+                var j=produtos.findIndex(x=>x.id==item.id && x.tipo==item.tipo);
+                if (j>=0) 
+                {
+                    produtos.splice(j,1);
+                    $("#jsprodutos").jsGrid("refresh");
+                }
+            },
+
+
+                fields: [
+                    { name: "id", type: "text", width: 20, title: "ID", visible: false },
+                    { name: "tipo", type: "text", width: 80, title: "Tipo", editing: false },
+                    { name: "descricao", type: "text", width: 150, title: "Produto/Principio", editing: false },
+                    { name: "dosagem", type: "number", width: 50, title: "Dosagem", visible: true, editing: false },
+
+                    {
+                        type: "control", deleteButton: true, editButton: false
+                        /*
+                          itemTemplate: function (_, item) {
+                              var $result = $("<div>").addClass("dropdown");
+
+                              var $button = $("<button>").addClass("btn btn-info dropdown-toggle")
+                                  .attr("type", "button")
+                                  .attr("id", "dropdownMenuButton")
+                                  .attr("data-toggle", "dropdown")
+                                  .text("Ações");
+
+                              var $menu = $("<div>").addClass("dropdown-menu")
+                                  .attr("aria-labelledby", "dropdownMenuButton");
+
+                              var $edit = $("<a>").addClass("dropdown-item")
+                                  .attr("href", "#")
+                                  .text("Editar Área")
+                                  .on("click", function () {
+
+                                  });
+
+                              $menu.append($edit);
+                              $result.append($button).append($menu);
+
+                              return $result;
+
+                          }*/
+                    }
+                ]
+            });       
+
+    });
+
+    function addprodutos()
+    {
+        if ($("#idprincipio").val()!="0" || $("#idproduto").val()!="0") 
+        {         
+            tipo='PA';
+            id=$("#idprincipio").val();
+            var select = document.getElementById("idprincipio");
+            var selectedText = select.options[select.selectedIndex].text;
+            var descricao=selectedText;
+
+            if ($("#idproduto").val()!="0") {
+                tipo='PR';
+                id=$("#idproduto").val();
+                var select = document.getElementById("idproduto");
+                var selectedText = select.options[select.selectedIndex].text;
+                var descricao=selectedText;                
+            }
+            i=produtos.findIndex(x=>x.id==id && x.tipo==tipo);
+            if (i<0)
+            {
+                produtos.push({"tipo":tipo,"id":id,"dosagem":$("#qtd").val(),"descricao":descricao});
+            }
+            $("#jsprodutos").jsGrid("refresh");
+        }
+
+    }
+
+    function gravar()
+    {
+        var xtalhoes=[];
+        for (var i=0;i<talhoesSel.length;i++)
+        {
+            xtalhoes.push({"id":0,"idSafra":$("#idsafra").val(),"idTalhao":talhoesSel[i].id,"idVariedade": $("#idvariedade").val(), "area": talhoesSel[i].areaDisp, "populacaoRecomendada":0,
+                "germinacao": 0, "pms": 0, "espacamento": 0, "margemSeguranca": 0, "stand": 0, "unidadeSementePrevista":0,
+                "qtdSementePrevista": 0, "prodEstimada":talhoesSel[i].media , "idconta":"@ViewBag.contaid","idfazenda":null,"uid":"@ViewBag.uid",
+                "datains":null,"dataup":null});
+        }
+        $.ajax({
+            url: "/configarea/GravarAssistente",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(xtalhoes),
+            success: function (response) {
+                if (response.success) {
+                    alert(response.message);
+                    location.reload();
+                } else {
+                    alert("Erro: " + response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("Erro na chamada AJAX: ", error);
+            }
+        });
+
+    }
+   
+      
+        
+</script>

@@ -40,7 +40,6 @@ namespace FarmPlannerAdm.Controllers
 
         private const int TAMANHO_PAGINA = 5;
 
-
         public async Task<IActionResult> Index(int idsafra, int idvariedade, int idtalhao, int idfazenda)
         {
             Task<List<SafraViewModel>> rets = _anoagricolaAPI.ListaSafra(_sessionManager.idanoagricola, 0, _sessionManager.contaguid, "");
@@ -99,6 +98,7 @@ namespace FarmPlannerAdm.Controllers
             }
             return View();
         }
+
         [Authorize(Roles = "Admin,User,AdminC")]
         public async Task<IActionResult> Assistente(int idfazenda)
         {
@@ -152,6 +152,7 @@ namespace FarmPlannerAdm.Controllers
 
             return Json(c);
         }
+
         [Authorize(Roles = "Admin,User,AdminC")]
         [HttpGet]
         public async Task<IActionResult> Adicionar(int idfaz = 0, int idsafra = 0, int acao = 1, int id = 0)
@@ -215,6 +216,7 @@ namespace FarmPlannerAdm.Controllers
 
             return View(c);
         }
+
         [Authorize(Roles = "Admin,User,AdminC")]
         [HttpPost]
         public async Task<IActionResult> Editar(int id, FarmPlannerClient.ConfigArea.ConfigAreaViewModel dados)
@@ -238,6 +240,7 @@ namespace FarmPlannerAdm.Controllers
 
             return RedirectToAction("adicionar", new { acao = 1, id = 0 });
         }
+
         [Authorize(Roles = "Admin,User,AdminC")]
         [HttpPost]
         public async Task<IActionResult> Adicionar(FarmPlannerClient.ConfigArea.ConfigAreaViewModel dados)
@@ -262,6 +265,7 @@ namespace FarmPlannerAdm.Controllers
             TempData["Erro"] = x;
             return RedirectToAction("adicionar", new { acao = 1, id = 0 });
         }
+
         [Authorize(Roles = "Admin,User,AdminC")]
         [HttpPost]
         public async Task<IActionResult> Excluir(int id, FarmPlannerClient.ConfigArea.ConfigAreaViewModel dados)
@@ -288,29 +292,47 @@ namespace FarmPlannerAdm.Controllers
 
             return Json(new { area = area - areaconf });
         }
+
+        public async Task<JsonResult> GetAreaConfById(int id)
+        {
+            Task<ConfigAreaViewModel> ret = _ConfigArea.ListaById(id, _sessionManager.contaguid);
+            FarmPlannerClient.ConfigArea.ConfigAreaViewModel c = await ret;
+
+            return Json(new { area = c.area });
+        }
+
         [Authorize(Roles = "Admin,User,AdminC")]
         [HttpPost]
         public async Task<JsonResult> GravarAssistente([FromBody] List<ConfigAreaViewModel> dados)
         {
             if (dados != null)
             {
-                var response = await _ConfigArea.GravarAssistente(dados);
-
-                if (response != null)
+                Task<List<string>> k = validarconfigareas(dados);
+                List<string> erros = await k;
+                if (erros.Count == 0)
                 {
-                    if (response.IsSuccessStatusCode)
+                    var response = await _ConfigArea.GravarAssistente(dados);
+
+                    if (response != null)
                     {
-                        return Json(new { success = true, message = "Dados gravados com sucesso!" });
+                        if (response.IsSuccessStatusCode)
+                        {
+                            return Json(new { success = true, message = "Dados gravados com sucesso!" });
+                        }
+                        else
+                        {
+                            string x = await response.Content.ReadAsStringAsync();
+                            return Json(new { success = false, message = x });
+                        }
                     }
                     else
                     {
-                        string x = await response.Content.ReadAsStringAsync();
-                        return Json(new { success = false, message = x });
+                        return Json(new { success = false, message = erros[0].ToString() });
                     }
                 }
                 else
                 {
-                    return Json(new { success = false, message = "Erro na gravaçao" });
+                    return Json(new { success = false, message = erros });
                 }
             }
             else
@@ -318,6 +340,23 @@ namespace FarmPlannerAdm.Controllers
                 return Json(new { success = false, message = "Dados inválidos." });
             }
         }
+
+        [HttpGet]
+        public async Task<List<string>> validarconfigareas(List<ConfigAreaViewModel> dadosP)
+        {
+            List<string> erros = new List<string>();
+            foreach (var p in dadosP)
+            {
+                Task<List<ListConfigAreaViewModel>> ret = _ConfigArea.Lista(_sessionManager.idanoagricola, p.idfazenda ?? 0, p.idTalhao, p.idVariedade, p.idSafra, _sessionManager.contaguid, _sessionManager.idorganizacao);
+                List<FarmPlannerClient.ConfigArea.ListConfigAreaViewModel> c = await ret;
+                if (c.Count > 0)
+                {
+                    erros.Add("Área já configurada: " + c[0].descconfig.ToString());
+                }
+            }
+            return erros;
+        }
+
         [Authorize(Roles = "Admin,User,AdminC")]
         public async Task<JsonResult> GravarPlanejPlantio([FromBody] List<PlanejPlantioViewModel> dadosP)
         {

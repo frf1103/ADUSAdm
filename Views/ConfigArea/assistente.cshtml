@@ -535,6 +535,7 @@
             success: function (response) {
                 if (response.success) {
                     alert(response.message);
+                    location.reload();
                 } else {
                     alert("Erro: " + response.message);
                 }

@@ -21,6 +21,10 @@
       "PackagePath": "staticwebassets\\css\\jquery-ui.min.css"
     },
     {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\css\\jsgridplanner.css",
+      "PackagePath": "staticwebassets\\css\\jsgridplanner.css"
+    },
+    {
       "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\css\\select2.css",
       "PackagePath": "staticwebassets\\css\\select2.css"
     },
@@ -341,6 +345,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\js\\Comuns.js",
+      "PackagePath": "staticwebassets\\js\\Comuns.js"
+    },
+    {
       "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\js\\FileSaver.js",
       "PackagePath": "staticwebassets\\js\\FileSaver.js"
     },
@@ -403,6 +411,10 @@
     {
       "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\js\\jszip.js",
       "PackagePath": "staticwebassets\\js\\jszip.js"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\js\\loadprodutos.js",
+      "PackagePath": "staticwebassets\\js\\loadprodutos.js"
     },
     {
       "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\js\\loadtalhoes.js",

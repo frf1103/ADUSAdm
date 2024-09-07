@@ -283,7 +283,11 @@
                 { name: "id", type: "number", width: 20, title: "ID", visible: false },
                 { name: "descconfig", type: "text", width: 100, title: "Fazenda/Talhão/Variedade" },
                 { name: "descoperacao", type: "text", width: 50, title: "Operação" },
-                { name: "dataPrevista", type: "text", width: 40, title: "Data Prevista" },
+                { name: "dataPrevista", type: "text", width: 40, title: "Data Prevista",
+                    itemTemplate: function (value) {
+                        return new Date (value).toLocaleDateString();
+                    }
+                },
                 
                 {
                     type: "control",
@@ -303,21 +307,21 @@
                             .attr("href", "#")
                             .text("Visualizar")
                             .on("click", function () {
-                                window.location.href = '/ConfigArea/adicionar/' + item.id + '?acao=4';
+                                window.location.href = '/planejoperacao/adicionar/' + item.id + '?acao=4';
                             });
 
                         var $edit = $("<a>").addClass("dropdown-item")
                             .attr("href", "#")
                             .text("Editar")
                             .on("click", function () {
-                                window.location.href = '/ConfigArea/adicionar/' + item.id + '?acao=2';
+                                window.location.href = '/planejoperacao/adicionar/' + item.id + '?acao=2';
                             });
 
                         var $delete = $("<a>").addClass("dropdown-item")
                             .attr("href", "#")
                             .text("Excluir")
                             .on("click", function () {
-                                window.location.href = '/ConfigArea/adicionar/' + item.id + '?acao=3';
+                                window.location.href = '/planejoperacao/adicionar/' + item.id + '?acao=3';
                             });
 
                         $menu.append($details).append($edit).append($delete);

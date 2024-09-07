@@ -1,0 +1,26 @@
+﻿.jsgrid {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 12px; /* Ajuste o tamanho conforme necessário */
+}
+
+/* Opcional: ajustando o tamanho da fonte das células */
+.jsgrid-cell, .jsgrid-header-cell {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 12px; /* Ajuste o tamanho conforme necessário */
+}
+
+/* Diminuindo a fonte dos botões de controle (Editar, Excluir, etc.) */
+.jsgrid-control-field .jsgrid-button {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 12px;
+}
+
+.jsgrid-header-row {
+    border-bottom: 2px solid #70ab11; /* Linha contínua no cabeçalho */
+}
+
+/* Se desejar aplicar mais estilos ao header */
+.jsgrid-header-cell {
+    border-bottom: none; /* Remover borda padrão de cada célula do cabeçalho */
+    padding: 10px; /* Ajuste do padding, se necessário */
+}

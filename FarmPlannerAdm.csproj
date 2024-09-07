@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Content Remove="Views\Auth\Loginx.cshtml" />
+    <Content Remove="Views\PlanejOperacao\assistente - Copy.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

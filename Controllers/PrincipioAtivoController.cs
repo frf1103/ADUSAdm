@@ -21,7 +21,7 @@ namespace FarmPlannerAdm.Controllers
 
         public async Task<IActionResult> Index(string? filtro, int pagina = 1)
         {
-            Task<List<FarmPlannerClient.PrincipioAtivo.PrincipioAtivoViewModel>> ret = _culturaAPI.Lista(_sessionManager.contaguid, filtro);
+            Task<List<FarmPlannerClient.PrincipioAtivo.PrincipioAtivoViewModel>> ret = _culturaAPI.Lista(filtro);
             List<FarmPlannerClient.PrincipioAtivo.PrincipioAtivoViewModel> c = await ret;
 
             ViewBag.NumeroPagina = pagina;
@@ -42,7 +42,7 @@ namespace FarmPlannerAdm.Controllers
         [HttpGet]
         public async Task<IActionResult> Editar(int id, int acao = 0)
         {
-            Task<FarmPlannerClient.PrincipioAtivo.PrincipioAtivoViewModel> ret = _culturaAPI.ListaById(id, _sessionManager.contaguid);
+            Task<FarmPlannerClient.PrincipioAtivo.PrincipioAtivoViewModel> ret = _culturaAPI.ListaById(id);
             FarmPlannerClient.PrincipioAtivo.PrincipioAtivoViewModel c = await ret;
 
             ViewBag.Id = id;
@@ -53,7 +53,7 @@ namespace FarmPlannerAdm.Controllers
         [HttpGet]
         public async Task<IActionResult> Excluir(int id)
         {
-            Task<FarmPlannerClient.PrincipioAtivo.PrincipioAtivoViewModel> ret = _culturaAPI.ListaById(id, _sessionManager.contaguid);
+            Task<FarmPlannerClient.PrincipioAtivo.PrincipioAtivoViewModel> ret = _culturaAPI.ListaById(id);
             FarmPlannerClient.PrincipioAtivo.PrincipioAtivoViewModel c = await ret;
 
             return View(c);
@@ -62,8 +62,7 @@ namespace FarmPlannerAdm.Controllers
         [HttpPost]
         public async Task<IActionResult> Editar(int id, FarmPlannerClient.PrincipioAtivo.PrincipioAtivoViewModel dados)
         {
-            dados.idconta = _sessionManager.contaguid;
-            var response = await _culturaAPI.Salvar(id, _sessionManager.contaguid, dados);
+            var response = await _culturaAPI.Salvar(id, dados);
 
             if (response.IsSuccessStatusCode)
             {
@@ -78,7 +77,7 @@ namespace FarmPlannerAdm.Controllers
         [HttpPost]
         public async Task<IActionResult> Adicionar(FarmPlannerClient.PrincipioAtivo.PrincipioAtivoViewModel dados)
         {
-            dados.idconta = _sessionManager.contaguid;
+            // dados.idconta = _sessionManager.contaguid;
             var response = await _culturaAPI.Adicionar(dados);
 
             if (response.IsSuccessStatusCode)
@@ -97,7 +96,7 @@ namespace FarmPlannerAdm.Controllers
         public async Task<IActionResult> Excluir(int id, FarmPlannerClient.PrincipioAtivo.PrincipioAtivoViewModel dados)
         {
             //FarmPlannerClient.PrincipioAtivo.PrincipioAtivoViewModel dados=new FarmPlannerClient.PrincipioAtivo.PrincipioAtivoViewModel();
-            var response = await _culturaAPI.Excluir(id, _sessionManager.contaguid);
+            var response = await _culturaAPI.Excluir(id);
 
             if (response.IsSuccessStatusCode)
             {
@@ -112,7 +111,7 @@ namespace FarmPlannerAdm.Controllers
 
         public async Task<JsonResult> GetData(string? filtro)
         {
-            Task<List<FarmPlannerClient.PrincipioAtivo.PrincipioAtivoViewModel>> ret = _culturaAPI.Lista(_sessionManager.contaguid, filtro);
+            Task<List<FarmPlannerClient.PrincipioAtivo.PrincipioAtivoViewModel>> ret = _culturaAPI.Lista(filtro);
             List<FarmPlannerClient.PrincipioAtivo.PrincipioAtivoViewModel> c = await ret;
 
             return Json(c);

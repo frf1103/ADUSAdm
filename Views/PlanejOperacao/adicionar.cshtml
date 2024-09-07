@@ -1,11 +1,6 @@
-﻿@model FarmPlannerClient.ConfigArea.ConfigAreaViewModel
+﻿@model FarmPlannerClient.PlanejOperacao.PlanejamentoOperacaoViewModel
 
 
-
-
-<link rel="stylesheet" href="~/sweetalert2.min.css">
-<!-- Toastr -->
-<link rel="stylesheet" href="~/toastr.min.css">
 
 
 <style>
@@ -19,6 +14,10 @@
     legend {
         
         color: #008cba;
+    }
+
+    .custom-header {
+        text-align: right; /* ou left, center */
     }
 </style>
 
@@ -47,8 +46,15 @@
                         <li class="nav-item">
                             <a class="nav-link active" id="custom-content-above-home-tab" data-toggle="pill" href="#custom-content-above-home" role="tab" aria-controls="custom-content-above-home" aria-selected="true">Dados Cadastrais</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="custom-content-above-consolida-tab" data-toggle="pill" href="#custom-content-above-consolida" role="tab" aria-controls="custom-content-above-consolida" aria-selected="false">Produtos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="custom-content-above-operacao-tab" data-toggle="pill" href="#custom-content-above-operacao" role="tab" aria-controls="custom-content-above-operacao" aria-selected="false">Maquinas</a>
+                        </li>
 
                     </ul>
+
 
                     <div class="tab-content" id="custom-content-above-tabContent">
                         <div class="tab-pane fade show active" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab">
@@ -60,13 +66,13 @@
                                             <div class="col-md-2">   
                                                 <div class="form-group">
                                                     <label asp-for="id" class="control-label"></label>
-                                                     <input asp-for="id" class="form-control" id="idfazenda" readonly />
+                                                     <input asp-for="id" class="form-control" id="id" readonly />
                                                     <span asp-validation-for="id" class="text-danger"></span>
                                                 </div>
                                             </div>
                                             <div class="col-md-5">
                                                 <div class="form-group">
-                                                    <label asp-for="idSafra" class="control-label"></label>
+                                                    <label asp-for="idConfigArea" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
@@ -76,22 +82,22 @@
                                                     //        }
                                                     //        else
                                                     //        {
-                                                            <select asp-for="idSafra" id="idsafra" class="form-control" asp-items="@ViewBag.safras" onchange="changesafra()"></select>
+                                                            <select asp-for="idConfigArea" id="idconfig" class="form-control" asp-items="@ViewBag.configareas" onchange="fillarea()" ></select>
                                                      //       }                                                           
 
                                                         }
                                                         else
                                                         {
-                                                            <select asp-for="idSafra" id="idsafra" class="form-control" asp-items="@ViewBag.safras" disabled onchange="changesafra()"></select>
+                                                            <select asp-for="idConfigArea" id="idsafra" class="form-control" asp-items="@ViewBag.configareas" disabled ></select>
                                                         }
-                                                        <span asp-validation-for="idSafra" class="text-danger"></span>
+                                                        <span asp-validation-for="idConfigArea" class="text-danger"></span>
 
                                                     }
                                                 </div>
                                             </div>
                                             <div class="col-md-5">
                                                 <div class="form-group">
-                                                    <label asp-for="idVariedade" class="control-label"></label>
+                                                    <label asp-for="idOperacao" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
@@ -102,12 +108,12 @@
                                                             //      else
                                                             //      {
 
-                                                            <select asp-for="idVariedade" id="idvariedade" class="form-control" asp-items="@ViewBag.variedades"></select>
+                                                            <select asp-for="idOperacao" id="idoperacao" class="form-control" asp-items="@ViewBag.operacoes"></select>
                                                             //     }
                                                         }
                                                         else
                                                         {
-                                                            <select asp-for="idVariedade" id="idvariedade" class="form-control" asp-items="@ViewBag.variedades" disabled></select>
+                                                            <select asp-for="idOperacao" id="idoperacao" class="form-control" asp-items="@ViewBag.operacoes" disabled></select>
                                                         }
 
 
@@ -119,9 +125,9 @@
 
                                         <div class="row">
 
-                                            <div class="col-md-5">
+                                            <div class="col-md-2">
                                                 <div class="form-group">
-                                                    <label asp-for="idfazenda" class="control-label"></label>
+                                                    <label asp-for="dataPrevista" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
@@ -131,23 +137,23 @@
                                                             //        }
                                                             //        else
                                                             //        {
-                                                            <select asp-for="idfazenda" id="idfaz" class="form-control" asp-items="@ViewBag.fazendas" onchange="changefaz()"></select>
+                                                           <input  type="date" asp-for="dataPrevista" id="dataPrevista" class="form-control" >
                                                             //       }
 
                                                         }
                                                         else
                                                         {
-                                                            <select asp-for="idfazenda" id="idfaz" class="form-control" asp-items="@ViewBag.fazendas" disabled onchange="changefaz()"></select>
+                                                            <input type="date" asp-for="dataPrevista" id="dataPrevista" class="form-control" readonly >
                                                         }
-                                                        <span asp-validation-for="idfazenda" class="text-danger"></span>
+                                                        <span asp-validation-for="dataPrevista" class="text-danger"></span>
 
                                                     }
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-4">
+                                            <div class="col-md-2">
                                                 <div class="form-group">
-                                                    <label asp-for="idTalhao" class="control-label"></label>
+                                                    <label asp-for="dae" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
@@ -157,34 +163,35 @@
                                                             //        }
                                                             //        else
                                                             //        {
-                                                            <select asp-for="idTalhao" id="idtalhao" class="form-control" asp-items="@ViewBag.talhoes" onchange="fillarea()"></select>
+                                                            <input asp-for="dae" id="dae" class="form-control">
                                                             //        }
 
 
                                                         }
                                                         else
                                                         {
-                                                            <select asp-for="idTalhao" id="idtalhao" class="form-control" asp-items="@ViewBag.talhoes" disabled></select>
+                                                            <input asp-for="dae" id="dae" class="form-control"  disabled>
                                                         }
-                                                        <span asp-validation-for="idTalhao" class="text-danger"></span>
+                                                        <span asp-validation-for="dae" class="text-danger"></span>
 
                                                     }
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 <div class="form-group">
                                                     <label asp-for="area" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
+                                                       
+                                                            <input asp-for="area" id="area" type="text" class="form-control" >                                                    
 
-                                                            <input asp-for="area"  class="form-control"/>
 
                                                         }
                                                         else
                                                         {
-                                                            <input asp-for="area" class="form-control"  disabled/>
+                                                            <input asp-for="area" id="area" class="form-control" readonly>
                                                         }
                                                         <span asp-validation-for="area" class="text-danger"></span>
 
@@ -192,195 +199,28 @@
                                                 </div>
                                             </div>
 
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label asp-for="plantio" class="control-label"></label>
+                                                    @{
+                                                        if (ViewBag.idacao <= 2)
+                                                        {
+
+                                                            <input type="checkbox" id="plantio" name="plantio" value="true" @(Model.plantio ? "checked" : "") />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="checkbox" id="plantio" name="plantio" readonly value="true" @(Model.plantio ? "checked" : "")  />
+                                                        }
+                                                        <span asp-validation-for="plantio" class="text-danger"></span>
+
+                                                    }
+                                                </div>
+                                            </div>
+
                                         </div>
-
-                                        <fieldset>
-                                            <legend>Informações Complementares</legend>
-                                            <div class="row">
-                                                <div class="col-md-2">
-                                                    <div class="form-group">
-                                                        <label asp-for="pms" class="control-label"></label>
-                                                        @{
-                                                            if (ViewBag.idacao <= 2)
-                                                            {
-
-                                                                <input asp-for="pms" class="form-control" />
-
-                                                            }
-                                                            else
-                                                            {
-                                                                <input asp-for="pms" class="form-control" disabled />
-                                                            }
-                                                            <span asp-validation-for="pms" class="text-danger"></span>
-
-                                                        }
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <div class="form-group">
-                                                        <label asp-for="espacamento" class="control-label"></label>
-                                                        @{
-                                                            if (ViewBag.idacao <= 2)
-                                                            {
-
-                                                                <input asp-for="espacamento" class="form-control" />
-
-                                                            }
-                                                            else
-                                                            {
-                                                                <input asp-for="espacamento" class="form-control" disabled />
-                                                            }
-                                                            <span asp-validation-for="espacamento" class="text-danger"></span>
-
-                                                        }
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <div class="form-group">
-                                                        <label asp-for="germinacao" class="control-label"></label>
-                                                        @{
-                                                            if (ViewBag.idacao <= 2)
-                                                            {
-
-                                                                <input asp-for="germinacao" class="form-control" />
-
-                                                            }
-                                                            else
-                                                            {
-                                                                <input asp-for="germinacao" class="form-control" disabled />
-                                                            }
-                                                            <span asp-validation-for="germinacao" class="text-danger"></span>
-
-                                                        }
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label asp-for="populacaoRecomendada" class="control-label"></label>
-                                                        @{
-                                                            if (ViewBag.idacao <= 2)
-                                                            {
-
-                                                                <input asp-for="populacaoRecomendada" class="form-control" />
-
-                                                            }
-                                                            else
-                                                            {
-                                                                <input asp-for="populacaoRecomendada" class="form-control" disabled />
-                                                            }
-                                                            <span asp-validation-for="populacaoRecomendada" class="text-danger"></span>
-
-                                                        }
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <div class="form-group">
-                                                        <label asp-for="stand" class="control-label"></label>
-                                                        @{
-                                                            if (ViewBag.idacao <= 2)
-                                                            {
-
-                                                                <input asp-for="stand" class="form-control" />
-
-                                                            }
-                                                            else
-                                                            {
-                                                                <input asp-for="stand" class="form-control" disabled />
-                                                            }
-                                                            <span asp-validation-for="stand" class="text-danger"></span>
-
-                                                        }
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label asp-for="margemSeguranca" class="control-label"></label>
-                                                        @{
-                                                            if (ViewBag.idacao <= 2)
-                                                            {
-
-                                                                <input asp-for="margemSeguranca" class="form-control" />
-
-                                                            }
-                                                            else
-                                                            {
-                                                                <input asp-for="margemSeguranca" class="form-control" disabled />
-                                                            }
-                                                            <span asp-validation-for="margemSeguranca" class="text-danger"></span>
-
-                                                        }
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <div class="form-group">
-                                                        <label asp-for="qtdSementePrevista" class="control-label"></label>
-                                                        @{
-                                                            if (ViewBag.idacao <= 2)
-                                                            {
-
-                                                                <input asp-for="qtdSementePrevista" class="form-control" />
-
-                                                            }
-                                                            else
-                                                            {
-                                                                <input asp-for="qtdSementePrevista" class="form-control" disabled />
-                                                            }
-                                                            <span asp-validation-for="qtdSementePrevista" class="text-danger"></span>
-
-                                                        }
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label asp-for="unidadeSementePrevista" class="control-label"></label>
-                                                        @{
-                                                            if (ViewBag.idacao <= 2)
-                                                            {
-
-                                                                <input asp-for="unidadeSementePrevista" class="form-control" />
-
-                                                            }
-                                                            else
-                                                            {
-                                                                <input asp-for="unidadeSementePrevista" class="form-control" disabled />
-                                                            }
-                                                            <span asp-validation-for="unidadeSementePrevista" class="text-danger"></span>
-
-                                                        }
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label asp-for="prodEstimada" class="control-label"></label>
-                                                        @{
-                                                            if (ViewBag.idacao <= 2)
-                                                            {
-
-                                                                <input asp-for="prodEstimada" class="form-control" />
-
-                                                            }
-                                                            else
-                                                            {
-                                                                <input asp-for="prodEstimada" class="form-control" disabled />
-                                                            }
-                                                            <span asp-validation-for="prodEstimada" class="text-danger"></span>
-
-                                                        }
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-
-                                        </fieldset>
+                                     
                                     </div>
                                     <!-- /.card-body -->
                                     <div class="card-footer">
@@ -400,13 +240,55 @@
                                                     }
                                                 }
 
-                                                <a href="/configarea/index" class="btn btn-danger">Voltar</a>
+                                                <a href="/planejoperacao/index" class="btn btn-danger">Voltar</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                              </form>
                         </div>
+
+                        <div class="tab-pane fade" id="custom-content-above-consolida" role="tabpanel" aria-labelledby="custom-content-above-cosolida-tab">
+
+                            <form asp-action="adicionarprodplanejado">
+                                <!--
+                                <div class="input-group input-group-sm" style="width: 300px;">
+                                    <input type="text" class="form-control" placeholder="Buscar talhão" name="filtro" id="searchInput" onkeyup="searchTable()">
+                                </div>
+                                -->
+                                <div class="col text-right">
+                                    <a href="/planejoperacao/adicionarprodplanejado?idplanejamento=@Model!.id&acao=1" button type="submit" class="btn btn-primary"><i class="fas fa-plus icon-default"></i></a>
+                                </div>
+
+
+                                <div class="card-body table-responsive p-0">
+
+                                    <div id="jsprodutos"></div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="custom-content-above-operacao" role="tabpanel" aria-labelledby="custom-content-above-operacao-tab">
+
+                            <form asp-action="adicionarprodplanejado">
+                                <!--
+                                <div class="input-group input-group-sm" style="width: 300px;">
+                                    <input type="text" class="form-control" placeholder="Buscar talhão" name="filtro" id="searchInput" onkeyup="searchTable()">
+                                </div>
+                                -->
+                                <div class="col text-right">
+                                    <a href="/defareas/adicionartalhao?idfazenda=@Model!.id" button type="submit" class="btn btn-primary">Novo</a>
+                                </div>
+
+
+                                <div class="card-body table-responsive p-0">
+
+                                    <div id="jsprodutos"></div>
+                                </div>
+                            </form>
+                        </div>
+
+
+
                     </div>
                 </div>
                 <!-- /.card -->
@@ -437,10 +319,7 @@
     @*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>*@
         <script src="https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid.min.js"></script>
 
-    <script src="~/js/loadtalhoes.js"></script>
-    <script src="~/js/loadvariedades.js"></script>
-
-        
+          
 
         <script>
         var talhoes = [];
@@ -454,23 +333,15 @@
             // Simula a mudança de valor
 
 
-            changesafra();
-            changefaz();
-     //       $('#idfaz').trigger("change");
             
             });
-      //      $("#idtalhao").val(@ViewBag.idtalhao);
-      //      $("#idvariedade").val(@ViewBag.idvariedade);
-
 
         function fillarea() {
-            if (@ViewBag.idtalhao!= $("#idtalhao").val())
-            {
-                var t = $("#idtalhao").val();
-                var i = talhoes.findIndex(x => x.id==t);
+            if ($("#idconfig").val()!="")
+            {   var id=$("#idconfig").val();
                 $.ajax({
                     type: "get",
-                    url: "/configarea/Getarea?idtalhao=" + t+"&area="+talhoes[i].area.toString(),
+                    url: "/configarea/GetAreaConfById?id=" + $("#idconfig").val(),
                     data: {},
                     dataType: 'json',
                     contentType: "application/json; charset=utf-8",
@@ -489,18 +360,95 @@
 
         }
 
-        function changefaz()
-        {
-            loadtalhoes(@ViewBag.idtalhao, false);
-            $('#idtalhao').trigger("change");
-        }
 
-        function changesafra()
-        {
-            loadvariedades(@ViewBag.idvariedade, false);
-            
+        $(function () {
+            $("#jsprodutos").jsGrid({
+                width: "100%",
+                height: "400px",
 
-        }
+                sorting: true,
+                paging: true,
+                
+                onItemUpdating: function (args) {
+
+                },
+
+                autoload: true,
+                noDataContent: "<div class='custom-no-data'>Nenhum dado encontrado</div>",
+
+                controller: {
+                    loadData: function () {
+                        return $.ajax({
+                            type: "GET",
+                            url: "/planejoperacao/getprodplanej?id=" +$("#id").val(),
+                            dataType: "json"
+                        });
+                    }
+                },
+
+                fields: [
+                    { name: "id", type: "number", width: 20, title: "ID", visible: false },
+                    {
+                        name: "idtipo", type: "text", width: 20, title: "Tipo"
+                    },
+
+                    {                        
+                        name: "descricao", type: "text", width: 150, title: "Produto/Principio Ativo"
+                    },
+                    {
+                        name: "dosagem", type: "number", width: 50, align:"left",
+
+                        headerTemplate: function () {
+                            return $("<th>").text("Dosagem").addClass("custom-header");
+                        }
+                    },
+
+
+                    {
+                        type: "control",
+                        itemTemplate: function (_, item) {
+                            var $result = $("<div>").addClass("dropdown");
+
+                            var $button = $("<button>").addClass("btn btn-info dropdown-toggle")
+                                .attr("type", "button")
+                                .attr("id", "dropdownMenuButton")
+                                .attr("data-toggle", "dropdown")
+                                .text("Ações");
+
+                            var $menu = $("<div>").addClass("dropdown-menu")
+                                .attr("aria-labelledby", "dropdownMenuButton");
+
+                            var $details = $("<a>").addClass("dropdown-item")
+                                .attr("href", "#")
+                                .text("Visualizar")
+                                .on("click", function () {
+                                    window.location.href = '/defareas/adicionartalhao/' + item.id + '?acao=4';
+                                });
+
+                            var $edit = $("<a>").addClass("dropdown-item")
+                                .attr("href", "#")
+                                .text("Editar")
+                                .on("click", function () {
+                                    window.location.href = '/defareas/adicionartalhao/' + item.id + '?acao=2';
+                                });
+
+                            var $delete = $("<a>").addClass("dropdown-item")
+                                .attr("href", "#")
+                                .text("Excluir")
+                                .on("click", function () {
+                                    window.location.href = '/defareas/adicionartalhao/' + item.id + '?acao=3';
+                                });
+
+                            $menu.append($details).append($edit).append($delete);
+                            $result.append($button).append($menu);
+
+                            return $result;
+                        }
+                    }]
+            });
+        });
+
+
 
         </script>
 }

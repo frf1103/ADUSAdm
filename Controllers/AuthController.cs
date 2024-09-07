@@ -373,15 +373,34 @@ public class AuthController : Controller
 
     public async Task<JsonResult> LoadPrefUsu()
     {
-        if (!String.IsNullOrWhiteSpace(_sessionManager.descorganizacao) && !String.IsNullOrWhiteSpace(_sessionManager.descanoagricola))
+        Task<FarmPlannerClient.PreferUsu.PreferUsuViewModel> ret = _preferusuClient.Lista(_sessionManager.uid);
+        FarmPlannerClient.PreferUsu.PreferUsuViewModel c = await ret;
+        if (c != null)
         {
-            var x = new { pref = "Preferências: " + _sessionManager.descorganizacao.Trim() + "       -       Ano Agrícola: " + _sessionManager.descanoagricola.Trim() };
-            return Json(x);
+            _sessionManager.descanoagricola = c.descano;
+            _sessionManager.descorganizacao = c.descorg;
+            _sessionManager.idorganizacao = c.idorganizacao;
+            _sessionManager.idanoagricola = c.idanoagricola;
+
+            _sessionManager.descanoagricola = c.descano;
+            _sessionManager.descorganizacao = c.descorg;
+            _sessionManager.idorganizacao = c.idorganizacao;
+            _sessionManager.idanoagricola = c.idanoagricola;
+
+            if (!String.IsNullOrWhiteSpace(_sessionManager.descorganizacao) && !String.IsNullOrWhiteSpace(_sessionManager.descanoagricola))
+            {
+                var x = new { pref = "Preferências: " + _sessionManager.descorganizacao.Trim() + "       -       Ano Agrícola: " + _sessionManager.descanoagricola.Trim() };
+                return Json(x);
+            }
+            else
+            {
+                var x = new { pref = "DEFINA AS PREFERÊNCIAS" };
+                return Json(x);
+            }
         }
         else
         {
-            var x = new { pref = "DEFINA AS PREFERÊNCIAS" };
-            return Json(x);
+            return null;
         }
     }
 }

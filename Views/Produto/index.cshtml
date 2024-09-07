@@ -10,6 +10,18 @@
         color: 38b6ff;
     }
 
+    .jsgrid-detail-grid {
+        display: block;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .jsgrid .jsgrid-grid-body, .jsgrid .jsgrid-header {
+        width: 100%;
+
+    }
+
 </style>
 
 
@@ -122,7 +134,9 @@
     </div>
 
     <div id="jsGrid"></div>
-
+    
+    <div id="detailGrid" class="jsgrid-detail-grid" style="display:none;"></div>
+    
 
 </section>
 <!-- /.content -->
@@ -210,9 +224,30 @@
 
             fields: [
                 { name: "id", type: "number", width: 20, title: "ID", visible: false },
-                { name: "descricao", type: "text", width: 120, title: "Descrição" },
-                { name: "descprincipio", type: "text", width: 100, title: "Princípio Ativo" },
+                { name: "descricao", type: "text", width: 200, title: "Descrição" },                
                 { name: "descfab", type: "text", width: 100, title: "Fabricante" },
+                {
+                    type: "control",
+                    headerTemplate: function () {
+                        // Personalizando o header da coluna de controle
+                        var $header = $("<th>")
+                            .attr("title", "Princípios Ativos") // Adicionando o tooltip com title
+                            .text("Princípios Ativos"); // Texto do header
+                        return $header;
+                    },
+                    itemTemplate: function (value, item) {
+                        var $detailButton = $("<button>")
+                            .text("Ver")
+                            .addClass("btn btn-primary")
+                            .attr("title", "Ver")
+                            .on("click", function () {
+                                toggleDetails(item); // Alternar o grid de detalhes
+                            });
+
+                        return $detailButton;
+                    }
+                },
+
                 {
                     type: "control",
                     itemTemplate: function (_, item) {
@@ -247,14 +282,103 @@
                             .on("click", function () {
                                 window.location.href = '/produto/adicionar/' + item.id + '?acao=3';
                             });
+                        var $principio = $("<a>").addClass("dropdown-item")
+                            .attr("href", "#")
+                            .text("Definir Princípio Ativo")
+                            .on("click", function () {
+                                window.location.href = '/produto/adicionarprodutoprincipio?idproduto=' + item.id+"&idprincipio=0" + "&descproduto="+item.descricao+"&acao=1";
+                            });
 
-                        $menu.append($details).append($edit).append($delete);
+
+                        $menu.append($details).append($edit).append($delete).append($principio);
                         $result.append($button).append($menu);
 
                         return $result;
                     }
                 }]
         });
+
+
+        function toggleDetails(produto) {           
+
+
+            var $row = $("#jsGrid").jsGrid("rowByItem", produto);
+
+            // Verificar se o grid de detalhes já está visível
+            if ($("#detailGrid").is(":visible") && $("#detailGrid").data("idproduto") === produto.id) {
+                $("#detailGrid").hide(); // Ocultar o grid se ele já estiver visível para o mesmo cliente
+            } else {
+                // Inserir o template do grid de detalhes abaixo da linha selecionada
+                $row.after($("#detailTemplate").html());
+                $("#detailGrid").jsGrid({
+                    width: "100%",
+                    height: "300px",
+                    inserting: false,
+                    editing: false,
+                    sorting: false,
+                    paging: false,
+                    autoload: true,
+                    
+                    noDataContent: "<div class='custom-no-data'>Nenhum dado encontrado</div>",
+
+                    controller: {
+                        loadData: function () {
+                            return $.ajax({
+                                type: "GET",
+                                url: "/produto/Getprincipioproduto?idproduto=" + produto.id,
+                                dataType: "json"
+                            });
+                        }
+                    },
+                    fields: [                        
+                        { name: "idproduto", title: "Princípio Ativo", type: "text",visible:false, width: 200 },
+                        { name: "idprincipio", title: "Princípio Ativo", type: "text", visible: false, width: 200 },
+                        { name: "descprincipio", title: "Princípio Ativo", type: "text", width: 150 },
+                        { name: "quantidade", title: "Concentração", type: "number", width: 50 },
+                        {
+                            type: "control",
+                            itemTemplate: function (_, item) {
+                                var $result = $("<div>").addClass("dropdown");
+
+                                var $button = $("<button>").addClass("btn btn-info dropdown-toggle")
+                                    .attr("type", "button")
+                                    .attr("id", "dropdownMenuButton")
+                                    .attr("data-toggle", "dropdown")
+                                    .text("Ações");
+
+                                var $menu = $("<div>").addClass("dropdown-menu")
+                                    .attr("aria-labelledby", "dropdownMenuButton");
+
+
+                                var $edit = $("<a>").addClass("dropdown-item")
+                                    .attr("href", "#")
+                                    .text("Editar")
+                                    .on("click", function () {
+                                        window.location.href = '/produto/adicionarprodutoprincipio?idproduto=' + item.idproduto+'&idprincipio='+item.idprincipio + '&acao=2';
+                                    });
+
+                                var $delete = $("<a>").addClass("dropdown-item")
+                                    .attr("href", "#")
+                                    .text("Excluir")
+                                    .on("click", function () {
+                                        window.location.href = '/produto/adicionarprodutoprincipio?idproduto=' + item.idproduto + '&idprincipio=' + item.idprincipio + '&acao=3';
+                                    });
+
+                                $menu.append($edit).append($delete);
+                                $result.append($button).append($menu);
+
+                                return $result;
+                            }
+                        }
+                    ]
+                });
+                $("#detailGrid").insertAfter($row).show();
+                $("#detailGrid").data("idproduto", produto.id);
+            }
+        }
+
+       
+
     });
 
 

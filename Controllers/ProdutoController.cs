@@ -21,23 +21,23 @@ namespace FarmPlannerAdm.Controllers
     [Authorize(Roles = "Admin,User,AdminC")]
     public class ProdutoController : Controller
     {
-
         private readonly FarmPlannerClient.Controller.ProdutoControllerClient _ProdutoAPI;
         private readonly FarmPlannerClient.Controller.PrincipioAtivoControllerClient _principioAPI;
         private readonly FarmPlannerClient.Controller.GrupoProdutoControllerClient _grupoAPI;
         private readonly FarmPlannerClient.Controller.ParceiroControllerClient _parceiroAPI;
+        private readonly FarmPlannerClient.Controller.UnidadeControllerClient _unidadeAPI;
 
         private readonly SessionManager _sessionManager;
 
-        public ProdutoController(ProdutoControllerClient produtoAPI, PrincipioAtivoControllerClient principioAPI, GrupoProdutoControllerClient grupoAPI, ParceiroControllerClient parceiroAPI, SessionManager sessionManager)
+        public ProdutoController(ProdutoControllerClient produtoAPI, PrincipioAtivoControllerClient principioAPI, GrupoProdutoControllerClient grupoAPI, ParceiroControllerClient parceiroAPI, SessionManager sessionManager, UnidadeControllerClient unidadeAPI)
         {
             _ProdutoAPI = produtoAPI;
             _principioAPI = principioAPI;
             _grupoAPI = grupoAPI;
             _parceiroAPI = parceiroAPI;
             _sessionManager = sessionManager;
+            _unidadeAPI = unidadeAPI;
         }
-
 
         private const int TAMANHO_PAGINA = 5;
 
@@ -53,7 +53,7 @@ namespace FarmPlannerAdm.Controllers
 
             ViewBag.grupos = g.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
 
-            Task<List<PrincipioAtivoViewModel>> retpr = _principioAPI.Lista(_sessionManager.contaguid, "");
+            Task<List<PrincipioAtivoViewModel>> retpr = _principioAPI.Lista("");
             List<PrincipioAtivoViewModel> pr = await retpr;
 
             ViewBag.principios = pr.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
@@ -70,6 +70,14 @@ namespace FarmPlannerAdm.Controllers
         {
             Task<List<ListProdutoViewModel>> ret = _ProdutoAPI.Lista(idgrupo, idprincipio, idfab, _sessionManager.contaguid, filtro);
             List<ListProdutoViewModel> c = await ret;
+
+            return Json(c);
+        }
+
+        public async Task<JsonResult> Getprincipioproduto(int idproduto)
+        {
+            Task<List<ProdutoPrincipioViewModel>> ret = _ProdutoAPI.ListaProdutoPrincipio(0, idproduto, _sessionManager.contaguid);
+            List<ProdutoPrincipioViewModel> c = await ret;
 
             return Json(c);
         }
@@ -129,16 +137,14 @@ namespace FarmPlannerAdm.Controllers
 
             ViewBag.grupos = g.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
 
-            Task<List<PrincipioAtivoViewModel>> retpr = _principioAPI.Lista(_sessionManager.contaguid, "");
-            List<PrincipioAtivoViewModel> pr = await retpr;
-            ViewBag.principios = pr.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
+            //      Task<List<PrincipioAtivoViewModel>> retpr = _principioAPI.Lista("");
+            //      List<PrincipioAtivoViewModel> pr = await retpr;
+            //      ViewBag.principios = pr.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
 
-            ViewBag.unidades = new[] {
-                new SelectListItem { Text = "LT", Value = "0" },
-                new SelectListItem { Text = "KG", Value = "1" },
-                new SelectListItem { Text = "UN", Value = "2" },
-                new SelectListItem { Text = "SEMENTE", Value = "3" }
-            };
+            Task<List<UnidadeViewModel>> retun = _unidadeAPI.Lista("");
+            List<UnidadeViewModel> un = await retun;
+
+            ViewBag.unidades = un.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
 
             return View(c);
         }
@@ -148,7 +154,7 @@ namespace FarmPlannerAdm.Controllers
         {
             dados.idconta = _sessionManager.contaguid;
 
-            var response = await _ProdutoAPI.Salvar(id, _sessionManager.contaguid, dados);
+            var response = await _ProdutoAPI.Salvar(id, _sessionManager.contaguid, _sessionManager.uid, dados);
 
             if (response.IsSuccessStatusCode)
             {
@@ -169,6 +175,7 @@ namespace FarmPlannerAdm.Controllers
         public async Task<IActionResult> Adicionar(ProdutoViewModel dados)
         {
             dados.idconta = _sessionManager.contaguid;
+            dados.uid = _sessionManager.uid;
 
             var response = await _ProdutoAPI.Adicionar(dados);
 
@@ -192,7 +199,7 @@ namespace FarmPlannerAdm.Controllers
         public async Task<IActionResult> Excluir(int id, ProdutoViewModel dados)
         {
             //FarmPlannerClient.DefAreas.DefAreasViewModel dados=new FarmPlannerClient.DefAreas.DefAreasViewModel();
-            var response = await _ProdutoAPI.Excluir(id, _sessionManager.contaguid);
+            var response = await _ProdutoAPI.Excluir(id, _sessionManager.contaguid, _sessionManager.uid);
 
             if (response.IsSuccessStatusCode)
             {
@@ -203,6 +210,124 @@ namespace FarmPlannerAdm.Controllers
             ModelState.AddModelError(string.Empty, x);
 
             return View("adicionar");
+        }
+
+        // Tratar principios
+
+        [HttpGet]
+        public async Task<IActionResult> AdicionarProdutoPrincipio(int idproduto = 0, int idprincipio = 0, string descproduto = "", int acao = 1)
+        {
+            ProdutoPrincipioViewModel c;
+
+            ViewBag.idacao = acao;
+            if (acao == 1)
+            {
+                c = new ProdutoPrincipioViewModel();
+                c.idconta = _sessionManager.contaguid;
+                ViewBag.Titulo = "Adicionar um princípio ativo ao produto " + descproduto;
+                ViewBag.Acao = "adicionarprodutoprincipio";
+                c.idproduto = idproduto;
+                c.descproduto = descproduto;
+            }
+            else
+            {
+                Task<ProdutoPrincipioViewModel> ret = _ProdutoAPI.ListaProdutoPrincipioById(idproduto, idprincipio, _sessionManager.contaguid);
+                c = await ret;
+                ViewBag.idpric = c.idprincipio;
+
+                if (acao == 2)
+                {
+                    ViewBag.Titulo = "Editar um princípio ativo do produto " + descproduto;
+                    ViewBag.Acao = "editarprodutoprincipio";
+                }
+                if (acao == 3)
+                {
+                    ViewBag.Titulo = "Excluir um princípio ativo do produto " + descproduto;
+                    ViewBag.Acao = "excluirprodutoprincipio";
+                }
+            }
+
+            if (TempData["Erro"] != null)
+            {
+                if (TempData["dados"] != null)
+                {
+                    var dadosJson = TempData["dados"].ToString();
+                    c = JsonConvert.DeserializeObject<ProdutoPrincipioViewModel>(dadosJson);
+                }
+                ModelState.AddModelError(string.Empty, TempData["Erro"].ToString());
+            }
+
+            Task<List<PrincipioAtivoViewModel>> retp = _principioAPI.Lista("");
+            List<PrincipioAtivoViewModel> p = await retp;
+
+            ViewBag.principios = p.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
+
+            return View(c);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditarProdutoPrincipio(int id, ProdutoPrincipioViewModel dados)
+        {
+            dados.idconta = _sessionManager.contaguid;
+            dados.uid = _sessionManager.uid;
+
+            var response = await _ProdutoAPI.SalvarPrincipioProduto(dados.idproduto, dados.idprincipio, _sessionManager.contaguid, _sessionManager.uid, dados);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            var x = await response.Content.ReadAsStringAsync();
+
+            ModelState.AddModelError(string.Empty, x);
+            TempData["Erro"] = x;
+            var dadosStateJson = JsonConvert.SerializeObject(dados);
+
+            TempData["dados"] = dadosStateJson;
+
+            return RedirectToAction("adicionarprodutoprincipio", new { acao = 1, idproduto = dados.idproduto, idprincipio = dados.idprincipio });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AdicionarProdutoPrincipio(int idproduto, ProdutoPrincipioViewModel dados)
+        {
+            dados.idconta = _sessionManager.contaguid;
+            dados.uid = _sessionManager.uid;
+            dados.idproduto = idproduto;
+
+            var response = await _ProdutoAPI.AdicionarPrincipioProduto(dados);
+
+            if (response.IsSuccessStatusCode)
+            {
+                //  string y = await response.Content.ReadAsStringAsync();
+                //  var result = JsonSerializer.Deserialize<FarmPlannerClient.Defarea.ProdutoViewModel>(y);
+                return RedirectToAction("adicionarprodutoprincipio", new { acao = 1, idproduto = dados.idproduto, idprincipio = 0,descproduto=dados.descproduto });
+            }
+            string x = await response.Content.ReadAsStringAsync();
+
+            ModelState.AddModelError(string.Empty, x);
+            var dadosStateJson = JsonConvert.SerializeObject(dados);
+
+            TempData["dados"] = dadosStateJson;
+            TempData["Erro"] = x;
+            return RedirectToAction("adicionarprodutoprincipio", new { acao = 1, idproduto = dados.idproduto, idprincipio = dados.idprincipio,descproduto=dados.descproduto });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ExcluirProdutoPrincipio(ProdutoPrincipioViewModel dados)
+        {
+            //FarmPlannerClient.DefAreas.DefAreasViewModel dados=new FarmPlannerClient.DefAreas.DefAreasViewModel();
+            var response = await _ProdutoAPI.ExcluirPrincipioProduto(dados.idproduto, dados.idprincipio, _sessionManager.contaguid, _sessionManager.uid);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+
+            string x = await response.Content.ReadAsStringAsync();
+            ModelState.AddModelError(string.Empty, x);
+
+            return View("adicionarprodutoprincipio");
         }
     }
 }

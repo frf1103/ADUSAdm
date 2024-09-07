@@ -224,6 +224,11 @@ namespace FarmPlannerAdm.Controllers
             {
                 string y = await response.Content.ReadAsStringAsync();
                 var result = System.Text.Json.JsonSerializer.Deserialize<FarmPlannerClient.Organizacao.OrganizacaoViewModel>(y);
+                if (_sessionManager.userrole == "AdminC")
+                {
+                    addusuario(_sessionManager.uid, result.id);
+                }
+
                 return RedirectToAction(nameof(Adicionar), new { acao = 2, id = result.id });
             }
             string x = await response.Content.ReadAsStringAsync();
@@ -233,6 +238,7 @@ namespace FarmPlannerAdm.Controllers
             var dadosStateJson = JsonConvert.SerializeObject(dados);
 
             TempData["dados"] = dadosStateJson;
+            // return View("adicionar");
             return RedirectToAction("adicionar", new { acao = 1, id = dados.id });
         }
 

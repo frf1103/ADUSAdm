@@ -5,6 +5,9 @@ using FarmPlannerClient.Enum;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using FarmPlannerAdm.Shared;
+using FarmPlannerClient.Organizacao;
+using Newtonsoft.Json;
+using FarmPlannerClient.Parceiro;
 
 namespace FarmPlannerAdm.Controllers
 {
@@ -42,6 +45,16 @@ namespace FarmPlannerAdm.Controllers
                 new SelectListItem { Text = "Física", Value = TipodePessoa.Física.ToString() },
                 new SelectListItem { Text = "Jurídica", Value = TipodePessoa.Jurídica.ToString() }
             };
+            if (TempData["Erro"] != null)
+            {
+                if (TempData["dados"] != null)
+                {
+                    var dadosJson = TempData["dados"].ToString();
+                    c = JsonConvert.DeserializeObject<ParceiroViewModel>(dadosJson);
+                }
+                ModelState.AddModelError(string.Empty, TempData["Erro"].ToString());
+            }
+
 
             return View(c);
         }
@@ -58,6 +71,15 @@ namespace FarmPlannerAdm.Controllers
                 new SelectListItem { Text = "Física", Value = TipodePessoa.Física.ToString() },
                 new SelectListItem { Text = "Jurídica", Value = TipodePessoa.Jurídica.ToString() }
             };
+            if (TempData["Erro"] != null)
+            {
+                if (TempData["dados"] != null)
+                {
+                    var dadosJson = TempData["dados"].ToString();
+                    c = JsonConvert.DeserializeObject<ParceiroViewModel>(dadosJson);
+                }
+                ModelState.AddModelError(string.Empty, TempData["Erro"].ToString());
+            }
 
             return View(c);
         }
@@ -88,8 +110,14 @@ namespace FarmPlannerAdm.Controllers
             }
             var x = await response.Content.ReadAsStringAsync();
 
+            TempData["Erro"] = x;
+            TempData["dados"] = JsonConvert.SerializeObject(dados);
+
             ModelState.AddModelError(string.Empty, x);
-            return View("editar");
+            //return View("editar");
+
+
+            return RedirectToAction("editar",new {id=dados.id,acao=2});
         }
 
         [HttpPost]
@@ -101,13 +129,17 @@ namespace FarmPlannerAdm.Controllers
             if (response.IsSuccessStatusCode)
             {
                 string y = await response.Content.ReadAsStringAsync();
-                var result = JsonSerializer.Deserialize<FarmPlannerClient.Parceiro.ParceiroViewModel>(y);
+                var result = System.Text.Json.JsonSerializer.Deserialize<FarmPlannerClient.Parceiro.ParceiroViewModel>(y);
                 return RedirectToAction(nameof(Adicionar));
             }
-            string x = await response.Content.ReadAsStringAsync();
+            
+            var x = await response.Content.ReadAsStringAsync();
+
+            TempData["Erro"] = x;
+            TempData["dados"] = JsonConvert.SerializeObject(dados);
 
             ModelState.AddModelError(string.Empty, x);
-            return View("adicionar");
+            return RedirectToAction("adicionar");
         }
 
         [HttpPost]

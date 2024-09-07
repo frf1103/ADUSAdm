@@ -140,6 +140,11 @@ builder.Services.AddHttpClient<FarmPlannerClient.Controller.ConfigAreaController
     client.BaseAddress = new Uri(urlAPI.ToString());
 });
 
+builder.Services.AddHttpClient<FarmPlannerClient.Controller.UnidadeControllerClient>(client =>
+{
+    client.BaseAddress = new Uri(urlAPI.ToString());
+});
+
 builder.Services.AddHttpClient<FarmPlannerClient.Controller.PlanejOperacaoControllerClient>(client =>
 {
     client.BaseAddress = new Uri(urlAPI.ToString());
@@ -189,6 +194,17 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     }));
 });
 
+var config = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json", optional: false)
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .Build();
+/*
+builder.WebHost.ConfigureKestrel((context, serverOptions) =>
+{
+    serverOptions.Listen(System.Net.IPAddress.Any, config.GetValue<int>("HOST:HTTP"));
+    serverOptions.Listen(System.Net.IPAddress.Any, config.GetValue<int>("HOST:HTTPS"));
+});
+*/
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())

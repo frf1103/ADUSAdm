@@ -88,6 +88,23 @@
 
 
 <script>
+    $(document).ready(function () {
+
+        $.ajax({
+            type: "get",
+            url: "/auth/LoadPrefUsu",
+            data: {},
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            success: function (obj) {
+                if (obj != null) {
+                    $("#preferencias").text(obj.pref);
+                }
+            }
+        });
+
+    });
+
 
     $(function () {
         $("#jsGrid").jsGrid({

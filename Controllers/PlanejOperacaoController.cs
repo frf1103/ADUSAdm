@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Data;
 using Newtonsoft.Json;
 using FarmPlannerClient.Operacao;
+using FarmPlannerClient.PrincipioAtivo;
 
 namespace FarmPlannerAdm.Controllers
 {
@@ -28,9 +29,11 @@ namespace FarmPlannerAdm.Controllers
         private readonly FarmPlannerClient.Controller.AnoAgricolaControllerClient _anoagricolaAPI;
         private readonly FarmPlannerClient.Controller.ConfigAreaControllerClient _configArea;
         private readonly FarmPlannerClient.Controller.OperacaoControllerClient _operacao;
+        private readonly FarmPlannerClient.Controller.PrincipioAtivoControllerClient _principioAPI;
+        private readonly FarmPlannerClient.Controller.ProdutoControllerClient _produtoAPI;
         private readonly SessionManager _sessionManager;
 
-        public PlanejOperacaoController(PlanejOperacaoControllerClient PlanejOperacao, CulturaControllerClient culturaAPI, FazendaControllerClient fazendaAPI, AnoAgricolaControllerClient anoagricolaAPI, SessionManager sessionManager, ConfigAreaControllerClient configArea, OperacaoControllerClient operacao)
+        public PlanejOperacaoController(PlanejOperacaoControllerClient PlanejOperacao, CulturaControllerClient culturaAPI, FazendaControllerClient fazendaAPI, AnoAgricolaControllerClient anoagricolaAPI, SessionManager sessionManager, ConfigAreaControllerClient configArea, OperacaoControllerClient operacao, PrincipioAtivoControllerClient principioAPI, ProdutoControllerClient produtoAPI)
         {
             _PlanejOperacao = PlanejOperacao;
             _culturaAPI = culturaAPI;
@@ -39,6 +42,8 @@ namespace FarmPlannerAdm.Controllers
             _sessionManager = sessionManager;
             _configArea = configArea;
             _operacao = operacao;
+            _principioAPI = principioAPI;
+            _produtoAPI = produtoAPI;
         }
 
         private const int TAMANHO_PAGINA = 5;
@@ -55,53 +60,37 @@ namespace FarmPlannerAdm.Controllers
 
             ViewBag.fazendas = f.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
 
-            Task<List<EditarTalhaoViewModel>> rett = _fazendaAPI.ListaTalhao(idfazenda, _sessionManager.contaguid, _sessionManager.idanoagricola, "");
-            List<EditarTalhaoViewModel> t = await rett;
+            //            Task<List<EditarTalhaoViewModel>> rett = _fazendaAPI.ListaTalhao(idfazenda, _sessionManager.contaguid, _sessionManager.idanoagricola, "");
+            //            List<EditarTalhaoViewModel> t = await rett;
 
             Task<List<OperacaoViewModel>> reto = _operacao.Lista(_sessionManager.contaguid, 0, "");
             List<OperacaoViewModel> o = await reto;
 
             ViewBag.operacoes = o.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
 
-            ViewBag.talhoes = t.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
+            //ViewBag.talhoes = t.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
 
             ViewBag.SelectedOptionS = idsafra.ToString();
             ViewBag.SelectedOptionF = idfazenda.ToString();
             ViewBag.SelectedOptionT = idtalhao.ToString();
             ViewBag.SelectedOptionV = idvariedade.ToString();
             ViewBag.SelectedOptionO = idoperacao.ToString();
-            ViewBag.dtinicio = dtinicio.ToString("yyyy-MM-dd");
-            ViewBag.dtfim = dtfim.ToString("yyyy-MM-dd");
-            if (idsafra != 0)
+            if (dtinicio.Year == 1)
             {
-                var safra = s.Find(x => x.id == idsafra);
-                ViewBag.idcultura = safra.idCultura.ToString();
+                ViewBag.dtinicio = DateTime.Now.ToString("yyyy-MM-dd");
             }
-            return View();
-        }
-
-        public async Task<IActionResult> PlanejPlantio(int idsafra, int idvariedade, int idtalhao, int idfazenda)
-        {
-            Task<List<SafraViewModel>> rets = _anoagricolaAPI.ListaSafra(_sessionManager.idanoagricola, 0, _sessionManager.contaguid, "");
-            List<SafraViewModel> s = await rets;
-
-            ViewBag.safras = s.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
-
-            Task<List<ListFazendaViewModel>> retf = _fazendaAPI.Lista(_sessionManager.idorganizacao, 0, _sessionManager.contaguid, "");
-            List<ListFazendaViewModel> f = await retf;
-
-            ViewBag.fazendas = f.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
-
-            Task<List<EditarTalhaoViewModel>> rett = _fazendaAPI.ListaTalhao(idfazenda, _sessionManager.contaguid, _sessionManager.idanoagricola, "");
-            List<EditarTalhaoViewModel> t = await rett;
-
-            ViewBag.talhoes = t.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
-
-            ViewBag.SelectedOptionS = idsafra.ToString();
-            ViewBag.SelectedOptionF = idfazenda.ToString();
-            ViewBag.SelectedOptionT = idtalhao.ToString();
-            ViewBag.SelectedOptionV = idvariedade.ToString();
-            ViewBag.userrole = _sessionManager.userrole;
+            else
+            {
+                ViewBag.dtinicio = dtinicio.ToString("yyyy-MM-dd");
+            }
+            if (dtfim.Year == 1)
+            {
+                ViewBag.dtfim = (DateTime.Now.AddDays(30)).ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                ViewBag.dtfim = dtfim.ToString("yyyy-MM-dd");
+            }
             if (idsafra != 0)
             {
                 var safra = s.Find(x => x.id == idsafra);
@@ -111,7 +100,7 @@ namespace FarmPlannerAdm.Controllers
         }
 
         [Authorize(Roles = "Admin,User,AdminC")]
-        public async Task<IActionResult> Assistente(int idfazenda)
+        public async Task<IActionResult> Assistente(int idsafra, int idvariedade, int idtalhao, int idfazenda)
         {
             Task<List<SafraViewModel>> rets = _anoagricolaAPI.ListaSafra(_sessionManager.idanoagricola, 0, _sessionManager.contaguid, "");
             List<SafraViewModel> s = await rets;
@@ -122,18 +111,30 @@ namespace FarmPlannerAdm.Controllers
             List<ListFazendaViewModel> f = await retf;
 
             ViewBag.fazendas = f.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
-            ViewBag.SelectedOptionS = s[0].id.ToString();
-            ViewBag.SelectedOptionF = idfazenda.ToString();
-            List<EditarTalhaoViewModel> t = new List<EditarTalhaoViewModel>();
-            if (idfazenda != 0)
-            {
-                Task<List<EditarTalhaoViewModel>> rett = _fazendaAPI.ListaTalhaoDisponivel(idfazenda, _sessionManager.contaguid, _sessionManager.idanoagricola);
-                t = await rett;
-            }
-            ViewBag.contaid = _sessionManager.contaguid;
-            ViewBag.uid = _sessionManager.uid;
 
-            return View(t);
+            Task<List<PrincipioAtivoViewModel>> retp = _principioAPI.Lista("");
+
+            List<PrincipioAtivoViewModel> p = await retp;
+
+            ViewBag.principios = p.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
+
+            Task<List<OperacaoViewModel>> reto = _operacao.Lista(_sessionManager.contaguid, 0, "");
+            List<OperacaoViewModel> o = await reto;
+
+            ViewBag.operacoes = o.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
+
+            ViewBag.SelectedOptionO = o[0].id.ToString();
+            ViewBag.SelectedOptionS = idsafra.ToString();
+            ViewBag.SelectedOptionF = idfazenda.ToString();
+            ViewBag.SelectedOptionT = idtalhao.ToString();
+            ViewBag.SelectedOptionV = idvariedade.ToString();
+            if (idsafra != 0)
+            {
+                var safra = s.Find(x => x.id == idsafra);
+                ViewBag.idcultura = safra.idCultura.ToString();
+            }
+
+            return View();
         }
 
         public async Task<JsonResult> GetTalhoesDisponiveis(int idfazenda)
@@ -146,6 +147,14 @@ namespace FarmPlannerAdm.Controllers
             }
 
             return Json(t);
+        }
+
+        public async Task<JsonResult> GetProdPlanej(int id)
+        {
+            Task<List<ListProdutoPlanejadoViewModel>> ret = _PlanejOperacao.ListaProdPlanej(id, _sessionManager.contaguid);
+            List<FarmPlannerClient.PlanejOperacao.ListProdutoPlanejadoViewModel> c = await ret;
+
+            return Json(c);
         }
 
         public async Task<JsonResult> GetData(int idano, int idfazenda, int idtalhao, int idvariedade, int idsafra, int idoperacao, DateTime ini, DateTime fim)
@@ -207,15 +216,15 @@ namespace FarmPlannerAdm.Controllers
                 ModelState.AddModelError(string.Empty, TempData["Erro"].ToString());
             }
 
-            Task<List<SafraViewModel>> rets = _anoagricolaAPI.ListaSafra(_sessionManager.idanoagricola, 0, _sessionManager.contaguid, "");
-            List<SafraViewModel> s = await rets;
+            Task<List<OperacaoViewModel>> reto = _operacao.Lista(_sessionManager.contaguid, 0, "");
+            List<OperacaoViewModel> o = await reto;
 
-            ViewBag.safras = s.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
+            ViewBag.operacoes = o.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
 
-            Task<List<ListFazendaViewModel>> retf = _fazendaAPI.Lista(_sessionManager.idorganizacao, 0, _sessionManager.contaguid, "");
-            List<ListFazendaViewModel> f = await retf;
+            Task<List<ListConfigAreaViewModel>> retc = _configArea.Lista(_sessionManager.idanoagricola, 0, 0, 0, 0, _sessionManager.contaguid, _sessionManager.idorganizacao);
+            List<ListConfigAreaViewModel> ca = await retc;
 
-            ViewBag.fazendas = f.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
+            ViewBag.configareas = ca.Select(m => new SelectListItem { Text = m.descconfig, Value = m.id.ToString() });
 
             return View(c);
         }
@@ -257,7 +266,7 @@ namespace FarmPlannerAdm.Controllers
             {
                 string y = await response.Content.ReadAsStringAsync();
                 var result = System.Text.Json.JsonSerializer.Deserialize<FarmPlannerClient.PlanejOperacao.PlanejamentoOperacaoViewModel>(y);
-                return RedirectToAction(nameof(Adicionar), new { acao = 1, id = 0 });
+                return RedirectToAction(nameof(Adicionar), new { acao = 2, id = result.id });
             }
             string x = await response.Content.ReadAsStringAsync();
 
@@ -300,11 +309,11 @@ namespace FarmPlannerAdm.Controllers
 
         [Authorize(Roles = "Admin,User,AdminC")]
         [HttpPost]
-        public async Task<JsonResult> GravarAssistente([FromBody] List<PlanejamentoOperacaoViewModel> dados)
+        public async Task<JsonResult> GravarAssistente([FromBody] List<AssistentePlanejOperViewModel> dados)
         {
             if (dados != null)
             {
-                var response = await _PlanejOperacao.GravarAssistente(dados);
+                var response = await _PlanejOperacao.GravarAssistente(_sessionManager.contaguid, _sessionManager.uid, dados);
 
                 if (response != null)
                 {
@@ -329,46 +338,87 @@ namespace FarmPlannerAdm.Controllers
             }
         }
 
+        //rotinas dos produtos
+
         [Authorize(Roles = "Admin,User,AdminC")]
-        public async Task<JsonResult> GravarPlanejPlantio([FromBody] List<PlanejPlantioViewModel> dadosP)
+        [HttpGet]
+        public async Task<IActionResult> Adicionarprodplanejado(int idplanejamento, int acao = 0, int id = 0)
         {
-            if (dadosP != null)
+            ProdutoPlanejadoViewModel c;
+
+            ViewBag.idacao = acao;
+            if (acao == 1)
             {
-                Task<FarmPlannerClient.PlanejOperacao.PlanejamentoOperacaoViewModel> ret = _PlanejOperacao.ListaById(dadosP[0].id, _sessionManager.contaguid);
-                FarmPlannerClient.PlanejOperacao.PlanejamentoOperacaoViewModel dados = await ret;
+                c = new FarmPlannerClient.PlanejOperacao.ProdutoPlanejadoViewModel();
 
-                dados.idconta = _sessionManager.contaguid;
-                dados.uid = _sessionManager.uid;
-                //      dados.populacaoRecomendada = dadosP[0].populacaoRecomendada;
-                //      dados.pms = dadosP[0].pms;
-                //      dados.germinacao = dadosP[0].germinacao;
-                //      dados.espacamento = dadosP[0].espacamento;
-                //      dados.margemSeguranca = dadosP[0].margemSeguranca;
-                //      dados.uid = _sessionManager.uid;
-
-                var response = await _PlanejOperacao.Salvar(dadosP[0].id, _sessionManager.contaguid, dados);
-
-                if (response != null)
-                {
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return Json(new { success = true, message = "Dados gravados com sucesso!" });
-                    }
-                    else
-                    {
-                        string x = await response.Content.ReadAsStringAsync();
-                        return Json(new { success = false, message = x });
-                    }
-                }
-                else
-                {
-                    return Json(new { success = false, message = "Erro na gravaçao" });
-                }
+                ViewBag.Titulo = "Adicionar";
+                ViewBag.Acao = "adicionarproduto";
             }
             else
             {
-                return Json(new { success = false, message = "Dados inválidos." });
+                Task<FarmPlannerClient.PlanejOperacao.ProdutoPlanejadoViewModel> ret = _PlanejOperacao.ListaProdPlanejById(id, _sessionManager.contaguid);
+                c = await ret;
+                //    ViewBag.idvariedade = c.idVariedade;
+                //    ViewBag.idtalhao = c.idTalhao;
+                if (acao == 2)
+                {
+                    ViewBag.Titulo = "Editar";
+                    ViewBag.Acao = "editarproduto";
+                }
+                if (acao == 3)
+                {
+                    ViewBag.Titulo = "Excluir";
+                    ViewBag.Acao = "excluirproduto";
+                }
+                if (acao == 4)
+                {
+                    ViewBag.Titulo = "Visualizar";
+                    ViewBag.Acao = "verproduto";
+                }
             }
+
+            if (TempData["Erro"] != null)
+            {
+                if (TempData["dados"] != null)
+                {
+                    var dadosJson = TempData["dados"].ToString();
+                    c = JsonConvert.DeserializeObject<ProdutoPlanejadoViewModel>(dadosJson);
+                }
+                ModelState.AddModelError(string.Empty, TempData["Erro"].ToString());
+            }
+
+            Task<List<PrincipioAtivoViewModel>> retp = _principioAPI.Lista("");
+            List<PrincipioAtivoViewModel> p = await retp;
+
+            ViewBag.principios = p.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
+            ViewBag.idplanejamento = idplanejamento;
+            return View(c);
+        }
+
+        [Authorize(Roles = "Admin,User,AdminC")]
+        [HttpPost]
+        public async Task<IActionResult> Adicionarproduto(FarmPlannerClient.PlanejOperacao.ProdutoPlanejadoViewModel dados)
+        {
+            dados.idconta = _sessionManager.contaguid;
+            dados.uid = _sessionManager.uid;
+
+            //dados.idOrganizacao =_sessionManager.idorganizacao;
+            var response = await _PlanejOperacao.AdicionarProdutoPlanejado(dados);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string y = await response.Content.ReadAsStringAsync();
+                var result = System.Text.Json.JsonSerializer.Deserialize<FarmPlannerClient.PlanejOperacao.ProdutoPlanejadoViewModel>(y);
+                return RedirectToAction(nameof(Adicionarprodplanejado), new { acao = 1, idplanejamento = result.idPlanejamento });
+            }
+            string x = await response.Content.ReadAsStringAsync();
+
+            ModelState.AddModelError(string.Empty, x);
+            var dadosStateJson = JsonConvert.SerializeObject(dados);
+
+            TempData["dados"] = dadosStateJson;
+            TempData["Erro"] = x;
+            return RedirectToAction("adicionar", new { acao = 1, id = 0, idplanejamento = dados.idPlanejamento });
         }
     }
 }

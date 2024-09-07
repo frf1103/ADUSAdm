@@ -111,38 +111,19 @@
                                         <div class="row">
                                             <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label asp-for="unidadeBasica" class="control-label"></label>
+                                                    <label asp-for="idunidade" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
 
-                                                                    <select asp-for="unidadeBasica" class="form-control" asp-items="@ViewBag.unidades" onchange="mudaprop()"></select>
+                                                                    <select asp-for="idunidade" class="form-control" asp-items="@ViewBag.unidades" onchange="mudaprop()"></select>
 
                                                         }
                                                         else
                                                         {
-                                                            <select asp-for="unidadeBasica" class="form-control" id="tipo" asp-items="@ViewBag.unidades" disabled></select>
+                                                            <select asp-for="idunidade" class="form-control" id="tipo" asp-items="@ViewBag.unidades" disabled></select>
                                                         }
-                                                        <span asp-validation-for="unidadeBasica" class="text-danger"></span>
-
-                                                    }
-                                                </div>
-                                            </div>
-                                            <div class="col-md-7">
-                                                <div class="form-group">
-                                                    <label asp-for="idPrincipioAtivo" class="control-label"></label>
-                                                    @{
-                                                        if (ViewBag.idacao <= 2)
-                                                        {
-
-                                                            <select asp-for="idPrincipioAtivo" class="form-control"  asp-items="@ViewBag.principios"></select>
-
-                                                        }
-                                                        else
-                                                        {
-                                                            <select asp-for="idPrincipioAtivo" class="form-control" asp-items="@ViewBag.principios" disabled></select>
-                                                        }
-                                                        <span asp-validation-for="idPrincipioAtivo" class="text-danger"></span>
+                                                        <span asp-validation-for="idunidade" class="text-danger"></span>
 
                                                     }
                                                 </div>
