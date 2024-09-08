@@ -483,18 +483,9 @@
                 prodoper=[]
                 for (var j=0;j<=produtos.length-1;j++)
                 {
-                   if (produtos[j].tipo=='PA') {
-                      pa=produtos[j].id;
-                      pr=0;
-                   }
-                   else 
-                   {
-                      pr=produtos[j].id;
-                      pa=0;                        
-                   }
                    prodoper.push({
-                       "idproduto":pr,
-                       "idprincipio":pa,
+                       "idproduto":produtos[j].idprod,
+                       "idprincipio":produtos[j].idprinc,
                        "dosagem":produtos[j].dosagem,
                        "tamanho":talhoesSel[i].areaDisp,
                        "percent":talhoesSel[i].percent
@@ -826,9 +817,10 @@
 
 
                 fields: [
-                    { name: "id", type: "text", width: 20, title: "ID", visible: false },
-                    { name: "tipo", type: "text", width: 80, title: "Tipo", editing: false },
-                    { name: "descricao", type: "text", width: 150, title: "Produto/Principio", editing: false },
+                    { name: "idprinc", type: "text", width: 20, title: "ID", visible: false },  
+                    { name: "idprod", type: "text", width: 20, title: "ID", visible: false },
+                    { name: "descprinc", type: "text", width: 150, title: "Princípio Ativo", editing: false },
+                    { name: "descprod", type: "text", width: 150, title: "Produto", editing: false },
                     { name: "dosagem", type: "number", width: 50, title: "Dosagem", visible: true, editing: false },
 
                     {
@@ -869,23 +861,22 @@
     {
         if ($("#idprincipio").val()!="0" || $("#idproduto").val()!="0") 
         {         
-            tipo='PA';
-            id=$("#idprincipio").val();
+
+            idprinc=$("#idprincipio").val();
             var select = document.getElementById("idprincipio");
             var selectedText = select.options[select.selectedIndex].text;
-            var descricao=selectedText;
+            var descprinc=selectedText;
 
-            if ($("#idproduto").val()!="0") {
-                tipo='PR';
-                id=$("#idproduto").val();
+            //if ($("#idproduto").val()!="0") {                
+                idprod=$("#idproduto").val();
                 var select = document.getElementById("idproduto");
                 var selectedText = select.options[select.selectedIndex].text;
-                var descricao=selectedText;                
-            }
-            i=produtos.findIndex(x=>x.id==id && x.tipo==tipo);
+                var descprod=selectedText;                
+            //}
+            i=produtos.findIndex(x=>x.idprinc==idprinc && x.idprod==idprod);
             if (i<0)
             {
-                produtos.push({"tipo":tipo,"id":id,"dosagem":$("#qtd").val(),"descricao":descricao});
+                produtos.push({"idprinc":parseInt(idprinc),"idprod":parseInt(idprod),"dosagem":$("#qtd").val(),"descprinc":descprinc,"descprod":descprod});
             }
             $("#jsprodutos").jsGrid("refresh");
         }

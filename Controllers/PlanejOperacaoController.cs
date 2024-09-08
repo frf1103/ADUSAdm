@@ -167,7 +167,7 @@ namespace FarmPlannerAdm.Controllers
 
         [Authorize(Roles = "Admin,User,AdminC")]
         [HttpGet]
-        public async Task<IActionResult> Adicionar(int idfaz = 0, int idsafra = 0, int acao = 1, int id = 0)
+        public async Task<IActionResult> adicionar(int idfaz = 0, int idsafra = 0, int acao = 1, int id = 0)
         {
             FarmPlannerClient.PlanejOperacao.PlanejamentoOperacaoViewModel c;
 
@@ -182,11 +182,13 @@ namespace FarmPlannerAdm.Controllers
                 ViewBag.Acao = "adicionar";
                 ViewBag.idvariedade = "0";
                 ViewBag.idtalhao = "0";
+                ViewBag.area = 0.00;
             }
             else
             {
                 Task<FarmPlannerClient.PlanejOperacao.PlanejamentoOperacaoViewModel> ret = _PlanejOperacao.ListaById(id, _sessionManager.contaguid);
                 c = await ret;
+                ViewBag.area = c.area;
                 //    ViewBag.idvariedade = c.idVariedade;
                 //    ViewBag.idtalhao = c.idTalhao;
                 if (acao == 2)
@@ -342,7 +344,7 @@ namespace FarmPlannerAdm.Controllers
 
         [Authorize(Roles = "Admin,User,AdminC")]
         [HttpGet]
-        public async Task<IActionResult> Adicionarprodplanejado(int idplanejamento, int acao = 0, int id = 0)
+        public async Task<IActionResult> Adicionarprodplanejado(int idplanejamento, int acao = 0, int id = 0, decimal tam = 0)
         {
             ProdutoPlanejadoViewModel c;
 
@@ -353,6 +355,7 @@ namespace FarmPlannerAdm.Controllers
 
                 ViewBag.Titulo = "Adicionar";
                 ViewBag.Acao = "adicionarproduto";
+                c.tamanho = (decimal)tam;
             }
             else
             {
@@ -391,7 +394,16 @@ namespace FarmPlannerAdm.Controllers
             List<PrincipioAtivoViewModel> p = await retp;
 
             ViewBag.principios = p.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
-            ViewBag.idplanejamento = idplanejamento;
+            if (acao == 1)
+            {
+                ViewBag.idplanejamento = idplanejamento;
+            }
+            else
+            {
+                ViewBag.idplanejamento = c.idPlanejamento;
+            }
+
+            ViewBag.idproduto = c.idProduto;
             return View(c);
         }
 
@@ -420,5 +432,46 @@ namespace FarmPlannerAdm.Controllers
             TempData["Erro"] = x;
             return RedirectToAction("adicionar", new { acao = 1, id = 0, idplanejamento = dados.idPlanejamento });
         }
+
+        [Authorize(Roles = "Admin,User,AdminC")]
+        [HttpPost]
+        public async Task<IActionResult> EditarProduto(int id, FarmPlannerClient.PlanejOperacao.ProdutoPlanejadoViewModel dados)
+        {
+            dados.idconta = _sessionManager.contaguid;
+            dados.uid = _sessionManager.uid;
+
+            var response = await _PlanejOperacao.SalvarProdutoPlanejado(id, _sessionManager.contaguid, dados);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("adicionar", new { id = dados.idPlanejamento, acao = 2 });
+            }
+            var x = await response.Content.ReadAsStringAsync();
+
+            ModelState.AddModelError(string.Empty, x);
+            TempData["Erro"] = x;
+            var dadosStateJson = JsonConvert.SerializeObject(dados);
+
+            TempData["dados"] = dadosStateJson;
+
+            return RedirectToAction("adicionarproduto", new { acao = 2, id = dados.id });
+        }
+
+        public async Task<IActionResult> Excluirproduto(int id, FarmPlannerClient.PlanejOperacao.ProdutoPlanejadoViewModel dados)
+        {
+            //FarmPlannerClient.PlanejOperacao.PlanejOperacaoViewModel dados=new FarmPlannerClient.PlanejOperacao.PlanejOperacaoViewModel();
+            var response = await _PlanejOperacao.ExcluirProdutoPlanejado(id, _sessionManager.contaguid, _sessionManager.uid);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("adicionar", new { id = dados.idPlanejamento, acao = 2 });
+            }
+
+            string x = await response.Content.ReadAsStringAsync();
+            ModelState.AddModelError(string.Empty, x);
+
+            return RedirectToAction("adicionarproduto", new { acao = 3, id = dados.id });
+        }
+
     }
 }

@@ -191,7 +191,7 @@
                                                         }
                                                         else
                                                         {
-                                                            <input asp-for="area" id="area" class="form-control" readonly>
+                                                            <input asp-for="area" type="number" id="area" class="form-control" readonly>
                                                         }
                                                         <span asp-validation-for="area" class="text-danger"></span>
 
@@ -257,7 +257,7 @@
                                 </div>
                                 -->
                                 <div class="col text-right">
-                                    <a href="/planejoperacao/adicionarprodplanejado?idplanejamento=@Model!.id&acao=1" button type="submit" class="btn btn-primary"><i class="fas fa-plus icon-default"></i></a>
+                                    <a href="/planejoperacao/adicionarprodplanejado?idplanejamento=@Model!.id&acao=1&tam=@ViewBag.area" button type="submit" class="btn btn-primary"><i class="fas fa-plus icon-default"></i></a>
                                 </div>
 
 
@@ -388,13 +388,14 @@
 
                 fields: [
                     { name: "id", type: "number", width: 20, title: "ID", visible: false },
-                    {
-                        name: "idtipo", type: "text", width: 20, title: "Tipo"
-                    },
 
                     {                        
-                        name: "descricao", type: "text", width: 150, title: "Produto/Principio Ativo"
+                        name: "descprincativo", type: "text", width: 100, title: "Principio Ativo"
                     },
+                    {
+                        name: "descproduto", type: "text", width: 100, title: "Produto"
+                    },
+
                     {
                         name: "dosagem", type: "number", width: 50, align:"left",
 
@@ -422,21 +423,21 @@
                                 .attr("href", "#")
                                 .text("Visualizar")
                                 .on("click", function () {
-                                    window.location.href = '/defareas/adicionartalhao/' + item.id + '?acao=4';
+                                    window.location.href = '/planejoperacao/adicionarprodplanejado/' + item.id + '?acao=4';
                                 });
 
                             var $edit = $("<a>").addClass("dropdown-item")
                                 .attr("href", "#")
                                 .text("Editar")
                                 .on("click", function () {
-                                    window.location.href = '/defareas/adicionartalhao/' + item.id + '?acao=2';
+                                    window.location.href = '/planejoperacao/adicionarprodplanejado/' + item.id + '?acao=2';
                                 });
 
                             var $delete = $("<a>").addClass("dropdown-item")
                                 .attr("href", "#")
                                 .text("Excluir")
                                 .on("click", function () {
-                                    window.location.href = '/defareas/adicionartalhao/' + item.id + '?acao=3';
+                                    window.location.href = '/planejoperacao/adicionarprodplanejado/' + item.id + '?acao=3';
                                 });
 
                             $menu.append($details).append($edit).append($delete);

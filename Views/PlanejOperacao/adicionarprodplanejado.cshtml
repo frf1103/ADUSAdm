@@ -57,7 +57,7 @@
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
-                                                            <select asp-for="idPrincipioAtivo" id="idprincipio" class="form-control" asp-items="@ViewBag.principios" onchange="changeprincipio()"></select>
+                                                            <select asp-for="idPrincipioAtivo" id="idprincipio" class="form-control" asp-items="@ViewBag.principios" onchange="changeprincipio(0)"></select>
                                                             
                                                         }
                                                         else
@@ -95,7 +95,7 @@
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
-                                                            <input asp-for="tamanho" class="form-control" id="tamanho"  onchange="calctotalproduto()" />
+                                                            <input asp-for="tamanho" class="form-control" id="tamanho" onchange="calctotalproduto()" readonly />
                                                         }
                                                         else
                                                         {
@@ -179,7 +179,7 @@
                                                     }
                                                 }
 
-                                                <a href="/planeoperacao/adicionar?acao=2&id=@ViewBag.id" class="btn btn-danger">Voltar</a>
+                                                <a href="/planejoperacao/adicionar?acao=2&id=@ViewBag.idplanejamento" class="btn btn-danger">Voltar</a>
                                             </div>
                                         </div>
                                     </div>
@@ -231,7 +231,7 @@
             $.validator.methods.number = function (value, element) {
                 return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:,\d{3})+)?(?:\,\d+)?$/.test(value);
             }
-
+            changeprincipio(@ViewBag.idproduto);
             // Simula a mudança de valor
         });
 
@@ -239,23 +239,24 @@
     {
         if ($("#dosagem").val()!="") 
           {
-                dosagem = parseFloat($("#dosagem").val());
+                dosagem = parseFloat($("#dosagem").val().replace(",","."));
             if ($("#percent").val()!="") 
           {
-            perc = parseFloat($("#percent").val())/100;
+                    perc = parseFloat($("#percent").val().replace(",", ".")) / 100;
             if ($("#tamanho").val()!="") 
               {
-                    tam = parseFloat($("#tamanho").val());
+                        tam = parseFloat($("#tamanho").val().replace(",", "."));
                     total=tam*perc*dosagem;
-                    $("#totalproduto").val(total);
+                    formatted = new Intl.NumberFormat('de-DE').format(total);
+                    $("#totalproduto").val(formatted);
               }
             }
         }
     }
 
-    function changeprincipio()
+    function changeprincipio(produto)
     {
-        loadprodutos($("#idProduto"),"0", true, $("#idprincipio").val(),0,0,"");
+        loadprodutos($("#idProduto"),produto, true, $("#idprincipio").val(),0,0,"");
     }
 
     </script>
