@@ -176,6 +176,8 @@ builder.Services.AddSingleton<SessionManager>();
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
 // Carregar configurações de cultura do appsettings.json
+
+/*
 var supportedCultures = builder.Configuration.GetSection("Culture:SupportedCultures").Get<string[]>();
 var defaultCulture = builder.Configuration["Culture:DefaultCulture"];
 
@@ -193,6 +195,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
         return new ProviderCultureResult(defaultCulture);
     }));
 });
+*/
 
 var config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", optional: false)

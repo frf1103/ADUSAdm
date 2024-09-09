@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "PNT2sNbK43T7Fw9gHLoIZHJxHrX6R6yhPoyFFMbOHKA=",
+  "Hash": "ddnCMdL7cVDq+j2p4RDiV+yXidkwaKqtyhrFctW3bVc=",
   "Source": "FarmPlannerAdm",
   "BasePath": "_content/FarmPlannerAdm",
   "Mode": "Default",
@@ -2803,6 +2803,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\jszip.js"
+    },
+    {
+      "Identity": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\js\\loadmaquinas.js",
+      "SourceId": "FarmPlannerAdm",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\",
+      "BasePath": "_content/FarmPlannerAdm",
+      "RelativePath": "js/loadmaquinas.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\loadmaquinas.js"
     },
     {
       "Identity": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\js\\loadprodutos.js",

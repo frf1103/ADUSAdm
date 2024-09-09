@@ -17,6 +17,7 @@ using System.Data;
 using Newtonsoft.Json;
 using FarmPlannerClient.Operacao;
 using FarmPlannerClient.PrincipioAtivo;
+using FarmPlannerClient.ModeloMaquina;
 
 namespace FarmPlannerAdm.Controllers
 {
@@ -31,9 +32,10 @@ namespace FarmPlannerAdm.Controllers
         private readonly FarmPlannerClient.Controller.OperacaoControllerClient _operacao;
         private readonly FarmPlannerClient.Controller.PrincipioAtivoControllerClient _principioAPI;
         private readonly FarmPlannerClient.Controller.ProdutoControllerClient _produtoAPI;
+        private readonly FarmPlannerClient.Controller.ModeloMaquinaControllerClient _modeloAPI;
         private readonly SessionManager _sessionManager;
 
-        public PlanejOperacaoController(PlanejOperacaoControllerClient PlanejOperacao, CulturaControllerClient culturaAPI, FazendaControllerClient fazendaAPI, AnoAgricolaControllerClient anoagricolaAPI, SessionManager sessionManager, ConfigAreaControllerClient configArea, OperacaoControllerClient operacao, PrincipioAtivoControllerClient principioAPI, ProdutoControllerClient produtoAPI)
+        public PlanejOperacaoController(PlanejOperacaoControllerClient PlanejOperacao, CulturaControllerClient culturaAPI, FazendaControllerClient fazendaAPI, AnoAgricolaControllerClient anoagricolaAPI, SessionManager sessionManager, ConfigAreaControllerClient configArea, OperacaoControllerClient operacao, PrincipioAtivoControllerClient principioAPI, ProdutoControllerClient produtoAPI, ModeloMaquinaControllerClient modeloAPI)
         {
             _PlanejOperacao = PlanejOperacao;
             _culturaAPI = culturaAPI;
@@ -44,6 +46,7 @@ namespace FarmPlannerAdm.Controllers
             _operacao = operacao;
             _principioAPI = principioAPI;
             _produtoAPI = produtoAPI;
+            _modeloAPI = modeloAPI;
         }
 
         private const int TAMANHO_PAGINA = 5;
@@ -122,6 +125,11 @@ namespace FarmPlannerAdm.Controllers
             List<OperacaoViewModel> o = await reto;
 
             ViewBag.operacoes = o.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
+
+            Task<List<ListModeloMaquinaViewModel>> retmd = _modeloAPI.Lista(0, "");
+            List<ListModeloMaquinaViewModel> md = await retmd;
+
+            ViewBag.modelos = md.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
 
             ViewBag.SelectedOptionO = o[0].id.ToString();
             ViewBag.SelectedOptionS = idsafra.ToString();
@@ -404,6 +412,15 @@ namespace FarmPlannerAdm.Controllers
             }
 
             ViewBag.idproduto = c.idProduto;
+            if (ModelState.ContainsKey(""))
+            {
+                var x = ModelState[""].Errors.Where(x => x.ErrorMessage == "Invalid decimal value.").FirstOrDefault();
+                if (x != null)
+                {
+                    ModelState[""].Errors.Remove(x);
+                }
+            }
+
             return View(c);
         }
 
@@ -472,6 +489,5 @@ namespace FarmPlannerAdm.Controllers
 
             return RedirectToAction("adicionarproduto", new { acao = 3, id = dados.id });
         }
-
     }
 }

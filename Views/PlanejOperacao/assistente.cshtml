@@ -107,8 +107,13 @@
                             <a class="nav-link" id="custom-content-above-consolida-tab" data-toggle="pill" href="#custom-content-above-consolida" role="tab" aria-controls="custom-content-above-consolida" aria-selected="false">Produtos Aplicados</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" id="custom-maquinas-tab" data-toggle="pill" href="#custom-maquinas" role="tab" aria-controls="custom-maquinas" aria-selected="false">Máquinas</a>
+                        </li>
+
+                        <li class="nav-item">
                             <a class="nav-link" id="custom-content-above-operacao-tab" data-toggle="pill" href="#custom-content-above-operacao" role="tab" aria-controls="custom-content-above-operacao" aria-selected="false">Executar</a>
                         </li>
+
 
                     </ul>
 
@@ -291,19 +296,83 @@
 
                             </div>
 
-
                         </div>
-                        <div class="tab-pane fade" id="custom-content-above-operacao" role="tabpanel" aria-labelledby="custom-content-above-operacao-tab">
+
+                        <div class="tab-pane fade" id="custom-maquinas" role="tabpanel" aria-labelledby="custom-maquinas-tab">
                             <div class="col-md-12">
                                 <div class="card card-primary">
                                     <div class="card-header">
-                                        <h3 class="card-title">Escolha a operação, data e DAE para executar o assistente</h3>
+                                        <h3 class="card-title">Escolha as maquinas utilizadas</h3>
 
                                     </div>
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-md-5">
-                                                
+                                            <div class="col-md-9">
+                                                <div class="form-container">
+
+                                                    <select class="select2" name="idmodelo" id="idmodelo" data-placeholder="escolha um modelo" onchange="changemodelo()">
+                                                        
+                                                        @foreach (var item in ViewBag.modelos)
+                                                        {
+                                                            <option value="@item.Value">@item.Text</option>
+                                                        }
+                                                    </select>
+                                                    <select class="select2" name="idmaquina" id="idmaquina" data-placeholder="escolha uma máquina">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-container">                                               
+
+
+                                                    <button type="button" class="btn btn-md btn-primary" onclick="addmaquinas()">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+                                <!-- /.card -->
+                            </div>
+
+
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card card-primary">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Máquinas Utilizadas</h3>
+
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div id="jsmaquinas" class="js-grid"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.card-body -->
+                                    </div>
+                                    <!-- /.card -->
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="tab-pane fade" id="custom-content-above-operacao" role="tabpanel" aria-labelledby="custom-content-above-operacao-tab">
+                            <div class="col-md-12">
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Escolha a operação, data e DAE  para executar o assistente</h3>
+
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-5">                                                
                                                     <label for="idoperacao">Escolha uma operação</label>
                                                     <select class="select2" name="idoperacao" id="idoperacao" >
                                                         <option ></option>
@@ -315,7 +384,6 @@
                                                     </select>
                                                 
                                             </div>
-
                                             <div class="col-md-2" style="text-align: center;">
                                                 <label for="cbplantio">Plantio?</label><br />
                                                 <input type="checkbox" class="form-control" id="cbplantio" name="cbplantio">                                                
@@ -335,17 +403,37 @@
                                                     <input type="number" id="dae" name="dae" class="form-control" style="text-align: right;" />
                                             </div>
                                             <div class="col-md-1">
-                                                    <label>Pressione</label>
+                                                    <label>Execute</label>
                                                     <button type="button" class="btn btn-md btn-primary" onclick="executar()">
                                                     <i class="fas fa-play"></i>
-                                                    </button>
-                                            
+                                                    </button>                                            
                                             </div>
 
                                         </div>
+
                                     </div>
                                     <!-- /.card-body -->
                                 </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card card-primary">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Máquinas Utilizadas</h3>
+
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div id="jsmaquinas" class="js-grid"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.card-body -->
+                                    </div>
+                                    <!-- /.card -->
+                                </div>
+                            </div>
 
                         </div>
                     </div>
@@ -394,13 +482,18 @@
 <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
 <script src="~/js/Comuns.js"></script>
 <script src="~/js/loadprodutos.js"></script>
-
+<script src="~/js/loadmaquinas.js"></script>
 <script>
     var talhoesSel=[];
     var talhoesDisp = [];
-    var produtos=[]
+    var produtos=[];
+    var maquinas=[];
     $(document).ready(function () {
 
+        $('select').select2();
+        changemodelo();
+
+        /*
         $('#idsafra').select2({
             theme: "bootstrap-5",
             width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
@@ -457,6 +550,7 @@
             placeholder: $(this).data('placeholder'),
             closeOnSelect: true
         });
+        */
 
 
         ajustafontselect2();
@@ -492,6 +586,16 @@
                    });
                 }
 
+                maqoper=[]
+                for (var j=0;j<=maquinas.length-1;j++)
+                {
+                   maqoper.push({
+                       "idmaquina":produtos[j].idprod,
+                       "idmodelo":produtos[j].idprinc
+                   });
+                }
+
+
 
                 planejoper.push({
                     "idconfig":talhoesSel[i].id,
@@ -500,7 +604,8 @@
                     "plantio":document.getElementById("cbplantio").checked,
                     "area":talhoesSel[i].areaDisp,
                     "dataprevista": $('#dtprev').val(),
-                    "produtos":prodoper
+                    "produtos":prodoper,
+                    "maquinas":maqoper
                     
                 })
             }
@@ -562,6 +667,12 @@
     {
         loadprodutos($("#idproduto"),"0", true, $("#idprincipio").val(),0,0,"");
     }
+
+    function changemodelo()
+    {
+        loadmaquinas($("#idmaquina"),"0", true, $("#idmodelo").val(),"");
+    }
+
 
     function loadtalhoesdisp()
     {
@@ -656,6 +767,13 @@
         });
      
     });
+
+
+
+    
+
+
+
 
     $(function () {
         $("#jstalhoesSelecionados").jsGrid({
@@ -753,32 +871,6 @@
                 
                 {
                     type: "control",deleteButton:false,editButton:true
-                  /*  
-                    itemTemplate: function (_, item) {
-                        var $result = $("<div>").addClass("dropdown");
-
-                        var $button = $("<button>").addClass("btn btn-info dropdown-toggle")
-                            .attr("type", "button")
-                            .attr("id", "dropdownMenuButton")
-                            .attr("data-toggle", "dropdown")
-                            .text("Ações");
-
-                        var $menu = $("<div>").addClass("dropdown-menu")
-                            .attr("aria-labelledby", "dropdownMenuButton");
-
-                        var $edit = $("<a>").addClass("dropdown-item")
-                            .attr("href", "#")
-                            .text("Editar Área")
-                            .on("click", function () {
-                                
-                            });                       
-
-                        $menu.append($edit);
-                        $result.append($button).append($menu);
-
-                        return $result;
-                        
-                    }*/
                 }
                 ]
         });
@@ -825,32 +917,53 @@
 
                     {
                         type: "control", deleteButton: true, editButton: false
-                        /*
-                          itemTemplate: function (_, item) {
-                              var $result = $("<div>").addClass("dropdown");
+                    }
+                ]
+            });       
 
-                              var $button = $("<button>").addClass("btn btn-info dropdown-toggle")
-                                  .attr("type", "button")
-                                  .attr("id", "dropdownMenuButton")
-                                  .attr("data-toggle", "dropdown")
-                                  .text("Ações");
+    });
 
-                              var $menu = $("<div>").addClass("dropdown-menu")
-                                  .attr("aria-labelledby", "dropdownMenuButton");
 
-                              var $edit = $("<a>").addClass("dropdown-item")
-                                  .attr("href", "#")
-                                  .text("Editar Área")
-                                  .on("click", function () {
+    $(function () {
+            $("#jsmaquinas").jsGrid({
+                width: "100%",
+                height: "400px",
 
-                                  });
+                sorting: true,
+                paging: true,
+                editing: false,     
+                deleting:false,
 
-                              $menu.append($edit);
-                              $result.append($button).append($menu);
+                autoload: true,
+                noDataContent: "<div class='custom-no-data'>Nenhum dado encontrado</div>",
+                /*
+                controller: {
+                    loadData: function () {
+                        return talhoeselecionados;
+                    }
+                },*/
+                data: maquinas,
+                confirmDeleting: false,
+            onItemDeleting: function (args) {
+                var item = args.item;
+                var j=produtos.findIndex(x=>x.id==item.id && x.tipo==item.tipo);
+                if (j>=0) 
+                {
+                    produtos.splice(j,1);
+                    $("#jsprodutos").jsGrid("refresh");
+                }
+            },
 
-                              return $result;
 
-                          }*/
+                fields: [
+                    { name: "idmodelo", type: "text", width: 20, title: "ID", visible: false },  
+                    { name: "idmaquina", type: "text", width: 20, title: "ID", visible: false },
+                    { name: "descmodelo", type: "text", width: 150, title: "Princípio Ativo", editing: false },
+                    { name: "descmaquina", type: "text", width: 150, title: "Produto", editing: false },
+                    
+
+                    {
+                        type: "control", deleteButton: true, editButton: false
                     }
                 ]
             });       
@@ -883,35 +996,33 @@
 
     }
 
-    function gravar()
+
+    function addmaquinas()
     {
-        var xtalhoes=[];
-        for (var i=0;i<talhoesSel.length;i++)
-        {
-            xtalhoes.push({"id":0,"idSafra":$("#idsafra").val(),"idTalhao":talhoesSel[i].id,"idVariedade": $("#idvariedade").val(), "area": talhoesSel[i].areaDisp, "populacaoRecomendada":0,
-                "germinacao": 0, "pms": 0, "espacamento": 0, "margemSeguranca": 0, "stand": 0, "unidadeSementePrevista":0,
-                "qtdSementePrevista": 0, "prodEstimada":talhoesSel[i].media , "idconta":"@ViewBag.contaid","idfazenda":null,"uid":"@ViewBag.uid",
-                "datains":null,"dataup":null});
-        }
-        $.ajax({
-            url: "/configarea/GravarAssistente",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(xtalhoes),
-            success: function (response) {
-                if (response.success) {
-                    alert(response.message);
-                    location.reload();
-                } else {
-                    alert("Erro: " + response.message);
-                }
-            },
-            error: function (xhr, status, error) {
-                alert("Erro na chamada AJAX: ", error);
+        if ($("#idmodelo").val()!="0" || $("#idmaquina").val()!="0") 
+        {         
+
+            idmodelo=$("#idmodelo").val();
+            var select = document.getElementById("idmodelo");
+            var selectedText = select.options[select.selectedIndex].text;
+            var descmodelo=selectedText;
+           
+            idmaquina=$("#idmaquina").val();
+            var select = document.getElementById("idmaquina");
+            var selectedText = select.options[select.selectedIndex].text;
+            var descmaquina=selectedText;                
+           
+            i=produtos.findIndex(x=>x.idmodelo==idmodelo && x.idmaquina==idmaquina);
+            if (i<0)
+            {
+                maquinas.push({"idmodelo":parseInt(idmodelo),"idmaquina":parseInt(idmaquina),"descmodelo":descmodelo,"descmaquina":descmaquina});
             }
-        });
+            $("#jsmaquinas").jsGrid("refresh");
+        }
 
     }
+
+
    
       
         

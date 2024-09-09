@@ -413,6 +413,10 @@
       "PackagePath": "staticwebassets\\js\\jszip.js"
     },
     {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\js\\loadmaquinas.js",
+      "PackagePath": "staticwebassets\\js\\loadmaquinas.js"
+    },
+    {
       "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\js\\loadprodutos.js",
       "PackagePath": "staticwebassets\\js\\loadprodutos.js"
     },
