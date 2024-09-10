@@ -52,8 +52,14 @@ namespace FarmPlannerAdm.Controllers
 
         private const int TAMANHO_PAGINA = 5;
 
-        public async Task<IActionResult> Index(int idsafra, int idvariedade, int idtalhao, int idfazenda, int idoperacao, DateTime dtinicio, DateTime dtfim)
+        public async Task<IActionResult> Index(int idsafra, int idvariedade, int idtalhao, int idfazenda, int idoperacao, DateTime dtinicio, DateTime dtfim, int idprincipio, int idproduto)
         {
+            Task<List<PrincipioAtivoViewModel>> retp = _principioAPI.Lista("");
+
+            List<PrincipioAtivoViewModel> p = await retp;
+
+            ViewBag.principios = p.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
+
             Task<List<SafraViewModel>> rets = _anoagricolaAPI.ListaSafra(_sessionManager.idanoagricola, 0, _sessionManager.contaguid, "");
             List<SafraViewModel> s = await rets;
 
@@ -79,6 +85,8 @@ namespace FarmPlannerAdm.Controllers
             ViewBag.SelectedOptionT = idtalhao.ToString();
             ViewBag.SelectedOptionV = idvariedade.ToString();
             ViewBag.SelectedOptionO = idoperacao.ToString();
+            ViewBag.SelectedOptionP = idprincipio.ToString();
+            ViewBag.idproduto = idproduto;
             if (dtinicio.Year == 1)
             {
                 ViewBag.dtinicio = DateTime.Now.ToString("yyyy-MM-dd");
@@ -174,9 +182,9 @@ namespace FarmPlannerAdm.Controllers
             return Json(c);
         }
 
-        public async Task<JsonResult> GetData(int idano, int idfazenda, int idtalhao, int idvariedade, int idsafra, int idoperacao, DateTime ini, DateTime fim)
+        public async Task<JsonResult> GetData(int idano, int idfazenda, int idtalhao, int idvariedade, int idsafra, int idoperacao, int idprincipio, int idproduto, DateTime ini, DateTime fim)
         {
-            Task<List<ListPlanejamentoOperacaoViewModel>> ret = _PlanejOperacao.Lista(_sessionManager.idorganizacao, _sessionManager.idanoagricola, idfazenda, idtalhao, idvariedade, idsafra, _sessionManager.contaguid, idoperacao, ini, fim);
+            Task<List<ListPlanejamentoOperacaoViewModel>> ret = _PlanejOperacao.Lista(_sessionManager.idorganizacao, _sessionManager.idanoagricola, idfazenda, idtalhao, idvariedade, idsafra, _sessionManager.contaguid, idoperacao, ini, fim, idprincipio, idproduto);
             List<FarmPlannerClient.PlanejOperacao.ListPlanejamentoOperacaoViewModel> c = await ret;
 
             return Json(c);
@@ -378,6 +386,13 @@ namespace FarmPlannerAdm.Controllers
         {
             ProdutoPlanejadoViewModel c;
 
+            Task<FarmPlannerClient.PlanejOperacao.PlanejamentoOperacaoViewModel> retpl = _PlanejOperacao.ListaById(idplanejamento, _sessionManager.contaguid);
+            var pl = await retpl;
+
+            ViewBag.area = pl.area;
+            ViewBag.config = pl.idConfigArea;
+            ViewBag.operacao = pl.idOperacao;
+
             ViewBag.idacao = acao;
             if (acao == 1)
             {
@@ -385,7 +400,7 @@ namespace FarmPlannerAdm.Controllers
 
                 ViewBag.Titulo = "Adicionar";
                 ViewBag.Acao = "adicionarproduto";
-                c.tamanho = tam * perc / 100;
+                c.tamanho = (decimal)(pl.area * pl.percentual / 100);
             }
             else
             {
@@ -439,8 +454,8 @@ namespace FarmPlannerAdm.Controllers
                 var x = ModelState[""].Errors.Where(x => x.ErrorMessage == "Invalid decimal value.").ToList();
                 if (x != null)
                 {
-                    foreach(var err in x)
-                    { 
+                    foreach (var err in x)
+                    {
                         ModelState[""].Errors.Remove(err);
                     }
                 }
@@ -517,7 +532,7 @@ namespace FarmPlannerAdm.Controllers
 
         [Authorize(Roles = "Admin,User,AdminC")]
         [HttpGet]
-        public async Task<IActionResult> Adicionarmaquinaplanejada(int idplanejamento, int acao = 0, int id = 0, decimal tam = 0, int operacao = 0, int configarea = 0)
+        public async Task<IActionResult> Adicionarmaquinaplanejada(int idplanejamento, int acao = 0, int id = 0)
         {
             MaquinaPlanejadaViewModel c;
 
@@ -527,7 +542,7 @@ namespace FarmPlannerAdm.Controllers
                 c = new FarmPlannerClient.PlanejOperacao.MaquinaPlanejadaViewModel();
 
                 ViewBag.Titulo = "Adicionar";
-                ViewBag.Acao = "adicionarmquina";
+                ViewBag.Acao = "adicionarmaquina";
             }
             else
             {
@@ -576,9 +591,6 @@ namespace FarmPlannerAdm.Controllers
             }
 
             ViewBag.idmaquina = c.idMaquina;
-            ViewBag.area = tam;
-            ViewBag.config = configarea;
-            ViewBag.operacao = operacao;
             if (ModelState.ContainsKey(""))
             {
                 var x = ModelState[""].Errors.Where(x => x.ErrorMessage == "Invalid decimal value.").FirstOrDefault();
@@ -587,6 +599,16 @@ namespace FarmPlannerAdm.Controllers
                     ModelState[""].Errors.Remove(x);
                 }
             }
+            if (acao == 1)
+            {
+                c.idPlanejamento = idplanejamento;
+            }
+            Task<FarmPlannerClient.PlanejOperacao.PlanejamentoOperacaoViewModel> retp = _PlanejOperacao.ListaById(c.idPlanejamento, _sessionManager.contaguid);
+            var pl = await retp;
+
+            ViewBag.area = pl.area;
+            ViewBag.config = pl.idConfigArea;
+            ViewBag.operacao = pl.idOperacao;
 
             return View(c);
         }
@@ -644,7 +666,7 @@ namespace FarmPlannerAdm.Controllers
         public async Task<IActionResult> Excluirmaquina(int id, FarmPlannerClient.PlanejOperacao.MaquinaPlanejadaViewModel dados)
         {
             //FarmPlannerClient.PlanejOperacao.PlanejOperacaoViewModel dados=new FarmPlannerClient.PlanejOperacao.PlanejOperacaoViewModel();
-            var response = await _PlanejOperacao.ExcluirProdutoPlanejado(id, _sessionManager.contaguid, _sessionManager.uid);
+            var response = await _PlanejOperacao.ExcluirMaquinaPlanejada(id, _sessionManager.contaguid, _sessionManager.uid);
 
             if (response.IsSuccessStatusCode)
             {

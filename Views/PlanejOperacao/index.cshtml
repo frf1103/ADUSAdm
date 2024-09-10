@@ -51,7 +51,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-container">
 
                                     <select class="select2" name="idsafra" id="idsafra" data-placeholder="escolha uma safra" onchange="changesafra()"style="width: 100%;">
@@ -70,8 +70,10 @@
                                     </select>
                                     <select class="select2" name="idvariedade" id="idvariedade" data-placeholder="escolha a variedade" style="width: 100%;">
                                     </select>
-
-
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-container">
                                     <select class="select2" name="idfazenda" id="idfaz" data-placeholder="escolha a fazenda" onchange="changefaz()"  style="width: 100%;">
                                         <option value="0">escolha a fazenda</option>
                                         @foreach (var item in ViewBag.fazendas)
@@ -88,13 +90,12 @@
                                     </select>                                    
                                     <select class="select2" name="idtalhao" id="idtalhao" data-placeholder="escolha o talhão" style="width: 100%;">
                                     </select>
-
                                 </div>
-                         
-                            </div>
+                            </div>                       
+                            
                         </div>
                         <div class="row">
-                            <div class="col-md-7">                                
+                            <div class="col-md-3">                                
 
                                     <select class="select2" name="idoperacao" id="idoperacao" data-placeholder="escolha uma operacao"  style="width: 100%;">
                                         <option value="0">escolha uma operacao</option>
@@ -113,7 +114,30 @@
 
                                 
                             </div>
+
                             <div class="col-md-5">
+                                <div class="form-container">
+                                    <select class="select2" name="idprincipio" id="idprincipio" data-placeholder="escolha um princípio ativo" style="width: 100%;" onchange="changeprincipio(0)">
+                                        <option value="0">escolha um princípio ativo</option>
+                                        @foreach (var item in ViewBag.principios)
+                                        {
+                                            if (@item.Value == ViewBag.SelectedOptionP)
+                                            {
+                                                <option value="@item.Value" selected>@item.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        }
+                                    </select>
+
+                                    <select class="select2" name="idproduto" id="idproduto" data-placeholder="escolha um produto" style="width: 100%;" >
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
                                 <div class="form-container">
 
                                     <input type="date" class="form-control" id="dtinicio" value="@ViewBag.dtinicio" name="dtinicio" placeholder="inicio">
@@ -180,6 +204,7 @@
 
 <script src="~/js/loadtalhoes.js"></script>
 <script src="~/js/loadvariedades.js"></script>
+<script src="~/js/loadprodutos.js"></script>
 
 <script>
 
@@ -187,6 +212,10 @@
 
     $(document).ready(function () {
 
+
+        $('select').select2();
+        
+        /*
         $('#idsafra').select2({
             theme: "bootstrap-5",
             width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
@@ -233,6 +262,7 @@
 
 
         });
+        */
 
       
 
@@ -243,6 +273,8 @@
         $("#idsafra").val(@ViewBag.SelectedOptionS);
         //$('#idsafra').trigger("change");
         changesafra();
+        $("#idprincipio").val(@ViewBag.SelectedOptionP);
+        changeprincipio(@ViewBag.idproduto);
         //class=" btn btn-primary" > <i class="fas fa-plus icon-default" > </i></a >
 
     });
@@ -273,7 +305,7 @@
                 loadData: function () {
                     return $.ajax({
                         type: "GET",
-                        url: "/planejoperacao/GetData?idsafra=" + $("#idsafra").val() + "&idfazenda=" + $('#idfaz').val() + "&idtalhao=" + @ViewBag.SelectedOptionT+"&idvariedade=" + @ViewBag.SelectedOptionV+"&idoperacao="+@ViewBag.SelectedOptionO+"&ini="+$("#dtinicio").val()+"&fim="+$("#dtfim").val(),
+                        url: "/planejoperacao/GetData?idsafra=" + $("#idsafra").val() + "&idfazenda=" + $('#idfaz').val() + "&idtalhao=" + @ViewBag.SelectedOptionT+"&idvariedade=" + @ViewBag.SelectedOptionV+"&idoperacao="+@ViewBag.SelectedOptionO+"&ini="+$("#dtinicio").val()+"&fim="+$("#dtfim").val()+"&idprincipio="+@ViewBag.SelectedOptionP+"&idproduto="+$("#idproduto").val(),
                         dataType: "json"
                     });
                 }
@@ -332,6 +364,10 @@
                 }]
         });
     });
+
+    function changeprincipio(produto) {
+        loadprodutos($("#idproduto"), produto, true, $("#idprincipio").val(), 0, 0, "");
+    }
 
 
 

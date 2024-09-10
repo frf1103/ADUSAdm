@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "CMpfPHAY3lJeQmVVmPl8rBy3m8i+SWrMKrG+TDefY8Q=",
+  "Hash": "30h3/DZFnfiCIJJZf/GalJyFxkSL22mRkjNZOXy32mI=",
   "Source": "FarmPlannerAdm",
   "BasePath": "_content/FarmPlannerAdm",
   "Mode": "Default",
@@ -1137,6 +1137,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\jquery-ui.min.css"
+    },
+    {
+      "Identity": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\css\\jsgridplanner.css",
+      "SourceId": "FarmPlannerAdm",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\",
+      "BasePath": "_content/FarmPlannerAdm",
+      "RelativePath": "css/jsgridplanner.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\jsgridplanner.css"
     },
     {
       "Identity": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\css\\select2.css",
@@ -2550,6 +2567,23 @@
       "OriginalItemSpec": "wwwroot\\js\\bootstrap-multiselect.js"
     },
     {
+      "Identity": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\js\\Comuns.js",
+      "SourceId": "FarmPlannerAdm",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\",
+      "BasePath": "_content/FarmPlannerAdm",
+      "RelativePath": "js/Comuns.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\Comuns.js"
+    },
+    {
       "Identity": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\js\\demo.js",
       "SourceId": "FarmPlannerAdm",
       "SourceType": "Discovered",
@@ -2771,6 +2805,23 @@
       "OriginalItemSpec": "wwwroot\\js\\jszip.js"
     },
     {
+      "Identity": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\js\\loadprodutos.js",
+      "SourceId": "FarmPlannerAdm",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\",
+      "BasePath": "_content/FarmPlannerAdm",
+      "RelativePath": "js/loadprodutos.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\loadprodutos.js"
+    },
+    {
       "Identity": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\js\\loadtalhoes.js",
       "SourceId": "FarmPlannerAdm",
       "SourceType": "Discovered",
@@ -2803,6 +2854,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\loadvariedades.js"
+    },
+    {
+      "Identity": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\js\\maquinas.js",
+      "SourceId": "FarmPlannerAdm",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\",
+      "BasePath": "_content/FarmPlannerAdm",
+      "RelativePath": "js/maquinas.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\maquinas.js"
     },
     {
       "Identity": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\js\\require.js",

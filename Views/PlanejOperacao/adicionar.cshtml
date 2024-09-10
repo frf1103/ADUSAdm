@@ -277,7 +277,7 @@
                                 </div>
                                 -->
                                 <div class="col text-right">
-                                    <a href="/planejoperacao/adicionarprodplanejado?idplanejamento=@Model!.id&acao=1&tam=@ViewBag.area&perc=@ViewBag.perc" button type="submit" class="btn btn-primary"><i class="fas fa-plus icon-default"></i></a>
+                                    <a href="/planejoperacao/adicionarprodplanejado?idplanejamento=@Model!.id&acao=1" button type="submit" class="btn btn-primary"><i class="fas fa-plus icon-default"></i></a>
                                 </div>
 
 
@@ -296,7 +296,7 @@
                                 </div>
                                 -->
                                 <div class="col text-right">
-                                    <a href="/planejoperacao/adicionarmaquinaplanejada?idplanejamento=@Model!.id&acao=1&tam=@ViewBag.area&configarea=@ViewBag.config&operacao=@ViewBag.operacao" button type="submit" class="btn btn-primary"><i class="fas fa-plus icon-default"></i></a>
+                                    <a href="/planejoperacao/adicionarmaquinaplanejada?idplanejamento=@Model!.id&acao=1" button type="submit" class="btn btn-primary"><i class="fas fa-plus icon-default"></i></a>
                                 </div>
 
 
@@ -540,21 +540,21 @@
                                 .attr("href", "#")
                                 .text("Visualizar")
                                 .on("click", function () {
-                                    window.location.href = '/planejoperacao/adicionarprodplanejado/' + item.id + '?acao=4';
+                                    window.location.href = '/planejoperacao/adicionarmaquinaplanejada/' + item.id + '?acao=4';
                                 });
 
                             var $edit = $("<a>").addClass("dropdown-item")
                                 .attr("href", "#")
                                 .text("Editar")
                                 .on("click", function () {
-                                    window.location.href = '/planejoperacao/adicionarprodplanejado/' + item.id + '?acao=2';
+                                    window.location.href = '/planejoperacao/adicionarmaquinaplanejada/' + item.id + '?acao=2';
                                 });
 
                             var $delete = $("<a>").addClass("dropdown-item")
                                 .attr("href", "#")
                                 .text("Excluir")
                                 .on("click", function () {
-                                    window.location.href = '/planejoperacao/adicionarprodplanejado/' + item.id + '?acao=3';
+                                    window.location.href = '/planejoperacao/adicionarmaquinaplanejada/' + item.id + '?acao=3';
                                 });
 
                             $menu.append($details).append($edit).append($delete);

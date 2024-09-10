@@ -201,13 +201,13 @@ var config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", optional: false)
     .SetBasePath(Directory.GetCurrentDirectory())
     .Build();
-/*
+
 builder.WebHost.ConfigureKestrel((context, serverOptions) =>
 {
     serverOptions.Listen(System.Net.IPAddress.Any, config.GetValue<int>("HOST:HTTP"));
     serverOptions.Listen(System.Net.IPAddress.Any, config.GetValue<int>("HOST:HTTPS"));
 });
-*/
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())

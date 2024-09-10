@@ -247,7 +247,12 @@
                 rend = parseFloat($("#rendimento").val().replace(",", "."));
                 if (rend!=0) 
                 {
-                    horas=@ViewBag.area/rend;
+                    area = parseFloat(@ViewBag.area);
+                    horas=area/rend;
+                }
+                else 
+                {
+                    horas=0;
                 }
                 hformatted = new Intl.NumberFormat('pt-BR').format(horas);
                 $("#qhoras").val(hformatted);
@@ -263,16 +268,20 @@
         {
             loadmaquinas($("#idMaquina"), maquina, true, $("#idModeloMaquina").val(), "");
             buscaparametrooperacao($("#idModeloMaquina").val(), $("#idMaquina").val(), $("#config").val(), $("#oper").val(), 0, rendimento, consumo);
-            $("#rendimento").val(rendimento.valor);
-            $("#consumo").val(consumo.valor);
+            rformatted = new Intl.NumberFormat('pt-BR').format(rendimento.valor);
+            $("#rendimento").val(rformatted);
+            cformatted = new Intl.NumberFormat('pt-BR').format(consumo.valor);
+            $("#consumo").val(cformatted);
             calculos();
         }
 
         function changemaquina() 
         {
             buscaparametrooperacao($("#idModeloMaquina").val(), $("#idMaquina").val(), $("#config").val(), $("#oper").val(), 0, rendimento, consumo);
-            $("#rendimento").val(rendimento.valor);
-            $("#consumo").val(consumo.valor);
+            rformatted = new Intl.NumberFormat('pt-BR').format(rendimento.valor);
+            $("#rendimento").val(rformatted);
+            cformatted = new Intl.NumberFormat('pt-BR').format(consumo.valor);
+            $("#consumo").val(cformatted);
             calculos();
         }
 
