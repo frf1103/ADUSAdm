@@ -590,8 +590,8 @@
                 for (var j=0;j<=maquinas.length-1;j++)
                 {
                    maqoper.push({
-                       "idmaquina":produtos[j].idprod,
-                       "idmodelo":produtos[j].idprinc
+                       "idmaquina":maquinas[j].idmaquina,
+                       "idmodelo":maquinas[j].idmodelo
                    });
                 }
 
@@ -604,6 +604,7 @@
                     "plantio":document.getElementById("cbplantio").checked,
                     "area":talhoesSel[i].areaDisp,
                     "dataprevista": $('#dtprev').val(),
+                    "perc":talhoesSel[i].percent,
                     "produtos":prodoper,
                     "maquinas":maqoper
                     
@@ -958,8 +959,8 @@
                 fields: [
                     { name: "idmodelo", type: "text", width: 20, title: "ID", visible: false },  
                     { name: "idmaquina", type: "text", width: 20, title: "ID", visible: false },
-                    { name: "descmodelo", type: "text", width: 150, title: "Princípio Ativo", editing: false },
-                    { name: "descmaquina", type: "text", width: 150, title: "Produto", editing: false },
+                    { name: "descmodelo", type: "text", width: 150, title: "Modelo", editing: false },
+                    { name: "descmaquina", type: "text", width: 150, title: "Máquina", editing: false },
                     
 
                     {

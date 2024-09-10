@@ -1,4 +1,4 @@
-﻿@model FarmPlannerClient.PlanejOperacao.ProdutoPlanejadoViewModel
+﻿@model FarmPlannerClient.PlanejOperacao.MaquinaPlanejadaViewModel
 
 
 
@@ -24,6 +24,8 @@
     <section class="content">
         <div class="container-fluid">
             <div class="card card-primary card-outline">
+                <input id="config" value=@ViewBag.config hidden />
+                <input id="oper" value=@ViewBag.operacao hidden />
 
                 <div class="card-body">
                     <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
@@ -49,95 +51,112 @@
                                                     <span asp-validation-for="id" class="text-danger"></span>
                                                 </div>
                                             </div>
-                                     
+
                                             <div class="col-md-5">
                                                 <div class="form-group">
 
-                                                    <label asp-for="idPrincipioAtivo" class="control-label"></label>
+                                                    <label asp-for="id" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
-                                                            <select asp-for="idPrincipioAtivo" id="idprincipio" class="form-control" asp-items="@ViewBag.principios" onchange="changeprincipio(0)"></select>
-                                                            
+                                                            <select asp-for="idModeloMaquina" id="idModeloMaquina" class="form-control" asp-items="@ViewBag.modelos" onchange="changemodelo(0)"></select>
+
                                                         }
                                                         else
                                                         {
-                                                            <select asp-for="idPrincipioAtivo" id="idpricipio" class="form-control" asp-items="@ViewBag.principios" disabled></select>
+                                                            <select asp-for="idModeloMaquina" id="idModeloMaquina" class="form-control" asp-items="@ViewBag.modelos" disabled></select>
                                                         }
 
 
                                                     }
-                                                    <span asp-validation-for="idPrincipioAtivo" class="text-danger"></span>
+                                                    <span asp-validation-for="idModeloMaquina" class="text-danger"></span>
                                                 </div>
                                             </div>
                                             <div class="col-md-5">
                                                 <div class="form-group">
-                                                    <label asp-for="idProduto" class="control-label"></label>
+                                                    <label asp-for="idMaquina" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
-                                                            <select asp-for="idProduto" id="idProduto" class="form-control" ></select>
-                                                            
+                                                            <select asp-for="idMaquina" id="idMaquina" class="form-control" onchange="changemaquina()"></select>
+
                                                         }
                                                         else
                                                         {
-                                                            <select asp-for="idProduto" id="idProduto" class="form-control"  disabled></select>
+                                                            <select asp-for="idMaquina" id="idMaquina" class="form-control" disabled></select>
                                                         }
                                                     }
-                                                    <span asp-validation-for="idProduto" class="text-danger"></span>
+                                                    <span asp-validation-for="idMaquina" class="text-danger"></span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 <div class="form-group">
-                                                    <label asp-for="tamanho" class="control-label"></label>
+                                                    <label asp-for="rendimento" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
-                                                            <input asp-for="tamanho"  class="form-control" id="tamanho"  readonly />
+                                                            <input asp-for="rendimento" class="form-control" id="rendimento" onchange="calctotalproduto()" readonly />
                                                         }
                                                         else
                                                         {
-                                                            <input asp-for="tamanho" class="form-control" readonly  />
+                                                            <input asp-for="rendimento" class="form-control" readonly />
                                                         }
 
                                                     }
-                                                    <span asp-validation-for="tamanho" class="text-danger"></span>
+                                                    <span asp-validation-for="rendimento" class="text-danger"></span>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 <div class="form-group">
-                                                    <label asp-for="dosagem" class="control-label"></label>
+                                                    <label asp-for="consumo" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
-                                                            <input asp-for="dosagem" class="form-control" id="dosagem" onchange="calctotalproduto()" />
+                                                            <input asp-for="consumo" class="form-control" id="consumo" onchange="calctotalproduto()" readonly />
                                                         }
                                                         else
                                                         {
-                                                            <input asp-for="dosagem" class="form-control" readonly />
+                                                            <input asp-for="consumo" class="form-control" id="consumo" readonly />
                                                         }
 
                                                     }
-                                                    <span asp-validation-for="dosagem" class="text-danger"></span>
+                                                    <span asp-validation-for="consumo" class="text-danger"></span>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 <div class="form-group">
-                                                    <label asp-for="totalProduto" class="control-label"></label>
+                                                    <label asp-for="qtdHoraEstimada" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
-                                                            <input asp-for="totalProduto" class="form-control" id="totalproduto" />
+                                                            <input asp-for="qtdHoraEstimada" class="form-control" id="qhoras" onchange="calctotalproduto()" />
                                                         }
                                                         else
                                                         {
-                                                            <input asp-for="totalProduto" class="form-control" readonly />
+                                                            <input asp-for="qtdHoraEstimada" class="form-control" readonly />
                                                         }
 
                                                     }
-                                                    <span asp-validation-for="totalProduto" class="text-danger"></span>
+                                                    <span asp-validation-for="qtdHoraEstimada" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label asp-for="qtdCombEstimado" class="control-label"></label>
+                                                    @{
+                                                        if (ViewBag.idacao <= 2)
+                                                        {
+                                                            <input asp-for="qtdCombEstimado" class="form-control" id="qcomb" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <input asp-for="qtdCombEstimado" class="form-control" readonly />
+                                                        }
+
+                                                    }
+                                                    <span asp-validation-for="qtdCombEstimado" class="text-danger"></span>
                                                 </div>
                                             </div>
 
@@ -202,7 +221,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
-    <script src="~/js/loadprodutos.js"></script>
+    <script src="~/js/maquinas.js"></script>
 
 
 
@@ -211,38 +230,51 @@
         $(document).ready(function () {
             // Adiciona um listener para o evento change
 
-            
+
             $.validator.methods.number = function (value, element) {
                 return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:,\d{3})+)?(?:\,\d+)?$/.test(value);
             }
-            changeprincipio(@ViewBag.idproduto);
-            
+            changemodelo(@ViewBag.idmaquina);
+
             // Simula a mudança de valor
         });
 
-       
 
-    function calctotalproduto()
-    {
-        
-        if ($("#dosagem").val()!="") 
-        {
-            dosagem = parseFloat($("#dosagem").val().replace(",","."));
-            if ($("#tamanho").val()!="") 
-            {
-                    tam = parseFloat($("#tamanho").val().replace(",", "."));
-                    total=tam*dosagem;
-                    formatted = new Intl.NumberFormat('pt-BR').format(total);
-                    $("#totalproduto").val(formatted);
+
+        function calculos() {
+            
+            if ($("#rendimento").val() != "") {
+                rend = parseFloat($("#rendimento").val().replace(",", "."));
+                if (rend!=0) 
+                {
+                    horas=@ViewBag.area/rend;
+                }
+                hformatted = new Intl.NumberFormat('pt-BR').format(horas);
+                $("#qhoras").val(hformatted);
+                cons = parseFloat($("#consumo").val().replace(",", "."));
+                comb = horas * cons;
+                cformatted = new Intl.NumberFormat('pt-BR').format(comb);
+                $("#qcomb").val(cformatted);
             }            
-        }
-        
-    }
 
-    function changeprincipio(produto)
-    {
-        loadprodutos($("#idProduto"),produto, true, $("#idprincipio").val(),0,0,"");
-    }
+        }
+
+        function changemodelo(maquina) 
+        {
+            loadmaquinas($("#idMaquina"), maquina, true, $("#idModeloMaquina").val(), "");
+            buscaparametrooperacao($("#idModeloMaquina").val(), $("#idMaquina").val(), $("#config").val(), $("#oper").val(), 0, rendimento, consumo);
+            $("#rendimento").val(rendimento.valor);
+            $("#consumo").val(consumo.valor);
+            calculos();
+        }
+
+        function changemaquina() 
+        {
+            buscaparametrooperacao($("#idModeloMaquina").val(), $("#idMaquina").val(), $("#config").val(), $("#oper").val(), 0, rendimento, consumo);
+            $("#rendimento").val(rendimento.valor);
+            $("#consumo").val(consumo.valor);
+            calculos();
+        }
 
     </script>
 }

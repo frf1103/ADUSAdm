@@ -284,6 +284,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGxhbmVqT3BlcmFjYW9cYWRpY2lvbmFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/PlanejOperacao/adicionarmaquinaplanejada.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGxhbmVqT3BlcmFjYW9cYWRpY2lvbmFybWFxdWluYXBsYW5lamFkYS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/user/source/repos/FarmPlannerAdm/Views/PlanejOperacao/adicionarprodplanejado.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGxhbmVqT3BlcmFjYW9cYWRpY2lvbmFycHJvZHBsYW5lamFkby5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

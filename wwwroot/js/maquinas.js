@@ -20,9 +20,28 @@
                     $('<option>').val(d.id).text(d.descricao).appendTo(selectbox);
                 });
 
-                if (produto != "0") {
+                if (maquina != "0") {
                     selectbox.val(maquina);
                 }
+            }
+        }
+    });
+}
+
+function buscaparametrooperacao(idmodelo, idmaquina, idconfig, idoperacao, idcultura, rendimento, consumo) {
+    $.ajax({
+        type: "get",
+        url: "/planejoperacao/GetParametroOperacao",
+        data: { idmodelo: idmodelo, idmaquina: idmaquina, idconfigarea: idconfig, idoperacao: idoperacao, idcultura: idcultura },
+        dataType: 'json',
+
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        success: function (obj) {
+            if (obj != null) {
+                var data = obj;
+                rendimento.valor = data.rendimento;
+                consumo.valor = data.valor;
             }
         }
     });

@@ -18,6 +18,7 @@ using Newtonsoft.Json;
 using FarmPlannerClient.Operacao;
 using FarmPlannerClient.PrincipioAtivo;
 using FarmPlannerClient.ModeloMaquina;
+using Microsoft.IdentityModel.Abstractions;
 
 namespace FarmPlannerAdm.Controllers
 {
@@ -165,10 +166,27 @@ namespace FarmPlannerAdm.Controllers
             return Json(c);
         }
 
+        public async Task<JsonResult> GetMaquinaPlanej(int id)
+        {
+            Task<List<ListMaquinaPlanejadaViewModel>> ret = _PlanejOperacao.ListaMaquinaPlanej(id, _sessionManager.contaguid);
+            List<FarmPlannerClient.PlanejOperacao.ListMaquinaPlanejadaViewModel> c = await ret;
+
+            return Json(c);
+        }
+
         public async Task<JsonResult> GetData(int idano, int idfazenda, int idtalhao, int idvariedade, int idsafra, int idoperacao, DateTime ini, DateTime fim)
         {
             Task<List<ListPlanejamentoOperacaoViewModel>> ret = _PlanejOperacao.Lista(_sessionManager.idorganizacao, _sessionManager.idanoagricola, idfazenda, idtalhao, idvariedade, idsafra, _sessionManager.contaguid, idoperacao, ini, fim);
             List<FarmPlannerClient.PlanejOperacao.ListPlanejamentoOperacaoViewModel> c = await ret;
+
+            return Json(c);
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetParametroOperacao(string idconta, int idmodelo, int idmaquina, int idconfigarea, int idcultura, int idoperacao)
+        {
+            Task<parametrooperacaoviewmodel> ret = _PlanejOperacao.BuscaParametroOperacao(_sessionManager.contaguid, idmodelo, idmaquina, idconfigarea, idoperacao, idcultura);
+            FarmPlannerClient.PlanejOperacao.parametrooperacaoviewmodel c = await ret;
 
             return Json(c);
         }
@@ -197,6 +215,10 @@ namespace FarmPlannerAdm.Controllers
                 Task<FarmPlannerClient.PlanejOperacao.PlanejamentoOperacaoViewModel> ret = _PlanejOperacao.ListaById(id, _sessionManager.contaguid);
                 c = await ret;
                 ViewBag.area = c.area;
+                ViewBag.config = c.idConfigArea;
+                ViewBag.operacao = c.idOperacao;
+                ViewBag.perc = c.percentual;
+
                 //    ViewBag.idvariedade = c.idVariedade;
                 //    ViewBag.idtalhao = c.idTalhao;
                 if (acao == 2)
@@ -352,7 +374,7 @@ namespace FarmPlannerAdm.Controllers
 
         [Authorize(Roles = "Admin,User,AdminC")]
         [HttpGet]
-        public async Task<IActionResult> Adicionarprodplanejado(int idplanejamento, int acao = 0, int id = 0, decimal tam = 0)
+        public async Task<IActionResult> Adicionarprodplanejado(int idplanejamento, int acao = 0, int id = 0, decimal tam = 0, decimal perc = 0)
         {
             ProdutoPlanejadoViewModel c;
 
@@ -363,7 +385,7 @@ namespace FarmPlannerAdm.Controllers
 
                 ViewBag.Titulo = "Adicionar";
                 ViewBag.Acao = "adicionarproduto";
-                c.tamanho = (decimal)tam;
+                c.tamanho = tam * perc / 100;
             }
             else
             {
@@ -414,10 +436,13 @@ namespace FarmPlannerAdm.Controllers
             ViewBag.idproduto = c.idProduto;
             if (ModelState.ContainsKey(""))
             {
-                var x = ModelState[""].Errors.Where(x => x.ErrorMessage == "Invalid decimal value.").FirstOrDefault();
+                var x = ModelState[""].Errors.Where(x => x.ErrorMessage == "Invalid decimal value.").ToList();
                 if (x != null)
                 {
-                    ModelState[""].Errors.Remove(x);
+                    foreach(var err in x)
+                    { 
+                        ModelState[""].Errors.Remove(err);
+                    }
                 }
             }
 
@@ -475,6 +500,148 @@ namespace FarmPlannerAdm.Controllers
         }
 
         public async Task<IActionResult> Excluirproduto(int id, FarmPlannerClient.PlanejOperacao.ProdutoPlanejadoViewModel dados)
+        {
+            //FarmPlannerClient.PlanejOperacao.PlanejOperacaoViewModel dados=new FarmPlannerClient.PlanejOperacao.PlanejOperacaoViewModel();
+            var response = await _PlanejOperacao.ExcluirProdutoPlanejado(id, _sessionManager.contaguid, _sessionManager.uid);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("adicionar", new { id = dados.idPlanejamento, acao = 2 });
+            }
+
+            string x = await response.Content.ReadAsStringAsync();
+            ModelState.AddModelError(string.Empty, x);
+
+            return RedirectToAction("adicionarproduto", new { acao = 3, id = dados.id });
+        }
+
+        [Authorize(Roles = "Admin,User,AdminC")]
+        [HttpGet]
+        public async Task<IActionResult> Adicionarmaquinaplanejada(int idplanejamento, int acao = 0, int id = 0, decimal tam = 0, int operacao = 0, int configarea = 0)
+        {
+            MaquinaPlanejadaViewModel c;
+
+            ViewBag.idacao = acao;
+            if (acao == 1)
+            {
+                c = new FarmPlannerClient.PlanejOperacao.MaquinaPlanejadaViewModel();
+
+                ViewBag.Titulo = "Adicionar";
+                ViewBag.Acao = "adicionarmquina";
+            }
+            else
+            {
+                Task<FarmPlannerClient.PlanejOperacao.MaquinaPlanejadaViewModel> ret = _PlanejOperacao.ListaMaquinaPlanejById(id, _sessionManager.contaguid);
+                c = await ret;
+                //    ViewBag.idvariedade = c.idVariedade;
+                //    ViewBag.idtalhao = c.idTalhao;
+                if (acao == 2)
+                {
+                    ViewBag.Titulo = "Editar";
+                    ViewBag.Acao = "editarmaquina";
+                }
+                if (acao == 3)
+                {
+                    ViewBag.Titulo = "Excluir";
+                    ViewBag.Acao = "excluirmaquina";
+                }
+                if (acao == 4)
+                {
+                    ViewBag.Titulo = "Visualizar";
+                    ViewBag.Acao = "vermaquina";
+                }
+            }
+
+            if (TempData["Erro"] != null)
+            {
+                if (TempData["dados"] != null)
+                {
+                    var dadosJson = TempData["dados"].ToString();
+                    c = JsonConvert.DeserializeObject<MaquinaPlanejadaViewModel>(dadosJson);
+                }
+                ModelState.AddModelError(string.Empty, TempData["Erro"].ToString());
+            }
+
+            Task<List<ListModeloMaquinaViewModel>> retmd = _modeloAPI.Lista(0, "");
+            List<ListModeloMaquinaViewModel> md = await retmd;
+
+            ViewBag.modelos = md.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
+            if (acao == 1)
+            {
+                ViewBag.idplanejamento = idplanejamento;
+            }
+            else
+            {
+                ViewBag.idplanejamento = c.idPlanejamento;
+            }
+
+            ViewBag.idmaquina = c.idMaquina;
+            ViewBag.area = tam;
+            ViewBag.config = configarea;
+            ViewBag.operacao = operacao;
+            if (ModelState.ContainsKey(""))
+            {
+                var x = ModelState[""].Errors.Where(x => x.ErrorMessage == "Invalid decimal value.").FirstOrDefault();
+                if (x != null)
+                {
+                    ModelState[""].Errors.Remove(x);
+                }
+            }
+
+            return View(c);
+        }
+
+        [Authorize(Roles = "Admin,User,AdminC")]
+        [HttpPost]
+        public async Task<IActionResult> AdicionarMaquina(FarmPlannerClient.PlanejOperacao.MaquinaPlanejadaViewModel dados)
+        {
+            dados.idconta = _sessionManager.contaguid;
+            dados.uid = _sessionManager.uid;
+
+            //dados.idOrganizacao =_sessionManager.idorganizacao;
+            var response = await _PlanejOperacao.AdicionarMaquinaPlanejada(dados);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string y = await response.Content.ReadAsStringAsync();
+                var result = System.Text.Json.JsonSerializer.Deserialize<FarmPlannerClient.PlanejOperacao.MaquinaPlanejadaViewModel>(y);
+                return RedirectToAction(nameof(Adicionarmaquinaplanejada), new { acao = 1, idplanejamento = result.idPlanejamento });
+            }
+            string x = await response.Content.ReadAsStringAsync();
+
+            ModelState.AddModelError(string.Empty, x);
+            var dadosStateJson = JsonConvert.SerializeObject(dados);
+
+            TempData["dados"] = dadosStateJson;
+            TempData["Erro"] = x;
+            return RedirectToAction("adicionar", new { acao = 1, id = 0, idplanejamento = dados.idPlanejamento });
+        }
+
+        [Authorize(Roles = "Admin,User,AdminC")]
+        [HttpPost]
+        public async Task<IActionResult> EditarMaquina(int id, FarmPlannerClient.PlanejOperacao.MaquinaPlanejadaViewModel dados)
+        {
+            dados.idconta = _sessionManager.contaguid;
+            dados.uid = _sessionManager.uid;
+
+            var response = await _PlanejOperacao.SalvarMaquinaPlanejada(id, _sessionManager.contaguid, dados);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("adicionar", new { id = dados.idPlanejamento, acao = 2 });
+            }
+            var x = await response.Content.ReadAsStringAsync();
+
+            ModelState.AddModelError(string.Empty, x);
+            TempData["Erro"] = x;
+            var dadosStateJson = JsonConvert.SerializeObject(dados);
+
+            TempData["dados"] = dadosStateJson;
+
+            return RedirectToAction("adicionarmaquina", new { acao = 2, id = dados.id });
+        }
+
+        public async Task<IActionResult> Excluirmaquina(int id, FarmPlannerClient.PlanejOperacao.MaquinaPlanejadaViewModel dados)
         {
             //FarmPlannerClient.PlanejOperacao.PlanejOperacaoViewModel dados=new FarmPlannerClient.PlanejOperacao.PlanejOperacaoViewModel();
             var response = await _PlanejOperacao.ExcluirProdutoPlanejado(id, _sessionManager.contaguid, _sessionManager.uid);
