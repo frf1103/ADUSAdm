@@ -108,6 +108,9 @@ namespace FarmPlannerAdm.Controllers
                 var safra = s.Find(x => x.id == idsafra);
                 ViewBag.idcultura = safra.idCultura.ToString();
             }
+
+            ViewBag.role = _sessionManager.userrole;
+            ViewBag.permissao = (_sessionManager.userrole != "UserV");
             return View();
         }
 
@@ -386,16 +389,16 @@ namespace FarmPlannerAdm.Controllers
         {
             ProdutoPlanejadoViewModel c;
 
-            Task<FarmPlannerClient.PlanejOperacao.PlanejamentoOperacaoViewModel> retpl = _PlanejOperacao.ListaById(idplanejamento, _sessionManager.contaguid);
-            var pl = await retpl;
-
-            ViewBag.area = pl.area;
-            ViewBag.config = pl.idConfigArea;
-            ViewBag.operacao = pl.idOperacao;
-
             ViewBag.idacao = acao;
             if (acao == 1)
             {
+                Task<FarmPlannerClient.PlanejOperacao.PlanejamentoOperacaoViewModel> retpl = _PlanejOperacao.ListaById(idplanejamento, _sessionManager.contaguid);
+                var pl = await retpl;
+
+                ViewBag.area = pl.area;
+                ViewBag.config = pl.idConfigArea;
+                ViewBag.operacao = pl.idOperacao;
+
                 c = new FarmPlannerClient.PlanejOperacao.ProdutoPlanejadoViewModel();
 
                 ViewBag.Titulo = "Adicionar";
@@ -514,6 +517,8 @@ namespace FarmPlannerAdm.Controllers
             return RedirectToAction("adicionarproduto", new { acao = 2, id = dados.id });
         }
 
+        [Authorize(Roles = "Admin,User,AdminC")]
+        [HttpPost]
         public async Task<IActionResult> Excluirproduto(int id, FarmPlannerClient.PlanejOperacao.ProdutoPlanejadoViewModel dados)
         {
             //FarmPlannerClient.PlanejOperacao.PlanejOperacaoViewModel dados=new FarmPlannerClient.PlanejOperacao.PlanejOperacaoViewModel();
@@ -663,6 +668,8 @@ namespace FarmPlannerAdm.Controllers
             return RedirectToAction("adicionarmaquina", new { acao = 2, id = dados.id });
         }
 
+        [Authorize(Roles = "Admin,User,AdminC")]
+        [HttpPost]
         public async Task<IActionResult> Excluirmaquina(int id, FarmPlannerClient.PlanejOperacao.MaquinaPlanejadaViewModel dados)
         {
             //FarmPlannerClient.PlanejOperacao.PlanejOperacaoViewModel dados=new FarmPlannerClient.PlanejOperacao.PlanejOperacaoViewModel();

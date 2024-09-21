@@ -49,6 +49,10 @@ namespace FarmPlannerAdm.Controllers
                 return RedirectToAction("index", "home");
             }
 
+            ViewBag.role = _sessionManager.userrole;
+            ViewBag.permissao = (_sessionManager.userrole != "UserV");
+
+
             return View();
         }
 

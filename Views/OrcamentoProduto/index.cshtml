@@ -74,7 +74,7 @@
                             <div class="col-md-6">
                                 <div class="form-container">
 
-                                    <select class="select2" name="idsafra" id="idsafra" data-placeholder="escolha uma safra" onchange="changesafra()"style="width: 100%;">
+                                    <select class="select2" name="idsafra" id="idsafra" data-placeholder="escolha uma safra" style="width: 100%;">
                                         <option value="0">escolha uma safra</option>
                                         @foreach (var item in ViewBag.safras)
                                         {
@@ -88,13 +88,11 @@
                                             }
                                         }
                                     </select>
-                                    <select class="select2" name="idvariedade" id="idvariedade" data-placeholder="escolha a variedade" style="width: 100%;">
-                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-container">
-                                    <select class="select2" name="idfazenda" id="idfaz" data-placeholder="escolha a fazenda" onchange="changefaz()"  style="width: 100%;">
+                                    <select class="select2" name="idfazenda" id="idfaz" data-placeholder="escolha a fazenda"  style="width: 100%;">
                                         <option value="0">escolha a fazenda</option>
                                         @foreach (var item in ViewBag.fazendas)
                                         {
@@ -108,37 +106,17 @@
                                             }
                                         }
                                     </select>                                    
-                                    <select class="select2" name="idtalhao" id="idtalhao" data-placeholder="escolha o talhão" style="width: 100%;">
-                                    </select>
                                 </div>
                             </div>                       
-                            
-                        </div>
+
+                        </div>           
                         <div class="row">
-                            <div class="col-md-3">                                
 
-                                    <select class="select2" name="idoperacao" id="idoperacao" data-placeholder="escolha uma operacao"  style="width: 100%;">
-                                        <option value="0">escolha uma operacao</option>
-                                        @foreach (var item in ViewBag.operacoes)
-                                        {
-                                            if (@item.Value == ViewBag.SelectedOptionO)
-                                            {
-                                                <option value="@item.Value" selected>@item.Text</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@item.Value">@item.Text</option>
-                                            }
-                                        }
-                                    </select>
-
-                                
-                            </div>
-
-                            <div class="col-md-5">
+                            <div class="col-md-4">
                                 <div class="form-container">
-                                    <select class="select2" name="idprincipio" id="idprincipio" data-placeholder="escolha um princípio ativo" style="width: 100%;" onchange="changeprincipio(0)">
-                                        <option value="0">escolha um princípio ativo</option>
+
+                                    <select class="select2" name="idprincipio" id="idprincipio" data-placeholder="escolha um principio"  style="width: 100%;">
+                                        <option value="0">escolha um principio</option>
                                         @foreach (var item in ViewBag.principios)
                                         {
                                             if (@item.Value == ViewBag.SelectedOptionP)
@@ -151,18 +129,34 @@
                                             }
                                         }
                                     </select>
-
-                                    <select class="select2" name="idproduto" id="idproduto" data-placeholder="escolha um produto" style="width: 100%;" >
-                                    </select>
                                 </div>
                             </div>
 
                             <div class="col-md-4">
                                 <div class="form-container">
 
-                                    <input type="date" class="form-control" id="dtinicio" value="@ViewBag.dtinicio" name="dtinicio" placeholder="inicio">
-                                    <input type="date" class="form-control" id="dtfim" value="@ViewBag.dtfim" name="dtfim" placeholder="fim">
+                                    <select class="select2" name="idproduto" id="idproduto" data-placeholder="escolha um produto"  style="width: 100%;">
+                                        <option value="0">escolha um produto</option>
+                                        @foreach (var item in ViewBag.produtos)
+                                        {
+                                            if (@item.Value == ViewBag.SelectedOptionPr)
+                                            {
+                                                <option value="@item.Value" selected>@item.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
 
+
+                            <div class="col-md-4">
+                                <div class="form-container">
+
+                                    <input type="text" class="form-control" id="filtro" value="@ViewBag.filtro" name="filtro" placeholder="busque pela descrição">
                                     <button type="submit" class="btn btn-md btn-default">
                                         <i class="fa fa-search"></i>
                                     </button>
@@ -180,12 +174,12 @@
         </div>
     </form>
 
-    <h2>Planejamento de Operações</h2>
+    <h2>Orçamento Hectarizado</h2>
     <div class="col text-right">
         @if (ViewBag.permissao == true)
         {
-            <a href="/planejoperacao/adicionar?acao=1&idaz=@ViewBag.SelectedOptionF&idsafra=@ViewBag.SelectedOptionS" class=" btn btn-primary"><i class="fas fa-plus icon-default"></i></a>
-            <a href="/planejoperacao/assistente" class=" btn btn-primary">Assistente</a>
+            <a href="/orcamentoproduto/adicionar?acao=1&idaz=@ViewBag.SelectedOptionF&idsafra=@ViewBag.SelectedOptionS" class=" btn btn-primary"><i class="fas fa-plus icon-default"></i></a>
+            
         }
     </div>
     
@@ -246,25 +240,19 @@
 
         $("#idfaz").val(@ViewBag.SelectedOptionF);
         //$('#idfazenda').trigger("change");
-        changefaz();
+        
         $("#idsafra").val(@ViewBag.SelectedOptionS);
         //$('#idsafra').trigger("change");
-        changesafra();
+        
         $("#idprincipio").val(@ViewBag.SelectedOptionP);
-        changeprincipio(@ViewBag.idproduto);
+        
+
+        $("#idproduto").val(@ViewBag.SelectedOptionPr);
         //class=" btn btn-primary" > <i class="fas fa-plus icon-default" > </i></a >
 
     });
 
-   function changefaz()
-   {
-       loadtalhoes(@ViewBag.SelectedOptionT,true);
-   }
-
-    function changesafra() {
-        loadvariedades(@ViewBag.SelectedOptionV,true);
-    }
-   
+  
 
 
     $(function () {
@@ -292,7 +280,13 @@
                 loadData: function () {
                     return $.ajax({
                         type: "GET",
-                        url: "/planejoperacao/GetData?idsafra=" + $("#idsafra").val() + "&idfazenda=" + $('#idfaz').val() + "&idtalhao=" + @ViewBag.SelectedOptionT+"&idvariedade=" + @ViewBag.SelectedOptionV+"&idoperacao="+@ViewBag.SelectedOptionO+"&ini="+$("#dtinicio").val()+"&fim="+$("#dtfim").val()+"&idprincipio="+@ViewBag.SelectedOptionP+"&idproduto="+$("#idproduto").val(),
+                        url: "/orcamentoproduto/GetData",
+                        data: {
+                            idsafra: @ViewBag.SelectedOptionS,
+                        idfazenda:@ViewBag.SelectedOptionF,
+                        idprincipio:@ViewBag.SelectedOptionP,
+                        idproduto:@ViewBag.SelectedOptionPr,
+                        filtro: "@ViewBag.filtro"},
                         dataType: "json"
                     });
                 }
@@ -300,12 +294,9 @@
 
             fields: [
                 { name: "id", type: "number", width: 20, title: "ID", visible: false },
-                { name: "descconfig", type: "text", width: 150, title: "Fazenda/Talhão/Variedade" },
-                { name: "descoperacao", type: "text", width: 150, title: "Operação" },
-                { name: "dataPrevista", type: "text", width: 40, title: "Data Prevista",
-                    itemTemplate: function (value) {
-                        return new Date (value).toLocaleDateString();
-                    }
+                { name: "descricao", type: "text", width: 150, title: "Descrição" },
+                { name: "descFazenda", type: "text", width: 100, title: "Fazenda" },
+                { name: "descSafra", type: "text", width: 100, title: "Safra",
                 },
 
                 {
@@ -332,31 +323,6 @@
                         return $button1;
                     }
                 },
-                {
-                    title: "Detalhar Máquinas", width: 80, align: "center",
-                    itemTemplate: function (value, item) {
-                        var $button2 = $("<button>").text("Máquinas").addClass("btn btn-primary")
-                            .on("click", function () {
-                                var $currentRow = $(this).closest("tr");
-                                var $subGridRow = $currentRow.next(".subgrid-row1");
-
-                                if ($subGridRow.length) {
-                                    $subGridRow.remove(); // Fecha o subgrid1 se já estiver aberto
-                                } else {
-                                    $(".subgrid-row1").remove(); // Remove qualquer outro subgrid1 aberto
-
-
-                                    $subGridRow = $("<tr>").addClass("subgrid-row1")
-                                        .append($("<td colspan='5'>").addClass("subgrid"));
-
-                                    $currentRow.after($subGridRow);
-                                    renderSubGrid2($subGridRow.find(".subgrid"), item.id);
-                                }
-                            });
-                        return $button2;
-                    }
-                },
-
 
                 {
                     type: "control",

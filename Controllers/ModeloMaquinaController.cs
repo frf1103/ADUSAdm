@@ -6,10 +6,11 @@ using FarmPlannerClient.Enum;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using FarmPlannerAdm.Shared;
+using FarmPlannerClient.ModeloMaquina;
 
 namespace FarmPlannerAdm.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,AdminC,User,UserV")]
     public class ModeloMaquinaController : Controller
     {
         private readonly FarmPlannerClient.Controller.ModeloMaquinaControllerClient _culturaAPI;
@@ -31,19 +32,14 @@ namespace FarmPlannerAdm.Controllers
 
             ViewBag.Marcas = t.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
 
-            Task<List<FarmPlannerClient.ModeloMaquina.ListModeloMaquinaViewModel>> ret = _culturaAPI.Lista(idmarca, filtro);
-            List<FarmPlannerClient.ModeloMaquina.ListModeloMaquinaViewModel> c = await ret;
-
             ViewBag.SelectedOption = idmarca.ToString();
             ViewBag.filtro = filtro;
-
-            ViewBag.NumeroPagina = pagina;
-            ViewBag.TotalPaginas = Math.Ceiling((decimal)c.Count() / TAMANHO_PAGINA);
-            return View(c.Skip((pagina - 1) * TAMANHO_PAGINA)
-                                 .Take(TAMANHO_PAGINA)
-                                 .ToList());
+            ViewBag.role = _sessionManager.userrole;
+            ViewBag.permissao = (_sessionManager.userrole == "Admin");
+            return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Adicionar()
         {
@@ -65,7 +61,7 @@ namespace FarmPlannerAdm.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Editar(int id)
+        public async Task<IActionResult> Editar(int id, int acao = 2)
         {
             Task<FarmPlannerClient.ModeloMaquina.ModeloMaquinaViewModel> ret = _culturaAPI.ListaById(id);
             FarmPlannerClient.ModeloMaquina.ModeloMaquinaViewModel c = await ret;
@@ -83,10 +79,18 @@ namespace FarmPlannerAdm.Controllers
                 new SelectListItem { Text = "Jet A1", Value = Combustivel.JETA1.ToString() },
                 new SelectListItem { Text = "Querosene", Value = Combustivel.QUEROSENE.ToString() }
             };
-
-            return View(c);
+            ViewBag.acao = acao;
+            if ((acao == 2 && User.IsInRole("Admin")) || acao == 4)
+            {
+                return View(c);
+            }
+            else
+            {
+                return View("AccessDenied");
+            }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Excluir(int id)
         {
@@ -108,6 +112,7 @@ namespace FarmPlannerAdm.Controllers
             return View(c);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Editar(int id, FarmPlannerClient.ModeloMaquina.ModeloMaquinaViewModel dados)
         {
@@ -123,6 +128,7 @@ namespace FarmPlannerAdm.Controllers
             return View("editar");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Adicionar(FarmPlannerClient.ModeloMaquina.ModeloMaquinaViewModel dados)
         {
@@ -140,6 +146,7 @@ namespace FarmPlannerAdm.Controllers
             return View("adicionar");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Excluir(int id, FarmPlannerClient.ModeloMaquina.ModeloMaquinaViewModel dados)
         {
@@ -155,6 +162,14 @@ namespace FarmPlannerAdm.Controllers
             ModelState.AddModelError(string.Empty, x);
 
             return View("excluir");
+        }
+
+        public async Task<JsonResult> GetData(string? filtro, int idmarca = 0)
+        {
+            Task<List<ListModeloMaquinaViewModel>> ret = _culturaAPI.Lista(idmarca, filtro);
+            List<ListModeloMaquinaViewModel> c = await ret;
+
+            return Json(c);
         }
     }
 }

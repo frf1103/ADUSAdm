@@ -21,10 +21,12 @@
 
 
 <h2>Princípio Ativo</h2>
-                        <div class="col text-right">
-                            <a href="/principioativo/adicionar" class=" btn btn-primary">Novo princípio</a>                        
-                         
-                        </div>
+    <div class="col text-right">
+        @if (ViewBag.permissao == true)
+        {
+            <a href="/principioativo/adicionar" class=" btn btn-primary">Novo princípio</a>                        
+        }                
+    </div>
 
 
 
@@ -102,6 +104,7 @@
                             .attr("type", "button")
                             .attr("id", "dropdownMenuButton")
                             .attr("data-toggle", "dropdown")
+                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
                             .text("Ações");
 
                         var $menu = $("<div>").addClass("dropdown-menu")
@@ -117,6 +120,7 @@
                         var $edit = $("<a>").addClass("dropdown-item")
                             .attr("href", "#")
                             .text("Editar")
+                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
                             .on("click", function () {
                                 window.location.href = '/principioativo/editar/' + item.id + '?acao=2';
                             });
@@ -124,6 +128,7 @@
                         var $delete = $("<a>").addClass("dropdown-item")
                             .attr("href", "#")
                             .text("Excluir")
+                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
                             .on("click", function () {
                                 window.location.href = '/principioativo/excluir/' + item.id;
                             });

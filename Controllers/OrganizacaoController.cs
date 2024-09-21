@@ -36,6 +36,7 @@ namespace FarmPlannerAdm.Controllers
             _sessionManager = sessionManager;
         }
 
+
         public async Task<IActionResult> Index(string? filtro, int pagina = 1)
         {
             /*
@@ -56,6 +57,9 @@ namespace FarmPlannerAdm.Controllers
 
             // Passa as roles para a view usando ViewBag
             ViewBag.UserRoles = roles[0].ToString();
+            ViewBag.role = _sessionManager.userrole;
+            ViewBag.permissao = (_sessionManager.userrole == "Admin" || _sessionManager.userrole == "AdminC");
+
             return View();
         }
 

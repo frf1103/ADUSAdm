@@ -45,18 +45,46 @@
                                         </div>
                                         <div class="form-group">
                                             <label asp-for="descricao" class="control-label"></label>
-                                            <input asp-for="descricao" class="form-control" />
+                                            @{
+                                                if (ViewBag.acao == 2)
+                                                {
+                                                    <input asp-for="descricao" class="form-control" />
+                                                }
+                                                else
+                                                {
+                                                    <input asp-for="descricao" readonly class="form-control"/>
+                                                }
+                                            }
                                             <span asp-validation-for="descricao" class="text-danger"></span>
                                         </div>
                                         <div class="form-group">
                                             <label asp-for="idMarca" class="control-label"></label>
-                                            <select asp-for="idMarca" class="form-control" asp-items="@ViewBag.Marcas"></select>
-                                            <span asp-validation-for="idMarca" class="text-danger"></span>
+                                             @{
+                                                if (ViewBag.acao == 2)
+                                                {
+                                                    <select asp-for="idMarca" class="form-control" asp-items="@ViewBag.Marcas"></select>
+                                                }
+                                                else
+                                                {
+                                                    <select asp-for="idMarca" class="form-control" disabled asp-items="@ViewBag.Marcas"></select>
+                                                }
+                                                <span asp-validation-for="idMarca" class="text-danger"></span>
+                                             }
                                         </div>
                                         <div class="form-group">
                                             <label asp-for="combustivel" class="control-label"></label>
-                                            <select asp-for="combustivel" class="form-control" asp-items="@ViewBag.Combustiveis"></select>
-                                            <span asp-validation-for="combustivel" class="text-danger"></span>
+                                             @{
+                                                if (ViewBag.acao == 2)
+                                                {
+                                                    <select asp-for="combustivel" class="form-control" asp-items="@ViewBag.Combustiveis"></select>
+
+                                                }
+                                                else
+                                                {
+                                                    <select asp-for="combustivel" class="form-control" disabled asp-items="@ViewBag.Combustiveis"></select>
+                                                }
+                                             }
+                                             <span asp-validation-for="combustivel" class="text-danger"></span>
                                         </div>
 
                                     </div>
@@ -64,7 +92,11 @@
                                     <div class="card-footer">
                                         <div class="row">
                                             <div class="col text-right">
-                                                <button type="submit" class="btn btn-primary">Salvar</button>
+                                                @if (ViewBag.acao != 4)
+                                                {
+                                                    <button type="submit" class="btn btn-primary">Salvar</button>
+                                                }
+
                                                 <a href="/modelomaquina/index" class="btn btn-danger">Voltar</a>
                                             </div>
                                         </div>

@@ -15,7 +15,7 @@ using FarmPlannerAdm.Shared;
 
 namespace FarmPlannerAdm.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,AdminC,User,UserV")]
     public class CulturaController : Controller
     {
         private readonly FarmPlannerClient.Controller.CulturaControllerClient _culturaAPI;
@@ -31,16 +31,13 @@ namespace FarmPlannerAdm.Controllers
 
         public async Task<IActionResult> Index(string? filtro, int pagina = 1)
         {
-            Task<List<FarmPlannerClient.Cultura.CulturaViewModel>> ret = _culturaAPI.ListaCultura(filtro);
-            List<FarmPlannerClient.Cultura.CulturaViewModel> c = await ret;
-
-            ViewBag.NumeroPagina = pagina;
-            ViewBag.TotalPaginas = Math.Ceiling((decimal)c.Count() / TAMANHO_PAGINA);
-            return View(c.Skip((pagina - 1) * TAMANHO_PAGINA)
-                                 .Take(TAMANHO_PAGINA)
-                                 .ToList());
+            ViewBag.filtro = filtro;
+            ViewBag.role = _sessionManager.userrole;
+            ViewBag.permissao = (_sessionManager.userrole == "Admin");
+            return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Adicionar()
         {
@@ -49,17 +46,27 @@ namespace FarmPlannerAdm.Controllers
             return View(c);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
-        public async Task<IActionResult> Editar(int id)
+        public async Task<IActionResult> Editar(int id,int acao=2)
         {
             Task<FarmPlannerClient.Cultura.CulturaViewModel> ret = _culturaAPI.ListaCulturaById(id);
             FarmPlannerClient.Cultura.CulturaViewModel c = await ret;
 
             ViewBag.Id = id;
 
-            return View(c);
+            if ((acao == 2 && User.IsInRole("Admin")) || acao == 4)
+            {
+                return View(c);
+            }
+            else
+            {
+                return View("AccessDenied");
+            }
+
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Excluir(int id)
         {
@@ -69,6 +76,7 @@ namespace FarmPlannerAdm.Controllers
             return View(c);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Editar(int id, FarmPlannerClient.Cultura.CulturaViewModel dados)
         {
@@ -84,6 +92,7 @@ namespace FarmPlannerAdm.Controllers
             return View("editar");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Adicionar(FarmPlannerClient.Cultura.CulturaViewModel dados)
         {
@@ -100,6 +109,8 @@ namespace FarmPlannerAdm.Controllers
             ModelState.AddModelError(string.Empty, x);
             return View("adicionar");
         }
+
+        [Authorize(Roles = "Admin")]
 
         [HttpPost]
         public async Task<IActionResult> Excluir(int id, FarmPlannerClient.Cultura.CulturaViewModel dados)
@@ -118,6 +129,7 @@ namespace FarmPlannerAdm.Controllers
             return View("excluir");
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AdicionarVariedade(int idcultura, string desccultura)
         {
             FarmPlannerClient.Variedade.VariedadeViewModel c = new FarmPlannerClient.Variedade.VariedadeViewModel();
@@ -131,6 +143,7 @@ namespace FarmPlannerAdm.Controllers
             return View(c);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> EditarVariedade(int id)
         {
@@ -147,6 +160,7 @@ namespace FarmPlannerAdm.Controllers
 
             return View(c);
         }
+        [Authorize(Roles = "Admin")]
 
         [HttpGet]
         public async Task<IActionResult> ExcluirVariedade(int id)
@@ -164,6 +178,7 @@ namespace FarmPlannerAdm.Controllers
             return View(c);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> EditarVariedade(int id, FarmPlannerClient.Variedade.VariedadeViewModel dados)
         {
@@ -180,6 +195,7 @@ namespace FarmPlannerAdm.Controllers
             return View("editar");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> AdicionarVariedade(FarmPlannerClient.Variedade.VariedadeViewModel dados)
         {
@@ -205,6 +221,7 @@ namespace FarmPlannerAdm.Controllers
             return View("adicionarvariedade");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> ExcluirVariedade(int id, FarmPlannerClient.Variedade.VariedadeViewModel dados)
         {
@@ -226,6 +243,14 @@ namespace FarmPlannerAdm.Controllers
         {
             Task<FarmPlannerClient.Cultura.CulturaViewModel> ret = _culturaAPI.ListaCulturaById(id);
             FarmPlannerClient.Cultura.CulturaViewModel c = await ret;
+            return Json(c);
+        }
+
+        public async Task<JsonResult> GetData(string? filtro)
+        {
+            Task<List<FarmPlannerClient.Cultura.CulturaViewModel>> ret = _culturaAPI.ListaCulturaVariedade(filtro);
+            List<FarmPlannerClient.Cultura.CulturaViewModel> c = await ret;
+
             return Json(c);
         }
     }

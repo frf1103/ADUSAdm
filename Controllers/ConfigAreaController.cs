@@ -66,8 +66,11 @@ namespace FarmPlannerAdm.Controllers
                 var safra = s.Find(x => x.id == idsafra);
                 ViewBag.idcultura = safra.idCultura.ToString();
             }
+            ViewBag.role = _sessionManager.userrole;
+            ViewBag.permissao = (_sessionManager.userrole != "UserV");
             return View();
         }
+
 
         public async Task<IActionResult> PlanejPlantio(int idsafra, int idvariedade, int idtalhao, int idfazenda)
         {
@@ -96,6 +99,8 @@ namespace FarmPlannerAdm.Controllers
                 var safra = s.Find(x => x.id == idsafra);
                 ViewBag.idcultura = safra.idCultura.ToString();
             }
+            ViewBag.role = _sessionManager.userrole;
+            ViewBag.permissao = (_sessionManager.userrole != "UserV");
             return View();
         }
 

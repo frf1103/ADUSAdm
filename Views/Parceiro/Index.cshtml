@@ -21,7 +21,10 @@
 
 <h2>Parceiros de Negócio</h2>
 <div class="col text-right">
-    <a href="/parceiro/adicionar" class=" btn btn-primary">Novo Parceiro</a>
+     @if (ViewBag.permissao == true)
+     {
+            <a href="/parceiro/adicionar" class=" btn btn-primary">Novo Parceiro</a>
+     }
 </div>
 <div id="jsGrid"></div>
 
@@ -69,6 +72,15 @@
 
             sorting: true,
             paging: true,
+            pageSize: 10,                 // Define o número de registros por página
+            pageButtonCount: 5,          // Número de botões de navegação exibidos
+            pagerFormat: "Páginas: {pages} {prev} {next} {first} {last}",  // Formato do pager,
+            pageLoading: false,
+            pagePrevText: "Anterior", // Texto para o botão "Anterior"
+            pageNextText: "Próximo",  // Texto para o botão "Próximo",
+            pageFirstText: "Primeira",  // Adicionando "Primeira" página
+            pageLastText: "Última",     // Adicionando "Última" página
+
 
             autoload: true,
             noDataContent: "<div class='custom-no-data'>Nenhum dado encontrado</div>",
@@ -106,6 +118,7 @@
                             .attr("type", "button")
                             .attr("id", "dropdownMenuButton")
                             .attr("data-toggle", "dropdown")
+                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
                             .text("Ações");
 
                         var $menu = $("<div>").addClass("dropdown-menu")
@@ -114,6 +127,7 @@
                         var $details = $("<a>").addClass("dropdown-item")
                             .attr("href", "#")
                             .text("Visualizar")
+                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
                             .on("click", function () {
                                 window.location.href = '/parceiro/editar/' + item.id;
                             });
@@ -121,6 +135,7 @@
                         var $edit = $("<a>").addClass("dropdown-item")
                             .attr("href", "#")
                             .text("Editar")
+                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
                             .on("click", function () {
                                 window.location.href = '/parceiro/editar/' + item.id + '?acao=2';
                             });
@@ -128,6 +143,7 @@
                         var $delete = $("<a>").addClass("dropdown-item")
                             .attr("href", "#")
                             .text("Excluir")
+                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
                             .on("click", function () {
                                 window.location.href = '/parceiro/excluir/' + item.id;
                             });

@@ -9,7 +9,7 @@ using FarmPlannerAdm.Shared;
 
 namespace FarmPlannerAdm.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,AdminC,User,UserV")]
     public class GrupoProdutoController : Controller
     {
         private readonly FarmPlannerClient.Controller.GrupoProdutoControllerClient _culturaAPI;
@@ -24,16 +24,13 @@ namespace FarmPlannerAdm.Controllers
 
         public async Task<IActionResult> Index(string? filtro, int pagina = 1)
         {
-            Task<List<FarmPlannerClient.GrupoProduto.GrupoProdutoViewModel>> ret = _culturaAPI.Lista(filtro);
-            List<FarmPlannerClient.GrupoProduto.GrupoProdutoViewModel> c = await ret;
-
-            ViewBag.NumeroPagina = pagina;
-            ViewBag.TotalPaginas = Math.Ceiling((decimal)c.Count() / TAMANHO_PAGINA);
-            return View(c.Skip((pagina - 1) * TAMANHO_PAGINA)
-                                 .Take(TAMANHO_PAGINA)
-                                 .ToList());
+            ViewBag.filtro = filtro;
+            ViewBag.role = _sessionManager.userrole;
+            ViewBag.permissao = (_sessionManager.userrole == "Admin");
+            return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Adicionar()
         {
@@ -44,29 +41,43 @@ namespace FarmPlannerAdm.Controllers
                 new SelectListItem { Text = "Biologicos", Value =TipoGrupo.Biologicos.ToString() },
                 new SelectListItem { Text = "Sementes", Value =TipoGrupo.Sementes.ToString()},
                 new SelectListItem { Text = "Corretivos", Value =TipoGrupo.Corretivos.ToString() },
-                new SelectListItem { Text = "Defensivos", Value =TipoGrupo.Defensivos.ToString() }
+                new SelectListItem { Text = "Defensivos", Value =TipoGrupo.Defensivos.ToString() },
+                new SelectListItem { Text = "Combustíveis", Value =TipoGrupo.Combustiveis.ToString() },
+                new SelectListItem { Text = "Outros", Value =TipoGrupo.Outros.ToString() }
             };
 
             return View(c);
         }
 
+        [Authorize(Roles = "Admin,AdminC,User")]
         [HttpGet]
-        public async Task<IActionResult> Editar(int id)
+        public async Task<IActionResult> Editar(int id, int acao = 2)
         {
             Task<FarmPlannerClient.GrupoProduto.GrupoProdutoViewModel> ret = _culturaAPI.ListaById(id);
             FarmPlannerClient.GrupoProduto.GrupoProdutoViewModel c = await ret;
 
             ViewBag.Id = id;
+            ViewBag.acao = acao;
             ViewBag.TiposGrupos = new[] {
                 new SelectListItem { Text = "Fertilizantes", Value = TipoGrupo.Fertilizantes.ToString() },
                 new SelectListItem { Text = "Biologicos", Value =TipoGrupo.Biologicos.ToString() },
                 new SelectListItem { Text = "Sementes", Value =TipoGrupo.Sementes.ToString()},
                 new SelectListItem { Text = "Corretivos", Value =TipoGrupo.Corretivos.ToString() },
-                new SelectListItem { Text = "Defensivos", Value =TipoGrupo.Defensivos.ToString() }
+                new SelectListItem { Text = "Defensivos", Value =TipoGrupo.Defensivos.ToString() },
+                new SelectListItem { Text = "Combustíveis", Value =TipoGrupo.Combustiveis.ToString() },
+                new SelectListItem { Text = "Outros", Value =TipoGrupo.Outros.ToString() }
             };
-            return View(c);
+            if ((acao == 2 && User.IsInRole("Admin")) || acao == 4)
+            {
+                return View(c);
+            }
+            else
+            {
+                return View("AccessDenied");
+            }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Excluir(int id)
         {
@@ -78,6 +89,7 @@ namespace FarmPlannerAdm.Controllers
             return View(c);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Editar(int id, FarmPlannerClient.GrupoProduto.GrupoProdutoViewModel dados)
         {
@@ -93,6 +105,7 @@ namespace FarmPlannerAdm.Controllers
             return View("editar");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Adicionar(FarmPlannerClient.GrupoProduto.GrupoProdutoViewModel dados)
         {
@@ -110,6 +123,7 @@ namespace FarmPlannerAdm.Controllers
             return View("adicionar");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Excluir(int id, FarmPlannerClient.GrupoProduto.GrupoProdutoViewModel dados)
         {
@@ -125,6 +139,14 @@ namespace FarmPlannerAdm.Controllers
             ModelState.AddModelError(string.Empty, x);
 
             return View("excluir");
+        }
+
+        public async Task<JsonResult> GetData(string? filtro)
+        {
+            Task<List<GrupoProdutoViewModel>> ret = _culturaAPI.Lista(filtro);
+            List<GrupoProdutoViewModel> c = await ret;
+
+            return Json(c);
         }
     }
 }

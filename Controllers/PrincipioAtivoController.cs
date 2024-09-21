@@ -24,13 +24,13 @@ namespace FarmPlannerAdm.Controllers
             Task<List<FarmPlannerClient.PrincipioAtivo.PrincipioAtivoViewModel>> ret = _culturaAPI.Lista(filtro);
             List<FarmPlannerClient.PrincipioAtivo.PrincipioAtivoViewModel> c = await ret;
 
-            ViewBag.NumeroPagina = pagina;
-            ViewBag.TotalPaginas = Math.Ceiling((decimal)c.Count() / TAMANHO_PAGINA);
-            return View(c.Skip((pagina - 1) * TAMANHO_PAGINA)
-                                 .Take(TAMANHO_PAGINA)
-                                 .ToList());
+            ViewBag.filtro = filtro;
+            ViewBag.role = _sessionManager.userrole;
+            ViewBag.permissao = (_sessionManager.userrole == "Admin");
+            return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Adicionar()
         {
@@ -39,6 +39,7 @@ namespace FarmPlannerAdm.Controllers
             return View(c);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Editar(int id, int acao = 0)
         {
@@ -50,6 +51,7 @@ namespace FarmPlannerAdm.Controllers
             return View(c);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Excluir(int id)
         {
@@ -59,6 +61,7 @@ namespace FarmPlannerAdm.Controllers
             return View(c);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Editar(int id, FarmPlannerClient.PrincipioAtivo.PrincipioAtivoViewModel dados)
         {
@@ -74,6 +77,7 @@ namespace FarmPlannerAdm.Controllers
             return View("editar");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Adicionar(FarmPlannerClient.PrincipioAtivo.PrincipioAtivoViewModel dados)
         {
@@ -92,6 +96,7 @@ namespace FarmPlannerAdm.Controllers
             return View("adicionar");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Excluir(int id, FarmPlannerClient.PrincipioAtivo.PrincipioAtivoViewModel dados)
         {

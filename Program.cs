@@ -150,6 +150,16 @@ builder.Services.AddHttpClient<FarmPlannerClient.Controller.PlanejOperacaoContro
     client.BaseAddress = new Uri(urlAPI.ToString());
 });
 
+builder.Services.AddHttpClient<FarmPlannerClient.Controller.PlanejamentoCompraControllerClient>(client =>
+{
+    client.BaseAddress = new Uri(urlAPI.ToString());
+});
+
+builder.Services.AddHttpClient<FarmPlannerClient.Controller.OrcamentoProdutoControllerClient>(client =>
+{
+    client.BaseAddress = new Uri(urlAPI.ToString());
+});
+
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 builder.Services.AddTransient<FarmPlannerAdm.Shared.IEmailSender, EmailSender>();
 builder.Services.AddTransient<IUsuarioService, UsuContservice>();
@@ -201,13 +211,13 @@ var config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", optional: false)
     .SetBasePath(Directory.GetCurrentDirectory())
     .Build();
-
+/*
 builder.WebHost.ConfigureKestrel((context, serverOptions) =>
 {
     serverOptions.Listen(System.Net.IPAddress.Any, config.GetValue<int>("HOST:HTTP"));
     serverOptions.Listen(System.Net.IPAddress.Any, config.GetValue<int>("HOST:HTTPS"));
 });
-
+*/
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())

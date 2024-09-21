@@ -5,76 +5,143 @@
 }
 
 <form asp-action="Index">
-    <div class="input-group input-group-sm" style="width: 300px;">
-        <input type="text" class="form-control" placeholder="Buscar tipo" name="filtro" value="@ViewBag.Filtro">
-        <div class="input-group-append">
-            <button type="submit" class="btn btn-default">
-                <i class="fas fa-search"></i>
-            </button>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-primary collapsed-card">
+                <div class="card-header">
+                    <h3 class="card-title">Filtro</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-filter"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="col-md-5">
+                            <div class="input-group">
+
+                                <input type="search" class="form-control form-control-md" name="filtro" value="@ViewBag.filtro" placeholder="busca por descrição">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-md btn-default">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
         </div>
     </div>
-    <div>
-        @Html.ValidationSummary(true)
-    </div>
-
 </form>
 
 
 <h2>Tipo de Operação</h2>
-                        <div class="col text-right">
-                            <a href="/tipooperacao/adicionar" class=" btn btn-primary">Novo tipo</a>                        
-                         
-                        </div>
+                      
+@if (ViewBag.permissao == true)
+{
+    <div class="col text-right">
+        <a href="/tipooperacao/adicionar" class=" btn btn-primary">Novo Grupo</a>
 
+    </div>
 
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Descrição</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var reg in Model)
-        {
-            <tr data-toggle="collapse" data-target="#orderDetails-@reg.id" class="accordion-toggle">
-                <td>@reg.id</td>
-                <td>@reg.descricao</td>
-         
-                <td>
-                
-                    <a href="/tipooperacao/editar/@reg.id" class="btn btn-secondary btn-sm mr-1" title="Editar">
-                        <span class="fas fa-edit"></span>
-                    </a>
-
-                    <a href="/tipooperacao/excluir/@reg.id" class="btn btn-secondary btn-sm mr-1" title="Excluir">
-                        <span class="fas fa-trash"></span>
-                    </a>
-                </td>
-
-            </tr>
-        }
-    </tbody>
-</table>
-<div class="card-footer clearfix">
-    <ul class="pagination pagination-sm m-0 float-right">
-        @if (ViewBag.NumeroPagina > 1)
-        {
-            <li class="page-item"><a class="page-link" href="@Url.Action("Index", "tipooperacao", new { Filtro = ViewBag.Filtro, Pagina = ViewBag.NumeroPagina - 1 })">&laquo;</a></li>
-        }
-        <li class="page-item page-link">Página @ViewBag.NumeroPagina de @ViewBag.TotalPaginas</li>
-        @if (ViewBag.NumeroPagina < ViewBag.TotalPaginas)
-        {
-            <li class="page-item"><a class="page-link" href="@Url.Action("Index", "tipooperacao", new { Filtro = ViewBag.Filtro, Pagina = ViewBag.NumeroPagina + 1 })">&raquo;</a></li>
-        }
-    </ul>
-</div>
+}
+<div id="jsGrid"></div>
 
 
 
 @section scripts {
-<script>
-    
-   
-</script>
+    <script>
+
+
+        $(function () {
+            $("#jsGrid").jsGrid({
+                width: "100%",
+                height: "400px",
+
+                sorting: true,
+                paging: true,
+                pageSize: 10,                 // Define o número de registros por página
+                pageButtonCount: 5,          // Número de botões de navegação exibidos
+                pagerFormat: "Páginas: {pages} {prev} {next} {first} {last}",  // Formato do pager,
+                pageLoading: false,
+                pagePrevText: "Anterior", // Texto para o botão "Anterior"
+                pageNextText: "Próximo",  // Texto para o botão "Próximo",
+                pageFirstText: "Primeira",  // Adicionando "Primeira" página
+                pageLastText: "Última",     // Adicionando "Última" página
+
+
+                autoload: true,
+                noDataContent: "<div class='custom-no-data'>Nenhum dado encontrado</div>",
+
+                controller: {
+                    loadData: function () {
+                        return $.ajax({
+                            type: "GET",
+                            url: "/tipooperacao/GetData?filtro=@ViewBag.filtro",
+                            dataType: "json"
+                        });
+                    }
+                },
+
+                fields: [
+                    { name: "id", type: "number", width: 20, title: "ID", visible: true },
+                    { name: "descricao", type: "text", width: 150, title: "Descrição" },
+
+                    {
+                        type: "control",
+                        itemTemplate: function (_, item) {
+                            var $result = $("<div>").addClass("dropdown");
+
+                            var $button = $("<button>").addClass("btn btn-info dropdown-toggle")
+                                .attr("type", "button")
+                                .attr("id", "dropdownMenuButton")
+                                .attr("data-toggle", "dropdown")
+                                .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
+                                .text("Ações");
+
+                            var $menu = $("<div>").addClass("dropdown-menu")
+                                .attr("aria-labelledby", "dropdownMenuButton");
+
+                            var $details = $("<a>").addClass("dropdown-item")
+                                .attr("href", "#")
+                                .text("Visualizar")
+
+                                .on("click", function () {
+                                    window.location.href = '/tipooperacao/editar/' + item.id + '?acao=4';
+                                });
+
+                            var $edit = $("<a>").addClass("dropdown-item")
+                                .attr("href", "#")
+                                .text("Editar")
+                                .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
+                                .on("click", function () {
+                                    window.location.href = '/tipooperacao/editar/' + item.id + '?acao=2';
+                                });
+
+                            var $delete = $("<a>").addClass("dropdown-item")
+                                .attr("href", "#")
+                                .text("Excluir")
+                                .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
+                                .on("click", function () {
+                                    window.location.href = '/tipooperacao/excluir/' + item.id + '?acao=3';
+                                });
+
+                            $menu.append($details).append($edit).append($delete);
+                            $result.append($button).append($menu);
+
+                            return $result;
+                        }
+                    }]
+            });
+        });
+
+
+    </script>
 }

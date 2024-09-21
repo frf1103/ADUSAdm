@@ -29,14 +29,15 @@ namespace FarmPlannerAdm.Controllers
             Task<List<FarmPlannerClient.Parceiro.ListParceiroViewModel>> ret = _culturaAPI.Lista(_sessionManager.contaguid, filtro);
             List<FarmPlannerClient.Parceiro.ListParceiroViewModel> c = await ret;
 
-            ViewBag.NumeroPagina = pagina;
-            ViewBag.TotalPaginas = Math.Ceiling((decimal)c.Count() / TAMANHO_PAGINA);
-            return View(c.Skip((pagina - 1) * TAMANHO_PAGINA)
-                                 .Take(TAMANHO_PAGINA)
-                                 .ToList());
+            ViewBag.filtro = filtro;
+            ViewBag.role = _sessionManager.userrole;
+            ViewBag.permissao = (_sessionManager.userrole != "UserV");
+            return View();
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,AdminC,User")]
+        
         public async Task<IActionResult> Adicionar()
         {
             FarmPlannerClient.Parceiro.ParceiroViewModel c = new FarmPlannerClient.Parceiro.ParceiroViewModel();
@@ -60,6 +61,8 @@ namespace FarmPlannerAdm.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,AdminC,User")]
+
         public async Task<IActionResult> Editar(int id,int acao=0)
         {
             ViewBag.acao = acao;
@@ -85,6 +88,8 @@ namespace FarmPlannerAdm.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,AdminC,User")]
+
         public async Task<IActionResult> Excluir(int id)
         {
             Task<FarmPlannerClient.Parceiro.ParceiroViewModel> ret = _culturaAPI.ListaById(id, _sessionManager.contaguid);
@@ -99,6 +104,8 @@ namespace FarmPlannerAdm.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,AdminC,User")]
+
         public async Task<IActionResult> Editar(int id, FarmPlannerClient.Parceiro.ParceiroViewModel dados)
         {
             dados.idconta = _sessionManager.contaguid;
@@ -121,6 +128,8 @@ namespace FarmPlannerAdm.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,AdminC,User")]
+
         public async Task<IActionResult> Adicionar(FarmPlannerClient.Parceiro.ParceiroViewModel dados)
         {
             dados.idconta = _sessionManager.contaguid;
@@ -143,6 +152,8 @@ namespace FarmPlannerAdm.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,AdminC,User")]
+
         public async Task<IActionResult> Excluir(int id, FarmPlannerClient.Parceiro.ParceiroViewModel dados)
         {
             //FarmPlannerClient.Parceiro.ParceiroViewModel dados=new FarmPlannerClient.Parceiro.ParceiroViewModel();

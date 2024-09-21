@@ -19,7 +19,7 @@ using FarmPlannerClient.ModeloMaquina;
 
 namespace FarmPlannerAdm.Controllers
 {
-    [Authorize(Roles = "Admin,User,AdminC")]
+    [Authorize(Roles = "Admin,User,AdminC,UserV")]
     public class MaquinaController : Controller
     {
         private readonly FarmPlannerClient.Controller.MaquinaControllerClient _MaquinaAPI;
@@ -44,7 +44,8 @@ namespace FarmPlannerAdm.Controllers
 
             ViewBag.SelectedOption = idmodelo.ToString();
             ViewBag.filtro = filtro;
-
+            ViewBag.role = _sessionManager.userrole;
+            ViewBag.permissao = (_sessionManager.userrole != "UserV");
             return View();
         }
 
@@ -56,6 +57,7 @@ namespace FarmPlannerAdm.Controllers
             return Json(c);
         }
 
+        [Authorize(Roles = "Admin,User,AdminC")]
         [HttpGet]
         public async Task<IActionResult> Adicionar(int acao = 1, int id = 0)
         {
@@ -109,6 +111,7 @@ namespace FarmPlannerAdm.Controllers
             return View(c);
         }
 
+        [Authorize(Roles = "Admin,User,AdminC")]
         [HttpPost]
         public async Task<IActionResult> Editar(int id, MaquinaViewModel dados)
         {
@@ -131,6 +134,7 @@ namespace FarmPlannerAdm.Controllers
             return RedirectToAction("adicionar", new { acao = 1, id = 0 });
         }
 
+        [Authorize(Roles = "Admin,User,AdminC")]
         [HttpPost]
         public async Task<IActionResult> Adicionar(MaquinaViewModel dados)
         {
@@ -155,6 +159,7 @@ namespace FarmPlannerAdm.Controllers
             return RedirectToAction("adicionar", new { acao = 1, id = 0 });
         }
 
+        [Authorize(Roles = "Admin,User,AdminC")]
         [HttpPost]
         public async Task<IActionResult> Excluir(int id, MaquinaViewModel dados)
         {

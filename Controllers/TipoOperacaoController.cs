@@ -4,10 +4,11 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using FarmPlannerAdm.Shared;
+using FarmPlannerClient.TipoOperacao;
 
 namespace FarmPlannerAdm.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,AdminC,User,UserV")]
     public class TipoOperacaoController : Controller
     {
         private readonly FarmPlannerClient.Controller.TipoOperacaoControllerClient _culturaAPI;
@@ -22,16 +23,13 @@ namespace FarmPlannerAdm.Controllers
 
         public async Task<IActionResult> Index(string? filtro, int pagina = 1)
         {
-            Task<List<FarmPlannerClient.TipoOperacao.TipoOperacaoViewModel>> ret = _culturaAPI.Lista(filtro);
-            List<FarmPlannerClient.TipoOperacao.TipoOperacaoViewModel> c = await ret;
-
-            ViewBag.NumeroPagina = pagina;
-            ViewBag.TotalPaginas = Math.Ceiling((decimal)c.Count() / TAMANHO_PAGINA);
-            return View(c.Skip((pagina - 1) * TAMANHO_PAGINA)
-                                 .Take(TAMANHO_PAGINA)
-                                 .ToList());
+            ViewBag.filtro = filtro;
+            ViewBag.role = _sessionManager.userrole;
+            ViewBag.permissao = (_sessionManager.userrole == "Admin");
+            return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Adicionar()
         {
@@ -41,16 +39,25 @@ namespace FarmPlannerAdm.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Editar(int id)
+        public async Task<IActionResult> Editar(int id, int acao = 2)
         {
             Task<FarmPlannerClient.TipoOperacao.TipoOperacaoViewModel> ret = _culturaAPI.ListaById(id);
             FarmPlannerClient.TipoOperacao.TipoOperacaoViewModel c = await ret;
 
             ViewBag.Id = id;
+            ViewBag.acao = acao;
 
-            return View(c);
+            if ((acao == 2 && User.IsInRole("Admin")) || acao == 4)
+            {
+                return View(c);
+            }
+            else
+            {
+                return View("AccessDenied");
+            }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Excluir(int id)
         {
@@ -60,6 +67,7 @@ namespace FarmPlannerAdm.Controllers
             return View(c);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Editar(int id, FarmPlannerClient.TipoOperacao.TipoOperacaoViewModel dados)
         {
@@ -75,6 +83,7 @@ namespace FarmPlannerAdm.Controllers
             return View("editar");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Adicionar(FarmPlannerClient.TipoOperacao.TipoOperacaoViewModel dados)
         {
@@ -92,6 +101,7 @@ namespace FarmPlannerAdm.Controllers
             return View("adicionar");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Excluir(int id, FarmPlannerClient.TipoOperacao.TipoOperacaoViewModel dados)
         {
@@ -107,6 +117,14 @@ namespace FarmPlannerAdm.Controllers
             ModelState.AddModelError(string.Empty, x);
 
             return View("excluir");
+        }
+
+        public async Task<JsonResult> GetData(string? filtro)
+        {
+            Task<List<TipoOperacaoViewModel>> ret = _culturaAPI.Lista(filtro);
+            List<TipoOperacaoViewModel> c = await ret;
+
+            return Json(c);
         }
     }
 }

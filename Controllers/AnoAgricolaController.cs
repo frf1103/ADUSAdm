@@ -41,6 +41,9 @@ namespace FarmPlannerAdm.Controllers
 
             ViewBag.SelectedOption = idorg.ToString();
             ViewBag.filtro = filtro;
+            ViewBag.role = _sessionManager.userrole;
+            ViewBag.permissao = (_sessionManager.userrole != "UserV");
+
 
             return View();
         }
@@ -178,6 +181,7 @@ namespace FarmPlannerAdm.Controllers
             return Json(c);
         }
 
+
         public async Task<IActionResult> Indexsafra(int? idcultura, string? filtro, int pagina = 1)
         {
             Task<List<FarmPlannerClient.Cultura.CulturaViewModel>> retc = _culturaAPI.ListaCultura("");
@@ -186,7 +190,11 @@ namespace FarmPlannerAdm.Controllers
             ViewBag.culturas = t.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
 
             ViewBag.SelectedOption = idcultura.ToString();
+
             ViewBag.filtro = filtro;
+            ViewBag.role = _sessionManager.userrole;
+            ViewBag.permissao = (_sessionManager.userrole != "UserV");
+
 
             return View();
         }

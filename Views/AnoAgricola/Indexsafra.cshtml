@@ -24,7 +24,7 @@
 
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-plus"></i>
+                                <i class="fas fa-filter"></i>
                             </button>
                         </div>
                     </div>
@@ -75,8 +75,11 @@
 
     <h2>Safras</h2>
     <div class="col text-right">
-        <a href="/anoagricola/adicionarsafra?acao=1" class=" btn btn-primary"><i class="fas fa-plus icon-default"></i></a>
-
+          @{
+            if (ViewBag.permissao==true){
+                 <a href="/anoagricola/adicionarsafra?acao=1" class=" btn btn-primary"><i class="fas fa-plus icon-default"></i></a>
+            }
+          }
     </div>
 
     <div id="jsGrid"></div>
@@ -177,6 +180,7 @@
                             .attr("type", "button")
                             .attr("id", "dropdownMenuButton")
                             .attr("data-toggle", "dropdown")
+                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
                             .text("Ações");
 
                         var $menu = $("<div>").addClass("dropdown-menu")
@@ -185,6 +189,7 @@
                         var $details = $("<a>").addClass("dropdown-item")
                             .attr("href", "#")
                             .text("Visualizar")
+                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
                             .on("click", function () {
                                 window.location.href = '/anoagricola/adicionarsafra/' + item.id + '?acao=4';
                             });
@@ -192,6 +197,7 @@
                         var $edit = $("<a>").addClass("dropdown-item")
                             .attr("href", "#")
                             .text("Editar")
+                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
                             .on("click", function () {
                                 window.location.href = '/anoagricola/adicionarsafra/' + item.id + '?acao=2';
                             });
@@ -199,6 +205,7 @@
                         var $delete = $("<a>").addClass("dropdown-item")
                             .attr("href", "#")
                             .text("Excluir")
+                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
                             .on("click", function () {
                                 window.location.href = '/anoagricola/adicionarsafra/' + item.id + '?acao=3';
                             });

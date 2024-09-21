@@ -208,6 +208,15 @@
 
             sorting: true,
             paging: true,
+                        pageSize: 10,                 // Define o número de registros por página
+            pageButtonCount: 5,          // Número de botões de navegação exibidos
+            pagerFormat: "Páginas: {pages} {prev} {next} {first} {last}",  // Formato do pager,
+            pageLoading: false, 
+            pagePrevText: "Anterior", // Texto para o botão "Anterior"
+            pageNextText: "Próximo",  // Texto para o botão "Próximo",
+            pageFirstText: "Primeira",  // Adicionando "Primeira" página
+            pageLastText: "Última",     // Adicionando "Última" página
+
 
             autoload: true,
             noDataContent: "<div class='custom-no-data'>Nenhum dado encontrado</div>",
@@ -265,6 +274,7 @@
                         var $details = $("<a>").addClass("dropdown-item")
                             .attr("href", "#")
                             .text("Visualizar")
+                            .addClass("")
                             .on("click", function () {
                                 window.location.href = '/produto/adicionar/' + item.id + '?acao=4';
                             });
@@ -331,10 +341,8 @@
                         }
                     },
                     fields: [                        
-                        { name: "idproduto", title: "Princípio Ativo", type: "text",visible:false, width: 200 },
-                        { name: "idprincipio", title: "Princípio Ativo", type: "text", visible: false, width: 200 },
-                        { name: "descprincipio", title: "Princípio Ativo", type: "text", width: 150 },
-                        { name: "quantidade", title: "Concentração", type: "number", width: 50 },
+                        { name: "id", title: "Princípio Ativo", type: "text",visible:false, width: 20 },
+                        { name: "descricao", title: "Descrição", type: "text", visible: false, width: 200 },
                         {
                             type: "control",
                             itemTemplate: function (_, item) {
@@ -353,6 +361,7 @@
                                 var $edit = $("<a>").addClass("dropdown-item")
                                     .attr("href", "#")
                                     .text("Editar")
+                                    .addClass("disabled")
                                     .on("click", function () {
                                         window.location.href = '/produto/adicionarprodutoprincipio?idproduto=' + item.idproduto+'&idprincipio='+item.idprincipio + '&acao=2';
                                     });
@@ -374,6 +383,7 @@
                 });
                 $("#detailGrid").insertAfter($row).show();
                 $("#detailGrid").data("idproduto", produto.id);
+                $("#detailGrid").jsGrid("refresh");
             }
         }
 

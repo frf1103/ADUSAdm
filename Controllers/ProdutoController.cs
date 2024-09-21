@@ -66,9 +66,9 @@ namespace FarmPlannerAdm.Controllers
             return View();
         }
 
-        public async Task<JsonResult> GetData(int idgrupo, int idfab, int idprincipio, string? filtro)
+        public async Task<JsonResult> GetData(int idgrupo, int idfab, int idprincipio, string? filtro, int tipo = -1)
         {
-            Task<List<ListProdutoViewModel>> ret = _ProdutoAPI.Lista(idgrupo, idprincipio, idfab, _sessionManager.contaguid, filtro);
+            Task<List<ListProdutoViewModel>> ret = _ProdutoAPI.Lista(idgrupo, idprincipio, idfab, _sessionManager.contaguid, filtro, tipo);
             List<ListProdutoViewModel> c = await ret;
 
             return Json(c);
@@ -301,7 +301,7 @@ namespace FarmPlannerAdm.Controllers
             {
                 //  string y = await response.Content.ReadAsStringAsync();
                 //  var result = JsonSerializer.Deserialize<FarmPlannerClient.Defarea.ProdutoViewModel>(y);
-                return RedirectToAction("adicionarprodutoprincipio", new { acao = 1, idproduto = dados.idproduto, idprincipio = 0,descproduto=dados.descproduto });
+                return RedirectToAction("adicionarprodutoprincipio", new { acao = 1, idproduto = dados.idproduto, idprincipio = 0, descproduto = dados.descproduto });
             }
             string x = await response.Content.ReadAsStringAsync();
 
@@ -310,7 +310,7 @@ namespace FarmPlannerAdm.Controllers
 
             TempData["dados"] = dadosStateJson;
             TempData["Erro"] = x;
-            return RedirectToAction("adicionarprodutoprincipio", new { acao = 1, idproduto = dados.idproduto, idprincipio = dados.idprincipio,descproduto=dados.descproduto });
+            return RedirectToAction("adicionarprodutoprincipio", new { acao = 1, idproduto = dados.idproduto, idprincipio = dados.idprincipio, descproduto = dados.descproduto });
         }
 
         [HttpPost]

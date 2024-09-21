@@ -21,7 +21,7 @@ using FarmPlannerClient.Cultura;
 
 namespace FarmPlannerAdm.Controllers
 {
-    [Authorize(Roles = "Admin,User,AdminC")]
+    [Authorize(Roles = "Admin,User,AdminC,UserV")]
     public class ModeloParametroController : Controller
     {
         private readonly FarmPlannerClient.Controller.ModeloMaquinaControllerClient _ModeloParametroAPI;
@@ -61,6 +61,8 @@ namespace FarmPlannerAdm.Controllers
             ViewBag.SelectedOptionM = idmodelo.ToString();
             ViewBag.SelectedOptionC = idcultura.ToString();
             ViewBag.SelectedOptionO = idoperacao.ToString();
+            ViewBag.role = _sessionManager.userrole;
+            ViewBag.permissao = (_sessionManager.userrole != "UserV");
 
             return View();
         }
@@ -73,6 +75,7 @@ namespace FarmPlannerAdm.Controllers
             return Json(c);
         }
 
+        [Authorize(Roles = "Admin,User,AdminC")]
         [HttpGet]
         public async Task<IActionResult> Adicionar(int idmodelo, int idcultura, int idoperacao, int acao = 1, int id = 0)
         {
@@ -139,6 +142,7 @@ namespace FarmPlannerAdm.Controllers
             return View(c);
         }
 
+        [Authorize(Roles = "Admin,User,AdminC")]
         [HttpPost]
         public async Task<IActionResult> Editar(int id, ModeloParametroViewModel dados)
         {
@@ -161,6 +165,7 @@ namespace FarmPlannerAdm.Controllers
             return RedirectToAction("adicionar", new { acao = 1, id = 0 });
         }
 
+        [Authorize(Roles = "Admin,User,AdminC")]
         [HttpPost]
         public async Task<IActionResult> Adicionar(ModeloParametroViewModel dados)
         {
@@ -184,6 +189,7 @@ namespace FarmPlannerAdm.Controllers
             return RedirectToAction("adicionar", new { acao = 1, id = 0, idmodelo = dados.idModeloMaquina, idcultura = dados.idCultura, idoperacao = dados.idOperacao });
         }
 
+        [Authorize(Roles = "Admin,User,AdminC")]
         [HttpPost]
         public async Task<IActionResult> Excluir(int id, ModeloParametroViewModel dados)
         {

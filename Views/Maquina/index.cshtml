@@ -75,8 +75,10 @@
 
     <h2>Máquinas</h2>
     <div class="col text-right">
-        <a href="/maquina/adicionar?acao=1" class=" btn btn-primary"><i class="fas fa-plus icon-default"></i></a>
-
+          @if (ViewBag.permissao == true)
+        {
+            <a href="/maquina/adicionar?acao=1" class=" btn btn-primary"><i class="fas fa-plus icon-default"></i></a>
+        }
     </div>
 
     <div id="jsGrid"></div>
@@ -136,6 +138,15 @@
 
             sorting: true,
             paging: true,
+            pageSize: 10,                 // Define o número de registros por página
+            pageButtonCount: 5,          // Número de botões de navegação exibidos
+            pagerFormat: "Páginas: {pages} {prev} {next} {first} {last}",  // Formato do pager,
+            pageLoading: false,
+            pagePrevText: "Anterior", // Texto para o botão "Anterior"
+            pageNextText: "Próximo",  // Texto para o botão "Próximo",
+            pageFirstText: "Primeira",  // Adicionando "Primeira" página
+            pageLastText: "Última",     // Adicionando "Última" página
+
 
             autoload: true,
             noDataContent: "<div class='custom-no-data'>Nenhum dado encontrado</div>",
@@ -164,6 +175,7 @@
                             .attr("type", "button")
                             .attr("id", "dropdownMenuButton")
                             .attr("data-toggle", "dropdown")
+                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
                             .text("Ações");
 
                         var $menu = $("<div>").addClass("dropdown-menu")
