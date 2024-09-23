@@ -70,7 +70,7 @@
 
                                             <div class="col-md-5">
                                                 <div class="form-group">
-                                                    <label asp-for="idSafra" class="control-label"></label>
+                                                    <label asp-for="descricao" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
@@ -228,7 +228,7 @@
                                 </div>
                             </form>
                             <div class="col text-right">
-                                <a href="/planejoperacao/adicionarprodutoorcmaneto?idorcamento=@Model!.id&acao=1" button type="submit" class="btn btn-primary"><i class="fas fa-plus icon-default"></i></a>
+                                <a href="/orcamentoproduto/adicionarproduto?idorcamento=@Model!.id&acao=1" button type="submit" class="btn btn-primary"><i class="fas fa-plus icon-default"></i></a>
                             </div>
 
 
@@ -264,7 +264,7 @@
     {
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
-    @*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>*@
+    
         <script src="https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid.min.js"></script>
 
           
@@ -280,7 +280,7 @@
             }
             // Simula a mudança de valor
 
-
+            $('select').select2();
             
             });
 
@@ -290,7 +290,7 @@
         $(function () {
             $("#jsprodutos").jsGrid({
                 width: "100%",
-                height: "300px",
+                height: "auto",
 
                 sorting: true,
                 paging: true,
@@ -306,7 +306,7 @@
                     loadData: function () {
                         return $.ajax({
                             type: "GET",
-                            url: "/orcamentoproduto/getprodorc,
+                            url: "/orcamentoproduto/getprodorc",
                             data:{idorc:@ViewBag.id,
                             idprincipio:@ViewBag.SelectedOptionP,
                             idproduto:@ViewBag.SelectedOptionPr},
@@ -326,14 +326,15 @@
                     },
 
                     {
-                        name: "descmoeda", type: "text", width: 100, title: "Produto"
+                        name: "descmoeda", type: "text", width: 100, title: "Moeda"
                     },
 
                     {
-                        name: "precoUnitario", type: "number", width: 50, align:"left",
+                        name: "precoUnitario", type: "number", width: 50, 
 
                         headerTemplate: function () {
-                            return $("<th>").text("Vl Unitário").addClass("custom-header");
+                            return "Vl Unitário"
+                            //return $("<th>").text("Vl Unitário").addClass("custom-header");
                         }
                     },
 
@@ -373,7 +374,15 @@
                                     window.location.href = '/orcamentoproduto/adicionarproduto/' + item.id + '?acao=3';
                                 });
 
-                            $menu.append($details).append($edit).append($delete);
+                            var $atualizar = $("<a>").addClass("dropdown-item")
+                                .attr("href", "#")
+                                .text("Atualizar Preço")
+                                .on("click", function () {
+                                    window.location.href = '/orcamentoproduto/atualizarpreco?id=' + item.id;
+                                });
+
+
+                            $menu.append($details).append($edit).append($delete).append($atualizar);
                             $result.append($button).append($menu);
 
                             return $result;

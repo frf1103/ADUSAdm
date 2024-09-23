@@ -21,6 +21,7 @@ using FarmPlannerClient.ModeloMaquina;
 using Microsoft.IdentityModel.Abstractions;
 using FarmPlannerClient.Produto;
 using FarmPlannerClient.OrcamentoProduto;
+using FarmPlannerClient.Moeda;
 
 namespace FarmPlannerAdm.Controllers
 {
@@ -33,10 +34,11 @@ namespace FarmPlannerAdm.Controllers
         private readonly FarmPlannerClient.Controller.AnoAgricolaControllerClient _anoagricolaAPI;
         private readonly FarmPlannerClient.Controller.PrincipioAtivoControllerClient _principioAPI;
         private readonly FarmPlannerClient.Controller.ProdutoControllerClient _produtoAPI;
+        private readonly FarmPlannerClient.Controller.MoedaControllerClient _moedaAPI;
 
         private readonly SessionManager _sessionManager;
 
-        public OrcamentoProdutoController(OrcamentoProdutoControllerClient OrcamentoProduto, CulturaControllerClient culturaAPI, FazendaControllerClient fazendaAPI, AnoAgricolaControllerClient anoagricolaAPI, SessionManager sessionManager, ConfigAreaControllerClient configArea, OperacaoControllerClient operacao, PrincipioAtivoControllerClient principioAPI, ProdutoControllerClient produtoAPI, ModeloMaquinaControllerClient modeloAPI)
+        public OrcamentoProdutoController(OrcamentoProdutoControllerClient OrcamentoProduto, CulturaControllerClient culturaAPI, FazendaControllerClient fazendaAPI, AnoAgricolaControllerClient anoagricolaAPI, SessionManager sessionManager, ConfigAreaControllerClient configArea, OperacaoControllerClient operacao, PrincipioAtivoControllerClient principioAPI, ProdutoControllerClient produtoAPI, ModeloMaquinaControllerClient modeloAPI, MoedaControllerClient moedaAPI)
         {
             _OrcamentoProduto = OrcamentoProduto;
             _culturaAPI = culturaAPI;
@@ -46,6 +48,7 @@ namespace FarmPlannerAdm.Controllers
 
             _principioAPI = principioAPI;
             _produtoAPI = produtoAPI;
+            _moedaAPI = moedaAPI;
         }
 
         private const int TAMANHO_PAGINA = 5;
@@ -101,8 +104,8 @@ namespace FarmPlannerAdm.Controllers
 
             ViewBag.idacao = acao;
 
-            ViewBag.SelectedOptionP = idprincipio;
-            ViewBag.SelectedOptionPr = idproduto;
+            ViewBag.SelectedOptionP = idprincipio.ToString();
+            ViewBag.SelectedOptionPr = idproduto.ToString();
 
             if (acao == 1)
             {
@@ -155,6 +158,18 @@ namespace FarmPlannerAdm.Controllers
             List<ListFazendaViewModel> f = await retf;
 
             ViewBag.fazendas = f.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
+
+            Task<List<ListProdutoViewModel>> retpr = _produtoAPI.Lista(0, 0, 0, _sessionManager.contaguid, "", -1);
+            List<ListProdutoViewModel> pr = await retpr;
+
+            ViewBag.produtos = pr.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
+            Task<List<PrincipioAtivoViewModel>> retp = _principioAPI.Lista("");
+
+            List<PrincipioAtivoViewModel> p = await retp;
+
+            ViewBag.principios = p.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
+
+            ViewBag.id = id;
 
             return View(c);
         }
@@ -236,7 +251,7 @@ namespace FarmPlannerAdm.Controllers
 
         [Authorize(Roles = "Admin,User,AdminC")]
         [HttpGet]
-        public async Task<IActionResult> adicionarproduto(int idorcamento, int acao = 1, int id = 0)
+        public async Task<IActionResult> adicionarproduto(int idorcamento, int acao = 1, int id = 0,int origem=0)
         {
             ProdutoOrcamentoViewModel c;
 
@@ -249,25 +264,29 @@ namespace FarmPlannerAdm.Controllers
                 //   c.idfazenda = idfaz;
                 //   c.idSafra = idsafra;
 
+                ViewBag.idproduto = 0;
+
                 ViewBag.Titulo = "Adicionar";
-                ViewBag.Acao = "adicionar";
+                ViewBag.Acao = "adicionarproduto";
             }
             else
             {
                 Task<ProdutoOrcamentoViewModel> ret = _OrcamentoProduto.ListaProdutoById(id, _sessionManager.contaguid);
                 c = await ret;
+                ViewBag.idorc = c.idOrcamento;
+                ViewBag.idproduto = c.idProduto;
 
                 //    ViewBag.idvariedade = c.idVariedade;
                 //    ViewBag.idtalhao = c.idTalhao;
                 if (acao == 2)
                 {
                     ViewBag.Titulo = "Editar";
-                    ViewBag.Acao = "editar";
+                    ViewBag.Acao = "editarproduto";
                 }
                 if (acao == 3)
                 {
                     ViewBag.Titulo = "Excluir";
-                    ViewBag.Acao = "excluir";
+                    ViewBag.Acao = "excluirproduto";
                 }
                 if (acao == 4)
                 {
@@ -286,10 +305,6 @@ namespace FarmPlannerAdm.Controllers
                 ModelState.AddModelError(string.Empty, TempData["Erro"].ToString());
             }
 
-            Task<List<ListProdutoViewModel>> retpr = _produtoAPI.Lista(0, 0, 0, _sessionManager.contaguid, "", -1);
-            List<ListProdutoViewModel> pr = await retpr;
-
-            ViewBag.produtos = pr.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
             Task<List<PrincipioAtivoViewModel>> retp = _principioAPI.Lista("");
 
             List<PrincipioAtivoViewModel> p = await retp;
@@ -301,12 +316,17 @@ namespace FarmPlannerAdm.Controllers
                 new SelectListItem { Text = "Combustível", Value ="1" }
             };
 
+            Task<List<MoedaViewModel>> retm = _moedaAPI.ListaMoeda("");
+            List<MoedaViewModel> m = await retm;
+
+            ViewBag.moedas = m.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
+            ViewBag.origem = origem;
             return View(c);
         }
 
         [Authorize(Roles = "Admin,User,AdminC")]
         [HttpPost]
-        public async Task<IActionResult> EditarProduto(int id, ProdutoOrcamentoViewModel dados)
+        public async Task<IActionResult> EditarProduto(int id, int origem,ProdutoOrcamentoViewModel dados)
         {
             dados.idconta = _sessionManager.contaguid;
             dados.uid = _sessionManager.uid;
@@ -315,7 +335,14 @@ namespace FarmPlannerAdm.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("adicionar", new { acao = 2, id = dados.idOrcamento });
+                if (origem == 0)
+                {
+                    return RedirectToAction("adicionar", new { acao = 2, id = dados.idOrcamento });
+                }
+                else
+                {
+                    return RedirectToAction("index");
+                }
             }
             var x = await response.Content.ReadAsStringAsync();
 
@@ -330,7 +357,7 @@ namespace FarmPlannerAdm.Controllers
 
         [Authorize(Roles = "Admin,User,AdminC")]
         [HttpPost]
-        public async Task<IActionResult> AdicionarProduto(ProdutoOrcamentoViewModel dados)
+        public async Task<IActionResult> AdicionarProduto(ProdutoOrcamentoViewModel dados,int origem= 0)
         {
             dados.idconta = _sessionManager.contaguid;
             dados.uid = _sessionManager.uid;
@@ -341,7 +368,8 @@ namespace FarmPlannerAdm.Controllers
             {
                 string y = await response.Content.ReadAsStringAsync();
                 var result = System.Text.Json.JsonSerializer.Deserialize<ProdutoOrcamentoViewModel>(y);
-                return RedirectToAction(nameof(Adicionar), new { acao = 2, id = result.id });
+                return RedirectToAction(nameof(AdicionarProduto), new { acao = 1, idorcamento = result.idOrcamento });
+                
             }
             string x = await response.Content.ReadAsStringAsync();
 
@@ -355,14 +383,21 @@ namespace FarmPlannerAdm.Controllers
 
         [Authorize(Roles = "Admin,User,AdminC")]
         [HttpPost]
-        public async Task<IActionResult> ExcluirProduto(int id, ProdutoOrcamentoViewModel dados)
+        public async Task<IActionResult> ExcluirProduto(int id, ProdutoOrcamentoViewModel dados, int origem = 0)
         {
             //FarmPlannerClient.OrcamentoProduto.OrcamentoProdutoViewModel dados=new FarmPlannerClient.OrcamentoProduto.OrcamentoProdutoViewModel();
             var response = await _OrcamentoProduto.ExcluirProduto(id, _sessionManager.contaguid, _sessionManager.uid);
 
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index");
+                if (origem == 1)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return RedirectToAction("adicionar", new { acao = 2, id = dados.idOrcamento });
+                }
             }
 
             string x = await response.Content.ReadAsStringAsync();

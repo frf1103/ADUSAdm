@@ -343,21 +343,21 @@
                             .attr("href", "#")
                             .text("Visualizar")
                             .on("click", function () {
-                                window.location.href = '/planejoperacao/adicionar/' + item.id + '?acao=4';
+                                window.location.href = '/orcamentoproduto/adicionar/' + item.id + '?acao=4';
                             });
 
                         var $edit = $("<a>").addClass("dropdown-item")
                             .attr("href", "#")
                             .text("Editar")
                             .on("click", function () {
-                                window.location.href = '/planejoperacao/adicionar/' + item.id + '?acao=2';
+                                window.location.href = '/orcamentoproduto/adicionar/' + item.id + '?acao=2';
                             });
 
                         var $delete = $("<a>").addClass("dropdown-item")
                             .attr("href", "#")
                             .text("Excluir")
                             .on("click", function () {
-                                window.location.href = '/planejoperacao/adicionar/' + item.id + '?acao=3';
+                                window.location.href = '/orcamentoproduto/adicionar/' + item.id + '?acao=3';
                             });
 
                         $menu.append($details).append($edit).append($delete);
@@ -378,28 +378,86 @@
                 loadData: function () {
                     return $.ajax({
                         type: "GET",
-                        url: "/planejoperacao/Getprodplanej?id="+idplanej,
+                        url: "/orcamentoproduto/Getprodorc?idorc="+idplanej,
                         dataType: "json"
                     });
                 }
             },
                 fields: [
-                    { name: "descprincativo", type: "text", width: 200, title: "Princípio Ativo" },
-                    { name: "descproduto", type: "text", width: 200, title: "Produto" },
-                    { name: "dosagem", type: "number", width: 80, title: "Dosagem",align: "right",
-                    headerTemplate: function () {
-                        return $("<div>").text("Dosagem").css("text-align", "right");
-                    }},
-                    { name: "tamanho", type: "number", width: 80, title: "Área Aplic", align: "right",
-                    headerTemplate: function () {
-                        return $("<div>").text("Área").css("text-align", "right");
-                    }},
-                    { name: "totalProduto", type: "number", width: 100, title: "Total Aplic", align: "right",
+                    { name: "id", type: "number", width: 20, title: "ID", visible: false },
+
+                    {
+                        name: "descprincativo", type: "text", width: 100, title: "Principio Ativo"
+                    },
+                    {
+                        name: "descproduto", type: "text", width: 100, title: "Produto"
+                    },
+
+                    {
+                        name: "descmoeda", type: "text", width: 100, title: "Moeda"
+                    },
+
+                    {
+                        name: "precoUnitario", type: "number", width: 50,
+
                         headerTemplate: function () {
-                            return $("<div>").text("Total Aplic").css("text-align", "right");
+                            return "Vl Unitário"
+                            //return $("<th>").text("Vl Unitário").addClass("custom-header");
                         }
-                    }
-                ]
+                    },
+
+
+                    {
+                        type: "control",
+                        itemTemplate: function (_, item) {
+                            var $result = $("<div>").addClass("dropdown");
+
+                            var $button = $("<button>").addClass("btn btn-info dropdown-toggle")
+                                .attr("type", "button")
+                                .attr("id", "dropdownMenuButton")
+                                .attr("data-toggle", "dropdown")
+                                .text("Ações");
+
+                            var $menu = $("<div>").addClass("dropdown-menu")
+                                .attr("aria-labelledby", "dropdownMenuButton");
+
+                            var $details = $("<a>").addClass("dropdown-item")
+                                .attr("href", "#")
+                                .text("Visualizar")
+                                .on("click", function () {
+                                    window.location.href = '/orcamentoproduto/adicionarproduto/' + item.id + '?acao=4';
+                                });
+
+                                /*
+                            var $edit = $("<a>").addClass("dropdown-item")
+                                .attr("href", "#")
+                                .text("Editar")
+                                .on("click", function () {
+                                    window.location.href = '/orcamentoproduto/adicionarproduto/' + item.id + '?acao=2';
+                                });
+
+                            var $delete = $("<a>").addClass("dropdown-item")
+                                .attr("href", "#")
+                                .text("Excluir")
+                                .on("click", function () {
+                                    window.location.href = '/orcamentoproduto/adicionarproduto/' + item.id + '?acao=3';
+                                });
+                                */
+                            var $atualizar = $("<a>").addClass("dropdown-item")
+                                .attr("href", "#")
+                                .text("Atualizar Preço")
+                                .on("click", function () {
+                                    window.location.href = '/orcamentoproduto/atualizarpreco?id=' + item.id;
+                                });
+
+
+                            $menu.append($details).append($atualizar);
+                            //.append($edit).append($delete);
+                            $result.append($button).append($menu);
+
+                            return $result;
+                        }
+                    }]
             });
         }
 

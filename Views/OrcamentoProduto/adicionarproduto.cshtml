@@ -79,7 +79,7 @@
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
-                                                            <select asp-for="idPrincipioAtivo" id="idprincipio" class="form-control" asp-items="@ViewBag.principios" onchange="changeprincipio"></select>
+                                                            <select asp-for="idPrincipioAtivo" id="idprincipio" class="form-control" asp-items="@ViewBag.principios" onchange="changeprincipio()"></select>
                                                             
                                                         }
                                                         else
@@ -123,7 +123,7 @@
                                                         }
                                                         else
                                                         {
-                                                            <select asp-for="idMoeda" id="idMoeda" class="form-control" disabled></select>
+                                                            <select asp-for="idMoeda" id="idMoeda" class="form-control" asp-items="@ViewBag.moedas" disabled></select>
                                                         }
 
                                                     }
@@ -167,8 +167,16 @@
                                                         }
                                                     }
                                                 }
-
-                                                <a href="/orcamentoproduto/adicionar?acao=2&id=@ViewBag.idorc" class="btn btn-danger">Voltar</a>
+                                                @{
+                                                  if (ViewBag.origem==0)
+                                                  {
+                                                        <a href="/orcamentoproduto/adicionar?acao=2&id=@ViewBag.idorc" class="btn btn-danger">Voltar</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="/orcamentoproduto/index" class="btn btn-danger">Voltar</a>
+                                                    }
+                                                }
                                             </div>
                                         </div>
                                     </div>
@@ -221,7 +229,10 @@
             $.validator.methods.number = function (value, element) {
                 return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:,\d{3})+)?(?:\,\d+)?$/.test(value);
             }
-            changeprincipio(@ViewBag.idproduto);
+         //   if ($("#tipoProdutoOrc").val() == "0"){
+                changeprincipio(@ViewBag.idproduto);
+         //   }
+            
             
             // Simula a mudança de valor
         });
@@ -230,12 +241,14 @@
     {
         if ($("#tipoProdutoOrc").val()=="1") 
         {
-                document.getElementById("idPrincipioAtivo").disabled = true;
-                loadprodutos($("#idProduto"), produto, true, 0, 0, 0, "", 5);
+                loadprodutos($("#idProduto"), "0", true, 0, 0, 0, "", 5);
+                $("#idprincipio").val(0);
+                document.getElementById("idprincipio").disabled = true;
+                
         }
         else 
         {
-                document.getElementById("idPrincipioAtivo").disabled = false;
+                document.getElementById("idprincipio").disabled = false;
         }
     }
 
@@ -243,11 +256,15 @@
     {
         if ($("#tipoProdutoOrc").val()=="0") 
         {
+                document.getElementById("idprincipio").disabled = false;
             loadprodutos($("#idProduto"),produto, true, $("#idprincipio").val(),0,0,"",-1);
         }
         else 
         {
-            loadprodutos($("#idProduto"), produto, true, $("#idprincipio").val(), 0, 0, "", 5);
+                document.getElementById("idprincipio").disabled = true;
+            $("#idprincipio").val(0);
+            loadprodutos($("#idProduto"), produto, true, 0, 0, 0, "", 5);
+                
         }
     }
 
