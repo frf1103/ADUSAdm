@@ -34,6 +34,15 @@ namespace FarmPlannerAdm.Controllers
                                  .ToList());
         }
 
+        [AllowAnonymous]
+
+        public async Task<IActionResult> GetUnidades(string? filtro)
+        {
+            Task<List<UnidadeViewModel>> ret = _culturaAPI.Lista(filtro);
+            List<UnidadeViewModel> c = await ret;
+            return Json(c);
+        }
+
         [HttpGet]
         public async Task<IActionResult> Adicionar()
         {
