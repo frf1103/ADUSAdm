@@ -1,7 +1,7 @@
-﻿function loadprodutos(idproduto, produto, todos, idprincipio, idgrupo, idfab, filtro) {
+﻿function loadprodutos(idproduto, produto, todos, idprincipio, idgrupo, idfab, filtro, tipo) {
     $.ajax({
         type: "get",
-        url: "/produto/getdata?idprincipio=" + idprincipio + "&idgrupo=" + idgrupo + "&idfab=" + idfab + "&filtro=" + filtro,
+        url: "/produto/getdata?idprincipio=" + idprincipio + "&idgrupo=" + idgrupo + "&idfab=" + idfab + "&filtro=" + filtro + '&tipo=' + tipo,
         data: {},
         dataType: 'json',
 

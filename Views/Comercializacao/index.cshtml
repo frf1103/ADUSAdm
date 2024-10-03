@@ -1,0 +1,951 @@
+﻿<!-- Content Header (Page header) -->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+
+
+<style>
+    /* Estilo padrão para o ícone */
+    .icon-default {
+        color: 38b6ff;
+    }
+
+    .select2-container {
+        width: 250px !important; /* Ajuste o tamanho conforme necessário */
+        display: inline-block;
+    }
+
+    .form-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .submit-button {
+        margin-left: 10px; /* Espaço entre o select e o botão */
+    }
+
+    .select2-container {
+        width: 100% !important; /* Força a largura de 100% */
+    }
+
+    .select2-selection {
+        width: 100% !important; /* Força a largura do container de seleção */
+    }
+
+    .jsgrid-cell {
+        font-size: 0.85em;
+        padding: 0.2em !important;
+        line-height: 0.8;
+    }
+
+    .jsgrid-header-cell {
+        font-size: 0.85em;
+        padding: 0.2em !important;
+        line-height: 1;
+    }
+
+    .subgrid {
+        padding: 20px;
+    }
+
+    .truck-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .truck-button i {
+        color: blue; /* Escolha a cor que você deseja para o ícone */
+    }
+
+        .truck-button-green {
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .truck-button-green i {
+        color: forestgreen; /* Escolha a cor que você deseja para o ícone */
+    }
+
+
+    .modal-fullscreen {
+        width: 100%;
+        max-width: 100%; /* Ocupa toda a largura da tela */
+        height: 100%;
+        margin: 0; /* Remove as margens */
+    }
+
+        .modal-fullscreen .modal-content {
+            height: 100%;
+            border: none; /* Remover bordas se necessário */
+            border-radius: 0; /* Remover cantos arredondados */
+        }
+
+    .modal-backdrop {
+        background-color: rgba(0, 0, 0, 0.5); /* Fundo semitransparente */
+    }
+
+
+
+
+</style>
+
+
+<!-- Main content -->
+<section class="content">
+    <form asp-action="Index">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary collapsed-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Filtro</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-filter"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-container">
+
+                                    <select class="select2" name="idsafra" id="idsafra" data-placeholder="escolha uma safra" style="width: 100%;">
+                                        <option value="0">escolha uma safra</option>
+                                        @foreach (var item in ViewBag.safras)
+                                        {
+                                            if (@item.Value == ViewBag.SelectedOptionS)
+                                            {
+                                                <option value="@item.Value" selected>@item.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-container">
+                                    <select class="select2" name="idfazenda" id="idfaz" data-placeholder="escolha a fazenda" style="width: 100%;">
+                                        <option value="0">escolha a fazenda</option>
+                                        @foreach (var item in ViewBag.fazendas)
+                                        {
+                                            if (@item.Value == ViewBag.SelectedOptionF)
+                                            {
+                                                <option value="@item.Value" selected>@item.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-container">
+
+                                    <select class="select2" name="idfornec" id="idfornec" data-placeholder="escolha um fornecedor" style="width: 100%;">
+                                        <option value="0">escolha um parceiro</option>
+                                        @foreach (var item in ViewBag.fornecedores)
+                                        {
+                                            if (@item.Value == ViewBag.SelectedOptionFr)
+                                            {
+                                                <option value="@item.Value" selected>@item.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-container">
+                                    <select class="select2" name="idmoeda" id="idmoeda" data-placeholder="escolha a moeda" style="width: 100%;">
+                                        <option value="0">escolha a moeda</option>
+                                        @foreach (var item in ViewBag.moedas)
+                                        {
+                                            if (@item.Value == ViewBag.SelectedOptionM)
+                                            {
+                                                <option value="@item.Value" selected>@item.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <div class="form-container">
+                                    <input type="date" class="form-control" id="dtinicio" value="@ViewBag.dtinicio" name="dtinicio" placeholder="inicio">
+                                    <input type="date" class="form-control" id="dtfim" value="@ViewBag.dtfim" name="dtfim" placeholder="fim">
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-container">
+                                    <input type="text" class="form-control" id="filtro" value="@ViewBag.filtro" name="filtro" placeholder="busque numero do contrato">
+                                    <button type="submit" class="btn btn-md btn-default">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+
+                                </div>
+                                
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </form>
+
+    <h2>Contratos de Venda</h2>
+    <input id="idpedido" hidden/>
+    <input id="idprodutopedido" hidden/>
+    <div class="col text-right">
+        @if (ViewBag.permissao == true)
+        {
+            <a href="/comercializacao/adicionar?acao=1&idaz=@ViewBag.SelectedOptionF&idsafra=@ViewBag.SelectedOptionS" class=" btn btn-primary"><i class="fas fa-plus icon-default"></i></a>
+
+        }
+    </div>
+
+    <div id="jsGrid"></div>
+    <div id="detailproduto"></div>
+    <div id="teste">
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl">
+
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Entregas do Pedido</h1>
+                        
+                    </div>
+                    <div class="modal-body">
+                      
+                        <div id="entregapedido"></div>
+                    </div>
+                    <div class="modal-footer">
+                        
+                        <button type="button" class="btn btn-primary" onclick="fecharmodal()">Sair</button>
+                        <button type="button" class="btn btn-primary" onclick="gravaentrega()">Gravar</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal fade" id="entregas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="entregasLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-lg">
+
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="entregasLabel">Gerenciar Entregas do Produto</h1>
+                        
+                    </div>
+                    <div class="modal-body">
+                      
+                        <div id="nfs"></div>
+                    </div>
+                    <div class="modal-footer">
+                        
+                        <button type="button" class="btn btn-primary" onclick="fecharentrega()">Sair</button>
+                        <button type="button" class="btn btn-primary" onclick="cancelarentrega()">Cancelar entrega </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- /.content -->
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/css/adminlte.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/tempus-dominus/5.39.0/css/tempus-dominus.min.css" rel="stylesheet">
+
+<style>
+    .custom-no-data {
+        text-align: center;
+        color: red;
+        font-weight: bold;
+    }
+</style>
+<!-- Bootstrap 4 -->
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tempus-dominus/5.39.0/js/tempus-dominus.min.js"></script>
+
+
+<script src="~/js/loadprodutos.js"></script>
+
+<script>
+
+    var itenspedido;
+    
+    $(document).ready(function () {
+
+        
+
+        $('select').select2();
+
+
+
+
+
+
+        $("#idfaz").val(@ViewBag.SelectedOptionF);
+        //$('#idfazenda').trigger("change");
+
+        $("#idsafra").val(@ViewBag.SelectedOptionS);
+        //$('#idsafra').trigger("change");
+
+        
+
+
+
+    });
+
+    function fecharmodal() {
+        var x = $("#staticBackdrop");
+        x.modal('hide');
+    }
+
+    function fecharentrega() {
+        var x = $("#entregas");
+        x.modal('hide');
+    }
+
+
+    $(function () {
+        $("#jsGrid").jsGrid({
+            width: "100%",
+            height: "420px",
+
+            sorting: true,
+            paging: true,
+            pageSize: 10,                 // Define o número de registros por página
+            pageButtonCount: 5,          // Número de botões de navegação exibidos
+            pagerFormat: "Páginas: {pages} {prev} {next} {first} {last}",  // Formato do pager,
+            pageLoading: false,
+            pagePrevText: "Anterior", // Texto para o botão "Anterior"
+            pageNextText: "Próximo",  // Texto para o botão "Próximo",
+            pageFirstText: "Primeira",  // Adicionando "Primeira" página
+            pageLastText: "Última",     // Adicionando "Última" página
+
+            autoload: true,
+            noDataContent: "<div class='custom-no-data'>Nenhum dado encontrado</div>",
+
+
+
+            controller: {
+                loadData: function () {
+                    return $.ajax({
+                        type: "GET",
+                        url: "/comercializacao/GetData",
+                        data: {
+                            idsafra: @ViewBag.SelectedOptionS,
+                            idfazenda: @ViewBag.SelectedOptionF,
+                            idmoeda:@ViewBag.SelectedOptionM,
+                            idfornec:@ViewBag.SelectedOptionFr,
+                            ini:$("#dtinicio").val(),
+                            fim:$("#dtfim").val(),
+                            
+                            filtro: "@ViewBag.filtro"
+                        },
+                        dataType: "json"
+                    });
+                }
+            },
+
+            fields: [
+                { name: "id", type: "number", width: 20, title: "ID", visible: false },
+                
+                { name: "descfazenda", type: "text", width: 100, title: "Fazenda" },
+                {
+                    name: "descsafra", type: "text", width: 100, title: "Safra",
+                },
+
+                {
+                    name: "nomeparceiro", type: "text", width: 100, title: "Parceiro",
+                },
+                {
+                    name: "descmoeda", type: "text", width: 40, title: "Moeda",
+                },
+
+                {
+                    name: "dataPagamento", type: "text", width: 40, title: "Vencimento"
+                    ,itemTemplate: function (value) {
+                        return new Date(value).toLocaleDateString();
+                    }
+
+                },
+                {
+                    name: "valorUnitario", type: "number", width: 60, title: "Vl Unit",
+                },
+                {
+                    name: "quantidade", type: "number", width: 60, title: "Qtd",
+                },
+
+                {
+                    name: "valorTotal", type: "number", width: 60, title: "Total",
+                },
+
+
+                {
+                    type: "control",
+                    itemTemplate: function (_, item) {
+                        var $result = $("<div>").addClass("dropdown");
+
+                        var $button = $("<button>").addClass("btn btn-info dropdown-toggle")
+                            .attr("type", "button")
+                            .attr("id", "dropdownMenuButton")
+                            .attr("data-toggle", "dropdown")
+                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
+                            .text("Ações");
+
+                        var $menu = $("<div>").addClass("dropdown-menu")
+                            .attr("aria-labelledby", "dropdownMenuButton");
+
+                        var $details = $("<a>").addClass("dropdown-item")
+                            .attr("href", "#")
+                            .text("Visualizar")
+                            .on("click", function () {
+                                window.location.href = '/comercializacao/adicionar/' + item.id + '?acao=4';
+                            });
+
+                        var $edit = $("<a>").addClass("dropdown-item")
+                            .attr("href", "#")
+                            .text("Editar")
+                            .on("click", function () {
+                                window.location.href = '/comercializacao/adicionar/' + item.id + '?acao=2';
+                            });
+
+                        var $delete = $("<a>").addClass("dropdown-item")
+                            .attr("href", "#")
+                            .text("Excluir")
+                            .on("click", function () {
+                                window.location.href = '/comercializacao/adicionar/' + item.id + '?acao=3';
+                            });
+
+                        $menu.append($details).append($edit).append($delete);
+                        $result.append($button).append($menu);
+
+                        return $result;
+                    }
+                },
+                {
+                    type: "control",
+                    itemTemplate: function (_, item) {
+                        // Criação do botão com ícone de caminhão
+                        var $button = $("<button>")
+                            .addClass("truck-button") // Usa a classe personalizada sem o "X"
+                            .append($("<i>").addClass("fas fa-truck"))
+                            .attr("title", "Gerenciar Entregas")
+                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
+                            .on("click", function (e) {
+                                e.stopPropagation();
+                                DispPedido(item.id);
+                            });
+                        return $button;
+                    },
+                 },
+                 
+                 {   type: "control",
+                    itemTemplate: function (_, item) {
+                        // Criação do botão com ícone de caminhão
+                        var $button = $("<button>")
+                            .addClass("truck-button-green") // Usa a classe personalizada sem o "X"
+                            .append($("<i>").addClass("fas fa-truck-moving"))
+                            .attr("title", "Realizar Entrega")
+                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
+                            .on("click", function (e) {
+                                e.stopPropagation();
+                                DispEntrega(item.id);
+                            });
+                        return $button;
+                    }
+                }
+                ]
+        });
+
+        function DispPedido(pedido)
+        {
+             var x= $("#staticBackdrop");
+             $("#idpedido").val(pedido);
+             x.modal({
+              backdrop: 'static',  // Desativa o fechamento ao clicar fora
+              keyboard: false      // Opcional: desativa o fechamento com a tecla ESC
+            });
+
+
+            $(function () {
+
+                entregas=getentregas();
+                $("#entregapedido").jsGrid({
+                    width: "100%",
+                    height: "420px",
+
+                    editing:true,
+                    data:entregas,
+
+                    autoload:true,
+                    onItemUpdating: function (args) {
+                
+                        //GravarPlanejcompras(args.item.id, args.item.qtdNecessaria, args.item.qtdEstoque, args.item.qtdComprar,args.item.qtdComprada,args.item.saldo);
+                        //args.item.qtdComprar=args.item.qtdNecessaria-args.item.qtdEstoque;
+
+                        qtdconv=args.item.qtd;
+                        if (qtdconv<=args.item.saldo) 
+                        {
+                            args.grid.data[args.itemIndex].qtd=args.item.qtd;
+
+                            args.grid.data[args.itemIndex].datanf=args.item.datanf;
+                            args.grid.data[args.itemIndex].nf=args.item.nf;
+                            var entrega=entregas.find(c=>c.id==args.item.id);
+                            entrega.unidade=args.item.unidade;
+                            entrega.qtd=args.item.qtd;
+                            
+                            entrega.datanf = args.item.datanf;
+                            entrega.nf = args.item.nf;
+
+                            $("#entregapedido").jsGrid("refresh");
+                        }
+                        else {
+                            alert("Quantidade maior que saldo");
+                        }
+
+                    },
+            
+                    noDataContent: "<div class='custom-no-data'>Nenhum dado encontrado</div>",
+            
+        /*            controller: {
+                        loadData: function () {
+                            return $.ajax({
+                                type: "GET",
+                                url: "/pedidocompra/GetEntrega",
+                                data: {idpedido:$("#idpedido").val()},
+                                dataType: "json"
+                            });
+                        }
+                    },
+                    */
+
+                    fields: [
+                        { name: "id", type: "number", width: 20, title: "ID", visible: false },
+
+                        
+                        { name: "qtdcompra", type: "number", width: 60, title: "Qtd Comprada",editing:false },
+                        { name: "qtd", type: "text", width: 60, title: "Qtd NF" ,
+                            itemTemplate: function (value) {
+                                // Formatar o número com duas casas decimais
+                                return value.toFixed(2);
+                            },
+                            editTemplate: function (value) {
+                                var $input = $("<input>").attr("type", "number").attr("step", "0.01").val(value);
+                                this._editControl = $input;
+                                return $input;
+                            },
+                            editValue: function () {
+                                return parseFloat(this._editControl.val());
+                            }
+                        },
+                        { name: "qtd", type: "number", width: 60, title: "Qtd NF" ,visible:false},
+
+
+                        {
+                            name: "datanf",
+                            type: "text",  // Usar "text" para o campo de data/hora
+                            title: "Data da NF",
+                            width: 80,
+                            itemTemplate: function (value) {
+                                // Formatar a data para o formato padrão: YYYY-MM-DD
+                                return value ? new Date(value).toLocaleDateString() : "";
+                            },
+                            insertTemplate: function () {
+                                // Criar um input de tipo date para inserção
+                                var $input = $("<input>").attr("type", "date");
+                                this._insertInput = $input;
+                                return $input;
+                            },
+                            editTemplate: function (value) {
+                                // Criar um input de tipo date para edição
+                                var $input = $("<input>").attr("type", "date").val(value);
+                                this._editInput = $input;
+                                return $input;
+                            },
+                            insertValue: function () {
+                                // Retornar o valor do input na inserção
+                                return this._insertInput.val();
+                            },
+                            editValue: function () {
+                                // Retornar o valor do input na edição
+                                return this._editInput.val();
+                            }
+                        },
+
+                
+                        { name: "nf", type: "text", width: 40, title: "Documento"},
+                        {
+                            type: "control", deleteButton: false, editButton: ("@ViewBag.permissao" == "True")
+                        }
+                    ]
+                });
+
+
+
+        
+
+        // Função para renderizar o segundo subgrid
+        
+
+
+            });
+
+        }
+
+
+
+        function renderSubGrid1(container, idplanej) {
+            container.jsGrid({
+                width: "100%",
+                height: "200px",
+                autoload: true,
+                noDataContent: "<div class='custom-no-data'>Nenhum dado encontrado</div>",
+                controller: {
+                    loadData: function () {
+                        return $.ajax({
+                            type: "GET",
+                            url: "/pedidocompra/GetProduto?idpedido=" + idplanej,
+                            dataType: "json"
+                        });
+                    }
+                },
+                fields: [
+                    { name: "id", type: "number", width: 20, title: "ID", visible: false },
+
+                    {
+                        name: "descproduto", type: "text", width: 100, title: "Produto"
+                    },
+                    {
+                        name: "qtdcompra", type: "number", width: 80, title: "Comprado"
+                    },
+
+                    {
+                        name: "preco", type: "number", width: 80, title: "Preço"
+                    },
+
+                    {
+                        name: "total", type: "number", width: 80,
+
+                        headerTemplate: function () {
+                            return "Total"
+                            //return $("<th>").text("Vl Unitário").addClass("custom-header");
+                        }
+                    },
+                    {
+                        name: "recebido", type: "number", width: 80,
+
+                        headerTemplate: function () {
+                            return "Recebido"
+                            //return $("<th>").text("Vl Unitário").addClass("custom-header");
+                        }
+                    },
+                    {
+                    type: "control",
+                    itemTemplate: function (_, item) {
+                        // Criação do botão com ícone de caminhão
+                        var $button = $("<button>")
+                            .addClass("truck-button") // Usa a classe personalizada sem o "X"
+                            .append($("<i>").addClass("fas fa-truck"))
+                            .attr("title", "Gerenciar Entregas")
+                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
+                            .on("click", function (e) {
+                                e.stopPropagation();
+                                
+                                DispEntrega(item.id);
+                            });
+                        return $button;
+                    }
+                }
+
+
+
+                    ]
+            });
+        }
+
+        function DispEntrega(id)
+        {
+             var x= $("#entregas");
+             $("#idprodutopedido").val(id);
+             nfs=getnfs();             
+             x.modal({
+              backdrop: 'static',  // Desativa o fechamento ao clicar fora
+              keyboard: false      // Opcional: desativa o fechamento com a tecla ESC
+            });
+            rendernfs();
+
+            function rendernfs()
+            {
+            
+                    $(function () {
+
+        
+                    $("#nfs").jsGrid({
+                        width: "100%",
+                        height: "420px",
+
+                        editing:false,
+            
+                        data:nfs,            
+            
+                        noDataContent: "<div class='custom-no-data'>Nenhum dado encontrado</div>",
+
+
+                        onItemUpdating: function (args) {
+
+                           args.grid.data[args.itemIndex].marcado=args.item.marcado;
+                           nfs[args.itemIndex].marcado=args.item.marcado;
+
+
+                        },
+            
+
+                        fields: [
+                            { name: "id", type: "number", width: 20, title: "ID", visible: false },
+                
+                            { name: "qtd", type: "text", width: 60, title: "Qtd NF",editing:false}, 
+                
+                            {
+                                name: "dataentrega",
+                                type: "text",  // Usar "text" para o campo de data/hora
+                                title: "Data da NF",
+                                width: 80,
+                                editing:false
+                            },
+                
+                            { name: "nf", type: "text", width: 40, title: "Documento",editing:false},
+
+                            {
+                                name: "marcado",
+                                title: "Marcar",
+                                type: "checkbox",  // Definindo como checkbox
+                                width: 30,
+                                editing:true,
+                                sorting: false,  // Desativar ordenação para o checkbox
+                                itemTemplate:function(value, item) {
+                                var $checkbox = $("<input>").attr("type", "checkbox").prop("checked", value);
+
+                    // Adicionar evento para marcar/desmarcar e atualizar o valor no grid
+                                $checkbox.on("click", function() {
+                                    item.IsActive = $(this).is(":checked");  // Atualiza o valor do item
+                                    var nf=nfs.find(x=>x.id==item.id);
+                                    nf.marcado=$(this).is(":checked");
+
+                                    // Opcional: Se você deseja atualizar o grid (visualização ou backend)
+                                    $("#jsGrid").jsGrid("updateItem", item);
+                                });
+
+                                return $checkbox;                                }
+                                },
+
+                            {
+                                type: "control", deleteButton: false, editButton: false
+                            }
+                        ]
+                    });
+
+
+
+        
+
+                    // Função para renderizar o segundo subgrid
+        
+
+
+                });
+            }
+
+        }
+
+
+        // Função para renderizar o segundo subgrid
+        
+
+
+    });
+
+    var entregas=[];
+    var nfs=[];
+
+    
+
+
+    
+
+
+    function getentregas()
+    {
+        $.ajax({
+            type: "GET",
+            url: "/comercializacao/GetEntrega",
+            data: { id: $("#idpedido").val() },
+            dataType: "json",
+            async: false,
+            success: function(data) {
+            console.log(data); // Verificar os dados que a API está retornando
+            obj=data;
+            },
+            error: function(err) {
+                console.log("Erro ao carregar entregas", err);
+            }         
+        });
+        return obj;
+    }
+
+    function getnfs()
+    {
+        $.ajax({
+            type: "GET",
+            url: "/comercializacao/GetEntregaByProduto",
+            data: { id: $("#idprodutopedido").val() },
+            dataType: "json",
+            async: false,
+            success: function(data) {
+                console.log(data); // Verificar os dados que a API está retornando
+                obj=[];
+                for (i=0;i<=data.length-1;i++)
+                {
+                    obj.push({id:data[i].id,
+                        qtd:data[i].quantidade,
+                        nf:data[i].documento,
+                        dataentrega:data[i].dataEntrega,
+                        marcado:false
+                    })
+                }
+            },
+            error: function(err) {
+                console.log("Erro ao carregar entregas by produto", err);
+            }         
+        });
+        return obj;
+    }
+
+    
+
+
+    function gravaentrega()
+    {
+        ent=[];
+        for(i=0;i<=entregas.length-1;i++)
+        {
+            if (entregas[i].qtd>0) 
+            {
+                ent.push({"id":0,
+                    "idComercializacao":entregas[i].id,
+                    "dataEntrega":entregas[i].datanf,
+                    "documento":entregas[i].nf,
+                    "quantidade":entregas[i].qtd,
+                    "idconta":" ",
+                    "uid": " ",
+                    "datains":null,
+                    "dataup":null
+                });
+            }
+        }
+
+        $.ajax({
+            url: "/comercializacao/GravaEntrega",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(ent),
+            success: function (response) {
+                if (response.success) {
+                    alert(response.message);
+                    location.reload();
+                } else {
+                    alert("Erro: " + response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("Erro na chamada AJAX: ", error);
+            }
+        });
+
+
+    }
+
+    function cancelarentrega()
+    {
+        ent=[];
+        for(i=0;i<=nfs.length-1;i++)
+        {
+            if (nfs[i].marcado) 
+            {
+                ent.push({"id":nfs[i].id
+                });
+            }
+        }
+
+        $.ajax({
+            url: "/comercializacao/CancelarEntrega",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(ent),
+            success: function (response) {
+                if (response.success) {
+                    alert(response.message);
+                    location.reload();
+                } else {
+                    alert("Erro: " + response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("Erro na chamada AJAX: ", error);
+            }
+        });
+
+
+    }
+
+
+</script>
+
+
+

@@ -256,6 +256,18 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3BlcmFjYW9cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/OrcamentoProduto/adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JjYW1lbnRvUHJvZHV0b1xhZGljaW9uYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/OrcamentoProduto/adicionarproduto.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JjYW1lbnRvUHJvZHV0b1xhZGljaW9uYXJwcm9kdXRvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/OrcamentoProduto/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JjYW1lbnRvUHJvZHV0b1xpbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/user/source/repos/FarmPlannerAdm/Views/Organizacao/Adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JnYW5pemFjYW9cQWRpY2lvbmFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -278,6 +290,26 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/user/source/repos/FarmPlannerAdm/Views/Parceiro/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFyY2Vpcm9cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/PedidoCompra/adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVkaWRvQ29tcHJhXGFkaWNpb25hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/PedidoCompra/adicionarproduto.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVkaWRvQ29tcHJhXGFkaWNpb25hcnByb2R1dG8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/PedidoCompra/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVkaWRvQ29tcHJhXGluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/PlanejamentoCompra/adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGxhbmVqYW1lbnRvQ29tcHJhXGFkaWNpb25hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/PlanejamentoCompra/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGxhbmVqYW1lbnRvQ29tcHJhXGluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/user/source/repos/FarmPlannerAdm/Views/PlanejOperacao/adicionar.cshtml]
@@ -342,6 +374,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/user/source/repos/FarmPlannerAdm/Views/Regiao/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVnaWFvXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/FarmPlannerAdm/Views/Shared/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEFjY2Vzc0RlbmllZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/user/source/repos/FarmPlannerAdm/Views/Shared/Error.cshtml]
