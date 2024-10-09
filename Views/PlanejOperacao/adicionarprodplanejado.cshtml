@@ -52,26 +52,6 @@
                                      
                                             <div class="col-md-5">
                                                 <div class="form-group">
-
-                                                    <label asp-for="idPrincipioAtivo" class="control-label"></label>
-                                                    @{
-                                                        if (ViewBag.idacao <= 2)
-                                                        {
-                                                            <select asp-for="idPrincipioAtivo" id="idprincipio" class="form-control" asp-items="@ViewBag.principios" onchange="changeprincipio(0)"></select>
-                                                            
-                                                        }
-                                                        else
-                                                        {
-                                                            <select asp-for="idPrincipioAtivo" id="idpricipio" class="form-control" asp-items="@ViewBag.principios" disabled></select>
-                                                        }
-
-
-                                                    }
-                                                    <span asp-validation-for="idPrincipioAtivo" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="form-group">
                                                     <label asp-for="idProduto" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)

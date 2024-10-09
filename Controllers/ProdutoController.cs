@@ -15,6 +15,7 @@ using FarmPlannerClient.GrupoProduto;
 using FarmPlannerClient.PrincipioAtivo;
 using FarmPlannerClient.Produto;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace FarmPlannerAdm.Controllers
 {
@@ -181,9 +182,9 @@ namespace FarmPlannerAdm.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                //  string y = await response.Content.ReadAsStringAsync();
-                //  var result = JsonSerializer.Deserialize<FarmPlannerClient.Defarea.ProdutoViewModel>(y);
-                return RedirectToAction(nameof(Adicionar));
+                  string y = await response.Content.ReadAsStringAsync();
+                  var result = JsonConvert.DeserializeObject<FarmPlannerClient.Produto.ProdutoViewModel>(y);
+                return RedirectToAction("adicionarprodutoprincipio",new {idproduto=result.id,acao=1,descproduto=result.descricao});
             }
             string x = await response.Content.ReadAsStringAsync();
 

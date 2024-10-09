@@ -21,11 +21,15 @@
 
 
 <h2>Contas</h2>
-<div class="col text-right">
-    <a href="/conta/adicionar" class=" btn btn-primary">Nova conta</a>
+   @{
+      if (ViewBag.permissao==true)
+        {
+            <div class="col text-right">
+                <a href="/conta/adicionar" class=" btn btn-primary">Nova conta</a>
 
-</div>
-
+            </div>
+        }
+   }
 
 <table class="table table-bordered table-striped">
     <thead>
@@ -56,13 +60,19 @@
 
                 }
                 
-                <td>
+                @{
+                if (ViewBag.permissao==true)
+                {
+   
+                    <td>
 
-                    <a href="/conta/editar/@reg.id" class="btn btn-secondary btn-sm mr-1" title="Editar">
-                        <span class="fas fa-edit"></span>
-                    </a>
+                        <a href="/conta/editar/@reg.id" class="btn btn-secondary btn-sm mr-1" title="Editar">
+                            <span class="fas fa-edit"></span>
+                        </a>
 
-                </td>
+                    </td>
+                }
+                }
 
             </tr>
         }

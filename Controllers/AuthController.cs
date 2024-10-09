@@ -32,14 +32,14 @@ public class AuthController : Controller
     private readonly FarmPlannerClient.Controller.PreferUsuControllerClient _preferusuClient;
     private readonly FarmPlannerClient.Controller.OrganizacaoControllerClient _organizacaoClient;
     private readonly SessionManager _sessionManager;
-
+    private readonly IConfiguration _configuration;
     //   private readonly AGMContext _Agmcontext;
     private readonly RoleManager<IdentityRole> _roleManager;
 
     public AuthController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager,
         FarmPlannercontext context,
         //AGMContext agmcontext,
-        RoleManager<IdentityRole> roleManager, FarmPlannerClient.Controller.ContaControllerClient contaControllerClient, IEmailSender emailSender, FarmPlannerClient.Controller.PreferUsuControllerClient preferusuClient, FarmPlannerClient.Controller.OrganizacaoControllerClient organizacaoClient, SessionManager sessionManager)
+        RoleManager<IdentityRole> roleManager, FarmPlannerClient.Controller.ContaControllerClient contaControllerClient, IEmailSender emailSender, FarmPlannerClient.Controller.PreferUsuControllerClient preferusuClient, FarmPlannerClient.Controller.OrganizacaoControllerClient organizacaoClient, SessionManager sessionManager, IConfiguration configuration)
     {
         _signInManager = signInManager;
         _userManager = userManager;
@@ -51,6 +51,7 @@ public class AuthController : Controller
         _preferusuClient = preferusuClient;
         _organizacaoClient = organizacaoClient;
         _sessionManager = sessionManager;
+        _configuration = configuration;
     }
 
     public async Task<IActionResult> Login()
@@ -158,6 +159,8 @@ public class AuthController : Controller
 
         _sessionManager.uid = userid;
         _sessionManager.userrole = role;
+
+        _sessionManager.urlconvite= _configuration.GetValue<string>("AppSettings:urlconvite");
 
         //_sessionManager.idconta = conta.idconta;
 

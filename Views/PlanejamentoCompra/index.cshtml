@@ -111,9 +111,9 @@
 
                         </div>
                         <div class="row">
-                            <div class="col-md-7">
+                            <div class="col-md-4">
                                 <div class="form-container">
-                                    <select class="select2" name="idprincipio" id="idprincipio" data-placeholder="escolha um princípio" style="width: 100%;">
+                                    <select class="select2" name="idprincipio" id="idprincipio" data-placeholder="escolha um princípio" style="width: 100%;" onchange="changeprincipio()">
                                         <option value="0">escolha um princípio</option>
                                         @foreach (var item in ViewBag.principios)
                                         {
@@ -127,15 +127,27 @@
                                             }
                                         }
                                     </select>
+
+                                </div>
+                            </div>
+
+                       
+
+                            <div class="col-md-4">
+                                <div class="form-container">
+                                    <select class="select2" name="idproduto" id="idproduto" data-placeholder="escolha um produto" style="width: 100%;">
+                                    
+                                    </select>
                                     <button type="submit" class="btn btn-md btn-default">
                                         <i class="fa fa-search"></i>
                                     </button>
 
                                 </div>
                             </div>
-
                         </div>
                     </div>
+
+                    
                     <!-- /.card-body -->
                 </div>
                 <!-- /.card -->
@@ -187,7 +199,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tempus-dominus/5.39.0/js/tempus-dominus.min.js"></script>
-
+<script src="~/js/loadprodutos.js"></script>
 
 
 
@@ -380,6 +392,12 @@
             $("#jsGrid").jsGrid("option", "editing", true);
         }
     });
+
+
+    function changeprincipio() 
+    {
+        loadprodutos($("#idproduto"), "0", true, $("#idprincipio").val(), 0, 0, "");
+    }
 
 
 </script>

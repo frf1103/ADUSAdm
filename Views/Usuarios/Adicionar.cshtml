@@ -33,7 +33,7 @@
                         -->
                         <div class="form-group">
                             <label asp-for="Telefone" class="control-label"></label>
-                            <input asp-for="Telefone" class="form-control" />
+                            <input asp-for="Telefone" class="form-control" id="telefone" />
                             <span asp-validation-for="Telefone" class="text-danger"></span>
                         </div>
 
@@ -78,4 +78,20 @@
         </div>
     </div>
 </section>
+
+
+@section scripts
+{
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#telefone').mask('(00) 0 0000-0000');
+    });
+
+</script>
+}
 <!-- /.content -->

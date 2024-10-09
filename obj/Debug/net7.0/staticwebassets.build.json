@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "yasbJYYD7jpoinh7VAu9T0QRUDHEW7u+i4geFBEGiaw=",
+  "Hash": "yk+mCxbDsVCh99mFMSIvMtiTl7WJ2U7eNwVrjlJ8xTg=",
   "Source": "FarmPlannerAdm",
   "BasePath": "_content/FarmPlannerAdm",
   "Mode": "Default",
@@ -2871,6 +2871,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\maquinas.js"
+    },
+    {
+      "Identity": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\js\\operacoes.js",
+      "SourceId": "FarmPlannerAdm",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\",
+      "BasePath": "_content/FarmPlannerAdm",
+      "RelativePath": "js/operacoes.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\operacoes.js"
     },
     {
       "Identity": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\js\\require.js",

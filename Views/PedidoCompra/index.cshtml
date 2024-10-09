@@ -58,6 +58,17 @@
         color: blue; /* Escolha a cor que você deseja para o ícone */
     }
 
+
+   .truck-button1 {
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .truck-button1 i {
+        color: cadetblue; /* Escolha a cor que você deseja para o ícone */
+    }
+
     .modal-fullscreen {
         width: 100%;
         max-width: 100%; /* Ocupa toda a largura da tela */
@@ -292,7 +303,7 @@
 <!-- /.content -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/css/adminlte.min.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/tempus-dominus/5.39.0/css/tempus-dominus.min.css" rel="stylesheet">
@@ -772,8 +783,8 @@
                     itemTemplate: function (_, item) {
                         // Criação do botão com ícone de caminhão
                         var $button = $("<button>")
-                            .addClass("truck-button") // Usa a classe personalizada sem o "X"
-                            .append($("<i>").addClass("fas fa-truck"))
+                            .addClass("truck-button1") // Usa a classe personalizada sem o "X"
+                                .append($("<i>").addClass("fa fa-truck-fast"))
                             .attr("title", "Gerenciar Entregas")
                             .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
                             .on("click", function (e) {

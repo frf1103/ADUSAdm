@@ -115,7 +115,7 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label asp-for="idPrincipio" class="control-label"></label>
+                                                    <label asp-for="idproduto" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
@@ -126,12 +126,12 @@
                                                             //      else
                                                             //      {
 
-                                                            <select asp-for="idPrincipio" id="idPrincipio" class="form-control" asp-items="@ViewBag.principios"></select>
+                                                            <select asp-for="idproduto" id="idproduto" class="form-control" asp-items="@ViewBag.produtos"></select>
                                                             //     }
                                                         }
                                                         else
                                                         {
-                                                            <select asp-for="idPrincipio" id="idPrincipio" class="form-control" asp-items="@ViewBag.principios" disabled></select>
+                                                            <select asp-for="idproduto" id="idproduto" class="form-control" asp-items="@ViewBag.produtos" disabled></select>
                                                         }
 
 

@@ -456,13 +456,13 @@
                 fields: [
                     { name: "descModelo", type: "text", width: 200, title: "Modelo" },
                     { name: "descMaquina", type: "text", width: 200, title: "Máquina" },
-                    { name: "rendimento", type: "number", width: 80, title: "Rendimento",align: "right",
+                    { name: "rendimento", type: "number", width: 100, title: "Rendimento",align: "right",
                     headerTemplate: function () {
-                        return $("<div>").text("Rendimento").css("text-align", "right");
+                        return $("<div>").text("Rendimento(h/ha)").css("text-align", "right");
                     }},
-                    { name: "consumo", type: "number", width: 80, title: "Consumo", align: "right",
+                    { name: "consumo", type: "number", width: 100, title: "Consumo", align: "right",
                     headerTemplate: function () {
-                        return $("<div>").text("Consumo").css("text-align", "right");
+                        return $("<div>").text("Consumo(lt/h)").css("text-align", "right");
                     }},
                     {
                         name: "qtdHoraEstimada", type: "number", width: 100, title: "Horas", align: "right",

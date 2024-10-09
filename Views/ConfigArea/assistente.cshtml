@@ -151,8 +151,8 @@
                         
                                     </select>
 
-                                    <button type="button" class="btn btn-md btn-default" onclick="gravar()">
-                                        <i class="fa fa-bolt my-icon"></i>
+                                    <button type="button" class="btn btn-md btn-default" onclick="gravar()">Executar
+                                        
                                     </button>
                                 </div>
                             </div>
@@ -341,7 +341,18 @@
                 { name: "descricao", type: "text", width: 100, title: "Identificação", editing: false },
                 { name: "areaDisp", type: "number", width: 50, title: "Área Disp" ,visible: true,editing:false },
                 { name: "areaProdutiva", type: "number", width: 60, title: "Área Total", editing: false },
-                
+                { name: "config", type: "text", width: 100, title: "Configurado?", editing: false,
+                    itemTemplate: function (value, item) {
+                        if (item.areaDisp!=item.areaProdutiva)
+                        {
+                            return "Sim"
+                        }
+                        else return "Nâo"
+                        
+                   
+                    }
+
+                },
                 {
                 itemTemplate: function (value, item) {
                     // Criando um botão para cada linha
@@ -519,6 +530,8 @@
 
     function gravar()
     {
+        erros=validatalhoes();
+        
         var xtalhoes=[];
         for (var i=0;i<talhoesSel.length;i++)
         {
@@ -544,6 +557,15 @@
                 alert("Erro na chamada AJAX: ", error);
             }
         });
+
+    }
+
+    function validatalhoes()
+    {
+        for (var i = 0; i < talhoesSel.length; i++) 
+        {
+            areaconfig=
+        }
 
     }
    

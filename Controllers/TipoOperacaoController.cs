@@ -34,7 +34,7 @@ namespace FarmPlannerAdm.Controllers
         public async Task<IActionResult> Adicionar()
         {
             FarmPlannerClient.TipoOperacao.TipoOperacaoViewModel c = new FarmPlannerClient.TipoOperacao.TipoOperacaoViewModel();
-
+            c.plantio = false;
             return View(c);
         }
 

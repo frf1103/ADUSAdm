@@ -136,7 +136,8 @@ namespace FarmPlannerAdm.Controllers
             Task<List<OperacaoViewModel>> reto = _operacao.Lista(_sessionManager.contaguid, 0, "");
             List<OperacaoViewModel> o = await reto;
 
-            ViewBag.operacoes = o.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
+            //  ViewBag.operacoes = o.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString(), });
+            ViewBag.operacoes = o;
 
             Task<List<ListModeloMaquinaViewModel>> retmd = _modeloAPI.Lista(0, "");
             List<ListModeloMaquinaViewModel> md = await retmd;
@@ -641,7 +642,7 @@ namespace FarmPlannerAdm.Controllers
 
             TempData["dados"] = dadosStateJson;
             TempData["Erro"] = x;
-            return RedirectToAction("adicionar", new { acao = 1, id = 0, idplanejamento = dados.idPlanejamento });
+            return RedirectToAction("adicionarmaquinaplanejada", new { acao = 1, id = 0, idplanejamento = dados.idPlanejamento });
         }
 
         [Authorize(Roles = "Admin,User,AdminC")]
@@ -665,7 +666,7 @@ namespace FarmPlannerAdm.Controllers
 
             TempData["dados"] = dadosStateJson;
 
-            return RedirectToAction("adicionarmaquina", new { acao = 2, id = dados.id });
+            return RedirectToAction("adicionarmaquinaplanejada", new { acao = 2, id = dados.id });
         }
 
         [Authorize(Roles = "Admin,User,AdminC")]

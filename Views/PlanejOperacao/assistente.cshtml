@@ -99,6 +99,8 @@
             <div class="card card-primary card-outline">
                 <div class="card-body">
                     <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
+                        
+
                         <li class="nav-item">
                             <a class="nav-link active" id="custom-content-above-home-tab" data-toggle="pill" href="#custom-content-above-home" role="tab" aria-controls="custom-content-above-home" aria-selected="true">Selecionar as áreas</a>
                         </li>
@@ -109,14 +111,14 @@
                         <li class="nav-item">
                             <a class="nav-link" id="custom-maquinas-tab" data-toggle="pill" href="#custom-maquinas" role="tab" aria-controls="custom-maquinas" aria-selected="false">Máquinas</a>
                         </li>
-
                         <li class="nav-item">
-                            <a class="nav-link" id="custom-content-above-operacao-tab" data-toggle="pill" href="#custom-content-above-operacao" role="tab" aria-controls="custom-content-above-operacao" aria-selected="false">Executar</a>
+                            <a class="nav-link" id="custom-content-above-operacao-tab" data-toggle="pill" href="#custom-content-above-operacao" role="tab" aria-controls="custom-content-above-operacao" aria-selected="false">Dados da Execução</a>
                         </li>
 
 
-                    </ul>
 
+                    </ul>
+                 
 
                     <div class="tab-content" id="custom-content-above-tabContent">
                         <div class="tab-pane fade show active" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab">
@@ -240,10 +242,11 @@
 
                                     </div>
                                     <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-9">
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <label for="idprincipio">Princípio Ativo</label>
                                                 <div class="form-container">
-
+                                                    
                                                     <select class="select2" name="idprincipio" id="idprincipio" data-placeholder="escolha um principio ativo" onchange="changeprincipio()">
                                                         <option value="0">escolha um princípio</option>
                                                         @foreach (var item in ViewBag.principios)
@@ -251,11 +254,18 @@
                                                             <option value="@item.Value">@item.Text</option>
                                                         }
                                                     </select>
+                                                </div>
+                                             </div>
+                                             <div class="col-md-4">
+                                                <label for="idprincipio" id="lbprod">Produto</label>
+                                                <div class="form-container">
+                                                    
                                                     <select class="select2" name="idproduto" id="idproduto" data-placeholder="escolha um produto">
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
+                                                <label for="qtd" id="lbdose">Dosagem</label>
                                                 <div class="form-container">
                                                     <input type="number" id="qtd" name="qtd" class="form-control" style="text-align: right;" />
 
@@ -375,18 +385,13 @@
                                             <div class="col-md-5">                                                
                                                     <label for="idoperacao">Escolha uma operação</label>
                                                     <select class="select2" name="idoperacao" id="idoperacao" >
-                                                        <option ></option>
-                                                        @foreach (var item in ViewBag.operacoes)
-                                                        {
-                                                            <option value="@item.Value">@item.Text</option>
-                                                        }
                                                     
                                                     </select>
                                                 
                                             </div>
                                             <div class="col-md-2" style="text-align: center;">
                                                 <label for="cbplantio">Plantio?</label><br />
-                                                <input type="checkbox" class="form-control" id="cbplantio" name="cbplantio">                                                
+                                                <input type="checkbox" class="form-control" id="cbplantio" name="cbplantio" disabled>                                                
                                             
                                             </div>
 
@@ -436,6 +441,7 @@
                             </div>
 
                         </div>
+                        <a href="/planejoperacao/index" class="btn btn-danger">Voltar</a>
                     </div>
                 </div>
                 <!-- /.card -->
@@ -480,9 +486,9 @@
 <script src="~/js/loadtalhoes.js"></script>
 <script src="~/js/loadvariedades.js"></script>
 <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
-<script src="~/js/Comuns.js"></script>
 <script src="~/js/loadprodutos.js"></script>
 <script src="~/js/maquinas.js"></script>
+<script src="~/js/operacoes.js"></script>
 <script>
     var talhoesSel=[];
     var talhoesDisp = [];
@@ -491,69 +497,38 @@
     $(document).ready(function () {
 
         $('select').select2();
-        changemodelo();
 
-        /*
-        $('#idsafra').select2({
-            theme: "bootstrap-5",
-            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-            placeholder: $(this).data('placeholder'),
-            closeOnSelect: true
+        $('#idproduto').on('select2:select', function(e) {
+                var data = e.params.data;
+                document.getElementById("lbdose").innerText ="Dosagem(" +data.und+")";
 
-        });
-        $('#idfaz').select2({
-            theme: "bootstrap-5",
-            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-            placeholder: $(this).data('placeholder'),
-            closeOnSelect: true
-
-        });
-
-        $('#idvariedade').select2({
-            theme: "bootstrap-5",
-            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-            placeholder: $(this).data('placeholder'),
-            closeOnSelect: true
-
-        });
-
-        $('#idtalhao').select2({
-            theme: "bootstrap-5",
-            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-            placeholder: $(this).data('placeholder'),
-            closeOnSelect: true
+        });     
 
 
-        });
+        $('#idoperacao').on('select2:select', function(e) {
+                var data = e.params.data;
+                if (data.plantio=="true")
+                {
+                    document.getElementById("cbplantio").checked = true;
+                  //  document.getElementById("dae").disabled = true;
+                  //  document.getElementById("dtprev").disabled = false;
+                }
+                else 
+                {
+                    document.getElementById("cbplantio").checked = false;
+                    //document.getElementById("dae").disabled = false;
+                    //document.getElementById("dtprev").disabled = true;
+                }
 
-        $('#idprincipio').select2({
-            theme: "bootstrap-5",
+        });     
+
             
-            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-            placeholder: $(this).data('placeholder'),
-            closeOnSelect: true
+     changemodelo();
 
-
-        });
-        $('#idproduto').select2({
-            theme: "bootstrap-5",
-            
-            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-            placeholder: $(this).data('placeholder'),
-            closeOnSelect: true
-        });
-
-        $('#idoperacao').select2({
-            theme: "bootstrap-5",
-            
-            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-            placeholder: $(this).data('placeholder'),
-            closeOnSelect: true
-        });
-        */
-
-
-        ajustafontselect2();
+     loadoperacoes($('#idoperacao'),"0",true,0);
+      //$('#idoperacao').val($('#idoperacao').val()).trigger('change');
+     
+     //   ajustafontselect2();
         $("#idfaz").val(@ViewBag.SelectedOptionF);
         //$('#idfazenda').trigger("change");
         changefaz();
@@ -639,10 +614,10 @@
             retorno=false;
             msg="Data prevista inválida";
         }
-        if ($('#dae').val()==null || $('#dae').val()==0) {
+  /*      if ($('#dae').val()==null || $('#dae').val()==0) {
             retorno=false;
             msg="Preencha o DAE";
-        } 
+        } */ 
         if (talhoesSel.length==0)
         {
             retorno = false;
@@ -973,7 +948,7 @@
 
     function addprodutos()
     {
-        if ($("#idprincipio").val()!="0" || $("#idproduto").val()!="0") 
+        if ($("#idprincipio").val()!="0" && $("#idproduto").val()!="0") 
         {         
 
             idprinc=$("#idprincipio").val();
@@ -993,6 +968,9 @@
                 produtos.push({"idprinc":parseInt(idprinc),"idprod":parseInt(idprod),"dosagem":$("#qtd").val(),"descprinc":descprinc,"descprod":descprod});
             }
             $("#jsprodutos").jsGrid("refresh");
+        }
+        else {
+            alert("Escolha um produto")
         }
 
     }
@@ -1022,6 +1000,8 @@
         }
 
     }
+
+     
 
 
    

@@ -71,7 +71,6 @@ namespace FarmPlannerAdm.Controllers
             return View();
         }
 
-
         public async Task<IActionResult> PlanejPlantio(int idsafra, int idvariedade, int idtalhao, int idfazenda)
         {
             Task<List<SafraViewModel>> rets = _anoagricolaAPI.ListaSafra(_sessionManager.idanoagricola, 0, _sessionManager.contaguid, "");

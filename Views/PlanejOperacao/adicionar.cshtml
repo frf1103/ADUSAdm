@@ -409,9 +409,6 @@
                 fields: [
                     { name: "id", type: "number", width: 20, title: "ID", visible: false },
 
-                    {                        
-                        name: "descprincativo", type: "text", width: 100, title: "Principio Ativo"
-                    },
                     {
                         name: "descproduto", type: "text", width: 100, title: "Produto"
                     },
@@ -509,7 +506,7 @@
                         name: "qtdHoraEstimada", type: "number", width: 50, align: "left",
 
                         headerTemplate: function () {
-                            return $("<th>").text("Hor Estimadas").addClass("custom-header");
+                            return $("<th>").text("Hor Estimadas(h)").addClass("custom-header");
                         }
                     },
 
@@ -517,7 +514,7 @@
                         name: "qtdCombEstimado", type: "number", width: 50, align: "left",
 
                         headerTemplate: function () {
-                            return $("<th>").text("Comb Estimado").addClass("custom-header");
+                            return $("<th>").text("Comb Estimado(lt)").addClass("custom-header");
                         }
                     },
 

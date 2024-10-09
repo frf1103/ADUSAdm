@@ -429,6 +429,10 @@
       "PackagePath": "staticwebassets\\js\\maquinas.js"
     },
     {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\js\\operacoes.js",
+      "PackagePath": "staticwebassets\\js\\operacoes.js"
+    },
+    {
       "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\js\\require.js",
       "PackagePath": "staticwebassets\\js\\require.js"
     },

@@ -41,6 +41,14 @@
                                             <input asp-for="descricao" class="form-control" readonly />
                                             <span asp-validation-for="descricao" class="text-danger"></span>
                                         </div>
+
+                                        <div class="form-group form-check">
+
+                                            <input type="checkbox" asp-for="plantio" class="form-check-input" id="plantio" disabled />
+                                            <label asp-for="plantio" class="form-check-label" for="plantio">Plantio</label>
+
+                                        </div>
+
                                     </div>
                                     <!-- /.card-body -->
                                     <div class="card-footer">

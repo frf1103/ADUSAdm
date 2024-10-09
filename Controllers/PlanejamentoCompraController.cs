@@ -19,6 +19,7 @@ using FarmPlannerClient.Operacao;
 using FarmPlannerClient.PrincipioAtivo;
 using FarmPlannerClient.ModeloMaquina;
 using Microsoft.IdentityModel.Abstractions;
+using FarmPlannerClient.Produto;
 
 namespace FarmPlannerAdm.Controllers
 {
@@ -30,10 +31,10 @@ namespace FarmPlannerAdm.Controllers
         private readonly FarmPlannerClient.Controller.FazendaControllerClient _fazendaAPI;
         private readonly FarmPlannerClient.Controller.AnoAgricolaControllerClient _anoagricolaAPI;
         private readonly FarmPlannerClient.Controller.PrincipioAtivoControllerClient _principioAPI;
-
+        private readonly FarmPlannerClient.Controller.ProdutoControllerClient _produtoAPI;
         private readonly SessionManager _sessionManager;
 
-        public PlanejamentoCompraController(PlanejamentoCompraControllerClient PlanejamentoCompra, FazendaControllerClient fazendaAPI, AnoAgricolaControllerClient anoagricolaAPI, SessionManager sessionManager, PrincipioAtivoControllerClient principioAPI)
+        public PlanejamentoCompraController(PlanejamentoCompraControllerClient PlanejamentoCompra, FazendaControllerClient fazendaAPI, AnoAgricolaControllerClient anoagricolaAPI, SessionManager sessionManager, PrincipioAtivoControllerClient principioAPI, ProdutoControllerClient produtoAPI)
         {
             _PlanejamentoCompra = PlanejamentoCompra;
 
@@ -42,6 +43,7 @@ namespace FarmPlannerAdm.Controllers
             _principioAPI = principioAPI;
 
             _sessionManager = sessionManager;
+            _produtoAPI = produtoAPI;
         }
 
         private const int TAMANHO_PAGINA = 5;
@@ -75,9 +77,9 @@ namespace FarmPlannerAdm.Controllers
         }
 
         [Authorize(Roles = "Admin,User,AdminC")]
-        public async Task<JsonResult> GetPlanejamento(int idfazenda, int idsafra, int idprincipio)
+        public async Task<JsonResult> GetPlanejamento(int idfazenda, int idsafra, int idprincipio, int idproduto)
         {
-            Task<List<ListPlanejamentoCompraViewModel>> ret = _PlanejamentoCompra.Lista(_sessionManager.idorganizacao, _sessionManager.contaguid, _sessionManager.idanoagricola, idprincipio, idfazenda, idsafra);
+            Task<List<ListPlanejamentoCompraViewModel>> ret = _PlanejamentoCompra.Lista(_sessionManager.idorganizacao, _sessionManager.contaguid, _sessionManager.idanoagricola, idprincipio, idfazenda, idsafra, idproduto);
             List<FarmPlannerClient.PlanejamentoCompra.ListPlanejamentoCompraViewModel> c = await ret;
 
             return Json(c);
@@ -146,11 +148,10 @@ namespace FarmPlannerAdm.Controllers
 
             ViewBag.safras = s.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
 
-            Task<List<PrincipioAtivoViewModel>> retp = _principioAPI.Lista("");
-            List<PrincipioAtivoViewModel> p = await retp;
+            Task<List<ListProdutoViewModel>> retp = _produtoAPI.Lista(0, 0, 0, _sessionManager.contaguid, "", -1);
+            List<ListProdutoViewModel> p = await retp;
 
-            ViewBag.principios = p.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
-
+            ViewBag.produtos = p.Select(m => new SelectListItem { Text = m.descricao, Value = m.id.ToString() });
 
             return View(c);
         }

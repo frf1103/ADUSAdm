@@ -12,14 +12,24 @@
                 var data = obj;
                 var selectbox = idproduto;
                 selectbox.find('option').remove();
+                prods = []
                 if (todos) {
+                    prods.push({
+                        id: "0", text: "escolha um produto",und:""
+                    });
                     $('<option>').val("0").text("escolha um produto").appendTo(selectbox);
                 }
-                talhoes = [];
-                $.each(data, function (i, d) {
-                    $('<option>').val(d.id).text(d.descricao).appendTo(selectbox);
-                });
 
+                $.each(data, function (i, d) {
+                    prods.push({
+                        id: d.id, text: d.descricao, und: d.descunidade
+                    });
+
+                    //$('<option>').val(d.id).text(d.descricao).appendTo(selectbox);
+                });
+                selectbox.select2({
+                    data: prods
+                });
                 if (produto != "0") {
                     selectbox.val(produto);
                 }

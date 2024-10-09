@@ -82,6 +82,7 @@ public class UsuariosController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Adicionar(AdicionarUsuarioViewModel dados)
     {
+        dados.Telefone = new string(dados.Telefone.Where(char.IsDigit).ToArray());
         //     var validacaoResult = _adicionarUsuarioValidator.Validate(dados);
         /*
                 if (!validacaoResult.IsValid)
@@ -167,6 +168,8 @@ public class UsuariosController : Controller
                     validacaoResult.AddToModelState(ModelState, string.Empty);
                     return View(dados);
                 } */
+
+        dados.Telefone = new string(dados.Telefone.Where(char.IsDigit).ToArray());
         var usuario = _userManager.Users.FirstOrDefault(u => u.Id == id);
         if (usuario is null)
         {

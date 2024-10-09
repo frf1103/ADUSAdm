@@ -32,6 +32,7 @@ namespace FarmPlannerAdm.Shared
         */
         private readonly IHttpContextAccessor _httpContextAccessor;
 
+        //private readonly string _urlconvite;
         // Construtor que recebe IHttpContextAccessor através de injeção de dependência
         public SessionManager(IHttpContextAccessor httpContextAccessor)
         {
@@ -40,6 +41,26 @@ namespace FarmPlannerAdm.Shared
 
         private ISession Session => _httpContextAccessor.HttpContext?.Session;
 
+/*
+        public SessionManager(IConfiguration configuration)
+        {
+            // Carrega os valores do appsettings.json
+         
+            _urlconvite = configuration.GetValue<string>("AppSetings:urlconvite");
+        }
+
+        public void SetConvite(HttpContext context, string value)
+        {
+            context.Session.SetString(_urlconvite, value);
+            // Define o tempo de expiração da sessão, se necessário
+            
+        }
+
+        public string GetConvite(HttpContext context)
+        {
+            return context.Session.GetString(_urlconvite);
+        }
+*/
         public string contaguid
         {
             get

@@ -12,6 +12,17 @@
     .hidden {
         display: none;
     }
+
+    .fp-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+        .fp-button i {
+            color: blue; /* Escolha a cor que você deseja para o ícone */
+        }
+
 </style>
 
 
@@ -133,6 +144,8 @@
                     { name: "id", type: "number", width: 20, title: "ID", visible: true },
                     { name: "descricao", type: "text", width: 150, title: "Descrição" },
 
+
+
                     {
                         type: "control",
                         itemTemplate: function (_, item) {
@@ -177,7 +190,25 @@
 
                             return $result;
                         }
-                    }]
+                    },
+                    {
+                        type: "control",
+                        itemTemplate: function (_, item) {
+                            // Criação do botão com ícone de caminhão
+                            var $button = $("<button>")
+                                .addClass("fp-button") // Usa a classe personalizada sem o "X"
+                                .append($("<i>").addClass("fas fa-cog"))
+                                .attr("title", "Parametrizar Modelo")
+                                .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
+                                .on("click", function (e) {
+                                    window.location.href = '/modeloparametro/adicionar?acao=1&idmodelo='+ item.id;
+                                });
+                            return $button;
+                        }
+                    }
+
+                    
+                ]
             });
         });
     </script>

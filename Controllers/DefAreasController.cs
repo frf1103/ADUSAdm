@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using FarmPlannerClient.Localidade;
 using FarmPlannerClient.Regiao;
-using Newtonsoft.Json;
+
+//using Newtonsoft.Json;
 using FarmPlannerClient.DefAreas;
+using Newtonsoft.Json;
 
 namespace FarmPlannerAdm.Controllers
 {
@@ -51,7 +53,6 @@ namespace FarmPlannerAdm.Controllers
 
             ViewBag.role = _sessionManager.userrole;
             ViewBag.permissao = (_sessionManager.userrole != "UserV");
-
 
             return View();
         }
@@ -136,6 +137,7 @@ namespace FarmPlannerAdm.Controllers
 
             return View(c);
         }
+
         [Authorize(Roles = "Admin,User,AdminC")]
         [HttpPost]
         public async Task<IActionResult> Editar(int id, FazendaViewModel dados)
@@ -158,6 +160,7 @@ namespace FarmPlannerAdm.Controllers
 
             return RedirectToAction("adicionar", new { acao = 1, id = 0 });
         }
+
         [Authorize(Roles = "Admin,User,AdminC")]
         [HttpPost]
         public async Task<IActionResult> Adicionar(FazendaViewModel dados)
@@ -168,9 +171,9 @@ namespace FarmPlannerAdm.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                //  string y = await response.Content.ReadAsStringAsync();
-                //  var result = JsonSerializer.Deserialize<FarmPlannerClient.Defarea.FazendaViewModel>(y);
-                return RedirectToAction(nameof(Adicionar));
+                string y = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<FarmPlannerClient.DefAreas.FazendaViewModel>(y);
+                return RedirectToAction("adicionar", new { acao = 2, id = result.id });
             }
             string x = await response.Content.ReadAsStringAsync();
 
@@ -181,6 +184,7 @@ namespace FarmPlannerAdm.Controllers
             TempData["Erro"] = x;
             return RedirectToAction("adicionar", new { acao = 1, id = 0 });
         }
+
         [Authorize(Roles = "Admin,User,AdminC")]
         [HttpPost]
         public async Task<IActionResult> Excluir(int id, FazendaViewModel dados)
@@ -206,6 +210,7 @@ namespace FarmPlannerAdm.Controllers
 
             return Json(c);
         }
+
         [Authorize(Roles = "Admin,User,AdminC")]
         public async Task<IActionResult> AdicionarTalhao(int idfazenda, int acao = 1, int id = 0)
         {
@@ -258,6 +263,7 @@ namespace FarmPlannerAdm.Controllers
 
             return View(c);
         }
+
         [Authorize(Roles = "Admin,User,AdminC")]
         [HttpPost]
         public async Task<IActionResult> EditarTalhao(int id, EditarTalhaoViewModel dados)
@@ -282,6 +288,7 @@ namespace FarmPlannerAdm.Controllers
 
             return RedirectToAction("adicionartalhao", new { acao = 1, idfazenda = dados.idFazenda, id = 0 });
         }
+
         [Authorize(Roles = "Admin,User,AdminC")]
         [HttpPost]
         public async Task<IActionResult> AdicionarTalhao(EditarTalhaoViewModel dados)
@@ -306,6 +313,7 @@ namespace FarmPlannerAdm.Controllers
             TempData["Erro"] = x;
             return RedirectToAction("adicionartalhao", new { acao = 1, idfazenda = dados.idFazenda, id = 0 });
         }
+
         [Authorize(Roles = "Admin,User,AdminC")]
         [HttpPost]
         public async Task<IActionResult> ExcluirTalhao(int id, EditarTalhaoViewModel dados)

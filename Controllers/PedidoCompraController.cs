@@ -136,6 +136,8 @@ namespace FarmPlannerAdm.Controllers
 
                 ViewBag.Titulo = "Adicionar";
                 ViewBag.Acao = "adicionar";
+                c.vencimento = DateTime.Now.Date;
+                c.datapedido = DateTime.Now.Date;
             }
             else
             {

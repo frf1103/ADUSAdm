@@ -98,7 +98,7 @@ namespace FarmPlannerAdm.Controllers
             }
             if (dtfim.Year == 1)
             {
-                ViewBag.dtfim = DateTime.Now.AddDays(30).ToString("yyyy-MM-dd");
+                ViewBag.dtfim = DateTime.Now.ToString("yyyy-MM-dd");
             }
             else
             {
@@ -127,6 +127,9 @@ namespace FarmPlannerAdm.Controllers
             if (acao == 1)
             {
                 c = new ComercializacaoViewModel();
+                c.dataPagamento = DateTime.Now.Date;
+                c.dataEntrega = DateTime.Now.Date;
+                c.dataPedido = DateTime.Now.Date;
                 //   c.idfazenda = idfaz;
                 //   c.idSafra = idsafra;
 

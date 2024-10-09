@@ -48,6 +48,9 @@ namespace FarmPlannerAdm.Controllers
             }
             List<FarmPlannerClient.Conta.ContaViewModel> c = await ret;
 
+
+            ViewBag.permissao = (_sessionManager.userrole != "UserV" && (_sessionManager.userrole != "Repres"));
+
             ViewBag.NumeroPagina = pagina;
             ViewBag.TotalPaginas = Math.Ceiling((decimal)c.Count() / TAMANHO_PAGINA);
             return View(c.Skip((pagina - 1) * TAMANHO_PAGINA)

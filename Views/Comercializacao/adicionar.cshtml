@@ -59,15 +59,15 @@
                                         <div class="row">
                                             <div class="col-md-2">   
                                                 <div class="form-group">
-                                                    <label asp-for="Id" class="control-label"></label>
-                                                     <input asp-for="Id" class="form-control" id="id" readonly />
-                                                    <span asp-validation-for="Id" class="text-danger"></span>
+                                                    <label asp-for="id" class="control-label"></label>
+                                                     <input asp-for="id" class="form-control" id="id" readonly />
+                                                    <span asp-validation-for="id" class="text-danger"></span>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-5">
                                                 <div class="form-group">
-                                                    <label asp-for="IdSafra" class="control-label"></label>
+                                                    <label asp-for="idSafra" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
@@ -77,22 +77,22 @@
                                                     //        }
                                                     //        else
                                                     //        {
-                                                            <select asp-for="IdSafra" id="idconfig" class="form-control" asp-items="@ViewBag.safras"  ></select>
+                                                            <select asp-for="idSafra" id="idconfig" class="form-control" asp-items="@ViewBag.safras"  ></select>
                                                      //       }                                                           
 
                                                         }
                                                         else
                                                         {
-                                                            <select asp-for="IdSafra" id="idsafra" class="form-control" asp-items="@ViewBag.safras" disabled></select>
+                                                            <select asp-for="idSafra" id="idsafra" class="form-control" asp-items="@ViewBag.safras" disabled></select>
                                                         }
-                                                        <span asp-validation-for="IdSafra" class="text-danger"></span>
+                                                        <span asp-validation-for="idSafra" class="text-danger"></span>
 
                                                     }
                                                 </div>
                                             </div>
                                             <div class="col-md-5">
                                                 <div class="form-group">
-                                                    <label asp-for="IdFazenda" class="control-label"></label>
+                                                    <label asp-for="idFazenda" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
@@ -103,12 +103,12 @@
                                                             //      else
                                                             //      {
 
-                                                            <select asp-for="IdFazenda" id="idFazenda" class="form-control" asp-items="@ViewBag.fazendas"></select>
+                                                            <select asp-for="idFazenda" id="idFazenda" class="form-control" asp-items="@ViewBag.fazendas"></select>
                                                             //     }
                                                         }
                                                         else
                                                         {
-                                                            <select asp-for="IdFazenda" id="idFazenda" class="form-control" asp-items="@ViewBag.fazendas" disabled></select>
+                                                            <select asp-for="idFazenda" id="idFazenda" class="form-control" asp-items="@ViewBag.fazendas" disabled></select>
                                                         }
                                                     }
                                                 </div>
@@ -122,7 +122,7 @@
                                         <div class="row">
                                             <div class="col-md-8">
                                                 <div class="form-group">
-                                                <label asp-for="IdParceiro" class="control-label"></label>
+                                                <label asp-for="idParceiro" class="control-label"></label>
                                                 @{
                                                     if (ViewBag.idacao <= 2)
                                                     {
@@ -132,22 +132,22 @@
                                                         //        }
                                                         //        else
                                                         //        {
-                                                        <select asp-for="IdParceiro" id="idfornecedor" class="form-control" asp-items="@ViewBag.fornecedores"></select>
+                                                        <select asp-for="idParceiro" id="IdParceiro" class="form-control" asp-items="@ViewBag.fornecedores"></select>
                                                         //       }
 
                                                     }
                                                     else
                                                     {
-                                                        <select asp-for="IdParceiro" id="idsafra" class="form-control" asp-items="@ViewBag.fornecedores" disabled></select>
+                                                            <select asp-for="idParceiro" id="IdParceiro" class="form-control" asp-items="@ViewBag.fornecedores" disabled></select>
                                                     }
-                                                        <span asp-validation-for="IdParceiro" class="text-danger"></span>
+                                                        <span asp-validation-for="idParceiro" class="text-danger"></span>
 
                                                 }
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label asp-for="IdMoeda" class="control-label"></label>
+                                                    <label asp-for="idMoeda" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
@@ -158,12 +158,12 @@
                                                             //      else
                                                             //      {
 
-                                                            <select asp-for="IdMoeda" id="idmoeda" class="form-control" asp-items="@ViewBag.moedas"></select>
+                                                            <select asp-for="idMoeda" id="idmoeda" class="form-control" asp-items="@ViewBag.moedas"></select>
                                                             //     }
                                                         }
                                                         else
                                                         {
-                                                            <select asp-for="IdMoeda" id="idmoeda" class="form-control" asp-items="@ViewBag.moedas" disabled></select>
+                                                            <select asp-for="idMoeda" id="idmoeda" class="form-control" asp-items="@ViewBag.moedas" disabled></select>
                                                         }
                                                     }
                                                 </div>
@@ -174,7 +174,7 @@
                                         <div class="row">
                                             <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label asp-for="DataEntrega" class="control-label"></label>
+                                                    <label asp-for="dataPedido" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
@@ -184,15 +184,41 @@
                                                             //        }
                                                             //        else
                                                             //        {
-                                                            <input asp-for="DataEntrega" id="DataEntrega" class="form-control"/>
+                                                            <input type="date" asp-for="dataPedido" id="DataPedido" class="form-control"/>
                                                             //       }
 
                                                         }
                                                         else
                                                         {
-                                                            <input asp-for="DataEntrega" id="DataEntrega" class="form-control" readonly/>
+                                                            <input type="date"  asp-for="dataPedido" id="DataPedido" class="form-control" readonly/>
                                                         }
-                                                        <span asp-validation-for="DataEntrega" class="text-danger"></span>
+                                                        <span asp-validation-for="dataPedido" class="text-danger"></span>
+
+                                                    }
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label asp-for="dataEntrega" class="control-label"></label>
+                                                    @{
+                                                        if (ViewBag.idacao <= 2)
+                                                        {
+                                                            //        if (ViewBag.idacao == 1)
+                                                            //        {
+                                                            //            <select asp-for="idModeloMaquina" id="idmodelo" value="@ViewBag.idmodelo" class="form-control" asp-items="@ViewBag.modelos"></select>
+                                                            //        }
+                                                            //        else
+                                                            //        {
+                                                            <input type="date"  asp-for="dataEntrega" id="DataEntrega" class="form-control"/>
+                                                            //       }
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="date" asp-for="dataEntrega" id="DataEntrega" class="form-control" readonly />
+                                                        }
+                                                        <span asp-validation-for="dataEntrega" class="text-danger"></span>
 
                                                     }
                                                 </div>
@@ -200,7 +226,7 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                 
-                                                    <label asp-for="DataPagamento" class="control-label"></label>
+                                                    <label asp-for="dataPagamento" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
@@ -210,15 +236,15 @@
                                                             //        }
                                                             //        else
                                                             //        {
-                                                            <input asp-for="DataPagamento" id="DataPagamento" class="form-control"/>
+                                                            <input type="date" asp-for="dataPagamento" id="DataPagamento" class="form-control" />
                                                             //       }
 
                                                         }
                                                         else
                                                         {
-                                                            <input asp-for="DataPagamento" id="DataPagamento" class="form-control" readonly />
+                                                            <input type="date" asp-for="dataPagamento" id="DataPagamento" class="form-control" readonly />
                                                         }
-                                                        <span asp-validation-for="DataPagamento" class="text-danger"></span>
+                                                        <span asp-validation-for="dataPagamento" class="text-danger"></span>
 
                                                     }
                                                 </div>
@@ -227,7 +253,7 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
 
-                                                    <label asp-for="NumeroContrato" class="control-label"></label>
+                                                    <label asp-for="numeroContrato" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
@@ -237,15 +263,15 @@
                                                             //        }
                                                             //        else
                                                             //        {
-                                                            <input asp-for="NumeroContrato" id="NumeroContrato" class="form-control" />
+                                                            <input asp-for="numeroContrato" id="NumeroContrato" class="form-control" />
                                                             //       }
 
                                                         }
                                                         else
                                                         {
-                                                            <input asp-for="NumeroContrato" id="NumeroContrato" class="form-control" readonly />
+                                                            <input asp-for="numeroContrato" id="NumeroContrato" class="form-control" readonly />
                                                         }
-                                                        <span asp-validation-for="NumeroContrato" class="text-danger"></span>
+                                                        <span asp-validation-for="numeroContrato" class="text-danger"></span>
 
                                                     }
                                                 </div>
@@ -255,19 +281,19 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
 
-                                                    <label asp-for="CBOT" class="control-label"></label>
+                                                    <label asp-for="cbot" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
-                                                            <input asp-for="CBOT" id="observacao" class="form-control" />
+                                                            <input asp-for="cbot" id="observacao" class="form-control" />
 
 
                                                         }
                                                         else
                                                         {
-                                                            <input asp-for="CBOT" id="CBOT" class="form-control" readonly />
+                                                            <input asp-for="cbot" id="CBOT" class="form-control" readonly />
                                                         }
-                                                        <span asp-validation-for="CBOT" class="text-danger"></span>
+                                                        <span asp-validation-for="cbot" class="text-danger"></span>
 
                                                     }
                                                 </div>
@@ -275,19 +301,19 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
 
-                                                    <label asp-for="Cambio" class="control-label"></label>
+                                                    <label asp-for="cambio" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
-                                                            <input asp-for="Cambio" id="Cambio" class="form-control" />
+                                                            <input asp-for="cambio" id="Cambio" class="form-control" />
 
 
                                                         }
                                                         else
                                                         {
-                                                            <input asp-for="Cambio" id="Cambio" class="form-control" readonly />
+                                                            <input asp-for="cambio" id="Cambio" class="form-control" readonly />
                                                         }
-                                                        <span asp-validation-for="Cambio" class="text-danger"></span>
+                                                        <span asp-validation-for="cambio" class="text-danger"></span>
 
                                                     }
                                                 </div>
@@ -295,39 +321,39 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
 
-                                                    <label asp-for="Premio" class="control-label"></label>
+                                                    <label asp-for="premio" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
-                                                            <input asp-for="Premio" id="Premio" class="form-control" />
+                                                            <input asp-for="premio" id="Premio" class="form-control" />
 
 
                                                         }
                                                         else
                                                         {
-                                                            <input asp-for="Premio" id="Premio" class="form-control" readonly />
+                                                            <input asp-for="premio" id="Premio" class="form-control" readonly />
                                                         }
-                                                        <span asp-validation-for="Premio" class="text-danger"></span>
+                                                        <span asp-validation-for="premio" class="text-danger"></span>
 
                                                     }
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
-
-                                                    <label asp-for="Premio" class="control-label"></label>
+                                                    ''
+                                                    <label asp-for="frete" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
-                                                            <input asp-for="Premio" id="Premio" class="form-control" />
+                                                            <input asp-for="frete" id="Frete" class="form-control" />
 
 
                                                         }
                                                         else
                                                         {
-                                                            <input asp-for="Premio" id="Premio" class="form-control" readonly />
+                                                            <input asp-for="frete" id="Frete" class="form-control" readonly />
                                                         }
-                                                        <span asp-validation-for="Premio" class="text-danger"></span>
+                                                        <span asp-validation-for="frete" class="text-danger"></span>
 
                                                     }
                                                 </div>
@@ -337,19 +363,19 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
 
-                                                    <label asp-for="Quantidade" class="control-label"></label>
+                                                    <label asp-for="quantidade" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
-                                                            <input asp-for="Quantidade" id="Quantidade" class="form-control" />
+                                                            <input asp-for="quantidade" id="Quantidade" class="form-control" />
 
 
                                                         }
                                                         else
                                                         {
-                                                            <input asp-for="Quantidade" id="Quantidade" class="form-control" readonly />
+                                                            <input asp-for="quantidade" id="Quantidade" class="form-control" readonly />
                                                         }
-                                                        <span asp-validation-for="Quantidade" class="text-danger"></span>
+                                                        <span asp-validation-for="quantidade" class="text-danger"></span>
 
                                                     }
                                                 </div>
@@ -357,19 +383,19 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
 
-                                                    <label asp-for="ValorUnitario" class="control-label"></label>
+                                                    <label asp-for="valorUnitario" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
-                                                            <input asp-for="ValorUnitario" id="ValorUnitario" class="form-control" />
+                                                            <input asp-for="valorUnitario" id="ValorUnitario" class="form-control" />
 
 
                                                         }
                                                         else
                                                         {
-                                                            <input asp-for="ValorUnitario" id="ValorUnitario" class="form-control" readonly />
+                                                            <input asp-for="valorUnitario" id="ValorUnitario" class="form-control" readonly />
                                                         }
-                                                        <span asp-validation-for="ValorUnitario" class="text-danger"></span>
+                                                        <span asp-validation-for="valorUnitario" class="text-danger"></span>
 
                                                     }
                                                 </div>
@@ -377,19 +403,19 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
 
-                                                    <label asp-for="ValorTotal" class="control-label"></label>
+                                                    <label asp-for="valorTotal" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
-                                                            <input asp-for="ValorTotal" id="ValorTotal" class="form-control" />
+                                                            <input asp-for="valorTotal" id="ValorTotal" class="form-control" />
 
 
                                                         }
                                                         else
                                                         {
-                                                            <input asp-for="ValorTotal" id="ValorTotal" class="form-control" readonly />
+                                                            <input asp-for="valorTotal" id="ValorTotal" class="form-control" readonly />
                                                         }
-                                                        <span asp-validation-for="ValorTotal" class="text-danger"></span>
+                                                        <span asp-validation-for="valorTotal" class="text-danger"></span>
 
                                                     }
                                                 </div>
@@ -397,19 +423,19 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
 
-                                                    <label asp-for="ValorLiquido" class="control-label"></label>
+                                                    <label asp-for="valorLiquido" class="control-label"></label>
                                                     @{
                                                         if (ViewBag.idacao <= 2)
                                                         {
-                                                            <input asp-for="ValorLiquido" id="ValorLiquido" class="form-control" />
+                                                            <input asp-for="valorLiquido" id="ValorLiquido" class="form-control" />
 
 
                                                         }
                                                         else
                                                         {
-                                                            <input asp-for="ValorLiquido" id="ValorLiquido" class="form-control" readonly />
+                                                            <input asp-for="valorLiquido" id="ValorLiquido" class="form-control" readonly />
                                                         }
-                                                        <span asp-validation-for="ValorLiquido" class="text-danger"></span>
+                                                        <span asp-validation-for="valorLiquido" class="text-danger"></span>
 
                                                     }
                                                 </div>
@@ -475,6 +501,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
     
         <script src="https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid.min.js"></script>
+        
 
           
 
@@ -491,115 +518,10 @@
 
             $('select').select2();
             
-            });
-
-    
+            });   
 
 
-        $(function () {
-            $("#jsprodutos").jsGrid({
-                width: "100%",
-                height: "auto",
-
-                sorting: true,
-                paging: true,
-                
-                onItemUpdating: function (args) {
-
-                },
-
-                autoload: true,
-                noDataContent: "<div class='custom-no-data'>Nenhum dado encontrado</div>",
-
-                controller: {
-                    loadData: function () {
-                        return $.ajax({
-                            type: "GET",
-                            url: "/pedidocompra/getproduto",
-                            data:{idpedido:@ViewBag.id,                            
-                            idproduto:@ViewBag.SelectedOptionPr},
-                            dataType: "json"
-                        });
-                    }
-                },
-
-                fields: [
-                    { name: "id", type: "number", width: 20, title: "ID", visible: false },
-
-                    {                        
-                        name: "descproduto", type: "text", width: 100, title: "Produto"
-                    },
-                    {
-                        name: "qtdcompra", type: "number", width: 80, title: "Comprado"
-                    },
-
-                    {
-                        name: "preco", type: "number", width: 80, title: "Preço"
-                    },
-
-                    {
-                        name: "total", type: "number", width: 80, 
-
-                        headerTemplate: function () {
-                            return "Total"
-                            //return $("<th>").text("Vl Unitário").addClass("custom-header");
-                        }
-                    },
-                    {
-                        name: "recebido", type: "number", width: 80,
-
-                        headerTemplate: function () {
-                            return "Recebido"
-                            //return $("<th>").text("Vl Unitário").addClass("custom-header");
-                        }
-                    },
-
-
-                    {
-                        type: "control",
-                        itemTemplate: function (_, item) {
-                            var $result = $("<div>").addClass("dropdown");
-
-                            var $button = $("<button>").addClass("btn btn-info dropdown-toggle")
-                                .attr("type", "button")
-                                .attr("id", "dropdownMenuButton")
-                                .attr("data-toggle", "dropdown")
-                                .text("Ações");
-
-                            var $menu = $("<div>").addClass("dropdown-menu")
-                                .attr("aria-labelledby", "dropdownMenuButton");
-
-                            var $details = $("<a>").addClass("dropdown-item")
-                                .attr("href", "#")
-                                .text("Visualizar")
-                                .on("click", function () {
-                                    window.location.href = '/pedidocompra/adicionarproduto/' + item.id + '?acao=4';
-                                });
-
-                            var $edit = $("<a>").addClass("dropdown-item")
-                                .attr("href", "#")
-                                .text("Editar")
-                                .on("click", function () {
-                                    window.location.href = '/pedidocompra/adicionarproduto/' + item.id + '?acao=2';
-                                });
-
-                            var $delete = $("<a>").addClass("dropdown-item")
-                                .attr("href", "#")
-                                .text("Excluir")
-                                .on("click", function () {
-                                    window.location.href = '/pedidocompra/adicionarproduto/' + item.id + '?acao=3';
-                                });
-
-
-
-                            $menu.append($details).append($edit).append($delete);
-                            $result.append($button).append($menu);
-
-                            return $result;
-                        }
-                    }]
-            });
-        });
+        
 
 
       
