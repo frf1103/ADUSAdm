@@ -219,7 +219,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-2">
+                                            <div class="col-md-2 d-flex align-items-end">
                                                 <div class="form-group">
                                                     <label asp-for="plantio" class="control-label"></label>
                                                     @{
@@ -249,18 +249,18 @@
                                                 @{
                                                     if (ViewBag.idacao <= 2)
                                                     {
-                                                                <button type="submit" class="btn btn-primary" >Salvar</button>
+                                                                <button type="submit" class="btn btn-success" >Salvar</button>
                                                     }
                                                     else
                                                     {
                                                         if (ViewBag.idacao == 3)
                                                         {
-                                                                 <button type="submit" class="btn btn-primary">Excluir</button>
+                                                                 <button type="submit" class="btn btn-danger">Excluir</button>
                                                         }
                                                     }
                                                 }
 
-                                                <a href="/planejoperacao/index" class="btn btn-danger">Voltar</a>
+                                                <a href="/planejoperacao/index" class="btn btn-default">Voltar</a>
                                             </div>
                                         </div>
                                     </div>
@@ -269,42 +269,44 @@
                         </div>
 
                         <div class="tab-pane fade" id="custom-content-above-consolida" role="tabpanel" aria-labelledby="custom-content-above-cosolida-tab">
+                            <div class="mt-2">
+                                <form asp-action="adicionarprodplanejado">
+                                    <!--
+                                    <div class="input-group input-group-sm" style="width: 300px;">
+                                        <input type="text" class="form-control" placeholder="Buscar talhão" name="filtro" id="searchInput" onkeyup="searchTable()">
+                                    </div>
+                                    -->
+                                    <div class="col text-right">
+                                        <a href="/planejoperacao/adicionarprodplanejado?idplanejamento=@Model!.id&acao=1" button type="submit" class="btn btn-default"><img class="icon" src="/svg/icons/plus.svg" /></a>
+                                    </div>
 
-                            <form asp-action="adicionarprodplanejado">
-                                <!--
-                                <div class="input-group input-group-sm" style="width: 300px;">
-                                    <input type="text" class="form-control" placeholder="Buscar talhão" name="filtro" id="searchInput" onkeyup="searchTable()">
-                                </div>
-                                -->
-                                <div class="col text-right">
-                                    <a href="/planejoperacao/adicionarprodplanejado?idplanejamento=@Model!.id&acao=1" button type="submit" class="btn btn-primary"><i class="fas fa-plus icon-default"></i></a>
-                                </div>
 
+                                    <div class="card-body table-responsive p-0 mt-2">
 
-                                <div class="card-body table-responsive p-0">
-
-                                    <div id="jsprodutos"></div>
-                                </div>
-                            </form>
+                                        <div id="jsprodutos"></div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="custom-maquinas" role="tabpanel" aria-labelledby="custom-maquinas-tab">
+                            <div class="mt-2">
+                                <form asp-action="adicionarmaquinaplanejada">
+                                    <!--
+                                    <div class="input-group input-group-sm" style="width: 300px;">
+                                        <input type="text" class="form-control" placeholder="Buscar talhão" name="filtro" id="searchInput" onkeyup="searchTable()">
+                                    </div>
+                                    -->
+                                    <div class="col text-right">
+                                        <a href="/planejoperacao/adicionarmaquinaplanejada?idplanejamento=@Model!.id&acao=1" button type="submit" class="btn btn-default"><img class="icon" src="/svg/icons/plus.svg" /></a>
+                                    </div>
 
-                            <form asp-action="adicionarmaquinaplanejada">
-                                <!--
-                                <div class="input-group input-group-sm" style="width: 300px;">
-                                    <input type="text" class="form-control" placeholder="Buscar talhão" name="filtro" id="searchInput" onkeyup="searchTable()">
-                                </div>
-                                -->
-                                <div class="col text-right">
-                                    <a href="/planejoperacao/adicionarmaquinaplanejada?idplanejamento=@Model!.id&acao=1" button type="submit" class="btn btn-primary"><i class="fas fa-plus icon-default"></i></a>
-                                </div>
 
+                                    <div class="card-body table-responsive p-0 mt-2">
 
-                                <div class="card-body table-responsive p-0">
-
-                                    <div id="jsmaquinas"></div>
-                                </div>
-                            </form>
+                                        <div id="jsmaquinas"></div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
 
 
@@ -321,12 +323,6 @@
 </div>
 
 <style>
-    .custom-no-data {
-        text-align: center;
-        color: red;
-        font-weight: bold;
-    }
-
     .align-right {
         text-align: right;
     }
