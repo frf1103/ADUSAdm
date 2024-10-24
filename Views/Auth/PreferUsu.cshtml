@@ -1,9 +1,7 @@
 ﻿@model FarmPlannerClient.PreferUsu.PreferUsuViewModel
 
 
-<link rel="stylesheet" href="~/sweetalert2.min.css">
-<!-- Toastr -->
-<link rel="stylesheet" href="~/toastr.min.css">
+
 
 
 <!-- Content Header (Page header) -->
@@ -37,8 +35,24 @@
                                         
                                         </div>
                                         <div class="form-group">
+                                            <label asp-for="idconta" class="control-label"></label>
+                                            @{
+                                                if (User.IsInRole("Admin"))
+                                                {
+                                                    <select asp-for="idconta" class="form-control" asp-items="@ViewBag.contas" value="@ViewBag.idconta"  id="idconta" onchange="loadorganizacoes()"></select>
+                                                }
+                                                else
+                                                {
+                                                    <select asp-for="idconta" class="form-control" asp-items="@ViewBag.contas"  id="idconta"  disabled onchange="loadorganizacoes()"></select>
+                                                    <input asp-for="idconta" class="form-control" hidden />
+                                                }
+                                            }
+                                            <span asp-validation-for="idconta" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group">
                                             <label asp-for="idorganizacao" class="control-label"></label>
-                                            <select asp-for="idorganizacao" class="form-control" asp-items="@ViewBag.organizacoes" id="idorg" onchange="loadano()"></select>
+                                            <select asp-for="idorganizacao" class="form-control"  id="idorg" onchange="loadano()"></select>
                                             <span asp-validation-for="idorganizacao" class="text-danger"></span>
                                         </div>
                                         <div class="form-group">
@@ -77,17 +91,47 @@
 @section scripts {
     <script>
 
-        $(document).ready(function () {
+       
 
+        $(document).ready(function () {
+     //       $("#idconta").val("@ViewBag.idconta");
+            loadorganizacoes();
             loadano();
         });
 
+
+        function loadorganizacoes() {
+            $.ajax({
+                type: "get",
+                url: "/Organizacao/GetOrganizacaoByUid",
+                data: { idconta: $("#idconta").val() },
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    if (obj != null) {
+                        var data = obj;
+                        var selectbox = $('#idorg');
+                        selectbox.find('option').remove();
+
+                        $.each(data, function (i, d) {
+                            $('<option>').val(d.idorganizacao).text(d.descorg).appendTo(selectbox);
+                        });
+                        if (@ViewBag.idorg!="0"){
+                            selectbox.val("@ViewBag.idorg");
+                        }
+                        loadano();
+                        //$('#unidneg').trigger("change");
+                    }
+                }
+            });
+
+        }
         function loadano()
         {
             $.ajax({
                 type: "get",
                 url: "/anoagricola/ListAnoByOrg",
-                data: { idorg: $("#idorg").val() },
+                    data: { idorg: $("#idorg").val(), idconta: $("#idconta").val() },
                 dataType: 'json',
                 contentType: "application/json; charset=utf-8",
                 success: function (obj) {
@@ -99,6 +143,10 @@
                         $.each(data, function (i, d) {
                             $('<option>').val(d.id).text(d.descricao).appendTo(selectbox);
                         });
+                        if (@ViewBag.idano!="0")
+                        {
+                            selectbox.val("@ViewBag.idano");
+                        }
                         //$('#unidneg').trigger("change");
                     }
                 }

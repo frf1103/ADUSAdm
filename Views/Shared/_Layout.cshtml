@@ -61,6 +61,7 @@
 
 
 <body class="hold-transition sidebar-mini">
+
     <!-- Site wrapper -->
     <div class="wrapper">
         <!-- Navbar -->
@@ -115,10 +116,10 @@
 
                 </div>
                 <div class="user-panel mt-3 pb-3 mb-3 d-fex">
-                    <div class="info">
-
-                        <a asp-controller="Auth" asp-action="PreferUsu" id="psafra"></a>
-
+                    <div class="info">                        
+                       <a class="nav-link" asp-controller="Auth" asp-action="PreferUsu" role="button" id="preferencias1"></a>
+                       <a class="nav-link" asp-controller="Auth" asp-action="PreferUsu" role="button" id="preferencias2"></a>
+                        
                     </div>
 
                 </div>
@@ -506,6 +507,7 @@
             </div>
 
         </footer>
+
     </div>
     <!-- ./wrapper -->
     <!-- jQuery -->
@@ -537,7 +539,7 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-
+            $('select').select2();
             $.ajax({
                 type: "get",
                 url: "/auth/LoadPrefUsu",
@@ -546,12 +548,35 @@
                 contentType: "application/json; charset=utf-8",
                 success: function (obj) {
                     if (obj != null) {
-                        $("#preferencias").text(obj.pref);
+                        $("#preferencias1").text(obj.pref1);
+                        $("#preferencias2").text(obj.pref2);
+                        $("#idorg").val(obj.idorg);
+                        $("#idano").val(obj.idano);
+
                     }
                 }
             });
 
+    //        loadorganizacoes();
+    //        loadano();
+    //        if (@ViewBag.pref=="0")
+    //        {
+     //           prefer();
+      //      }
         });
+
+
+        
+
+        function prefer()
+        {
+            var x = $("#staticBackdrop");
+           
+            x.modal({
+                backdrop: 'static',  // Desativa o fechamento ao clicar fora
+                keyboard: false      // Opcional: desativa o fechamento com a tecla ESC
+            });
+        }
 
 
 

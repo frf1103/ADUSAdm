@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace FarmPlannerAdm.Controllers
 {
-      [Authorize]
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -17,6 +17,7 @@ namespace FarmPlannerAdm.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.pref = TempData["pref"] ?? "1";
             return View();
         }
 

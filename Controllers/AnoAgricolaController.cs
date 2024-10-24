@@ -34,7 +34,7 @@ namespace FarmPlannerAdm.Controllers
         [Authorize(Roles = "Admin,User,AdminC,UserV")]
         public async Task<IActionResult> Index(int? idorg, string? filtro, int pagina = 1)
         {
-            Task<List<FarmPlannerClient.Organizacao.OrganizacaoUsuarioViewModel>> retc = _orgAPI.ListaOrganizacaoByUID(_sessionManager.uid);
+            Task<List<FarmPlannerClient.Organizacao.OrganizacaoUsuarioViewModel>> retc = _orgAPI.ListaOrganizacaoByUID(_sessionManager.uid, _sessionManager.contaguid);
             List<FarmPlannerClient.Organizacao.OrganizacaoUsuarioViewModel> t = await retc;
 
             ViewBag.organizacoes = t.Select(m => new SelectListItem { Text = m.descorg, Value = m.idorganizacao.ToString() });
@@ -43,7 +43,6 @@ namespace FarmPlannerAdm.Controllers
             ViewBag.filtro = filtro;
             ViewBag.role = _sessionManager.userrole;
             ViewBag.permissao = (_sessionManager.userrole != "UserV");
-
 
             return View();
         }
@@ -102,7 +101,7 @@ namespace FarmPlannerAdm.Controllers
                 ModelState.AddModelError(string.Empty, TempData["Erro"].ToString());
             }
 
-            Task<List<FarmPlannerClient.Organizacao.OrganizacaoUsuarioViewModel>> retc = _orgAPI.ListaOrganizacaoByUID(_sessionManager.uid);
+            Task<List<FarmPlannerClient.Organizacao.OrganizacaoUsuarioViewModel>> retc = _orgAPI.ListaOrganizacaoByUID(_sessionManager.uid, _sessionManager.contaguid);
             List<FarmPlannerClient.Organizacao.OrganizacaoUsuarioViewModel> t = await retc;
 
             ViewBag.organizacoes = t.Select(m => new SelectListItem { Text = m.descorg, Value = m.idorganizacao.ToString() });
@@ -174,13 +173,16 @@ namespace FarmPlannerAdm.Controllers
         }
 
         [HttpGet]
-        public async Task<JsonResult> ListAnoByOrg(int idorg)
+        public async Task<JsonResult> ListAnoByOrg(int idorg, string? idconta)
         {
-            Task<List<FarmPlannerClient.AnoAgricola.AnoAgricolaViewModel>> ret = _anoagricola.Lista(idorg, _sessionManager.contaguid, "");
+            if (idconta == null)
+            {
+                idconta = _sessionManager.contaguid;
+            }
+            Task<List<FarmPlannerClient.AnoAgricola.AnoAgricolaViewModel>> ret = _anoagricola.Lista(idorg, idconta, "");
             List<FarmPlannerClient.AnoAgricola.AnoAgricolaViewModel> c = await ret;
             return Json(c);
         }
-
 
         public async Task<IActionResult> Indexsafra(int? idcultura, string? filtro, int pagina = 1)
         {
@@ -195,7 +197,6 @@ namespace FarmPlannerAdm.Controllers
             ViewBag.role = _sessionManager.userrole;
             ViewBag.permissao = (_sessionManager.userrole != "UserV");
 
-
             return View();
         }
 
@@ -206,6 +207,7 @@ namespace FarmPlannerAdm.Controllers
 
             return Json(c);
         }
+
         [Authorize(Roles = "Admin,User,AdminC")]
         public async Task<IActionResult> AdicionarSafra(int acao = 1, int id = 0)
         {

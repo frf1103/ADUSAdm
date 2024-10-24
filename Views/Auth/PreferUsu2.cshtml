@@ -1,0 +1,81 @@
+
+
+<!-- Modal -->
+
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Definir preferências</h1>
+
+                </div>
+                <div class="modal-body">
+
+                    <div class="col-md-12">
+                           <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <label for="idoperacao">Escolha uma Organização</label>
+                                        <select class="select2" name="idorg" id="idorg" onchange="loadano()">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <label for="idano">Escolha um Ano Agrícola</label>
+                                        <select class="select2" name="idano" id="idano">
+                                        </select>
+                                    </div>               
+                                </div>
+                            </div>                            
+                            <!-- /.card-body -->
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="fecharmodal()">Desistir e definir depois</button>
+                    <button type="button" class="btn btn-primary" onclick="saveprefer()">Definir agora</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+   
+
+<script> 
+
+   
+
+    
+
+    function fecharmodal() {
+        var x = $("#staticBackdrop");
+        x.modal('hide');
+    }
+
+    function saveprefer() {
+        $.ajax({
+            type: "get",
+            url: "/Auth/SavePreferUsu",
+            data: { idorganizacao: $("#idorg").val(),
+                idano: $("#idano").val()
+            },
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            success: function (response) {
+                if (response.success) {
+                    alert(response.message);
+                    fecharmodal();
+                    location.reload();
+                } else {
+                    alert("Erro: " + response.message);
+                }
+            },
+        });
+
+    }
+
+
+</script>

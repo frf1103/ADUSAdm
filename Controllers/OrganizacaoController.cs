@@ -14,6 +14,7 @@ using FarmPlannerAdm.Models;
 using FarmPlannerClient.Conta;
 using FarmPlannerClient.Organizacao;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Runtime.CompilerServices;
 
 namespace FarmPlannerAdm.Controllers
 {
@@ -35,7 +36,6 @@ namespace FarmPlannerAdm.Controllers
             _contaAPI = contaAPI;
             _sessionManager = sessionManager;
         }
-
 
         public async Task<IActionResult> Index(string? filtro, int pagina = 1)
         {
@@ -71,6 +71,15 @@ namespace FarmPlannerAdm.Controllers
             return Json(c);
         }
 
+        public async Task<JsonResult> GetOrganizacaoByUid(string? idconta)
+        {
+            idconta = idconta ?? _sessionManager.contaguid;
+            Task<List<FarmPlannerClient.Organizacao.OrganizacaoUsuarioViewModel>> ret = _culturaAPI.ListaOrganizacaoByUID(_sessionManager.uid, idconta);
+            List<FarmPlannerClient.Organizacao.OrganizacaoUsuarioViewModel> c = await ret;
+
+            return Json(c);
+        }
+
         public async Task<JsonResult> GetUsuarios(int idorg)
         {
             var users = _userManager.Users.ToList();
@@ -91,7 +100,17 @@ namespace FarmPlannerAdm.Controllers
                     nome = User.UserName
                 })
             ).ToList();
-            return Json(selectManyResult);
+            List<dynamic> result = new List<dynamic>();
+            foreach (var u in selectManyResult)
+            {
+                var userx = await _userManager.FindByIdAsync(u.uid);
+                bool isAdmin = await _userManager.IsInRoleAsync(userx, "Admin");
+                if (!isAdmin)
+                {
+                    result.Add(new { id = u.id, uid = u.uid, nome = u.nome });
+                }
+            }
+            return Json(result);
         }
 
         [Authorize(Roles = "Admin,AdminC")]
@@ -232,6 +251,11 @@ namespace FarmPlannerAdm.Controllers
                 {
                     addusuario(_sessionManager.uid, result.id);
                 }
+                var users = await _userManager.GetUsersInRoleAsync("Admin");
+                foreach (var u in users)
+                {
+                    addusuario(u.Id, result.id);
+                };
 
                 return RedirectToAction(nameof(Adicionar), new { acao = 2, id = result.id });
             }

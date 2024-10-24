@@ -31,15 +31,17 @@ public class AuthController : Controller
     private readonly IEmailSender _emailSender;
     private readonly FarmPlannerClient.Controller.PreferUsuControllerClient _preferusuClient;
     private readonly FarmPlannerClient.Controller.OrganizacaoControllerClient _organizacaoClient;
+    private readonly FarmPlannerClient.Controller.ContaControllerClient _contaAPI;
     private readonly SessionManager _sessionManager;
     private readonly IConfiguration _configuration;
+
     //   private readonly AGMContext _Agmcontext;
     private readonly RoleManager<IdentityRole> _roleManager;
 
     public AuthController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager,
         FarmPlannercontext context,
         //AGMContext agmcontext,
-        RoleManager<IdentityRole> roleManager, FarmPlannerClient.Controller.ContaControllerClient contaControllerClient, IEmailSender emailSender, FarmPlannerClient.Controller.PreferUsuControllerClient preferusuClient, FarmPlannerClient.Controller.OrganizacaoControllerClient organizacaoClient, SessionManager sessionManager, IConfiguration configuration)
+        RoleManager<IdentityRole> roleManager, FarmPlannerClient.Controller.ContaControllerClient contaControllerClient, IEmailSender emailSender, FarmPlannerClient.Controller.PreferUsuControllerClient preferusuClient, FarmPlannerClient.Controller.OrganizacaoControllerClient organizacaoClient, SessionManager sessionManager, IConfiguration configuration, FarmPlannerClient.Controller.ContaControllerClient contaAPI)
     {
         _signInManager = signInManager;
         _userManager = userManager;
@@ -52,6 +54,7 @@ public class AuthController : Controller
         _organizacaoClient = organizacaoClient;
         _sessionManager = sessionManager;
         _configuration = configuration;
+        _contaAPI = contaAPI;
     }
 
     public async Task<IActionResult> Login()
@@ -150,17 +153,19 @@ public class AuthController : Controller
         if (role != "Repres")
         {
             var conta = await _contaControllerClient.GetContaByUid(user.Id);
-
-            _sessionManager.contaguid = conta.contaguid;
-            _sessionManager.contaguid = conta.contaguid;
+            if (conta != null)
+            {
+                _sessionManager.contaguid = conta.contaguid;
+            }
         }
-        _sessionManager.uid = userid;
-        _sessionManager.userrole = role;
 
         _sessionManager.uid = userid;
         _sessionManager.userrole = role;
 
-        _sessionManager.urlconvite= _configuration.GetValue<string>("AppSettings:urlconvite");
+        _sessionManager.uid = userid;
+        _sessionManager.userrole = role;
+
+        _sessionManager.urlconvite = _configuration.GetValue<string>("AppSettings:urlconvite");
 
         //_sessionManager.idconta = conta.idconta;
 
@@ -168,6 +173,7 @@ public class AuthController : Controller
         FarmPlannerClient.PreferUsu.PreferUsuViewModel c = await ret;
         if (c == null)
         {
+            TempData["pref"] = "0";
             return RedirectToAction("PreferUsu");
         }
         else
@@ -301,24 +307,48 @@ public class AuthController : Controller
 
     public async Task<IActionResult> PreferUsu()
     {
+        Task<List<FarmPlannerClient.Conta.ContaViewModel>> retct = _contaAPI.Lista("");
+        List<FarmPlannerClient.Conta.ContaViewModel> ct = await retct;
+        ViewBag.contas = ct.Select(m => new SelectListItem { Text = m.nome, Value = m.id.ToString() });
+
         Task<FarmPlannerClient.PreferUsu.PreferUsuViewModel> ret = _preferusuClient.Lista(_sessionManager.uid);
         FarmPlannerClient.PreferUsu.PreferUsuViewModel c = await ret;
         if (c == null)
         {
             c = new FarmPlannerClient.PreferUsu.PreferUsuViewModel();
-        }
-        Task<List<FarmPlannerClient.Organizacao.OrganizacaoUsuarioViewModel>> retorg = _organizacaoClient.ListaOrganizacaoByUID(_sessionManager.uid);
-        List<FarmPlannerClient.Organizacao.OrganizacaoUsuarioViewModel> t = await retorg;
 
-        t = t.OrderBy(t => t.descorg).ToList();
-        ViewBag.organizacoes = t.Select(m => new SelectListItem { Text = m.descorg, Value = m.idorganizacao.ToString() });
+            if (_sessionManager.contaguid != null)
+            {
+                c.idconta = _sessionManager.contaguid;
+            }
+            else
+            {
+                c.idconta = ct[0].id.ToString();
+            }
+            ViewBag.idorg = "0";
+            ViewBag.idano = "0";
+        }
+        else
+        {
+            ViewBag.idorg = c.idorganizacao;
+            ViewBag.idano = c.idanoagricola;
+        }
 
         return View(c);
     }
 
-    public async Task<IActionResult> GravarPreferUsu(string uid, FarmPlannerClient.PreferUsu.PreferUsuViewModel dados)
+    public async Task<IActionResult> GravarPreferUsu(string uid, FarmPlannerClient.PreferUsu.PreferUsuViewModel dados, string? idconta)
     {
-        dados.idconta = _sessionManager.contaguid;
+        /*
+        if (_sessionManager.contaguid != null)
+        {
+            dados.idconta = _sessionManager.contaguid;
+        }
+        else
+        {
+            dados.idconta = idconta;
+        }
+        */
         Task<FarmPlannerClient.PreferUsu.PreferUsuViewModel> ret = _preferusuClient.Lista(_sessionManager.uid);
         FarmPlannerClient.PreferUsu.PreferUsuViewModel c = await ret;
         if (c == null)
@@ -374,6 +404,70 @@ public class AuthController : Controller
         return View(c);
     }
 
+    public async Task<IActionResult> SavePreferUsu(int idorganizacao, int idano)
+    {
+        FarmPlannerClient.PreferUsu.PreferUsuViewModel dados = new FarmPlannerClient.PreferUsu.PreferUsuViewModel
+        {
+            idconta = _sessionManager.contaguid,
+            idanoagricola = idano,
+            idorganizacao = idorganizacao,
+            uid = _sessionManager.uid
+        };
+        dados.idconta = _sessionManager.contaguid;
+        Task<FarmPlannerClient.PreferUsu.PreferUsuViewModel> ret = _preferusuClient.Lista(_sessionManager.uid);
+        FarmPlannerClient.PreferUsu.PreferUsuViewModel c = await ret;
+        if (c == null)
+        {
+            dados.uid = _sessionManager.uid;
+            var response = await _preferusuClient.Adicionar(dados);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string y = await response.Content.ReadAsStringAsync();
+                var result = JsonSerializer.Deserialize<FarmPlannerClient.PreferUsu.PreferUsuViewModel>(y);
+            }
+            else
+            {
+                string x = await response.Content.ReadAsStringAsync();
+
+                ModelState.AddModelError(string.Empty, x);
+                return Json(new { success = false, message = x });
+            }
+        }
+        else
+        {
+            var response = await _preferusuClient.Salvar(_sessionManager.uid, dados);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string y = await response.Content.ReadAsStringAsync();
+                var result = JsonSerializer.Deserialize<FarmPlannerClient.PreferUsu.PreferUsuViewModel>(y);
+            }
+            else
+            {
+                string x = await response.Content.ReadAsStringAsync();
+
+                ModelState.AddModelError(string.Empty, x);
+                return Json(new { success = false, message = x });
+            }
+        }
+        ret = _preferusuClient.Lista(_sessionManager.uid);
+        c = await ret;
+        _sessionManager.descanoagricola = c.descano;
+        _sessionManager.descorganizacao = c.descorg;
+        _sessionManager.idorganizacao = c.idorganizacao;
+        _sessionManager.idanoagricola = c.idanoagricola;
+
+        _sessionManager.descanoagricola = c.descano;
+        _sessionManager.descorganizacao = c.descorg;
+        _sessionManager.idorganizacao = c.idorganizacao;
+        _sessionManager.idanoagricola = c.idanoagricola;
+
+        TempData["preferencias"] = "Você está usando: " + c.descorg.Trim() + "/" + c.descano.Trim();
+
+        return Json(new { success = true, message = "Dados gravados com sucesso" });
+    }
+
     public async Task<JsonResult> LoadPrefUsu()
     {
         Task<FarmPlannerClient.PreferUsu.PreferUsuViewModel> ret = _preferusuClient.Lista(_sessionManager.uid);
@@ -392,18 +486,19 @@ public class AuthController : Controller
 
             if (!String.IsNullOrWhiteSpace(_sessionManager.descorganizacao) && !String.IsNullOrWhiteSpace(_sessionManager.descanoagricola))
             {
-                var x = new { pref = "Preferências: " + _sessionManager.descorganizacao.Trim() + "       -       Ano Agrícola: " + _sessionManager.descanoagricola.Trim() };
+                var x = new { pref1 = "Organização: " + _sessionManager.descorganizacao.Trim(), pref2 = "Ano Agrícola: " + _sessionManager.descanoagricola.Trim(), idorg = c.idorganizacao, idano = c.idanoagricola };
                 return Json(x);
             }
             else
             {
-                var x = new { pref = "DEFINA AS PREFERÊNCIAS" };
+                var x = new { pref1 = "DEFINA AS PREFERÊNCIAS", pref2 = "DEFINA AS PREFERÊNCIAS" };
                 return Json(x);
             }
         }
         else
         {
-            return null;
+            var x = new { pref1 = "DEFINA AS PREFERÊNCIAS", pref2 = "DEFINA AS PREFERÊNCIAS" };
+            return Json(x);
         }
     }
 }
