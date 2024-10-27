@@ -232,7 +232,7 @@
                 {
                     title: "Detalhar Produtos", width: 80, align: "center",
                     itemTemplate: function (value, item) {
-                        var $button1 = $("<button>").text("Produtos").addClass("btn btn-primary")
+                        var $button1 = $("<button>").text("Produtos").addClass("btn btn-default")
                             .on("click", function () {
                                 var $currentRow = $(this).closest("tr");
                                 var $subGridRow = $currentRow.next(".subgrid-row1");
@@ -256,7 +256,7 @@
                 {
                     title: "Detalhar Máquinas", width: 80, align: "center",
                     itemTemplate: function (value, item) {
-                        var $button2 = $("<button>").text("Máquinas").addClass("btn btn-primary")
+                        var $button2 = $("<button>").text("Máquinas").addClass("btn btn-default")
                             .on("click", function () {
                                 var $currentRow = $(this).closest("tr");
                                 var $subGridRow = $currentRow.next(".subgrid-row1");
