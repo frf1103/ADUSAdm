@@ -5,18 +5,9 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 <link href="~/css/jsgridplanner.css" rel="stylesheet">
+<link rel="stylesheet" href="~/css/bs-stepper.min.css">
 
-
-<style>
-
-
-  
-
-    /* Estilo padrão para o ícone */
-    .icon-default {
-        color: 38b6ff;
-    }
-
+<style>  
     .select2-container {
         width: 350px !important; /* Ajuste o tamanho conforme necessário */
         display: inline-block;
@@ -24,7 +15,7 @@
 
     .form-container {
         display: flex;
-        align-items: center;
+        flex-direction: column;
     }
 
     .submit-button {
@@ -70,24 +61,28 @@
    
 
 .jsgrid .jsgrid-grid-body tr {
-            height: 10px !important; /* Define a altura desejada */
-        }
+    height: 10px !important; /* Define a altura desejada */
+}
 
-    input[type="number"]::-webkit-outer-spin-button,
-    input[type="number"]::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 
-    input[type="number"] {
-        -moz-appearance: textfield; /* Firefox */
-    }
+input[type="number"] {
+    -moz-appearance: textfield; /* Firefox */
+}
 
-    .input-number {
-        width: 80px; /* Define a largura do campo de entrada numérica */
-        padding: 5px; /* Ajusta o preenchimento interno */
-        font-size: 16px; /* Ajusta o tamanho da fonte */
-    }
+.input-number {
+    width: 80px; /* Define a largura do campo de entrada numérica */
+    padding: 5px; /* Ajusta o preenchimento interno */
+    font-size: 16px; /* Ajusta o tamanho da fonte */
+}
+
+.bs-stepper-content {
+    margin-top: 15px;
+}
 
 </style>
 
@@ -98,90 +93,262 @@
         <div class="container-fluid">
             <div class="card card-primary card-outline">
                 <div class="card-body">
-                    <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
+                    <div class="bs-stepper">
+                        <div class="bs-stepper-header" role="tablist">
+                            <div class="step" data-target="#select-areas">
+                                <button type="button" class="step-trigger" role="tab" aria-controls="select-areas" id="select-areas-trigger">
+                                    <span class="bs-stepper-circle">1</span>
+                                    <span class="bs-stepper-label">Selecionar as Áreas</span>
+                                </button>
+                            </div>
+                            <div class="line"></div>
+                            <div class="step" data-target="#produtos-aplicados">
+                                <button type="button" class="step-trigger" role="tab" aria-controls="produtos-aplicados" id="produtos-aplicados-trigger">
+                                    <span class="bs-stepper-circle">2</span>
+                                    <span class="bs-stepper-label">Produtos Aplicados</span>
+                                </button>
+                            </div>
+                            <div class="line"></div>
+                            <div class="step" data-target="#maquinas">
+                                <button type="button" class="step-trigger" role="tab" aria-controls="maquinas" id="maquinas-trigger">
+                                    <span class="bs-stepper-circle">3</span>
+                                    <span class="bs-stepper-label">Máquinas</span>
+                                </button>
+                            </div>
+                            <div class="line"></div>
+                            <div class="step" data-target="#dados-execucao">
+                                <button type="button" class="step-trigger" role="tab" aria-controls="dados-execucao" id="dados-execucao-trigger">
+                                    <span class="bs-stepper-circle">4</span>
+                                    <span class="bs-stepper-label">Dados da Execução</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end mt-2">
+                            <div class="d-flex gap-2">
+                                <button id="stepper-previous" class="btn btn-default" type="button" onclick="previousStep()">
+                                    <img class="icon" src="/svg/icons/arrow-left.svg" />
+                                    Voltar
+                                </button><!--previous-->
+                                <button id="stepper-next" class="btn btn-default" type="button" onclick="nextStep()">Próximo <img class="icon" src="/svg/icons/arrow-right.svg" /></button><!--next-->
+                            </div>
+                        </div>
                         
+                        <div class="bs-stepper-content">
+                            <div class="tab-panel content" id="select-areas" role="tabpanel" aria-labelledby="select-areas-tab">
+                                <form asp-action="assistente">
+                                    <button class="btn btn-default" type="button" data-bs-toggle="collapse" data-bs-target="#filter" aria-expanded="false" aria-controls="filter">
+                                        <img class="icon" src="/svg/icons/filter.svg" />
+                                        Filtro
+                                    </button>
+                                    <div class="collapse mt-2" id="filter">
+                                        <div class="card card-primary card-outline">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="d-flex gap-2 p-2">
 
-                        <li class="nav-item">
-                            <a class="nav-link active" id="custom-content-above-home-tab" data-toggle="pill" href="#custom-content-above-home" role="tab" aria-controls="custom-content-above-home" aria-selected="true">Selecionar as áreas</a>
-                        </li>
+                                                        <select class="select2" name="idsafra" id="idsafra" data-placeholder="escolha uma safra" onchange="changesafra()" style="width: 100%;">
+                                                            <option value="0">escolha uma safra</option>
+                                                            @foreach (var item in ViewBag.safras)
+                                                            {
+                                                                if (@item.Value == ViewBag.SelectedOptionS)
+                                                                {
+                                                                    <option value="@item.Value" selected>@item.Text</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@item.Value">@item.Text</option>
+                                                                }
+                                                            }
+                                                        </select>
 
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-content-above-consolida-tab" data-toggle="pill" href="#custom-content-above-consolida" role="tab" aria-controls="custom-content-above-consolida" aria-selected="false">Produtos Aplicados</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-maquinas-tab" data-toggle="pill" href="#custom-maquinas" role="tab" aria-controls="custom-maquinas" aria-selected="false">Máquinas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-content-above-operacao-tab" data-toggle="pill" href="#custom-content-above-operacao" role="tab" aria-controls="custom-content-above-operacao" aria-selected="false">Dados da Execução</a>
-                        </li>
+                                                        <select class="select2" name="idfazenda" id="idfaz" data-placeholder="escolha a fazenda" onchange="changefaz()" style="width: 100%;">
+                                                            <option value="0">escolha a fazenda</option>
+                                                            @foreach (var item in ViewBag.fazendas)
+                                                            {
+                                                                if (@item.Value == ViewBag.SelectedOptionF)
+                                                                {
+                                                                    <option value="@item.Value" selected>@item.Text</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@item.Value">@item.Text</option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                        <select class="select2" name="idtalhao" id="idtalhao" data-placeholder="escolha o talhão" style="width: 100%;">
+                                                        </select>
+                                                        <select class="select2" name="idvariedade" id="idvariedade" data-placeholder="escolha a variedade" style="width: 100%;">
+                                                        </select>
+
+                                                        <button type="submit" class="btn btn-md btn-default">
+                                                            <img class="icon" src="/svg/icons/search.svg" />
+                                                        </button>
 
 
+                                                    </div>
 
-                    </ul>
-                 
-
-                    <div class="tab-content" id="custom-content-above-tabContent">
-                        <div class="tab-pane fade show active" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab">
-
-                            <form asp-action="assistente">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="card card-primary collapsed-card">
-                                            <div class="card-header">
-                                                <h3 class="card-title">Filtro</h3>
-
-                                                <div class="card-tools">
-                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                        <i class="fas fa-filter"></i>
-                                                    </button>
                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="row mt-2">
+                                    <div class="col-md-6">
+                                        <div class="card card-primary">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Configurações de Áreas Disponíveis</h3>
+
                                             </div>
                                             <div class="card-body">
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <div class="form-container">
+                                                        <div id="jstalhoes" class="js-grid"></div>
+                                                    </div>
 
-                                                            <select class="select2" name="idsafra" id="idsafra" data-placeholder="escolha uma safra" onchange="changesafra()" style="width: 100%;">
-                                                                <option value="0">escolha uma safra</option>
-                                                                @foreach (var item in ViewBag.safras)
-                                                                {
-                                                                    if (@item.Value == ViewBag.SelectedOptionS)
-                                                                    {
-                                                                        <option value="@item.Value" selected>@item.Text</option>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <option value="@item.Value">@item.Text</option>
-                                                                    }
-                                                                }
-                                                            </select>
-
-                                                            <select class="select2" name="idfazenda" id="idfaz" data-placeholder="escolha a fazenda" onchange="changefaz()" style="width: 100%;">
-                                                                <option value="0">escolha a fazenda</option>
-                                                                @foreach (var item in ViewBag.fazendas)
-                                                                {
-                                                                    if (@item.Value == ViewBag.SelectedOptionF)
-                                                                    {
-                                                                        <option value="@item.Value" selected>@item.Text</option>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <option value="@item.Value">@item.Text</option>
-                                                                    }
-                                                                }
-                                                            </select>
-                                                            <select class="select2" name="idtalhao" id="idtalhao" data-placeholder="escolha o talhão" style="width: 100%;">
-                                                            </select>
-                                                            <select class="select2" name="idvariedade" id="idvariedade" data-placeholder="escolha a variedade" style="width: 100%;">
-                                                            </select>
-
-                                                            <button type="submit" class="btn btn-md btn-default">
-                                                                <i class="fa fa-search"></i>
-                                                            </button>
+                                                </div>
+                                            </div>
+                                            <!-- /.card-body -->
+                                        </div>
+                                        <!-- /.card -->
+                                    </div>
 
 
+                                    <div class="col-md-6">
+                                        <div class="card card-primary">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Áreas Selecionados</h3>
+
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div id="jstalhoesSelecionados" class="js-grid"></div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <!-- /.card-body -->
+                                        </div>
+                                        <!-- /.card -->
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="tab-panel content" id="produtos-aplicados" role="tabpanel" aria-labelledby="produtos-aplicados-tab">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card card-primary">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Escolha os produtos/princípios ativos e quantidades aplicados</h3>
+
+                                            </div>
+                                            <div class="card-body">
+                                                <form id="adicionar-produto-form" class="row g-3" novalidate>
+                                                    <div class="col-md-3 form-container">
+                                                        <label for="idprincipio">Princípio Ativo</label>
+                                                        <select class="select2 form-control" name="idprincipio" id="idprincipio" data-placeholder="Escolha um principio ativo" onchange="changeprincipio()" required>
+                                                            <option value="0">escolha um princípio</option>
+                                                            @foreach (var item in ViewBag.principios)
+                                                            {
+                                                                <option value="@item.Value">@item.Text</option>
+                                                            }
+                                                        </select>
+                                                        <div class="invalid-feedback">
+                                                            Campo obrigatório
                                                         </div>
+                                                    </div>
+                                                    <div class="col-md-3 form-container">
+                                                        <label for="idproduto" id="lbprod">Produto</label>
+                                                        <select class="select2 form-control" name="idproduto" id="idproduto" data-placeholder="Escolha um produto" required>
+                                                        </select>
+                                                        <div class="invalid-feedback">
+                                                            Campo obrigatório
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 form-container">
+                                                        <label for="qtd" id="lbdose">Dosagem</label>
+                                                        <input type="number" id="qtd" name="qtd" class="form-control" style="text-align: right;" />
+                                                    </div>
+                                                    <div class="col-md-3 mt-4 pt-4">
+                                                        <button type="button" class="btn btn-md btn-default" onclick="addprodutos()">
+                                                            <i class="fa fa-plus"></i>
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <!-- /.card-body -->
+                                        </div>
+                                        <!-- /.card -->
+                                    </div>
+                                </div>
 
+
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card card-primary">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Produtos Aplicados</h3>
+
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div id="jsprodutos" class="js-grid"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /.card-body -->
+                                        </div>
+                                        <!-- /.card -->
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="tab-panel content" id="maquinas" role="tabpanel" aria-labelledby="maquinas-tab">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card card-primary">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Escolha as máquinas utilizadas</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="d-flex gap-2">
+                                                            <select class="select2" name="idmodelo" id="idmodelo" data-placeholder="escolha um modelo" onchange="changemodelo()">
+
+                                                                @foreach (var item in ViewBag.modelos)
+                                                                {
+                                                                    <option value="@item.Value">@item.Text</option>
+                                                                }
+                                                            </select>
+                                                            <select class="select2" name="idmaquina" id="idmaquina" data-placeholder="escolha uma máquina">
+                                                            </select>
+                                                            <button type="button" class="btn btn-md btn-default" onclick="addmaquinas()">
+                                                                <i class="fa fa-plus"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /.card-body -->
+                                        </div>
+                                        <!-- /.card -->
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="card card-primary">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Máquinas Utilizadas</h3>
+
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div id="jsmaquinas" class="js-grid"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -190,259 +357,82 @@
                                         <!-- /.card -->
                                     </div>
                                 </div>
-                            </form>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="card card-primary">
-                                        <div class="card-header">
-                                            <h3 class="card-title">Configurações de Áreas Disponíveis</h3>
-
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div id="jstalhoes" class="js-grid"></div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <!-- /.card-body -->
-                                    </div>
-                                    <!-- /.card -->
-                                </div>
-
-
-                                <div class="col-md-6">
-                                    <div class="card card-primary">
-                                        <div class="card-header">
-                                            <h3 class="card-title">Áreas Selecionados</h3>
-
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div id="jstalhoesSelecionados" class="js-grid"></div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <!-- /.card-body -->
-                                    </div>
-                                    <!-- /.card -->
-                                </div>
                             </div>
 
+                            <div class="tab-panel content" id="dados-execucao" role="tabpanel" aria-labelledby="dados-execucao-tab">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card card-primary">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Escolha a operação, data e DAE  para executar o assistente</h3>
+
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="form-container col-md-3">
+                                                        <label for="idoperacao">Escolha uma operação</label>
+                                                        <select class="select2" name="idoperacao" id="idoperacao">
+                                                        </select>
+
+                                                    </div>
+                                                    <div class="form-container form-check col-md-1 d-flex justify-content-end">
+                                                        <input class="form-check-input mb-2" type="checkbox" id="cbplantio" name="cbplantio" disabled>
+                                                        <label class="form-check-label mb-1" for="cbplantio">Plantio?</label>
+                                                    </div>
+
+
+                                                    <div class="form-container col-md-2">
+                                                        <label for="dtprev">Data Prevista</label>
+                                                        <input type="date" class="form-control" id="dtprev" name="dtprev">
+
+                                                    </div>
+
+                                                    <div class="col-md-2 d-flex gap-3">
+                                                        <div class="form-container">
+                                                            <label for="dae">DAE</label>
+                                                            <input type="number" id="dae" name="dae" class="form-control" style="text-align: right;" />
+                                                        </div>
+                                                        <div class="form-container">
+                                                            <label>Executar</label>
+                                                            <button type="button" class="btn btn-md btn-default" onclick="executar()">
+                                                                <i class="fas fa-play"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!-- /.card-body -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card card-primary">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Máquinas Utilizadas</h3>
+
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div id="jsmaquinas" class="js-grid"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /.card-body -->
+                                        </div>
+                                        <!-- /.card -->
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
-
-                        <div class="tab-pane fade" id="custom-content-above-consolida" role="tabpanel" aria-labelledby="custom-content-above-cosolida-tab">
-                            <div class="col-md-12">
-                                <div class="card card-primary">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Escolha os produtos/princípios ativos e quantidades aplicados</h3>
-
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row g-3">
-                                            <div class="col-md-4">
-                                                <label for="idprincipio">Princípio Ativo</label>
-                                                <div class="form-container">
-                                                    
-                                                    <select class="select2" name="idprincipio" id="idprincipio" data-placeholder="escolha um principio ativo" onchange="changeprincipio()">
-                                                        <option value="0">escolha um princípio</option>
-                                                        @foreach (var item in ViewBag.principios)
-                                                        {
-                                                            <option value="@item.Value">@item.Text</option>
-                                                        }
-                                                    </select>
-                                                </div>
-                                             </div>
-                                             <div class="col-md-4">
-                                                <label for="idprincipio" id="lbprod">Produto</label>
-                                                <div class="form-container">
-                                                    
-                                                    <select class="select2" name="idproduto" id="idproduto" data-placeholder="escolha um produto">
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="qtd" id="lbdose">Dosagem</label>
-                                                <div class="form-container">
-                                                    <input type="number" id="qtd" name="qtd" class="form-control" style="text-align: right;" />
-
-
-                                                    <button type="button" class="btn btn-md btn-primary" onclick="addprodutos()">
-                                                        <i class="fa fa-plus"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <!-- /.card-body -->
-                                </div>
-                                <!-- /.card -->
-                            </div>
-
-
-
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="card card-primary">
-                                        <div class="card-header">
-                                            <h3 class="card-title">Produtos Aplicados</h3>
-
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div id="jsprodutos" class="js-grid"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- /.card-body -->
-                                    </div>
-                                    <!-- /.card -->
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <div class="tab-pane fade" id="custom-maquinas" role="tabpanel" aria-labelledby="custom-maquinas-tab">
-                            <div class="col-md-12">
-                                <div class="card card-primary">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Escolha as maquinas utilizadas</h3>
-
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-9">
-                                                <div class="form-container">
-
-                                                    <select class="select2" name="idmodelo" id="idmodelo" data-placeholder="escolha um modelo" onchange="changemodelo()">
-                                                        
-                                                        @foreach (var item in ViewBag.modelos)
-                                                        {
-                                                            <option value="@item.Value">@item.Text</option>
-                                                        }
-                                                    </select>
-                                                    <select class="select2" name="idmaquina" id="idmaquina" data-placeholder="escolha uma máquina">
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-container">                                               
-
-
-                                                    <button type="button" class="btn btn-md btn-primary" onclick="addmaquinas()">
-                                                        <i class="fa fa-plus"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <!-- /.card-body -->
-                                </div>
-                                <!-- /.card -->
-                            </div>
-
-
-
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="card card-primary">
-                                        <div class="card-header">
-                                            <h3 class="card-title">Máquinas Utilizadas</h3>
-
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div id="jsmaquinas" class="js-grid"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- /.card-body -->
-                                    </div>
-                                    <!-- /.card -->
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <div class="tab-pane fade" id="custom-content-above-operacao" role="tabpanel" aria-labelledby="custom-content-above-operacao-tab">
-                            <div class="col-md-12">
-                                <div class="card card-primary">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Escolha a operação, data e DAE  para executar o assistente</h3>
-
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-5">                                                
-                                                    <label for="idoperacao">Escolha uma operação</label>
-                                                    <select class="select2" name="idoperacao" id="idoperacao" >
-                                                       
-                                                    </select>
-                                                
-                                            </div>
-                                            <div class="col-md-2" style="text-align: center;">
-                                                <label for="cbplantio">Plantio?</label><br />
-                                                <input type="checkbox" class="form-control" id="cbplantio" name="cbplantio" disabled>                                                
-                                            
-                                            </div>
-
-
-                                            <div class="col-md-3">
-                                                <label for="dtprev">Data Prevista</label>
-                                                <input type="date" class="form-control" id="dtprev"  name="dtprev">                                                
-                                            
-                                            </div>
-
-                                            <div class="col-md-1">
-                                            
-                                                    <label for="dae">DAE</label>
-                                                    <input type="number" id="dae" name="dae" class="form-control" style="text-align: right;" />
-                                            </div>
-                                            <div class="col-md-1">
-                                                    <label>Execute</label>
-                                                    <button type="button" class="btn btn-md btn-primary" onclick="executar()">
-                                                    <i class="fas fa-play"></i>
-                                                    </button>                                            
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                    <!-- /.card-body -->
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="card card-primary">
-                                        <div class="card-header">
-                                            <h3 class="card-title">Máquinas Utilizadas</h3>
-
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div id="jsmaquinas" class="js-grid"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- /.card-body -->
-                                    </div>
-                                    <!-- /.card -->
-                                </div>
-                            </div>
-
-                        </div>
-                        <a href="/planejoperacao/index" class="btn btn-danger">Voltar</a>
                     </div>
+                    <!--<div class="tab-content" id="custom-content-above-tabContent">
+                        
+                        <a href="/planejoperacao/index" class="btn btn-danger">Voltar</a>
+                    </div>-->
                 </div>
                 <!-- /.card -->
             </div>
@@ -462,13 +452,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
 
-<style>
-    .custom-no-data {
-        text-align: center;
-        color: red;
-        font-weight: bold;
-    }
-</style>
 <!-- Bootstrap 4 -->
 
 
@@ -480,6 +463,7 @@
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="~/js/bs-stepper.min.js"></script>
 
 
 
@@ -494,8 +478,10 @@
     var talhoesDisp = [];
     var produtos=[];
     var maquinas=[];
+    var stepper = null;
     $(document).ready(function () {
 
+        $('#stepper-previous').prop('disabled', true);
         $('select').select2();
 
         $('#idproduto').on('select2:select', function(e) {
@@ -520,15 +506,14 @@
                     //document.getElementById("dtprev").disabled = true;
                 }
 
-        });     
-
+        });
             
-     changemodelo();
+         changemodelo();
 
-     loadoperacoes($('#idoperacao'),"0",true,0);
-      //$('#idoperacao').val($('#idoperacao').val()).trigger('change');
+         loadoperacoes($('#idoperacao'),"0",true,0);
+          //$('#idoperacao').val($('#idoperacao').val()).trigger('change');
      
-     //   ajustafontselect2();
+         //   ajustafontselect2();
         $("#idfaz").val(@ViewBag.SelectedOptionF);
         //$('#idfazenda').trigger("change");
         changefaz();
@@ -538,8 +523,31 @@
         changesafra();
 
         loadtalhoesdisp();   
-  
+        startStepper();
     });
+
+    function startStepper() {
+        const stepperEl = document.querySelector('.bs-stepper');
+        stepper = new Stepper(stepperEl, { linear: false });
+        stepperEl.addEventListener('show.bs-stepper', function (event) {
+            if (event.detail.indexStep === 0) {
+                $('#stepper-previous').prop('disabled', true);
+            } else if (event.detail.indexStep === 3) {
+                $('#stepper-next').prop('disabled', true);
+            } else {
+                $('#stepper-previous').prop('disabled', false);
+                $('#stepper-next').prop('disabled', false);
+            }
+        })
+    }
+
+    function previousStep() {
+        stepper.previous()
+    }
+
+    function nextStep() {
+        stepper.next()
+    }
 
     function executar()
     {
@@ -948,6 +956,15 @@
 
     function addprodutos()
     {
+        const form = $('#adicionar-produto-form');
+        form[0].classList.add('was-validated');
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+            return;
+        }
+
+
         if ($("#idprincipio").val()!="0" && $("#idproduto").val()!="0") 
         {         
 
@@ -968,9 +985,6 @@
                 produtos.push({"idprinc":parseInt(idprinc),"idprod":parseInt(idprod),"dosagem":$("#qtd").val(),"descprinc":descprinc,"descprod":descprod});
             }
             $("#jsprodutos").jsGrid("refresh");
-        }
-        else {
-            alert("Escolha um produto")
         }
 
     }
@@ -1001,10 +1015,9 @@
 
     }
 
-     
 
 
-   
+
       
         
 </script>

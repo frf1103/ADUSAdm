@@ -1,528 +1,575 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Farm Planner ADM</title>
 
-
-
     <!-- Google Font: Source Sans Pro -->
-        
+
     <!-- Font Awesome -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
-    <link rel="stylesheet" href="~/css/all.min.css">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="~/css/all.min.css" />
     <link href="~/css/select2.css" rel="stylesheet" />
-    <link href="~/css/jsgridplanner.css" rel="stylesheet">
-
-
-
+    <link href="~/css/jsgridplanner.css" rel="stylesheet" />
 
     <!-- Theme style -->
-    <link rel="stylesheet" href="~/css/adminlte.min.css">
-    <link rel="stylesheet" href="~/css/bootstrap-multiselect.min.css">
+    <link rel="stylesheet" href="~/css/adminlte.min.css" />
+    <link rel="stylesheet" href="~/css/bootstrap-multiselect.min.css" />
     <link href="~/css/site.css" rel="stylesheet" type="text/css" />
-
-</head>
-<style>
-    html {
-        font-family: 'Roboto', sans-serif !important;        
-        font-size: 13px;
-    }
-
-    body {
-        font-family: 'Roboto', sans-serif !important;
-    font-size: 13px;
-
-
+    <link href="~/css/theme.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  </head>
+  <style>
+    .main-sidebar {
+        background-color: #fafafa !important; /* Cor de fundo personalizada */
+        display: flex;
+        flex-direction: column;
+        height: 100vh !important;
+        min-height: unset !important;
     }
 
     .sidebar {
-    background-color: #4CAF50; /* Cor de fundo personalizada */
-    height: 100vh;  /* Altura completa da tela */
-}
+      overflow-x: hidden;
+      scrollbar-color: var(--text-color) transparent !important;
+    }
 
-        .sidebar a {
-            color: white; /* Cor do texto */
+    .sidebar a {
+      color: var(--text-color) !important; /* Cor do texto */
+      font-size: 16px;
+    }
+
+    .sidebar a:hover {
+      background-color: var(--hover-transparent-background) !important; /* Efeito ao passar o mouse */
+    }
+
+    .navbar {
+      background-color: #fafafa !important;
+    }
+
+    .nav-sidebar .nav-item>.nav-link {
+        padding: 0.8rem 0.5rem;
+    }
+
+    .nav-sidebar > .nav-item > .nav-treeview {
+        padding-left: 0px !important;
+    }
+
+        .nav-sidebar > .nav-item > .nav-treeview a {
+            padding-left: 1.5em !important;
         }
 
-            .sidebar a:hover {
-                background-color: #45a049; /* Efeito ao passar o mouse */
-            }
+    .nav-sidebar .nav-link p {
+        margin-left: 5px;
+    }
 
-            .navbar {
-    background-color: #4CAF50; /* Cor de fundo alterada */
-}
+    .nav-sidebar .nav-link>.right, .nav-sidebar .nav-link>p>.right {
+        top: 50% !important;
+    }
 
+    .nav-sidebar .nav-link>.right, .nav-sidebar .nav-item:not(.menu-is-opening) .nav-link>p>.right {
+        transform: translateY(-50%);
+    }
 
-</style>
+    .nav-sidebar .menu-is-opening>.nav-link .right, .nav-sidebar .menu-open>.nav-link .right {
+        -webkit-transform: translateY(-50%) rotate(-90deg) !important;
+        transform: translateY(-50%) rotate(-90deg) !important;
+    }
 
+    .nav-sidebar>.nav-item>.nav-treeview {
+        padding-left: 1rem;
+    }    
 
-<body class="hold-transition sidebar-mini">
+    .brand-link {
+        padding: 0.5rem !important;
+        display: flex !important;
+        justify-content: center;
+        border-color: #ccc !important;
+    }
 
+    .brand-link img {
+        transition: transform ease-in-out .3s;
+    }
+
+    .sidebar-collapse .brand-link img {
+        transform: scale(0.6);
+    }
+
+    .user-panel {
+        border-color: #ccc !important;
+    }
+
+    .navbar .user-nav-item {
+        display: flex;
+        align-items: center;
+        padding: 5px 10px;
+    }
+
+    .content-wrapper {
+        padding: 20px;
+        height: calc(100vh - 56.8px) !important;
+        overflow: auto;
+    }
+
+  </style>
+
+  <body class="hold-transition sidebar-mini">
     <!-- Site wrapper -->
     <div class="wrapper">
-        <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            <!-- Left navbar links -->
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-                </li>
-            </ul>
+      <!-- Navbar -->
+      <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"
+              ><img class="icon" src="/svg/icons/menu.svg" /></a>
+          </li>
+        </ul>
 
-            <!-- Right navbar links -->
-            @{
-                if (User.IsInRole("User") || User.IsInRole("AdminC") || User.IsInRole("UserV"))
-                {
-                    <nav class="navbar navbar-light bg-light">
-                        <a class="nav-link" asp-controller="Auth" asp-action="PreferUsu" role="button" id="preferencias">
-
-                        </a>
-                    </nav>
-                }
-            }
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Auth" asp-action="Logout" role="button">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </a>
-                </li>
-
-            </ul>
+        <!-- Right navbar links -->
+        @{ if (User.IsInRole("User") || User.IsInRole("AdminC") ||
+        User.IsInRole("UserV")) {
+        <nav class="navbar navbar-light bg-light">
+          <a
+            class="nav-link"
+            asp-controller="Auth"
+            asp-action="PreferUsu"
+            role="button"
+            id="preferencias"
+          >
+          </a>
         </nav>
-        <!-- /.navbar -->
-        <!-- Main Sidebar Container -->
-        <!-- <aside class="main-sidebar sidebar-dark-primary elevation-4">-->
-        <aside class="main-sidebar sidebar-dark-blue elevation-5">
-            <!-- Brand Logo -->
-            <!--
-            <a href="/" class="brand-link text-center">
-                <span class="brand-text font-weight-light"></span>
-                <img src="~/lib/images/fbs (4).png" />
-
+        } }
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item user-nav-item">
+            <a asp-controller="Auth" asp-action="AlterarSenha">Usuário: @User.Identity?.Name</a>
+            </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              asp-controller="Auth"
+              asp-action="Logout"
+              role="button"
+            >
+                <img class="icon" src="/svg/icons/sign-out.svg" />
             </a>
-            -->
-            <!-- Sidebar -->
-            <div class="sidebar">
+          </li>
+        </ul>
+      </nav>
+      <!-- /.navbar -->
+      <!-- Main Sidebar Container -->
+      <aside class="main-sidebar sidebar-dark-blue elevation-1">
+        <!-- Brand Logo -->
+        <a href="/" class="brand-link text-center">
+            <img src="~/lib/images/fbs (4).png" />
 
-                <div class="user-panel mt-3 pb-3 mb-3 d-fex">
-                    <div class="info">
-                        <a asp-controller="Auth" asp-action="AlterarSenha">Usuário: @User.Identity?.Name</a>
-
-                    </div>
-
-                </div>
-                <div class="user-panel mt-3 pb-3 mb-3 d-fex">
-                    <div class="info">                        
-                       <a class="nav-link" asp-controller="Auth" asp-action="PreferUsu" role="button" id="preferencias1"></a>
-                       <a class="nav-link" asp-controller="Auth" asp-action="PreferUsu" role="button" id="preferencias2"></a>
-                        
-                    </div>
-
-                </div>
-
-
-                <!-- Sidebar Menu -->
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-                             with font-awesome or any other icon font library -->
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item menu-open">
-                                <a href="#" class="nav-link">
-                                    <i class="nav-icon fas fa-folder-open"></i>
-                                    <p>
-                                        Cadastros Únicos da Plataforma
-                                        <i class="right fas fa-angle-left"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/cultura" class="nav-link">
-                                            <i class="fas fa-seedling"></i>
-                                            <p>Culturas</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/moeda" class="nav-link">
-                                            <i class="fa fa-dollar-sign"></i>
-                                            <p>Moedas</p>
-                                        </a>
-                                    </li>
-                                </ul>
-
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/classeconta" class="nav-link">
-                                            <i class="fa fa-book"></i>
-                                            <p>Classes de Conta</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/grupoproduto" class="nav-link">
-                                            <i class="fas fa-object-group"></i>
-                                            <p>Grupos de Produtos</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/marcamaquina" class="nav-link">
-                                            <i class="fas fa-tractor"></i>
-                                            <p>Marcas de Máquinas</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/modelomaquina" class="nav-link">
-                                            <i class="fas fa-tractor"></i>
-                                            <p>Modelos de Máquinas</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/regiao" class="nav-link">
-                                            <i class="fas fa-map"></i>
-                                            <p>Regiões</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/tecnologia" class="nav-link">
-                                            <i class="fas fa-book nav-icon"></i>
-                                            <p>Tecnologias</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/tipooperacao" class="nav-link">
-                                            <i class="fas fa-book nav-icon"></i>
-                                            <p>Tipos de Operações</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/unidade" class="nav-link">
-                                            <i class="fas fa-book nav-icon"></i>
-                                            <p>Unidades</p>
-                                        </a>
-                                    </li>
-                                </ul>
-
-
-                            </li>
-                        }
-                        @if (User.IsInRole("Admin") || User.IsInRole("AdminC") || User.IsInRole("User") || User.IsInRole("UserV"))
-                        {
-                            <li class="nav-item menu-open">
-                                <a href="#" class="nav-link">
-                                    <i class="nav-icon fas fa-folder-open"></i>
-                                    <p>
-                                        Cadastros Gerais
-                                        <i class="right fas fa-angle-left"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/organizacao" class="nav-link">
-                                            <i class="fas fa-file-invoice nav-icon"></i>
-                                            <p>Organização</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/anoagricola" class="nav-link">
-                                            <i class="fas fa-file-invoice nav-icon"></i>
-                                            <p>Ano Agrícola</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/cultura" class="nav-link">
-                                            <i class="fas fa-seedling"></i>
-                                            <p>Culturas</p>
-                                        </a>
-                                    </li>
-                                </ul>
-
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/anoagricola/indexsafra" class="nav-link">
-                                            <i class="fas fa-file-invoice nav-icon"></i>
-                                            <p>Safra</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/defareas" class="nav-link">
-                                            <i class="fas fa-book nav-icon"></i>
-                                            <p>Fazenda</p>
-                                        </a>
-                                    </li>
-                                </ul>
-
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/parceiro" class="nav-link">
-                                            <i class="fas fa-book nav-icon"></i>
-                                            <p>Parceiros</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/principioativo" class="nav-link">
-                                            <i class="fas fa-book nav-icon"></i>
-                                            <p>Princípios Ativos</p>
-                                        </a>
-                                    </li>
-                                </ul>
-
-                                 <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/grupoproduto" class="nav-link">
-                                            <i class="fas fa-object-group"></i>
-                                            <p>Grupos de Produtos</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/marcamaquina" class="nav-link">
-                                            <i class="fas fa-tractor"></i>
-                                            <p>Marcas de Máquinas</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/modelomaquina" class="nav-link">
-                                            <i class="fas fa-tractor"></i>
-                                            <p>Modelos de Máquinas</p>
-                                        </a>
-                                    </li>
-                                </ul>
-
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/maquina" class="nav-link">
-                                            <i class="fas fa-book nav-icon"></i>
-                                            <p>Máquinas</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/configarea" class="nav-link">
-                                            <i class="fas fa-book nav-icon"></i>
-                                            <p>Configuração de Área</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/configarea/planejplantio" class="nav-link">
-                                            <i class="fas fa-book nav-icon"></i>
-                                            <p>Planejamento de Plantio</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/planejoperacao" class="nav-link">
-                                            <i class="fas fa-book nav-icon"></i>
-                                            <p>Planejamento de Operações</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/produto" class="nav-link">
-                                            <i class="fas fa-book nav-icon"></i>
-                                            <p>Produtos</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/tipooperacao" class="nav-link">
-                                            <i class="fas fa-book nav-icon"></i>
-                                            <p>Tipos de Operações</p>
-                                        </a>
-                                    </li>
-                                </ul>
-
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/operacao" class="nav-link">
-                                            <i class="fas fa-book nav-icon"></i>
-                                            <p>Operações</p>
-                                        </a>
-                                    </li>
-                                </ul>
-
-
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/modeloparametro" class="nav-link">
-                                            <i class="fas fa-book nav-icon"></i>
-                                            <p>Parametrização de Modelos de Máquina</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/maquinaparametro" class="nav-link">
-                                            <i class="fas fa-book nav-icon"></i>
-                                            <p>Parametrização de Máquinas</p>
-                                        </a>
-                                    </li>
-                                </ul>
-
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/planejamentocompra" class="nav-link">
-                                            <i class="fas fa-book nav-icon"></i>
-                                            <p>Planejamento de Compras</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/orcamentoproduto" class="nav-link">
-                                            <i class="fas fa-book nav-icon"></i>
-                                            <p>Orçamento Hectarizado</p>
-                                        </a>
-                                    </li>
-                                </ul>
-
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/pedidocompra" class="nav-link">
-                                            <i class="fas fa-book nav-icon"></i>
-                                            <p>Pedido de Compra</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/comercializacao" class="nav-link">
-                                            <i class="fas fa-book nav-icon"></i>
-                                            <p>Comercializacao</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/custoindireto" class="nav-link">
-                                            <i class="fas fa-book nav-icon"></i>
-                                            <p>Definição de Contas</p>
-                                        </a>
-                                    </li>
-                                </ul>
-
-
-                            </li>
-                        }
-
-                        @if (User.IsInRole("AdminC") || User.IsInRole("Admin") || User.IsInRole("Repres"))
-                        {
-                            <li class="nav-item menu-open">
-                                <a href="#" class="nav-link">
-                                    <i class="nav-icon fas fa-folder-open"></i>
-                                    <p>
-                                        Administração
-                                        <i class="right fas fa-angle-left"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    @if (User.IsInRole("Admin"))
-                                    {
-                                        <li class="nav-item">
-                                            <a href="/conta" class="nav-link">
-                                                <i class="fas fa-book nav-icon"></i>
-                                                <p>Cadastro de Contas</p>
-                                            </a>
-                                        </li>
-                                    }
-
-                                    @if (!User.IsInRole("Repres"))
-                                    {
-                                        <li class="nav-item">
-                                            <a href="/usuarios" class="nav-link">
-                                                <i class="fas fa-user nav-icon"></i>
-                                                <p>Usuários</p>
-                                            </a>
-                                        </li>
-                                    }
-                                    @if (User.IsInRole("Repres"))
-                                    {
-                                        <li class="nav-item">
-                                            <a href="/conta" class="nav-link">
-                                                <i class="fas fa-book nav-icon"></i>
-                                                <p>Minhas Contas</p>
-                                            </a>
-                                        </li>
-                                    }
-
-
-
-                                </ul>
-                            </li>
-                        }
-
-
-                    </ul>
-                </nav>
-                <!-- /.sidebar-menu -->
+        </a>
+        <!-- Sidebar -->
+        <div class="sidebar">
+          <div class="user-panel mt-3 pb-3 mb-3 d-fex">
+            <div class="info">
+              <a asp-controller="Auth" asp-action="PreferUsu" id="psafra"></a>
             </div>
-            <!-- /.sidebar -->
-        </aside>
+          </div>
 
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
-            @RenderBody()
+          <!-- Sidebar Menu -->
+          <nav class="mt-2">
+            <ul
+              class="nav nav-pills nav-sidebar flex-column"
+              data-widget="treeview"
+              role="menu"
+              data-accordion="false"
+            >
+              @if (User.IsInRole("Admin")) {
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link">
+                  <img class="icon" src="/svg/icons/folder.svg" />
+                  <p>
+                    Cadastros Únicos da Plataforma
+                    <img class="icon right" src="/svg/icons/angle-left.svg" />
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/cultura" class="nav-link">
+                      <img class="icon" src="/svg/icons/plant.svg"/>
+                      <p>Culturas</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/moeda" class="nav-link">
+                                            <img class="icon" src="/svg/icons/dollar-sign.svg" />
+                      <p>Moedas</p>
+                    </a>
+                  </li>
+                </ul>
+
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/classeconta" class="nav-link">
+                                            <img class="icon" src="/svg/icons/grouped-list.svg" />
+                      <p>Classes de Conta</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/grupoproduto" class="nav-link">
+                                            <img class="icon" src="/svg/icons/product-group.svg" />
+                      <p>Grupos de Produtos</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/marcamaquina" class="nav-link">
+                                            <img class="icon" src="/svg/icons/tractor.svg" />
+                      <p>Marcas de Máquinas</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/modelomaquina" class="nav-link">
+                                            <img class="icon" src="/svg/icons/tractor.svg" />
+                      <p>Modelos de Máquinas</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/regiao" class="nav-link">
+                                            <img class="icon" src="/svg/icons/map.svg" />
+                      <p>Regiões</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/tecnologia" class="nav-link">
+                                            <img class="icon" src="/svg/icons/tech.svg" />
+                      <p>Tecnologias</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/tipooperacao" class="nav-link">
+                                            <img class="icon" src="/svg/icons/operation-types.svg" />
+                      <p>Tipos de Operações</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/unidade" class="nav-link">
+                                            <img class="icon" src="/svg/icons/measure.svg" />
+                      <p>Unidades</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              } @if (User.IsInRole("Admin") || User.IsInRole("AdminC") ||
+              User.IsInRole("User") || User.IsInRole("UserV")) {
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link">
+                                    <img class="icon" src="/svg/icons/folder.svg" />
+                  <p>
+                    Cadastros Gerais
+                    <img class="icon right" src="/svg/icons/angle-left.svg" />
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/organizacao" class="nav-link">
+                                            <img class="icon" src="/svg/icons/company.svg" />
+                      <p>Organização</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/anoagricola" class="nav-link">
+                                            <img class="icon" src="/svg/icons/agricultural-year.svg" />
+                      <p>Ano Agrícola</p>
+                    </a>
+                  </li>
+                </ul>
+
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="/cultura" class="nav-link">
+                                            <img class="icon" src="/svg/icons/plant.svg" />
+                            <p>Culturas</p>
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/anoagricola/indexsafra" class="nav-link">
+                                            <img class="icon" src="/svg/icons/crop.svg" />
+                        <p>Safra</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/defareas" class="nav-link">
+                                            <img class="icon" src="/svg/icons/farm.svg" />
+                      <p>Fazenda</p>
+                    </a>
+                  </li>
+                </ul>
+
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/parceiro" class="nav-link">
+                                            <img class="icon" src="/svg/icons/partner.svg" />
+                      <p>Parceiros</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/principioativo" class="nav-link">
+                                            <img class="icon" src="/svg/icons/agricultural-year.svg" />
+                      <p>Princípios Ativos</p>
+                    </a>
+                  </li>
+                </ul>
+
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/grupoproduto" class="nav-link">
+                                            <img class="icon" src="/svg/icons/product-group.svg" />
+                      <p>Grupos de Produtos</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="/marcamaquina" class="nav-link">
+                                            <img class="icon" src="/svg/icons/tractor.svg" />
+                            <p>Marcas de Máquinas</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="/modelomaquina" class="nav-link">
+                                            <img class="icon" src="/svg/icons/tractor.svg" />
+                            <p>Modelos de Máquinas</p>
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/maquina" class="nav-link">
+                                            <img class="icon" src="/svg/icons/tractor.svg" />
+                      <p>Máquinas</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/configarea" class="nav-link">
+                                            <img class="icon" src="/svg/icons/area-configuration.svg" />
+                      <p>Configuração de Área</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/configarea/planejplantio" class="nav-link">
+                                            <img class="icon" src="/svg/icons/plant-planning.svg" />
+                      <p>Planejamento de Plantio</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/planejoperacao" class="nav-link">
+                                            <img class="icon" src="/svg/icons/operation-planning.svg" />
+                      <p>Planejamento de Operações</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/produto" class="nav-link">
+                                            <img class="icon" src="/svg/icons/product.svg" />
+                      <p>Produtos</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/tipooperacao" class="nav-link">
+                                            <img class="icon" src="/svg/icons/operation-types.svg" />
+                      <p>Tipos de Operações</p>
+                    </a>
+                  </li>
+                </ul>
+
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/operacao" class="nav-link">
+                                            <img class="icon" src="/svg/icons/operation.svg" />
+                        <p>Operações</p>
+                    </a>
+                  </li>
+                </ul>
+
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/modeloparametro" class="nav-link">
+                                            <img class="icon" src="/svg/icons/parameters.svg" />
+                      <p>Parametrização de Modelos de Máquina</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/maquinaparametro" class="nav-link">
+                                            <img class="icon" src="/svg/icons/machine-parameters.svg" />
+                      <p>Parametrização de Máquinas</p>
+                    </a>
+                  </li>
+                </ul>
+
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/planejamentocompra" class="nav-link">
+                                            <img class="icon" src="/svg/icons/positive-cart.svg" />
+                      <p>Planejamento de Compras</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/orcamentoproduto" class="nav-link">
+                                            <img class="icon" src="/svg/icons/money-split.svg" />
+                      <p>Orçamento Hectarizado</p>
+                    </a>
+                  </li>
+                </ul>
+
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/pedidocompra" class="nav-link">
+                                            <img class="icon" src="/svg/icons/invoice.svg" />
+                      <p>Pedido de Compra</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/comercializacao" class="nav-link">
+                      <img src="/svg/icons/logistics.svg" />
+                      <p>Comercializacao</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/custoindireto" class="nav-link">
+                                            <img class="icon" src="/svg/icons/simple-invoice.svg" />
+                      <p>Definição de Contas</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              } @if (User.IsInRole("AdminC") || User.IsInRole("Admin") ||
+              User.IsInRole("Repres")) {
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link">
+                                    <img class="icon" src="/svg/icons/folder.svg" />
+                  <p>
+                    Administração
+                    <img class="icon right" src="/svg/icons/angle-left.svg" />
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  @if (User.IsInRole("Admin")) {
+                  <li class="nav-item">
+                    <a href="/conta" class="nav-link">
+                                                <img class="icon" src="/svg/icons/accounts.svg" />
+                      <p>Cadastro de Contas</p>
+                    </a>
+                  </li>
+                  } @if (!User.IsInRole("Repres")) {
+                  <li class="nav-item">
+                    <a href="/usuarios" class="nav-link">
+                                                <img class="icon" src="/svg/icons/users.svg" />
+                     <p>Usuários</p>
+                    </a>
+                  </li>
+                  } @if (User.IsInRole("Repres")) {
+                  <li class="nav-item">
+                    <a href="/conta" class="nav-link">
+                                                <img class="icon" src="/svg/icons/my-accounts.svg" />
+                      <p>Minhas Contas</p>
+                    </a>
+                  </li>
+                  }
+                </ul>
+              </li>
+              }
+            </ul>
+          </nav>
+          <!-- /.sidebar-menu -->
         </div>
-        <!-- /.content-wrapper -->
+        <!-- /.sidebar -->
+      </aside>
 
-        <footer class="main-footer">
-            <div class="float-right d-none d-sm-block">
-                <b>Versão</b> 2023.12.01
-            </div>
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">@RenderBody()</div>
+      <!-- /.content-wrapper -->
 
-        </footer>
-
+      <!--<footer class="main-footer">
+        <div class="float-right d-none d-sm-block">
+          <b>Versão</b> 2023.12.01
+        </div>
+      </footer>-->
     </div>
     <!-- ./wrapper -->
     <!-- jQuery -->
-    @*<script src="~/js/bootstrap.bundle.min.js"></script>*@
+    @*
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    *@
 
     <!-- AdminLTE App -->
 
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/css/adminlte.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css"
+    />
 
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/css/adminlte.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
-
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
@@ -530,62 +577,32 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
     <script src="~/js/jquery.mask.min.js"></script>
     <script src="~/js/select2.js"></script>
     <script src="~/js/bootstrap-multiselect.js"></script>
     <script src="~/js/adminlte.min.js"></script>
     <script type="text/javascript">
-
-        $(document).ready(function () {
-            $('select').select2();
-            $.ajax({
-                type: "get",
-                url: "/auth/LoadPrefUsu",
-                data: {},
-                dataType: 'json',
-                contentType: "application/json; charset=utf-8",
-                success: function (obj) {
-                    if (obj != null) {
-                        $("#preferencias1").text(obj.pref1);
-                        $("#preferencias2").text(obj.pref2);
-                        $("#idorg").val(obj.idorg);
-                        $("#idano").val(obj.idano);
-
-                    }
-                }
-            });
-
-    //        loadorganizacoes();
-    //        loadano();
-    //        if (@ViewBag.pref=="0")
-    //        {
-     //           prefer();
-      //      }
+      $(document).ready(function () {
+        $.ajax({
+          type: "get",
+          url: "/auth/LoadPrefUsu",
+          data: {},
+          dataType: "json",
+          contentType: "application/json; charset=utf-8",
+          success: function (obj) {
+            if (obj != null) {
+              $("#preferencias").text(obj.pref);
+            }
+          },
         });
-
-
-        
-
-        function prefer()
-        {
-            var x = $("#staticBackdrop");
-           
-            x.modal({
-                backdrop: 'static',  // Desativa o fechamento ao clicar fora
-                keyboard: false      // Opcional: desativa o fechamento com a tecla ESC
-            });
-        }
-
-
-
-
+      });
     </script>
     <script src="https://unpkg.com/feather-icons"></script>
     <script>
-        feather.replace()
+      feather.replace();
     </script>
     @RenderSection("scripts", false)
-</body>
+  </body>
 </html>

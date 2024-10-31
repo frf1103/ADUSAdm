@@ -1,0 +1,81 @@
+﻿:root {
+    --primary-color: #38B6FF;
+    --primary-color-dark: #25a0e7;
+    --light-gray-background: #f8f9fa;
+    --dark-gray-border: #ddd;
+    --text-color: #2a2b2a;
+    --hover-transparent-background: #2a2b2a20;
+}
+
+/* Bootstrap start */
+.card {
+    /*box-shadow: 1px 1px 1px rgba(0,0,0,0.1), 0px 0px 5px rgba(0,0,0,0.05) !important;*/
+    box-shadow: none !important;
+    border: 1px solid var(--dark-gray-border) !important;
+}
+.card .card-title {
+    color: var(--text-color) !important;
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+}
+.card > .card-header {
+    background-color: var(--light-gray-background) !important;
+}
+.card .card-body {
+    color: var(--text-color) !important;
+}
+.card .btn-tool {
+    color: var(--text-color) !important;
+}
+.card-primary.card-outline {
+    border-top-color: var(--dark-gray-border) !important;
+}
+.btn:disabled {
+    opacity: 0.25 !important;
+}
+.btn-primary {
+    color: var(--text-color) !important;
+    font-weight: 600 !important;
+}
+.btn-primary:not(:hover) {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+.btn-primary:hover {
+    background-color: var(--primary-color-dark) !important;
+    border-color: var(--primary-color-dark) !important;
+}
+/* Bootstrap end */
+
+/* Stepper start */
+.bs-stepper .step .step-trigger {
+    color: var(--text-color);
+}
+.bs-stepper .step.active .step-trigger .bs-stepper-label {
+    color: var(--primary-color) !important;
+}
+.bs-stepper .step .bs-stepper-circle {
+    background-color: var(--text-color);
+}
+.bs-stepper .step.active .bs-stepper-circle {
+    background-color: var(--primary-color) !important;
+}
+.bs-stepper .step-trigger {
+    padding: 10px !important;
+}
+/* Stepper end */
+/* JSGrid start */
+.jsgrid {
+    font-size: 1rem !important;
+}
+.jsgrid, .jsgrid * {
+    font-family: 'Roboto', sans-serif !important;
+}
+.jsgrid .jsgrid-header-row {
+    border: none !important;
+}
+.jsgrid .custom-no-data {
+    text-align: center;
+    font-weight: bold;
+}
+/* JSGrid end */
