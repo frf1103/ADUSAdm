@@ -6,10 +6,10 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 <link href="~/css/jsgridplanner.css" rel="stylesheet">
 <link rel="stylesheet" href="~/css/bs-stepper.min.css">
+<link rel="stylesheet" href="~/css/loader.css">
 
 <style>  
     .select2-container {
-        width: 350px !important; /* Ajuste o tamanho conforme necessário */
         display: inline-block;
     }
 
@@ -88,6 +88,9 @@ input[type="number"] {
 
 <!-- Main content -->
 
+<div id="executar-loader" class="fullscreen-backdrop">
+    <span class="loader"></span>
+</div>
 <div class="wrapper">
     <section class="content">
         <div class="container-fluid">
@@ -146,8 +149,8 @@ input[type="number"] {
                                                 <div class="col-md-12">
                                                     <div class="d-flex gap-2 p-2">
 
-                                                        <select class="select2" name="idsafra" id="idsafra" data-placeholder="escolha uma safra" onchange="changesafra()" style="width: 100%;">
-                                                            <option value="0">escolha uma safra</option>
+                                                        <select class="select2" name="idsafra" id="idsafra" data-placeholder="Escolha uma safra" onchange="changesafra()" style="width: 100%;">
+                                                            <option value="0">Escolha uma safra</option>
                                                             @foreach (var item in ViewBag.safras)
                                                             {
                                                                 if (@item.Value == ViewBag.SelectedOptionS)
@@ -161,8 +164,8 @@ input[type="number"] {
                                                             }
                                                         </select>
 
-                                                        <select class="select2" name="idfazenda" id="idfaz" data-placeholder="escolha a fazenda" onchange="changefaz()" style="width: 100%;">
-                                                            <option value="0">escolha a fazenda</option>
+                                                        <select class="select2" name="idfazenda" id="idfaz" data-placeholder="Escolha a fazenda" onchange="changefaz()" style="width: 100%;">
+                                                            <option value="0">Escolha a fazenda</option>
                                                             @foreach (var item in ViewBag.fazendas)
                                                             {
                                                                 if (@item.Value == ViewBag.SelectedOptionF)
@@ -248,7 +251,7 @@ input[type="number"] {
                                                     <div class="col-md-3 form-container">
                                                         <label for="idprincipio">Princípio Ativo</label>
                                                         <select class="select2 form-control" name="idprincipio" id="idprincipio" data-placeholder="Escolha um principio ativo" onchange="changeprincipio()" required>
-                                                            <option value="0">escolha um princípio</option>
+                                                            <option value="0">Escolha um princípio</option>
                                                             @foreach (var item in ViewBag.principios)
                                                             {
                                                                 <option value="@item.Value">@item.Text</option>
@@ -316,24 +319,33 @@ input[type="number"] {
                                                 <h3 class="card-title">Escolha as máquinas utilizadas</h3>
                                             </div>
                                             <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="d-flex gap-2">
-                                                            <select class="select2" name="idmodelo" id="idmodelo" data-placeholder="escolha um modelo" onchange="changemodelo()">
-
-                                                                @foreach (var item in ViewBag.modelos)
-                                                                {
-                                                                    <option value="@item.Value">@item.Text</option>
-                                                                }
-                                                            </select>
-                                                            <select class="select2" name="idmaquina" id="idmaquina" data-placeholder="escolha uma máquina">
-                                                            </select>
+                                                <form id="adicionar-maquina-form" class="row g-3" novalidate>
+                                                    <div class="col-md-1 form-container">
+                                                        <select class="form-control select2" name="idmodelo" id="idmodelo" data-placeholder="Escolha um modelo" onchange="changemodelo()">
+                                                            @foreach (var item in ViewBag.modelos)
+                                                            {
+                                                                <option value="@item.Value">@item.Text</option>
+                                                            }
+                                                        </select>
+                                                        <div class="invalid-feedback">
+                                                            Campo obrigatório
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 form-container">
+                                                        <select class="form-control select2" name="idmaquina" id="idmaquina" data-placeholder="Escolha uma máquina">
+                                                        </select>
+                                                        <div class="invalid-feedback">
+                                                            Campo obrigatório
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1 form-container">
+                                                        <div>
                                                             <button type="button" class="btn btn-md btn-default" onclick="addmaquinas()">
                                                                 <i class="fa fa-plus"></i>
                                                             </button>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </form>
                                             </div>
                                             <!-- /.card-body -->
                                         </div>
@@ -375,9 +387,11 @@ input[type="number"] {
                                                         </select>
 
                                                     </div>
-                                                    <div class="form-container form-check col-md-1 d-flex justify-content-end">
-                                                        <input class="form-check-input mb-2" type="checkbox" id="cbplantio" name="cbplantio" disabled>
-                                                        <label class="form-check-label mb-1" for="cbplantio">Plantio?</label>
+                                                    <div class="form-container form-check col-md-2 d-flex align-items-center justify-content-end">
+                                                        <div class="">
+                                                            <input class="form-check-input mb-2" type="checkbox" id="cbplantio" name="cbplantio" disabled>
+                                                            <label class="form-check-label mb-1" for="cbplantio">Plantio?</label>
+                                                        </div>
                                                     </div>
 
 
@@ -440,6 +454,27 @@ input[type="number"] {
         </div>
         <!-- /.container-fluid -->
     </section>
+
+    <button id="execute-message-trigger" type="button" style="display: none" data-toggle="modal" data-target="#execute-message"></button>
+
+    <div id="execute-message" class="modal" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Informação</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="execute-message-content"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -593,25 +628,32 @@ input[type="number"] {
                     
                 })
             }
+            $('#executar-loader').css('display', 'flex');
             $.ajax({
             url: "/planejoperacao/GravarAssistente",
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify(planejoper),
             success: function (response) {
+                $('#executar-loader').css('display', 'none');
                 if (response.success) {
-                    alert(response.message);
+                    abrirModalInformacao(response.success);
                     location.reload();
                 } else {
-                    alert("Erro: " + response.message);
+                    abrirModalInformacao(response.message);
                 }
             },
             error: function (xhr, status, error) {
-                alert("Erro na chamada AJAX: ", error);
+                abrirModalInformacao(`${response.message}\n${error}`);
             }
             });
          
         }
+    }
+
+    function abrirModalInformacao(texto) {
+        $('#execute-message-content').text(texto);
+        $('#execute-message-trigger').click();
     }
 
     function validacampos()
@@ -640,7 +682,7 @@ input[type="number"] {
         }
         if (msg!="") 
         {
-            alert(msg);
+            abrirModalInformacao(msg);
         }
         return retorno;
 
@@ -726,7 +768,7 @@ input[type="number"] {
                 itemTemplate: function (value, item) {
                     // Criando um botão para cada linha
                     var $button = $("<button>")
-                        .addClass("btn btn-primary")
+                        .addClass("btn btn-default")
                         .append($("<i>").addClass("fas fa-chevron-right"))
                         //.text("Transferir")
                         .on("click", function () {
@@ -782,7 +824,7 @@ input[type="number"] {
             onItemUpdating: function (args) {
                 // Validando se o salário é maior que zero
                 if (args.item.areaDisp > args.item.areaorig || args.item.percent>100 || args.item.percent<=0) {
-                    alert("Área aplicada deverá ser menor que área configurada ou percentual inválido");
+                    abrirModalInformacao("Área aplicada deverá ser menor que área configurada ou percentual inválido");
                     args.cancel = true;  // Cancelando a atualização
                 }
             },
@@ -833,7 +875,7 @@ input[type="number"] {
                     itemTemplate: function (value, item) {
                         // Criando um botão para cada linha
                         var $button = $("<button>")
-                            .addClass("btn btn-primary")
+                            .addClass("btn btn-default")
                             .append($("<i>").addClass("fas fa-chevron-left"))
                             
                             .on("click", function () {
@@ -954,13 +996,27 @@ input[type="number"] {
 
     });
 
-    function addprodutos()
-    {
+    function addprodutos(event) {
         const form = $('#adicionar-produto-form');
         form[0].classList.add('was-validated');
-        if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
+        const idprincipio = $('#idprincipio');
+        const idproduto = $('#idproduto');
+
+        if (idprincipio.val() == '0') {
+            idprincipio[0].classList.add('is-invalid');
+            idprincipio[0].classList.remove('is-valid');
+        } else {
+            idprincipio[0].classList.add('is-valid');
+            idprincipio[0].classList.remove('is-invalid');
+        }
+        if (idproduto.val() == '0') {
+            idproduto[0].classList.add('is-invalid');
+            idproduto[0].classList.remove('is-valid');
+        } else {
+            idproduto[0].classList.add('is-valid');
+            idproduto[0].classList.remove('is-invalid');
+        }
+        if (!form[0].checkValidity() || idprincipio.val() == '0' || idproduto.val() == '0') {
             return;
         }
 
@@ -986,12 +1042,34 @@ input[type="number"] {
             }
             $("#jsprodutos").jsGrid("refresh");
         }
-
     }
 
 
     function addmaquinas()
     {
+        const form = $('#adicionar-maquina-form');
+        form[0].classList.add('was-validated');
+        const idmodelo = $('#idmodelo');
+        const idmaquina = $('#idmaquina');
+
+        if (idmodelo.val() == '0') {
+            idmodelo[0].classList.add('is-invalid');
+            idmodelo[0].classList.remove('is-valid');
+        } else {
+            idmodelo[0].classList.add('is-valid');
+            idmodelo[0].classList.remove('is-invalid');
+        }
+        if (idmaquina.val() == '0') {
+            idmaquina[0].classList.add('is-invalid');
+            idmaquina[0].classList.remove('is-valid');
+        } else {
+            idmaquina[0].classList.add('is-valid');
+            idmaquina[0].classList.remove('is-invalid');
+        }
+        if (!form[0].checkValidity() || idmaquina.val() == '0' || idmodelo.val() == '0') {
+            return;
+        }
+
         if ($("#idmodelo").val()!="0" || $("#idmaquina").val()!="0") 
         {         
 
