@@ -93,14 +93,16 @@
         display: flex !important;
         justify-content: center;
         border-color: #ccc !important;
+        background-image: url(images/logo.png);
+        background-size: 60%;
+        background-repeat: no-repeat;
+        background-position: center 5px;
+        height: 75px;
     }
 
-    .brand-link img {
-        transition: transform ease-in-out .3s;
-    }
-
-    .sidebar-collapse .brand-link img {
-        transform: scale(0.6);
+    .sidebar-collapse .brand-link {
+        background-size: 90%;
+        background-position: center 25px;
     }
 
     .user-panel {
@@ -111,6 +113,10 @@
         display: flex;
         align-items: center;
         padding: 5px 10px;
+    }
+
+    #preferencias {
+        font-size: 0.8rem;
     }
 
     .content-wrapper {
@@ -134,20 +140,6 @@
           </li>
         </ul>
 
-        <!-- Right navbar links -->
-        @{ if (User.IsInRole("User") || User.IsInRole("AdminC") ||
-        User.IsInRole("UserV")) {
-        <nav class="navbar navbar-light bg-light">
-          <a
-            class="nav-link"
-            asp-controller="Auth"
-            asp-action="PreferUsu"
-            role="button"
-            id="preferencias"
-          >
-          </a>
-        </nav>
-        } }
         <ul class="navbar-nav ml-auto">
             <li class="nav-item user-nav-item">
             <a asp-controller="Auth" asp-action="AlterarSenha">Usuário: @User.Identity?.Name</a>
@@ -169,14 +161,12 @@
       <aside class="main-sidebar sidebar-dark-blue elevation-1">
         <!-- Brand Logo -->
         <a href="/" class="brand-link text-center">
-            <img src="~/lib/images/fbs (4).png" />
-
         </a>
         <!-- Sidebar -->
         <div class="sidebar">
-          <div class="user-panel mt-3 pb-3 mb-3 d-fex">
+          <div class="user-panel ">
             <div class="info">
-              <a asp-controller="Auth" asp-action="PreferUsu" id="psafra"></a>
+               <a asp-controller="Auth" asp-action="PreferUsu" id="preferencias"></a>
             </div>
           </div>
 
@@ -593,7 +583,7 @@
           contentType: "application/json; charset=utf-8",
           success: function (obj) {
             if (obj != null) {
-              $("#preferencias").text(obj.pref);
+                $("#preferencias").html(`<strong>Organização:</strong><br>${obj.pref}<br><strong>Ano agrícola:</strong><br>${obj.anoAgricola}`);
             }
           },
         });

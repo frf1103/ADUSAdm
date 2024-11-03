@@ -151,8 +151,8 @@ public class AuthController : Controller
         {
             var conta = await _contaControllerClient.GetContaByUid(user.Id);
 
-            _sessionManager.contaguid = conta.contaguid;
-            _sessionManager.contaguid = conta.contaguid;
+            //_sessionManager.contaguid = conta.contaguid;
+            //_sessionManager.contaguid = conta.contaguid;
         }
         _sessionManager.uid = userid;
         _sessionManager.userrole = role;
@@ -390,9 +390,9 @@ public class AuthController : Controller
             _sessionManager.idorganizacao = c.idorganizacao;
             _sessionManager.idanoagricola = c.idanoagricola;
 
-            if (!String.IsNullOrWhiteSpace(_sessionManager.descorganizacao) && !String.IsNullOrWhiteSpace(_sessionManager.descanoagricola))
+            if (!string.IsNullOrWhiteSpace(_sessionManager.descorganizacao) && !string.IsNullOrWhiteSpace(_sessionManager.descanoagricola))
             {
-                var x = new { pref = "Preferências: " + _sessionManager.descorganizacao.Trim() + "       -       Ano Agrícola: " + _sessionManager.descanoagricola.Trim() };
+                var x = new { pref = _sessionManager.descorganizacao.Trim(), anoAgricola = _sessionManager.descanoagricola.Trim() };
                 return Json(x);
             }
             else
