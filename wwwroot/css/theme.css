@@ -68,7 +68,7 @@
 .jsgrid {
     font-size: 1rem !important;
 }
-.jsgrid, .jsgrid * {
+.jsgrid, .jsgrid *:not(i) {
     font-family: 'Roboto', sans-serif !important;
 }
 .jsgrid .jsgrid-header-row {
