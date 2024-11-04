@@ -24,8 +24,10 @@
     <div class="col text-right">
         @if (ViewBag.permissao == true)
         {
-            <a href="/principioativo/adicionar" class=" btn btn-primary">Novo princípio</a>                        
-        }                
+        <a href="/principioativo/adicionar" cclass="btn btn-default" role="button">
+            <img class="icon" src="/svg/icons/plus.svg" />
+        </a>
+    }                
     </div>
 
 
@@ -100,7 +102,7 @@
                     itemTemplate: function (_, item) {
                         var $result = $("<div>").addClass("dropdown");
 
-                        var $button = $("<button>").addClass("btn btn-info dropdown-toggle")
+                        var $button = $("<button>").addClass("btn btn-default dropdown-toggle")
                             .attr("type", "button")
                             .attr("id", "dropdownMenuButton")
                             .attr("data-toggle", "dropdown")

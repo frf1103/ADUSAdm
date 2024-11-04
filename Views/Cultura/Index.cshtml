@@ -7,17 +7,13 @@
 <form asp-action="Index">
     <div class="row">
         <div class="col-md-12">
-            <div class="card card-primary collapsed-card">
-                <div class="card-header">
-                    <h3 class="card-title">Filtro</h3>
+            <button class="btn btn-default" type="button" data-bs-toggle="collapse" data-bs-target="#filter" aria-expanded="false" aria-controls="filter">
+                <img class="icon" src="/svg/icons/filter.svg" />
+                Filtro
+            </button>
 
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-filter"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="card-body">
+            <div class="collapse mt-2" id="filter">
+                <div class="card card-primary card-outline">
                     <div class="row">
 
                         <div class="col-md-5">
@@ -46,7 +42,9 @@
 @if (ViewBag.permissao == true)
 {
     <div class="col text-right">
-        <a href="/cultura/adicionar" class=" btn btn-primary">Nova Cultura </a>
+        <a href="/cultura/adicionar" class="btn btn-default" role="button">
+            <img class="icon" src="/svg/icons/plus.svg" />
+        </a>
 
     </div>
 
@@ -166,7 +164,7 @@
                     itemTemplate: function (value, item) {
                         var $detailButton = $("<button>")
                             .text("Ver")
-                            .addClass("btn btn-primary")
+                            .addClass("btn btn-default")
                             .attr("title", "Ver")
                             .on("click", function () {
                                 toggleDetails(item); // Alternar o grid de detalhes
@@ -181,7 +179,7 @@
                     itemTemplate: function (_, item) {
                         var $result = $("<div>").addClass("dropdown");
 
-                        var $button = $("<button>").addClass("btn btn-info dropdown-toggle")
+                        var $button = $("<button>").addClass("btn btn-default dropdown-toggle")
                             .attr("type", "button")
                             .attr("id", "dropdownMenuButton")
                             .attr("data-toggle", "dropdown")
@@ -264,7 +262,7 @@
                             itemTemplate: function (_, item) {
                                 var $result = $("<div>").addClass("dropdown");
 
-                                var $button = $("<button>").addClass("btn btn-info dropdown-toggle")
+                                var $button = $("<button>").addClass("btn btn-default dropdown-toggle")
                                     .attr("type", "button")
                                     .attr("id", "dropdownMenuButton")
                                     .attr("data-toggle", "dropdown")

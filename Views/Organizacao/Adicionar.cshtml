@@ -8,6 +8,21 @@
 
 
 <style>
+    fieldset {
+        border: 2px solid #008cba;
+        padding: 10px;
+        margin: 20px 0;
+        border-radius: 5px;
+    }
+
+    legend {
+        color: #008cba;
+    }
+
+    .custom-header {
+        text-align: right; /* ou left, center */
+    }
+
     /* Definindo a largura do select para ocupar 100% da div */
     .select2-container {
         width: 100% !important;
@@ -49,8 +64,8 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary" onclick="gravarusuario()">Gravar</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-success" onclick="gravarusuario()">Gravar</button>
                     </div>
                 </div>
             </div>
@@ -157,18 +172,18 @@
                                                 @{
                                                     if (ViewBag.idacao <= 2)
                                                     {
-                                                        <button type="submit" class="btn btn-primary">Salvar</button>
+                                                        <button type="submit" class="btn btn-success">Salvar</button>
                                                     }
                                                     else
                                                     {
                                                         if (ViewBag.idacao == 3)
                                                         {
-                                                            <button type="submit" class="btn btn-primary">Excluir</button>
+                                                            <button type="submit" class="btn btn-danger">Excluir</button>
                                                         }
                                                     }
                                                 }
 
-                                                <a href="/organizacao/index" class="btn btn-danger">Voltar</a>
+                                                <a href="/organizacao/index" class="btn btn-default">Voltar</a>
                                             </div>
                                         </div>
                                     </div>
@@ -186,7 +201,9 @@
                                         
 
                                             <div class="col text-right">
-                                                <button class=" btn btn-primary"><i class="fas fa-plus" onclick="addusuario()"></i></button>
+                                            <button  onclick="addusuario()" class="btn btn-default" role="button">
+                                                <img class="icon" src="/svg/icons/plus.svg" />
+                                            </button>
                                             </div>
 
                                             <div class="card-body table-responsive p-0">
@@ -270,7 +287,7 @@
                         itemTemplate: function (_, item) {
                             var $result = $("<div>").addClass("dropdown");
 
-                            var $button = $("<button>").addClass("btn btn-info dropdown-toggle")
+                            var $button = $("<button>").addClass("btn btn-default dropdown-toggle")
                                 .attr("type", "button")
                                 .attr("id", "dropdownMenuButton")
                                 .attr("data-toggle", "dropdown")

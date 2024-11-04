@@ -23,7 +23,9 @@
 <div class="col text-right">
      @if (ViewBag.permissao == true)
      {
-            <a href="/parceiro/adicionar" class=" btn btn-primary">Novo Parceiro</a>
+        <a href="/parceiro/adicionar" class="btn btn-default" role="button">
+            <img class="icon" src="/svg/icons/plus.svg" />
+        </a>
      }
 </div>
 <div id="jsGrid"></div>
@@ -114,7 +116,7 @@
                     itemTemplate: function (_, item) {
                         var $result = $("<div>").addClass("dropdown");
 
-                        var $button = $("<button>").addClass("btn btn-info dropdown-toggle")
+                        var $button = $("<button>").addClass("btn btn-default dropdown-toggle")
                             .attr("type", "button")
                             .attr("id", "dropdownMenuButton")
                             .attr("data-toggle", "dropdown")

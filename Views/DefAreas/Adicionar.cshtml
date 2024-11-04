@@ -239,18 +239,18 @@
                                                 @{
                                                     if (ViewBag.idacao <= 2)
                                                     {
-                                                        <button type="submit" class="btn btn-primary">Salvar</button>
+                                                        <button type="submit" class="btn btn-success">Salvar</button>
                                                     }
                                                     else
                                                     {
                                                         if (ViewBag.idacao == 3)
                                                         {
-                                                            <button type="submit" class="btn btn-primary">Excluir</button>
+                                                            <button type="submit" class="btn btn-danger">Excluir</button>
                                                         }
                                                     }
                                                 }
 
-                                                <a href="/defareas/index" class="btn btn-danger">Voltar</a>
+                                                <a href="/defareas/index" class="btn btn-default">Voltar</a>
                                             </div>
                                         </div>
                                     </div>
@@ -266,7 +266,9 @@
                                 </div>
                                 -->
                                 <div class="col text-right">
-                                    <a href="/defareas/adicionartalhao?idfazenda=@Model!.id" button type="submit" class="btn btn-primary">Novo</a>
+                                    <a href="/defareas/adicionartalhao?idfazenda=@Model!.id" class="btn btn-default" role="button">
+                                        <img class="icon" src="/svg/icons/plus.svg" />
+                                    </a>
                                 </div>
 
 
@@ -417,7 +419,7 @@
                     itemTemplate: function (_, item) {
                         var $result = $("<div>").addClass("dropdown");
 
-                        var $button = $("<button>").addClass("btn btn-info dropdown-toggle")
+                        var $button = $("<button>").addClass("btn btn-default dropdown-toggle")
                             .attr("type", "button")
                             .attr("id", "dropdownMenuButton")
                             .attr("data-toggle", "dropdown")

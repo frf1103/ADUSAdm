@@ -157,24 +157,24 @@
                                                 @{
                                                     if (ViewBag.idacao <= 2)
                                                     {
-                                                        <button type="submit" class="btn btn-primary">Salvar</button>
+                                                        <button type="submit" class="btn btn-success">Salvar</button>
                                                     }
                                                     else
                                                     {
                                                         if (ViewBag.idacao == 3)
                                                         {
-                                                            <button type="submit" class="btn btn-primary">Excluir</button>
+                                                            <button type="submit" class="btn btn-danger">Excluir</button>
                                                         }
                                                     }
                                                 }
                                                 @{
                                                   if (ViewBag.origem==0)
                                                   {
-                                                        <a href="/orcamentoproduto/adicionar?acao=2&id=@ViewBag.idorc" class="btn btn-danger">Voltar</a>
+                                                        <a href="/orcamentoproduto/adicionar?acao=2&id=@ViewBag.idorc" class="btn btn-default">Voltar</a>
                                                     }
                                                     else
                                                     {
-                                                        <a href="/orcamentoproduto/index" class="btn btn-danger">Voltar</a>
+                                                        <a href="/orcamentoproduto/index" class="btn btn-default">Voltar</a>
                                                     }
                                                 }
                                             </div>
