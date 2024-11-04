@@ -17,12 +17,16 @@
       "PackagePath": "staticwebassets\\css\\bootstrap-multiselect.min.css"
     },
     {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\css\\bs-stepper.min.css",
+      "PackagePath": "staticwebassets\\css\\bs-stepper.min.css"
+    },
+    {
       "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\css\\jquery-ui.min.css",
       "PackagePath": "staticwebassets\\css\\jquery-ui.min.css"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\css\\jsgridplanner.css",
-      "PackagePath": "staticwebassets\\css\\jsgridplanner.css"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\css\\loader.css",
+      "PackagePath": "staticwebassets\\css\\loader.css"
     },
     {
       "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\css\\select2.css",
@@ -39,6 +43,10 @@
     {
       "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\css\\sweetalert2.css",
       "PackagePath": "staticwebassets\\css\\sweetalert2.css"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\css\\theme.css",
+      "PackagePath": "staticwebassets\\css\\theme.css"
     },
     {
       "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\css\\toastr.min.css",
@@ -345,6 +353,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\images\\logo.png",
+      "PackagePath": "staticwebassets\\images\\logo.png"
+    },
+    {
       "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\js\\Comuns.js",
       "PackagePath": "staticwebassets\\js\\Comuns.js"
     },
@@ -367,6 +379,10 @@
     {
       "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\js\\bootstrap.bundle.min.js",
       "PackagePath": "staticwebassets\\js\\bootstrap.bundle.min.js"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\js\\bs-stepper.min.js",
+      "PackagePath": "staticwebassets\\js\\bs-stepper.min.js"
     },
     {
       "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\js\\demo.js",
@@ -465,184 +481,184 @@
       "PackagePath": "staticwebassets\\js\\underscore.js"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\LICENSE",
-      "PackagePath": "staticwebassets\\lib\\bootstrap"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\LICENSE",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap-grid.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap-grid.css"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap-grid.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap-grid.css.map"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap-grid.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap-grid.min.css"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap-grid.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap-grid.min.css.map"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap-grid.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap-grid.rtl.css"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap-grid.rtl.css.map"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap-grid.rtl.min.css"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap-grid.rtl.min.css.map"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap-reboot.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap-reboot.css"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap-reboot.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap-reboot.css.map"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap-reboot.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap-reboot.min.css"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap-reboot.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap-reboot.min.css.map"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap-reboot.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap-reboot.rtl.css"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap-reboot.rtl.css.map"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap-reboot.rtl.min.css"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap-utilities.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap-utilities.css"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap-utilities.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap-utilities.css.map"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap-utilities.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap-utilities.min.css"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap-utilities.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap-utilities.min.css.map"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap-utilities.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap-utilities.rtl.css"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap-utilities.rtl.css.map"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap-utilities.rtl.min.css"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap.css"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap.css.map"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap.min.css"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap.min.css.map"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap.rtl.css"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap.rtl.css.map"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap.rtl.min.css"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\css\\bootstrap.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\css\\bootstrap.rtl.min.css.map"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\js\\bootstrap.bundle.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\js\\bootstrap.bundle.js"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\js\\bootstrap.bundle.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\js\\bootstrap.bundle.js.map"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\js\\bootstrap.bundle.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\js\\bootstrap.bundle.min.js"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\js\\bootstrap.bundle.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\js\\bootstrap.bundle.min.js.map"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\js\\bootstrap.esm.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\js\\bootstrap.esm.js"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\js\\bootstrap.esm.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\js\\bootstrap.esm.js.map"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\js\\bootstrap.esm.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\js\\bootstrap.esm.min.js"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\js\\bootstrap.esm.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\js\\bootstrap.esm.min.js.map"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\js\\bootstrap.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\js\\bootstrap.js"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\js\\bootstrap.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\js\\bootstrap.js.map"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\js\\bootstrap.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\js\\bootstrap.min.js"
     },
     {
-      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\bootstrapp\\dist\\js\\bootstrap.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrapp\\dist\\js\\bootstrap.min.js.map"
     },
     {
       "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\lib\\images\\FBS (4).png",
@@ -8643,6 +8659,162 @@
     {
       "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\plugins\\uplot\\uPlot.min.css",
       "PackagePath": "staticwebassets\\plugins\\uplot\\uPlot.min.css"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\accounts.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\accounts.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\agricultural-year.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\agricultural-year.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\angle-left.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\angle-left.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\angle-right.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\angle-right.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\area-configuration.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\area-configuration.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\arrow-left.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\arrow-left.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\arrow-right.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\arrow-right.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\company.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\company.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\crop.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\crop.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\dollar-sign.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\dollar-sign.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\farm.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\farm.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\filter.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\filter.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\folder.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\folder.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\grouped-list.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\grouped-list.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\invoice.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\invoice.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\logistics.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\logistics.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\machine-parameters.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\machine-parameters.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\map.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\map.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\measure.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\measure.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\menu.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\menu.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\money-split.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\money-split.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\my-accounts.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\my-accounts.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\operation-planning.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\operation-planning.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\operation-types.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\operation-types.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\operation.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\operation.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\parameters.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\parameters.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\partner.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\partner.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\plant-planning.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\plant-planning.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\plant.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\plant.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\plus.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\plus.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\positive-cart.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\positive-cart.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\product-group.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\product-group.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\product.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\product.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\search.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\search.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\sign-out.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\sign-out.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\simple-invoice.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\simple-invoice.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\tech.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\tech.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\tractor.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\tractor.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\svg\\icons\\users.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\users.svg"
     },
     {
       "Id": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\wwwroot\\webfonts\\check-circle.svg",

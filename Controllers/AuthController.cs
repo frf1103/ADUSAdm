@@ -485,18 +485,18 @@ public class AuthController : Controller
 
             if (!string.IsNullOrWhiteSpace(_sessionManager.descorganizacao) && !string.IsNullOrWhiteSpace(_sessionManager.descanoagricola))
             {
-                var x = new { pref = _sessionManager.descorganizacao.Trim(), anoagricola = _sessionManager.descanoagricola.Trim(), idorg = c.idorganizacao, idano = c.idanoagricola };
+                var x = new { pref = _sessionManager.descorganizacao.Trim(), anoAgricola = _sessionManager.descanoagricola.Trim(), idorg = c.idorganizacao, idano = c.idanoagricola };
                 return Json(x);
             }
             else
             {
-                var x = new { pref = "DEFINA ORGANIZAÇÃO", anoagricola = "DEFINA ANO AGRIC" };
+                var x = new { pref = "DEFINA ORGANIZAÇÃO", anoAgricola = "DEFINA ANO AGRIC" };
                 return Json(x);
             }
         }
         else
         {
-            var x = new { pref = "DEFINA ORGANIZAÇÃO", anoagricola = "DEFINA ANO AGRIC" };
+            var x = new { pref = "DEFINA ORGANIZAÇÃO", anoAgricola = "DEFINA ANO AGRIC" };
             return Json(x);
         }
     }
