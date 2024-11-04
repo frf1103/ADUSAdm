@@ -320,7 +320,7 @@ input[type="number"] {
                                             </div>
                                             <div class="card-body">
                                                 <form id="adicionar-maquina-form" class="row g-3" novalidate>
-                                                    <div class="col-md-1 form-container">
+                                                    <div class="col-md-2 form-container">
                                                         <select class="form-control select2" name="idmodelo" id="idmodelo" data-placeholder="Escolha um modelo" onchange="changemodelo()">
                                                             @foreach (var item in ViewBag.modelos)
                                                             {
@@ -1048,9 +1048,9 @@ input[type="number"] {
     function addmaquinas()
     {
         const form = $('#adicionar-maquina-form');
-        form[0].classList.add('was-validated');
-        const idmodelo = $('#idmodelo');
-        const idmaquina = $('#idmaquina');
+        form[0].classList.add('was-validated');e
+        var idmodelo = $('#idmodelo');
+        var idmaquina = $('#idmaquina');
 
         if (idmodelo.val() == '0') {
             idmodelo[0].classList.add('is-invalid');

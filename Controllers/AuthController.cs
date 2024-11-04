@@ -158,7 +158,6 @@ public class AuthController : Controller
                 _sessionManager.contaguid = conta.contaguid;
             }
         }
-
         _sessionManager.uid = userid;
         _sessionManager.userrole = role;
 
@@ -484,20 +483,20 @@ public class AuthController : Controller
             _sessionManager.idorganizacao = c.idorganizacao;
             _sessionManager.idanoagricola = c.idanoagricola;
 
-            if (!String.IsNullOrWhiteSpace(_sessionManager.descorganizacao) && !String.IsNullOrWhiteSpace(_sessionManager.descanoagricola))
+            if (!string.IsNullOrWhiteSpace(_sessionManager.descorganizacao) && !string.IsNullOrWhiteSpace(_sessionManager.descanoagricola))
             {
-                var x = new { pref1 = "Organização: " + _sessionManager.descorganizacao.Trim(), pref2 = "Ano Agrícola: " + _sessionManager.descanoagricola.Trim(), idorg = c.idorganizacao, idano = c.idanoagricola };
+                var x = new { pref = _sessionManager.descorganizacao.Trim(), anoagricola = _sessionManager.descanoagricola.Trim(), idorg = c.idorganizacao, idano = c.idanoagricola };
                 return Json(x);
             }
             else
             {
-                var x = new { pref1 = "DEFINA AS PREFERÊNCIAS", pref2 = "DEFINA AS PREFERÊNCIAS" };
+                var x = new { pref = "DEFINA ORGANIZAÇÃO", anoagricola = "DEFINA ANO AGRIC" };
                 return Json(x);
             }
         }
         else
         {
-            var x = new { pref1 = "DEFINA AS PREFERÊNCIAS", pref2 = "DEFINA AS PREFERÊNCIAS" };
+            var x = new { pref = "DEFINA ORGANIZAÇÃO", anoagricola = "DEFINA ANO AGRIC" };
             return Json(x);
         }
     }
