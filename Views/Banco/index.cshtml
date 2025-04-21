@@ -101,7 +101,7 @@
                         var $menu = $("<div>").addClass("dropdown-menu");
 
                         var $edit = $("<a>").addClass("dropdown-item").attr("href", "/banco/adicionar/" + item.id+"?acao=2").text("Editar");
-                        var $delete = $("<a>").addClass("dropdown-item").attr("href", "/banco/excluir/" + item.id+"?acao=3").text("Excluir");
+                        var $delete = $("<a>").addClass("dropdown-item").attr("href", "/banco/adicionar/" + item.id + "?acao=3").text("Excluir");
                         var $contas = $("<a>").addClass("dropdown-item").attr("href", "/ContaCorrente/Index?idBanco=" + item.id).html("<i class='fa fa-list'></i> Contas Correntes");
 
                         $menu.append($edit).append($delete).append($contas);;

@@ -21,6 +21,10 @@ using System.IO;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Text;
+using RestSharp;
+using Azure.Core;
+using Humanizer;
+using MathNet.Numerics;
 
 namespace ADUSAdm.Controllers
 {
@@ -258,7 +262,7 @@ namespace ADUSAdm.Controllers
         {
             Task<List<ADUSClient.Assinatura.ListAssinaturaViewModel>> ret = _culturaAPI.Lista(ini, fim, idparceiro, status, forma, filtro);
             List<ADUSClient.Assinatura.ListAssinaturaViewModel> c = await ret;
-            var cx=c.OrderBy(x => x.datavenda);
+            var cx = c.OrderBy(x => x.datavenda);
 
             return Json(cx);
         }
@@ -542,6 +546,12 @@ namespace ADUSAdm.Controllers
 
                     //incluir parcela
 
+                    DateTime dtcr = DateTime.Now;
+                    if (sub.dates.OrderedAt != null)
+                    {
+                        dtcr = DateTimeOffset.FromUnixTimeSeconds(sub.dates.created_at).UtcDateTime;
+                    }
+
                     Task<ADUSClient.Parcela.ParcelaViewModel> retparc = _parcelaAPI.ListaByIdCheckout(sub.id);
                     ADUSClient.Parcela.ParcelaViewModel parc = await retparc;
                     if (parc == null)
@@ -557,11 +567,6 @@ namespace ADUSAdm.Controllers
                             {
                                 nossonumero = sub.payment.pix.qrcode.signature;
                             }
-                        }
-                        DateTime dtcr = DateTime.Now;
-                        if (sub.dates.OrderedAt != null)
-                        {
-                            dtcr = DateTimeOffset.FromUnixTimeSeconds(sub.dates.created_at).UtcDateTime;
                         }
                         _parcelaAPI.Adicionar(new ADUSClient.Parcela.ParcelaViewModel
                         {
@@ -579,8 +584,14 @@ namespace ADUSAdm.Controllers
                             valorliquido = sub.product.total_value,
                             descontoantecipacao = 0,
                             descontoplataforma = 0,
-                            comissao = 0
+                            comissao = 0,
+                            databaixa = (sub.payment.acquirer.code == "0000") ? dtcr : null
                         });
+                    }
+                    else
+                    {
+                        parc.databaixa = (sub.payment.acquirer.code == "0000") ? dtcr : null;
+                        _parcelaAPI.Salvar(parc.id, parc);
                     }
                 }
 
@@ -610,8 +621,9 @@ namespace ADUSAdm.Controllers
         [AllowAnonymous]
         public async Task<JsonResult> GetNSU()
         {
+            /*
             var client = new HttpClient();
-            var chave = "pk_8E1GZOYiPTMXKQDO";
+            var chave = "sk_871c3d7c606a4be3bd48d4f86b68c58f";
             var authBytes = Encoding.UTF8.GetBytes($"{chave}:");
             client.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Basic", Convert.ToBase64String(authBytes));
@@ -619,7 +631,454 @@ namespace ADUSAdm.Controllers
             var response = await client.GetAsync("https://api.pagar.me/core/v5/transactions/3923823083");
 
             var json = await response.Content.ReadAsStringAsync();
-            Console.WriteLine(json);
+            Console.WriteLine(json); */
+            var secretKey = "sk_871c3d7c606a4be3bd48d4f86b68c58f";
+
+            var base64Auth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{secretKey}:"));
+
+            var allPayables = new List<string>(); // ou seu model
+            string cursor = null;
+            bool hasMore = true;
+
+            while (hasMore)
+            {
+                string url = "https://api.pagar.me/core/v5/charges";
+
+                if (cursor == null)
+                    url += "?created_since=2024-12-07&created_until=2024-12-09&limit=100";
+                else
+                    url = cursor;
+
+                var options = new RestClientOptions(url);
+                var client = new RestClient(options);
+
+                var request = new RestRequest();
+                request.AddHeader("Authorization", $"Basic {base64Auth}");
+                request.AddHeader("accept", "application/json");
+
+                var response = await client.ExecuteGetAsync(request);
+
+                if (!response.IsSuccessful)
+                {
+                    Console.WriteLine("Erro: " + response.ErrorMessage);
+                    break;
+                }
+
+                // Adicione sua lógica de deserialização aqui
+                allPayables.Add(response.Content); // ou deserialize
+
+                var json = response.Content; // string com JSON recebido do Pagar.me
+
+                using var doc = JsonDocument.Parse(json);
+                var root = doc.RootElement;
+
+                if (root.TryGetProperty("data", out var dataArray))
+                {
+                    foreach (var item in dataArray.EnumerateArray())
+                    {
+                        var id = item.GetProperty("id").GetString();
+                        var acquirerNSU = item.GetProperty("gateway_id").GetString();
+                    }
+                }
+                // Verifica o header 'X-PagarMe-Cursor'
+                if (root.TryGetProperty("paging", out var page))
+                {
+                    if (page.TryGetProperty("next", out var x))
+                    {
+                        cursor = x.GetString();
+                    }
+                    else hasMore = false;
+                }
+                else
+                {
+                    hasMore = false; // última página
+                }
+                /*
+                var options = new RestClientOptions(url);
+                var client = new RestClient(options);
+                var request = new RestRequest("");
+
+                var base64Auth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{secretKey}:"));
+                request.AddHeader("accept", "application/json");
+
+                request.AddHeader("Authorization", $"Basic {base64Auth}");
+                var response = await client.GetAsync(request);
+
+                //            Console.WriteLine("{0}", response.Content);
+                */
+            }
+            return Json("OK");
+        }
+
+        [AllowAnonymous]
+        public async Task<JsonResult> GetBaixasByData(string ini, string fim)
+        {
+            /*
+            var client = new HttpClient();
+            var chave = "sk_871c3d7c606a4be3bd48d4f86b68c58f";
+            var authBytes = Encoding.UTF8.GetBytes($"{chave}:");
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Basic", Convert.ToBase64String(authBytes));
+
+            var response = await client.GetAsync("https://api.pagar.me/core/v5/transactions/3923823083");
+
+            var json = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(json); */
+            var secretKey = "sk_871c3d7c606a4be3bd48d4f86b68c58f";
+
+            var base64Auth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{secretKey}:"));
+
+            var allPayables = new List<string>(); // ou seu model
+            string cursor = null;
+            bool hasMore = true;
+
+            while (hasMore)
+            {
+                string url = "https://api.pagar.me/core/v5/payables";
+
+                if (cursor == null)
+                    url += "?payment_date_since=" + ini + "&payment_date_until=" + fim;
+                else
+                    url = cursor;
+
+                var options = new RestClientOptions(url);
+                var client = new RestClient(options);
+
+                var request = new RestRequest();
+                request.AddHeader("Authorization", $"Basic {base64Auth}");
+                request.AddHeader("accept", "application/json");
+
+                var response = await client.ExecuteGetAsync(request);
+
+                if (!response.IsSuccessful)
+                {
+                    Console.WriteLine("Erro: " + response.ErrorMessage);
+                    break;
+                }
+
+                // Adicione sua lógica de deserialização aqui
+                allPayables.Add(response.Content); // ou deserialize
+
+                var json = response.Content; // string com JSON recebido do Pagar.me
+
+                using var doc = JsonDocument.Parse(json);
+                var root = doc.RootElement;
+
+                if (root.TryGetProperty("data", out var dataArray))
+                {
+                    foreach (var item in dataArray.EnumerateArray())
+                    {
+                        var id = item.GetProperty("id").GetString();
+                        var acquirerNSU = item.GetProperty("gateway_id").GetString();
+                    }
+                }
+                // Verifica o header 'X-PagarMe-Cursor'
+                if (root.TryGetProperty("paging", out var page))
+                {
+                    if (page.TryGetProperty("next", out var x))
+                    {
+                        cursor = x.GetString();
+                    }
+                    else hasMore = false;
+                }
+                else
+                {
+                    hasMore = false; // última página
+                }
+                /*
+                var options = new RestClientOptions(url);
+                var client = new RestClient(options);
+                var request = new RestRequest("");
+
+                var base64Auth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{secretKey}:"));
+                request.AddHeader("accept", "application/json");
+
+                request.AddHeader("Authorization", $"Basic {base64Auth}");
+                var response = await client.GetAsync(request);
+
+                //            Console.WriteLine("{0}", response.Content);
+                */
+            }
+            return Json("OK");
+        }
+
+        [AllowAnonymous]
+        public async Task<JsonResult> GetBaixasById(string nsu)
+        {
+            /*
+            var client = new HttpClient();
+            var chave = "sk_871c3d7c606a4be3bd48d4f86b68c58f";
+            var authBytes = Encoding.UTF8.GetBytes($"{chave}:");
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Basic", Convert.ToBase64String(authBytes));
+
+            var response = await client.GetAsync("https://api.pagar.me/core/v5/transactions/3923823083");
+
+            var json = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(json); */
+            var secretKey = "sk_871c3d7c606a4be3bd48d4f86b68c58f";
+
+            var base64Auth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{secretKey}:"));
+
+            var allPayables = new List<string>(); // ou seu model
+            string cursor = null;
+            bool hasMore = true;
+
+            while (hasMore)
+            {
+                string url = "https://api.pagar.me/core/v5/payables";
+
+                if (cursor == null)
+                    url += "?gateway_id=" + nsu;
+                else
+                    url = cursor;
+
+                var options = new RestClientOptions(url);
+                var client = new RestClient(options);
+
+                var request = new RestRequest();
+                request.AddHeader("Authorization", $"Basic {base64Auth}");
+                request.AddHeader("accept", "application/json");
+
+                var response = await client.ExecuteGetAsync(request);
+
+                if (!response.IsSuccessful)
+                {
+                    Console.WriteLine("Erro: " + response.ErrorMessage);
+                    break;
+                }
+
+                // Adicione sua lógica de deserialização aqui
+                allPayables.Add(response.Content); // ou deserialize
+
+                var json = response.Content; // string com JSON recebido do Pagar.me
+
+                using var doc = JsonDocument.Parse(json);
+                var root = doc.RootElement;
+
+                if (root.TryGetProperty("data", out var dataArray))
+                {
+                    foreach (var item in dataArray.EnumerateArray())
+                    {
+                        var id = item.GetProperty("id").GetString();
+                        var acquirerNSU = item.GetProperty("gateway_id").GetString();
+                    }
+                }
+                // Verifica o header 'X-PagarMe-Cursor'
+                if (root.TryGetProperty("paging", out var page))
+                {
+                    if (page.TryGetProperty("next", out var x))
+                    {
+                        cursor = x.GetString();
+                    }
+                    else hasMore = false;
+                }
+                else
+                {
+                    hasMore = false; // última página
+                }
+                /*
+                var options = new RestClientOptions(url);
+                var client = new RestClient(options);
+                var request = new RestRequest("");
+
+                var base64Auth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{secretKey}:"));
+                request.AddHeader("accept", "application/json");
+
+                request.AddHeader("Authorization", $"Basic {base64Auth}");
+                var response = await client.GetAsync(request);
+
+                //            Console.WriteLine("{0}", response.Content);
+                */
+            }
+            return Json("OK");
+        }
+
+        [AllowAnonymous]
+        public async Task<JsonResult> GetBaixasAsaasByData(string ini, string fim)
+        {
+            /*
+            var client = new HttpClient();
+            var chave = "sk_871c3d7c606a4be3bd48d4f86b68c58f";
+            var authBytes = Encoding.UTF8.GetBytes($"{chave}:");
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Basic", Convert.ToBase64String(authBytes));
+
+            var response = await client.GetAsync("https://api.pagar.me/core/v5/transactions/3923823083");
+
+            var json = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(json); */
+            var secretKey = "$aact_prod_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OmIyNmM2YWIzLThmOGUtNDY5Mi1hNDNkLWJiNDk4YTRmNGNjOTo6JGFhY2hfZTI5MTFhMGMtYjdkNi00MzhlLWI2OTEtOTYxNzYzMmI2NDBk";
+
+            var base64Auth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{secretKey}:"));
+
+            var allPayables = new List<string>(); // ou seu model
+            string cursor = null;
+            bool hasMore = true;
+
+            while (hasMore)
+            {
+                string url = "https://api.asaas.com/v3/payments";
+
+                if (cursor == null)
+                    //   url += "?paymentDate[ge]=" + ini + "&paymentDate[le]=" + fim;
+                    url += "?paymentDate=" + ini;
+                else
+                    url = cursor;
+
+                var options = new RestClientOptions(url);
+                var client = new RestClient(options);
+
+                var request = new RestRequest();
+                request.AddHeader("access_token", secretKey); // ou "Authorization", $"Bearer {apiKey}"
+
+                request.AddHeader("accept", "application/json");
+
+                var response = await client.ExecuteGetAsync(request);
+
+                if (!response.IsSuccessful)
+                {
+                    Console.WriteLine("Erro: " + response.ErrorMessage);
+                    break;
+                }
+
+                // Adicione sua lógica de deserialização aqui
+                allPayables.Add(response.Content); // ou deserialize
+
+                var json = response.Content; // string com JSON recebido do Pagar.me
+
+                using var doc = JsonDocument.Parse(json);
+                var root = doc.RootElement;
+
+                if (root.TryGetProperty("data", out var dataArray))
+                {
+                    foreach (var item in dataArray.EnumerateArray())
+                    {
+                        var id = item.GetProperty("id").GetString();
+                        var acquirerNSU = item.GetProperty("gateway_id").GetString();
+                    }
+                }
+                // Verifica o header 'X-PagarMe-Cursor'
+                if (root.TryGetProperty("paging", out var page))
+                {
+                    if (page.TryGetProperty("next", out var x))
+                    {
+                        cursor = x.GetString();
+                    }
+                    else hasMore = false;
+                }
+                else
+                {
+                    hasMore = false; // última página
+                }
+                /*
+                var options = new RestClientOptions(url);
+                var client = new RestClient(options);
+                var request = new RestRequest("");
+
+                var base64Auth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{secretKey}:"));
+                request.AddHeader("accept", "application/json");
+
+                request.AddHeader("Authorization", $"Basic {base64Auth}");
+                var response = await client.GetAsync(request);
+
+                //            Console.WriteLine("{0}", response.Content);
+                */
+            }
+            return Json("OK");
+        }
+
+        [AllowAnonymous]
+        public async Task<JsonResult> GetBaixasAsaasById(string nsu)
+        {
+            /*
+            var client = new HttpClient();
+            var chave = "sk_871c3d7c606a4be3bd48d4f86b68c58f";
+            var authBytes = Encoding.UTF8.GetBytes($"{chave}:");
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Basic", Convert.ToBase64String(authBytes));
+
+            var response = await client.GetAsync("https://api.pagar.me/core/v5/transactions/3923823083");
+
+            var json = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(json); */
+            var secretKey = "$aact_prod_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OmIyNmM2YWIzLThmOGUtNDY5Mi1hNDNkLWJiNDk4YTRmNGNjOTo6JGFhY2hfZTI5MTFhMGMtYjdkNi00MzhlLWI2OTEtOTYxNzYzMmI2NDBk";
+
+            var base64Auth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{secretKey}:"));
+
+            var allPayables = new List<string>(); // ou seu model
+            string cursor = null;
+            bool hasMore = true;
+
+            while (hasMore)
+            {
+                string url = "https://api.asaas.com/v3/payments/";
+
+                if (cursor == null)
+                    url +=  nsu;
+                else
+                    url = cursor;
+
+                var options = new RestClientOptions(url);
+                var client = new RestClient(options);
+
+                var request = new RestRequest();
+                request.AddHeader("access_token", secretKey); // ou "Authorization", $"Bearer {apiKey}"
+
+                request.AddHeader("accept", "application/json");
+
+
+                var response = await client.ExecuteGetAsync(request);
+
+                if (!response.IsSuccessful)
+                {
+                    Console.WriteLine("Erro: " + response.ErrorMessage);
+                    break;
+                }
+
+                // Adicione sua lógica de deserialização aqui
+                allPayables.Add(response.Content); // ou deserialize
+
+                var json = response.Content; // string com JSON recebido do Pagar.me
+
+                using var doc = JsonDocument.Parse(json);
+                var root = doc.RootElement;
+
+                if (root.TryGetProperty("data", out var dataArray))
+                {
+                    foreach (var item in dataArray.EnumerateArray())
+                    {
+                        var id = item.GetProperty("id").GetString();
+                        var acquirerNSU = item.GetProperty("gateway_id").GetString();
+                    }
+                }
+                // Verifica o header 'X-PagarMe-Cursor'
+                if (root.TryGetProperty("paging", out var page))
+                {
+                    if (page.TryGetProperty("next", out var x))
+                    {
+                        cursor = x.GetString();
+                    }
+                    else hasMore = false;
+                }
+                else
+                {
+                    hasMore = false; // última página
+                }
+                /*
+                var options = new RestClientOptions(url);
+                var client = new RestClient(options);
+                var request = new RestRequest("");
+
+                var base64Auth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{secretKey}:"));
+                request.AddHeader("accept", "application/json");
+
+                request.AddHeader("Authorization", $"Basic {base64Auth}");
+                var response = await client.GetAsync(request);
+
+                //            Console.WriteLine("{0}", response.Content);
+                */
+            }
             return Json("OK");
         }
     }

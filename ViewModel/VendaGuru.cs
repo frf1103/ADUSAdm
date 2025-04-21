@@ -146,8 +146,8 @@
 
         public class Acquirer
         {
-            public string Code { get; set; }
-            public string Message { get; set; }
+            public string code { get; set; }
+            public string message { get; set; }
             public string Name { get; set; }
             public string nsu { get; set; }
             public string Tid { get; set; }
@@ -168,7 +168,7 @@
         }
 
         public Installments installments { get; set; }
-        public string MarketplaceId { get; set; }
+        public string marketplace_id { get; set; }
         public string marketplace_name { get; set; }
         public int MarketplaceValue { get; set; }
         public string method { get; set; }
@@ -263,7 +263,7 @@
     }
 
     public Shipping shipping { get; set; }
-    public string Status { get; set; }
+    public string status { get; set; }
 
     public class Subscription
     {
@@ -306,4 +306,5 @@ public class Transactions
     public List<RootObject> Data { get; set; }
     public int has_more_pages { get; set; }
     public string next_cursor { get; set; }
+    public int total_rows { get; set; }
 }

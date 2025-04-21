@@ -19,17 +19,18 @@ public class BaseFormUsuarioViewModel
 
     public List<SelectListItem> Roles { get; set; } = new List<SelectListItem>()
     {
-        new SelectListItem() { Value = "Admin", Text = "Administrador Plataforma" },
-        new SelectListItem() { Value = "User", Text = "Usuario" },
-        new SelectListItem() { Value = "AdminC", Text = "Administrador de Conta" },
-        new SelectListItem() { Value = "UserV", Text = "Usuario Visualizar" },
-        new SelectListItem() { Value = "Repres", Text = "Representante" }
+        new SelectListItem() { Value = "Admin", Text = "Administrativo" },
+        new SelectListItem() { Value = "Financ", Text = "Financeiro" },
+        new SelectListItem() { Value = "Super", Text = "Supervisor" },
+        new SelectListItem() { Value = "Comer", Text = "Comercial" }
+        
     };
 
     public List<SelectListItem> RolesComuns { get; set; } = new List<SelectListItem>()
     {
-        new SelectListItem() { Value = "User", Text = "Usuario" },
-        new SelectListItem() { Value = "AdminC", Text = "Administrador de Conta" },
-        new SelectListItem() { Value = "UserV", Text = "Usuario Visualizar" },
+        new SelectListItem() { Value = "Admin", Text = "Administrativo" },
+        new SelectListItem() { Value = "Financ", Text = "Financeiro" },
+        new SelectListItem() { Value = "Super", Text = "Supervisor" },
+        new SelectListItem() { Value = "Comer", Text = "Comercial" }
     };
 }

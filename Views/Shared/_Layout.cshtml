@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Farm Planner ADM</title>
+    <title>ADUS ADM</title>
 
     <!-- Google Font: Source Sans Pro -->
 
@@ -93,11 +93,27 @@
         display: flex !important;
         justify-content: center;
         border-color: #ccc !important;
-        background-image: url(images/logo.png);
+        background-image: url(images/logoadus.png);
         background-size: 60%;
         background-repeat: no-repeat;
         background-position: center 5px;
-        height: 75px;
+        height: 140px;
+        max-height: 250px;
+        width: auto;
+        margin-left: 10px;
+    }
+
+    .main-background {
+        background-image: url('/img/bg-adus.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-attachment: fixed;
+        min-height: 100vh;
+    }
+
+    .main-content {
+        background: linear-gradient(to bottom right, #e8f5e9, #a5d6a7);
     }
 
     .sidebar-collapse .brand-link {
@@ -214,7 +230,7 @@
 
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="/custoindireto" class="nav-link">
+                        <a href="/planoconta" class="nav-link">
                             <img class="icon" src="/svg/icons/simple-invoice.svg" />
                             <p>Plano de Contas</p>
                         </a>
@@ -230,12 +246,21 @@
                 </ul>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="/custoindireto" class="nav-link">
+                        <a href="/centrocusto" class="nav-link">
                             <img class="icon" src="/svg/icons/simple-invoice.svg" />
                             <p>Centro de Custos</p>
                         </a>
                     </li>
                 </ul>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="/transacao" class="nav-link">
+                            <img class="icon" src="/svg/icons/simple-invoice.svg" />
+                            <p>Transações</p>
+                        </a>
+                    </li>
+                </ul>
+
               </li>
               } 
               @if (User.IsInRole("Super") || User.IsInRole("Admin") ||
@@ -306,7 +331,7 @@
 
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/cultura" class="nav-link">
+                            <a href="/movimentocaixa" class="nav-link">
                                 <img class="icon" src="/svg/icons/plant.svg" />
                                 <p>Movimento do Caixa</p>
                             </a>
@@ -328,10 +353,10 @@
                 <ul class="nav nav-treeview">
                   @if (User.IsInRole("Super")) {
                   <li class="nav-item">
-                    <a href="/conta" class="nav-link">
-                                                <img class="icon" src="/svg/icons/accounts.svg" />
-                      <p>Usuários</p>
-                    </a>
+                                            <a href="/usuarios" class="nav-link">
+                                                <img class="icon" src="/svg/icons/users.svg" />
+                                                <p>Usuários</p>
+                                            </a>
                   </li>
                   } 
                 </ul>
@@ -348,7 +373,7 @@
                     @if (User.IsInRole("Super"))
                     {
                         <li class="nav-item">
-                            <a href="/conta" class="nav-link">
+                            <a href="parametrosguru" class="nav-link">
                                 <img class="icon" src="/svg/icons/accounts.svg" />
                                 <p>Guru</p>
                             </a>

@@ -89,6 +89,7 @@
 
 </style>
 
+@await Html.PartialAsync("_ModalProcessando")
 
 <!-- Main content -->
 <section class="content">
@@ -184,6 +185,9 @@
             <a href="/assinatura/adicionar?acao=1 class="btn btn-default" role="button">
                 <img class="icon" src="/svg/icons/plus.svg" />
             </a>
+            <a href="#" class="btn btn-outline-secondary ms-2" id="btnSyncGuru" title="Sincronizar com Guru">
+                <i class="fas fa-sync-alt"></i>
+            </a>
 
         }
     </div>
@@ -245,6 +249,56 @@
 
 
     });
+
+    function mostrarProcessando() {
+        const modal = new bootstrap.Modal(document.getElementById("modalProcessando"), {
+            backdrop: 'static',
+            keyboard: false
+        });
+        modal.show();
+        window.modalRefProcessando = modal;
+    }
+
+    function esconderProcessando() {
+        if (window.modalRefProcessando) {
+            window.modalRefProcessando.hide();
+        }
+    }
+
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const btnSync = document.getElementById("btnSyncGuru");
+            if (btnSync) {
+                btnSync.addEventListener("click", function (e) {
+                    e.preventDefault();
+
+                    mostrarProcessando();
+
+                    const hoje = new Date().toISOString().split("T")[0];
+                    const url = `/ParametrosGuru/GetDataGuru?ini=${hoje}&fim=${hoje}&connectionId=null`;
+
+                    fetch(url, {
+                        method: "GET"
+                    })
+                        .then(resp => {
+                            if (!resp.ok) throw new Error("Erro ao sincronizar com o Guru.");
+                            return resp.json();
+                        })
+                        .then(data => {
+                            esconderProcessando();
+                            alert("Sincronização concluída!");
+                            // Opcional: location.reload(); para recarregar dados
+                        })
+                        .catch(err => {
+                            esconderProcessando();
+                            alert("Erro: " + err.message);
+                        });
+                });
+            }
+        });
+
+
 
 
 
@@ -318,6 +372,25 @@
                     name: "valor", type: "number", width: 60, title: "Valor", align: "right",
                         headerTemplate: function () {
                         return $("<div>").text("Valor").css("text-align", "right");
+                    }
+                },
+
+
+                {
+                    name: "parcelas",
+                    title: "Parcelas",
+                    align: "center",
+                    width: 50,
+                    sorting: false,
+                    filtering: false,
+                    itemTemplate: function (_, item) {
+                        return $("<button>")
+                            .addClass("btn btn-sm btn-primary")
+                            .attr("title", "Ver Parcelas")
+                            .append($("<i>").addClass("fa fa-file-invoice-dollar"))
+                            .on("click", function () {
+                                window.location.href = "/Parcela/Index?idassinatura=" + item.id+"&idparceiro="+item.idparceiro+"&ini=2001-01-01&&forma=3";
+                            });
                     }
                 },
                 

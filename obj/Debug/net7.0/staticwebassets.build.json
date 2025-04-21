@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "L847E8534ApNiKJsl5v9aLfSiDYKUWACMAZDO8xa/Uw=",
+  "Hash": "tjnSLu1x3deggxpaN5P8mjrSJJ/YCAmwH8AXKrA8lqw=",
   "Source": "ADUSAdm",
   "BasePath": "_content/ADUSAdm",
   "Mode": "Default",
@@ -2550,6 +2550,23 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
+      "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\images\\fundo.png",
+      "SourceId": "ADUSAdm",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\",
+      "BasePath": "_content/ADUSAdm",
+      "RelativePath": "images/fundo.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\fundo.png"
+    },
+    {
       "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\images\\logo.png",
       "SourceId": "ADUSAdm",
       "SourceType": "Discovered",
@@ -2565,6 +2582,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\logo.png"
+    },
+    {
+      "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\images\\logoadus.png",
+      "SourceId": "ADUSAdm",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\",
+      "BasePath": "_content/ADUSAdm",
+      "RelativePath": "images/logoadus.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\logoadus.png"
     },
     {
       "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\js\\adminlte.min.js",

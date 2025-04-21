@@ -1138,6 +1138,19 @@
           "lib/net7.0/PagSeguro.DotNet.Sdk.PublicKey.dll": {}
         }
       },
+      "RestSharp/112.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net7.0/RestSharp.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net7.0/RestSharp.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
         "type": "package",
         "runtimeTargets": {
@@ -4248,6 +4261,31 @@
         "lib/net7.0/PagSeguro.DotNet.Sdk.PublicKey.dll",
         "pagseguro.dotnet.sdk.publickey.3.1.0.nupkg.sha512",
         "pagseguro.dotnet.sdk.publickey.nuspec"
+      ]
+    },
+    "RestSharp/112.1.0": {
+      "sha512": "bOUGNZqhhv/QeCXHTKEUil846yBjwWXpzPKjO67kFvaAOoF361z7jLY5BMnuZ6WD2WQRA750sNMcK7MSPCQ5Mg==",
+      "type": "package",
+      "path": "restsharp/112.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "lib/net471/RestSharp.dll",
+        "lib/net471/RestSharp.xml",
+        "lib/net48/RestSharp.dll",
+        "lib/net48/RestSharp.xml",
+        "lib/net6.0/RestSharp.dll",
+        "lib/net6.0/RestSharp.xml",
+        "lib/net7.0/RestSharp.dll",
+        "lib/net7.0/RestSharp.xml",
+        "lib/net8.0/RestSharp.dll",
+        "lib/net8.0/RestSharp.xml",
+        "lib/netstandard2.0/RestSharp.dll",
+        "lib/netstandard2.0/RestSharp.xml",
+        "restsharp.112.1.0.nupkg.sha512",
+        "restsharp.nuspec",
+        "restsharp.png"
       ]
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
@@ -8168,7 +8206,8 @@
       "Microsoft.AspNetCore.Identity.UI >= 6.0.14",
       "Microsoft.EntityFrameworkCore.SqlServer >= 7.0.5",
       "Microsoft.EntityFrameworkCore.Tools >= 6.0.14",
-      "jquery-globalize >= 1.4.2"
+      "jquery-globalize >= 1.4.2",
+      "restsharp >= 112.1.0"
     ]
   },
   "packageFolders": {
@@ -8177,11 +8216,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\ADUSAdm.csproj",
+      "projectUniqueName": "C:\\Users\\user\\source\\repos\\ADUS\\adusadm\\ADUSAdm.csproj",
       "projectName": "ADUSAdm",
-      "projectPath": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\ADUSAdm.csproj",
+      "projectPath": "C:\\Users\\user\\source\\repos\\ADUS\\adusadm\\ADUSAdm.csproj",
       "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\obj\\",
+      "outputPath": "C:\\Users\\user\\source\\repos\\ADUS\\adusadm\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -8244,6 +8283,10 @@
           "jquery-globalize": {
             "target": "Package",
             "version": "[1.4.2, )"
+          },
+          "restsharp": {
+            "target": "Package",
+            "version": "[112.1.0, )"
           }
         },
         "imports": [

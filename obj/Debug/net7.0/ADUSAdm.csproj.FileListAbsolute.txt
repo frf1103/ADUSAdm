@@ -46,6 +46,7 @@ C:\Users\user\source\repos\ADUS\ADUSAdm\bin\Debug\net7.0\PagSeguro.DotNet.Sdk.Co
 C:\Users\user\source\repos\ADUS\ADUSAdm\bin\Debug\net7.0\PagSeguro.DotNet.Sdk.Connect.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\bin\Debug\net7.0\PagSeguro.DotNet.Sdk.Orders.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\bin\Debug\net7.0\PagSeguro.DotNet.Sdk.PublicKey.dll
+C:\Users\user\source\repos\ADUS\ADUSAdm\bin\Debug\net7.0\RestSharp.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\bin\Debug\net7.0\System.Configuration.ConfigurationManager.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\bin\Debug\net7.0\System.Drawing.Common.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll

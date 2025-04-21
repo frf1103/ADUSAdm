@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "aPQHZltmlFS7K5qtjW1wQ47YMunMlzKy1eU6W+EbgkL2gsJBj/2HAvjd1kqUf7Llp1NqzOSoqTgnUE6TwVs2gg==",
+  "dgSpecHash": "UqVdHXoDKaFMlk9iC1hKB+mjlGb9mwUsHgP/RlcA5m3VmgyaggJIdrPGHFyQeP1HHAw+kP0c3HyQF54pK8b4HA==",
   "success": true,
   "projectFilePath": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\ADUSAdm.csproj",
   "expectedPackageFiles": [
@@ -71,6 +71,7 @@
     "C:\\Users\\user\\.nuget\\packages\\pagseguro.dotnet.sdk.connect\\3.1.0\\pagseguro.dotnet.sdk.connect.3.1.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\pagseguro.dotnet.sdk.orders\\3.1.0\\pagseguro.dotnet.sdk.orders.3.1.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\pagseguro.dotnet.sdk.publickey\\3.1.0\\pagseguro.dotnet.sdk.publickey.3.1.0.nupkg.sha512",
+    "C:\\Users\\user\\.nuget\\packages\\restsharp\\112.1.0\\restsharp.112.1.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",

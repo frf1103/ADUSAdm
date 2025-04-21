@@ -1,0 +1,183 @@
+﻿@model IEnumerable<ADUSClient.MovimentoCaixa.MovimentoCaixaViewModel>
+@{
+    ViewData["Title"] = "Movimento de Caixa";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+
+<section class="content">
+    <form id="formFiltro">
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-default" type="button" data-bs-toggle="collapse" data-bs-target="#filter" aria-expanded="false" aria-controls="filter">
+                    <img class="icon" src="/svg/icons/filter.svg" />
+                    Filtro
+                </button>
+
+                <div class="collapse mt-2" id="filter">
+                    <div class="card card-primary card-outline p-3">
+                        <div class="row mb-2">
+                            <div class="col-md-3">
+                                <label>Data Início</label>
+                                <input type="date" class="form-control" id="dataInicio" name="dataInicio" />
+                            </div>
+                            <div class="col-md-3">
+                                <label>Data Fim</label>
+                                <input type="date" class="form-control" id="dataFim" name="dataFim" />
+                            </div>
+                            <div class="col-md-6">
+                                <label>Descrição</label>
+                                <input type="text" class="form-control" id="descricao" name="descricao" placeholder="Buscar na observação" />
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4">
+                                <label>Transação</label>
+                                <select class="form-control select2" id="idTransacao" name="idTransacao" asp-items="ViewBag.Transacoes">
+                                    <option value="">Todas</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Centro de Custo</label>
+                                <select class="form-control select2" id="idCentroCusto" name="idCentroCusto" asp-items="ViewBag.CentroCustos">
+                                    <option value="">Todos</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Categoria</label>
+                                <select class="form-control select2" id="idCategoria" name="idCategoria" asp-items="ViewBag.Categorias">
+                                    <option value="">Todas</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Conta Corrente</label>
+                                <select class="form-control select2" id="idContaCorrente" name="idContaCorrente" asp-items="ViewBag.ContasCorrentes">
+                                    <option value="">Todas</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Parceiro</label>
+                                <select class="form-control select2" id="idParceiro" name="idParceiro" asp-items="ViewBag.Parceiros">
+                                    <option value="">Todos</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <button type="submit" class="btn btn-md btn-default w-100">
+                                    <i class="fa fa-search"></i> Filtrar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <h2 class="mt-3">Movimentos de Caixa</h2>
+
+    <div class="col text-right mb-2">
+        @if (ViewBag.permissao == true)
+        {
+            <a href="/MovimentoCaixa/Adicionar?acao=1" class="btn btn-default">
+                <img class="icon" src="/svg/icons/plus.svg" /> 
+            </a>
+        }
+    </div>
+
+    <div id="jsGrid"></div>
+</section>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2({ theme: 'bootstrap-5' });
+
+            $("#formFiltro").on("submit", function (e) {
+                e.preventDefault();
+                $("#jsGrid").jsGrid("loadData");
+            });
+
+            $("#jsGrid").jsGrid({
+                width: "100%",
+                height: "500px",
+                sorting: true,
+                paging: true,
+                autoload: true,
+                pageSize: 10,
+                pageButtonCount: 5,
+                noDataContent: "Nenhum movimento encontrado",
+                controller: {
+                    loadData: function () {
+                        return $.ajax({
+                            type: "GET",
+                            url: "/MovimentoCaixa/GetData",
+                            data: {
+                                dataInicio: $("#dataInicio").val(),
+                                dataFim: $("#dataFim").val(),
+                                descricao: $("#descricao").val(),
+                                idTransacao: $("#idTransacao").val(),
+                                idCentroCusto: $("#idCentroCusto").val(),
+                                idParceiro: $("#idParceiro").val(),
+                                idContaCorrente: $("#idContaCorrente").val(),
+                                idCategoria: $("#idCategoria").val()
+                            },
+                            dataType: "json"
+                        });
+                    }
+                },
+                fields: [
+                    { name: "dataMov", title: "Data", type: "text", width: 60, itemTemplate: v => new Date(v).toLocaleDateString() },
+                    { name: "descTransacao", title: "Transação", type: "text", width: 120 },
+                    { name: "descCentroCusto", title: "Centro Custo", type: "text", width: 120 },
+                    { name: "descCategoria", title: "Categoria", type: "text", width: 120 },
+                    { name: "descContaCorrente", title: "Conta Corrente", type: "text", width: 120 },
+                    { name: "nomeparceiro", title: "Parceiro", type: "text", width: 120 },
+                    { name: "sinal", title: "Sinal", type: "text", width: 40, align: "center" },
+                    { name: "valor", title: "Valor", type: "number", width: 70, align: "right", itemTemplate: v => v.toLocaleString("pt-BR", { minimumFractionDigits: 2 }) },
+                    {
+                        type: "control",
+                        itemTemplate: function (_, item) {
+                            var $result = $("<div>").addClass("dropdown");
+
+                            var $button = $("<button>").addClass("btn btn-default dropdown-toggle")
+                                .attr("type", "button")
+                                .attr("data-toggle", "dropdown")
+                                .text("Ações");
+
+                            var $menu = $("<div>").addClass("dropdown-menu");
+
+                            var $edit = $("<a>")
+                                .addClass("dropdown-item")
+                                .attr("href", "/MovimentoCaixa/Adicionar?id=" + item.id + "&acao=2")
+                                .text("Editar");
+
+                            var $delete = $("<a>")
+                                .addClass("dropdown-item")
+                                .attr("href", "/MovimentoCaixa/Adicionar?id=" + item.id + "&acao=3")
+                                .text("Excluir");
+
+                            var $view = $("<a>")
+                                .addClass("dropdown-item")
+                                .attr("href", "/MovimentoCaixa/Adicionar?id=" + item.id + "&acao=4")
+                                .text("Visualizar");
+
+                            $menu.append($edit).append($delete).append($view);
+                            $result.append($button).append($menu);
+
+                            return $result;
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}

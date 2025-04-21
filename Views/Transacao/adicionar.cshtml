@@ -1,0 +1,54 @@
+﻿@model ADUSClient.Transacao.TransacaoViewModel
+
+@{
+    ViewData["Title"] = "Transação";
+}
+
+<h2>@ViewBag.Titulo</h2>
+
+<form asp-action="@ViewBag.Acao" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label asp-for="Descricao" class="form-label fw-bold"></label>
+        <input asp-for="Descricao" class="form-control" />
+        <span asp-validation-for="Descricao" class="text-danger small"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold" asp-for="Sinal">Sinal (D ou C)</label>
+        <select asp-for="Sinal" class="form-control" asp-items="ViewBag.Sinais">
+            <option value="">Selecione</option>
+        </select>
+        <span asp-validation-for="Sinal" class="text-danger small"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold" asp-for="Contrapartida">Contrapartida</label>
+        <select asp-for="Contrapartida" class="form-control" asp-items="ViewBag.Contrapartidas">
+            <option value="">Selecione</option>
+        </select>
+        <span asp-validation-for="Contrapartida" class="text-danger small"></span>
+    </div>
+
+    <div class="text-end mt-3">
+        @if ((int)ViewBag.idacao <= 2)
+        {
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-save"></i> Salvar
+            </button>
+        }
+        else if ((int)ViewBag.idacao == 3)
+        {
+            <button type="submit" class="btn btn-danger">
+                <i class="fas fa-trash-alt"></i> Excluir
+            </button>
+        }
+
+        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

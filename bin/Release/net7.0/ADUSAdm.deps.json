@@ -8,8 +8,8 @@
     ".NETCoreApp,Version=v7.0": {
       "ADUSAdm/1.0.0": {
         "dependencies": {
-          "FBSLIb": "1.0.0",
           "ADUSClient": "1.0.0",
+          "FBSLIb": "1.0.0",
           "FluentValidation.AspNetCore": "11.3.0",
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "6.0.14",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "6.0.14",

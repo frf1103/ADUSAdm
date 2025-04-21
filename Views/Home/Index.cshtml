@@ -1,8 +1,51 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "ADUS - Início";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    .adus-hero {
+        background-image: url('/img/bg-adus.png'); /* Caminho da imagem */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: #2e7d32;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+        .adus-hero h1 {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+    .adus-link {
+        margin-top: 20px;
+        display: inline-block;
+        background-color: #2e7d32;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+        .adus-link:hover {
+            background-color: #1b5e20;
+        }
+</style>
+
+<!-- Conteúdo principal -->
+<div class="adus-hero">
+    <div>
+        <h1>Bem-vindo a ADUS</h1>
+ 
+    </div>
 </div>
+
+<!-- Font Awesome para ícone -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />

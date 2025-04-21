@@ -95,7 +95,7 @@ namespace ADUSAdm.Controllers
             {
                 string y = await response.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeObject<ContaCorrenteViewModel>(y);
-                return RedirectToAction("Editar", new { id = result.id });
+                return RedirectToAction("index", new { idBanco = result.bancoId });
             }
             string x = await response.Content.ReadAsStringAsync();
             ModelState.AddModelError(string.Empty, x);
@@ -109,7 +109,7 @@ namespace ADUSAdm.Controllers
             ;
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("index", new { idBanco = dados.bancoId });
             }
             var x = await response.Content.ReadAsStringAsync();
 
@@ -130,7 +130,7 @@ namespace ADUSAdm.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("index", new { idBanco = dados.bancoId });
             }
 
             string x = await response.Content.ReadAsStringAsync();
@@ -144,7 +144,6 @@ namespace ADUSAdm.Controllers
         {
             Task<List<ADUSClient.Banco.ContaCorrenteViewModel>> ret = _clienteAPI.Listar(filtro, idbanco);
             List<ADUSClient.Banco.ContaCorrenteViewModel> c = await ret;
-
             return Json(c);
         }
     }

@@ -10,7 +10,7 @@ using System.Data;
 
 namespace ADUSAdm.Controllers;
 
-[Authorize(Roles = "Admin,AdminC")]
+[Authorize(Roles = "Super,Admin")]
 public class UsuariosController : Controller
 {
     private readonly UserManager<IdentityUser> _userManager;
@@ -43,11 +43,11 @@ public class UsuariosController : Controller
     public async Task<IActionResult> Index(string? r)
     {
         List<string> xusus = new List<string> { };
-        string contaguid = _sessionManager.contaguid.ToString();
+        //   string contaguid = _sessionManager.contaguid.ToString();
         // Task<List<ADUSClient.Conta.UsuarioContaViewModel>> ret = _conta.ListaUsuariosByConta(contaguid);
         // List<ADUSClient.Conta.UsuarioContaViewModel> c = await ret;
 
-        var usuarios = _userManager.Users.Where(u => xusus.Contains(u.Id))
+        var usuarios = _userManager.Users
             .Select(u => new ListaUsuarioViewModel
             {
                 Id = u.Id,

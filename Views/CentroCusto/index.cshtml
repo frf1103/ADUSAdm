@@ -1,0 +1,97 @@
+﻿@model IEnumerable<ADUSClient.CentroCusto.CentroCustoViewModel>
+@{
+    ViewData["Title"] = "Centro de Custo - Lista";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+
+<section class="content">
+    <form asp-action="Index">
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-default" type="button" data-bs-toggle="collapse" data-bs-target="#filter" aria-expanded="false" aria-controls="filter">
+                    <img class="icon" src="/svg/icons/filter.svg" /> Filtro
+                </button>
+                <div class="collapse mt-2" id="filter">
+                    <div class="card card-primary card-outline">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <input type="search" class="form-control" name="filtro" value="@ViewBag.filtro" placeholder="Buscar por descrição">
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <h2>Centro de Custo</h2>
+    <div class="col text-right">
+        @if (ViewBag.permissao == true)
+        {
+            <a href="/centrocusto/adicionar" class="btn btn-default">
+                <img class="icon" src="/svg/icons/plus.svg" />
+            </a>
+        }
+    </div>
+
+    <div id="jsGrid"></div>
+</section>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+
+    <script>
+        $(function () {
+            $("#jsGrid").jsGrid({
+                width: "100%",
+                height: "400px",
+                sorting: true,
+                paging: true,
+                pageSize: 10,
+                pageButtonCount: 5,
+                autoload: true,
+                noDataContent: "Nenhum centro de custo encontrado.",
+                controller: {
+                    loadData: function () {
+                        return $.ajax({
+                            type: "GET",
+                            url: "/centrocusto/getdata?filtro=@ViewBag.filtro",
+                            dataType: "json"
+                        });
+                    }
+                },
+                fields: [
+                    { name: "id", type: "number", visible: false },
+                    { name: "descricao", type: "text", title: "Descrição", width: 200 },
+                    {
+                        type: "control",
+                        itemTemplate: function (_, item) {
+                            var $result = $("<div>").addClass("dropdown");
+                            var $button = $("<button>").addClass("btn btn-default dropdown-toggle")
+                                .attr("type", "button")
+                                .attr("data-toggle", "dropdown")
+                                .text("Ações");
+
+                            var $menu = $("<div>").addClass("dropdown-menu");
+                            var $edit = $("<a>").addClass("dropdown-item").attr("href", "/centrocusto/adicionar?acao=2&id=" + item.id).text("Editar");
+                            var $delete = $("<a>").addClass("dropdown-item").attr("href", "/centrocusto/adicionar?acao=3&id=" + item.id).text("Excluir");
+
+                            $menu.append($edit).append($delete);
+                            $result.append($button).append($menu);
+
+                            return $result;
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}

@@ -74,6 +74,10 @@
             "jquery-globalize": {
               "target": "Package",
               "version": "[1.4.2, )"
+            },
+            "restsharp": {
+              "target": "Package",
+              "version": "[112.1.0, )"
             }
           },
           "imports": [

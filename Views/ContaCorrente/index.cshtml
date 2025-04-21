@@ -104,13 +104,13 @@
                     loadData: function () {
                         return $.ajax({
                             type: "GET",
-                            url: "/ContaCorrente/GetData?idBanco=" + $("#idBanco").val() + "&descricao=" + $("input[name='descricao']").val(),
+                            url: "/ContaCorrente/GetData?idBanco=" + $("#idBanco").val() + "&filtro=" + $("input[name='descricao']").val(),
                             dataType: "json"
                         });
                     }
                 },
                 fields: [
-                    { name: "descBanco", type: "text", title: "Banco", width: 100 },
+                    { name: "nomebanco", type: "text", title: "Banco", width: 100 },
                     { name: "descricao", type: "text", title: "Descrição", width: 100 },
                     { name: "agencia", type: "text", title: "Agência", width: 70 },
                     { name: "contaBanco", type: "text", title: "Conta", width: 100 },

@@ -80,6 +80,26 @@ builder.Services.AddHttpClient<ADUSClient.Controller.ContaCorrenteControllerClie
     client.BaseAddress = new Uri(urlAPI.ToString());
 });
 
+builder.Services.AddHttpClient<ADUSClient.Controller.MovimentoCaixaControllerClient>(client =>
+{
+    client.BaseAddress = new Uri(urlAPI.ToString());
+});
+
+builder.Services.AddHttpClient<ADUSClient.Controller.CentroCustoControllerClient>(client =>
+{
+    client.BaseAddress = new Uri(urlAPI.ToString());
+});
+
+builder.Services.AddHttpClient<ADUSClient.Controller.PlanoContaControllerClient>(client =>
+{
+    client.BaseAddress = new Uri(urlAPI.ToString());
+});
+
+builder.Services.AddHttpClient<ADUSClient.Controller.TransacaoControllerClient>(client =>
+{
+    client.BaseAddress = new Uri(urlAPI.ToString());
+});
+
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 builder.Services.AddTransient<ADUSAdm.Shared.IEmailSender, EmailSender>();
 //builder.Services.AddTransient<IUsuarioService, UsuContservice>();
@@ -104,6 +124,9 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<SessionManager>();
 
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+builder.Services.AddScoped<ImportacaoService>();
+builder.Services.AddSignalR();
 
 // Carregar configurações de cultura do appsettings.json
 
@@ -139,6 +162,17 @@ builder.WebHost.ConfigureKestrel((context, serverOptions) =>
     serverOptions.Listen(System.Net.IPAddress.Any, config.GetValue<int>("HOST:HTTPS"));
 });
 */
+
+/*builder.WebHost.ConfigureKestrel((context, serverOptions) =>
+{
+    serverOptions.Listen(System.Net.IPAddress.Any, config.GetValue<int>("HOST:HTTP"));
+    serverOptions.Listen(System.Net.IPAddress.Any, config.GetValue<int>("HOST:HTTPS"));
+}); */
+
+//builder.Services.AddScoped<ImportacaoService>();
+
+// ?? Se estiver usando SignalR
+//builder.Services.AddSignalR();
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -148,17 +182,19 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
 }
 else
 {
+    /*
     builder.WebHost.ConfigureKestrel((context, serverOptions) =>
     {
         serverOptions.Listen(System.Net.IPAddress.Any, config.GetValue<int>("HOST:HTTP"));
         serverOptions.Listen(System.Net.IPAddress.Any, config.GetValue<int>("HOST:HTTPS"));
-    });
+    }); */
 
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
@@ -187,4 +223,5 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 //app.MapRazorPages();
 
+app.MapHub<ImportProgressHub>("/hub/importProgress");
 app.Run();
