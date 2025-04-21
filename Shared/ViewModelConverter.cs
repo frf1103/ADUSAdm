@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace FarmPlannerAdm.Shared
+namespace ADUSAdm.Shared
 {
     public static class ViewModelMapper
     {

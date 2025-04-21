@@ -1,8 +1,8 @@
-using FarmPlannerAdm.Data;
-using FarmPlannerAdm.Shared;
-using FarmPlannerAdm.ViewModel.Auth;
-using FarmPlannerAdm.ViewModel.Usuario;
-using FarmPlannerClient.Conta;
+using ADUSAdm.Data;
+using ADUSAdm.Shared;
+using ADUSAdm.ViewModel.Auth;
+using ADUSAdm.ViewModel.Usuario;
+
 using FluentValidation.Validators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -20,18 +20,15 @@ using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Text.Json;
 
-namespace FarmPlannerAdm.Controllers;
+namespace ADUSAdm.Controllers;
 
 public class AuthController : Controller
 {
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly UserManager<IdentityUser> _userManager;
-    private readonly FarmPlannercontext _context;
-    private readonly FarmPlannerClient.Controller.ContaControllerClient _contaControllerClient;
+    private readonly ADUScontext _context;
+
     private readonly IEmailSender _emailSender;
-    private readonly FarmPlannerClient.Controller.PreferUsuControllerClient _preferusuClient;
-    private readonly FarmPlannerClient.Controller.OrganizacaoControllerClient _organizacaoClient;
-    private readonly FarmPlannerClient.Controller.ContaControllerClient _contaAPI;
     private readonly SessionManager _sessionManager;
     private readonly IConfiguration _configuration;
 
@@ -39,22 +36,22 @@ public class AuthController : Controller
     private readonly RoleManager<IdentityRole> _roleManager;
 
     public AuthController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager,
-        FarmPlannercontext context,
+        ADUScontext context,
         //AGMContext agmcontext,
-        RoleManager<IdentityRole> roleManager, FarmPlannerClient.Controller.ContaControllerClient contaControllerClient, IEmailSender emailSender, FarmPlannerClient.Controller.PreferUsuControllerClient preferusuClient, FarmPlannerClient.Controller.OrganizacaoControllerClient organizacaoClient, SessionManager sessionManager, IConfiguration configuration, FarmPlannerClient.Controller.ContaControllerClient contaAPI)
+        RoleManager<IdentityRole> roleManager, IEmailSender emailSender, SessionManager sessionManager, IConfiguration configuration)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _context = context;
         //   _Agmcontext = agmcontext;
         _roleManager = roleManager;
-        _contaControllerClient = contaControllerClient;
+        //_contaControllerClient = contaControllerClient;
         _emailSender = emailSender;
-        _preferusuClient = preferusuClient;
-        _organizacaoClient = organizacaoClient;
+        //_preferusuClient = preferusuClient;
+        //_organizacaoClient = organizacaoClient;
         _sessionManager = sessionManager;
         _configuration = configuration;
-        _contaAPI = contaAPI;
+        //_contaAPI = contaAPI;
     }
 
     public async Task<IActionResult> Login()
@@ -69,7 +66,7 @@ public class AuthController : Controller
                 Senha = "Fbs2023@!",
                 Email = "frf1103@gmail.com",
                 Telefone = "62992883095",
-                Role = "Admin"
+                Role = "Super"
             };
             if (!await _roleManager.RoleExistsAsync(dados.Role))
             {
@@ -91,36 +88,6 @@ public class AuthController : Controller
             }
             await _userManager.AddToRoleAsync(user, dados.Role);
 
-            var resp = await _contaControllerClient.GetContaByUid(user.Id);
-            if (resp == null)
-            {
-                var response = await _contaControllerClient.Adicionar(new ContaViewModel
-                {
-                    cpf = "42748135334",
-                    email = "frf1103@gmail.com",
-                    nome = "Francisco",
-                    telefone = "62992883095",
-                    uid = user.Id,
-                    ativa = true
-                });
-
-                string y = await response.Content.ReadAsStringAsync();
-                var result = JsonSerializer.Deserialize<ContaViewModel>(y);
-                var responsec = await _contaControllerClient.AddUsuarioConta(new UsuarioContaViewModel
-                {
-                    contaguid = result.id,
-                    idconta = result.id,
-                    uid = user.Id
-                });
-
-                var responsea = await _contaControllerClient.AddAssinaturaConta(new AssinaturaContaViewModel
-                {
-                    idconta = result.id,
-                    plano = 0,
-                    dataexpiracao = DateTime.Now.AddYears(20),
-                    dataassinatura = DateTime.Now
-                });
-            }
             return RedirectToAction(nameof(Login));
         }
         else return View("Login");
@@ -150,14 +117,6 @@ public class AuthController : Controller
         {
             role = roles[0];
         }
-        if (role != "Repres")
-        {
-            var conta = await _contaControllerClient.GetContaByUid(user.Id);
-            if (conta != null)
-            {
-                _sessionManager.contaguid = conta.contaguid;
-            }
-        }
         _sessionManager.uid = userid;
         _sessionManager.userrole = role;
 
@@ -167,26 +126,6 @@ public class AuthController : Controller
         _sessionManager.urlconvite = _configuration.GetValue<string>("AppSettings:urlconvite");
 
         //_sessionManager.idconta = conta.idconta;
-
-        Task<FarmPlannerClient.PreferUsu.PreferUsuViewModel> ret = _preferusuClient.Lista(_sessionManager.uid);
-        FarmPlannerClient.PreferUsu.PreferUsuViewModel c = await ret;
-        if (c == null)
-        {
-            TempData["pref"] = "0";
-            return RedirectToAction("PreferUsu");
-        }
-        else
-        {
-            _sessionManager.descanoagricola = c.descano;
-            _sessionManager.descorganizacao = c.descorg;
-            _sessionManager.idorganizacao = c.idorganizacao;
-            _sessionManager.idanoagricola = c.idanoagricola;
-
-            _sessionManager.descanoagricola = c.descano;
-            _sessionManager.descorganizacao = c.descorg;
-            _sessionManager.idorganizacao = c.idorganizacao;
-            _sessionManager.idanoagricola = c.idanoagricola;
-        }
 
         if (returnUrl is not null)
         {
@@ -249,7 +188,7 @@ public class AuthController : Controller
                 Senha = "Fr2023@!",
                 Email = "frf1103@gmail.com",
                 Telefone = "62992883095",
-                Role = "Admin"
+                Role = "Super"
             };
             if (!await _roleManager.RoleExistsAsync(dados.Role))
             {
@@ -278,7 +217,7 @@ public class AuthController : Controller
     [AllowAnonymous]
     public ActionResult resetarsenha()
     {
-        UsuarioContaViewModel x = new UsuarioContaViewModel();
+        //UsuarioContaViewModel x = new UsuarioContaViewModel();
         return View();
     }
 
@@ -302,202 +241,5 @@ public class AuthController : Controller
             return View("resetarsenha");
         }
         return View("Login");
-    }
-
-    public async Task<IActionResult> PreferUsu()
-    {
-        Task<List<FarmPlannerClient.Conta.ContaViewModel>> retct = _contaAPI.Lista("");
-        List<FarmPlannerClient.Conta.ContaViewModel> ct = await retct;
-        ViewBag.contas = ct.Select(m => new SelectListItem { Text = m.nome, Value = m.id.ToString() });
-
-        Task<FarmPlannerClient.PreferUsu.PreferUsuViewModel> ret = _preferusuClient.Lista(_sessionManager.uid);
-        FarmPlannerClient.PreferUsu.PreferUsuViewModel c = await ret;
-        if (c == null)
-        {
-            c = new FarmPlannerClient.PreferUsu.PreferUsuViewModel();
-
-            if (_sessionManager.contaguid != null)
-            {
-                c.idconta = _sessionManager.contaguid;
-            }
-            else
-            {
-                c.idconta = ct[0].id.ToString();
-            }
-            ViewBag.idorg = "0";
-            ViewBag.idano = "0";
-        }
-        else
-        {
-            ViewBag.idorg = c.idorganizacao;
-            ViewBag.idano = c.idanoagricola;
-        }
-
-        return View(c);
-    }
-
-    public async Task<IActionResult> GravarPreferUsu(string uid, FarmPlannerClient.PreferUsu.PreferUsuViewModel dados, string? idconta)
-    {
-        /*
-        if (_sessionManager.contaguid != null)
-        {
-            dados.idconta = _sessionManager.contaguid;
-        }
-        else
-        {
-            dados.idconta = idconta;
-        }
-        */
-        Task<FarmPlannerClient.PreferUsu.PreferUsuViewModel> ret = _preferusuClient.Lista(_sessionManager.uid);
-        FarmPlannerClient.PreferUsu.PreferUsuViewModel c = await ret;
-        if (c == null)
-        {
-            dados.uid = _sessionManager.uid;
-            var response = await _preferusuClient.Adicionar(dados);
-
-            if (response.IsSuccessStatusCode)
-            {
-                string y = await response.Content.ReadAsStringAsync();
-                var result = JsonSerializer.Deserialize<FarmPlannerClient.PreferUsu.PreferUsuViewModel>(y);
-            }
-            else
-            {
-                string x = await response.Content.ReadAsStringAsync();
-
-                ModelState.AddModelError(string.Empty, x);
-                return View("PreferUsu");
-            }
-        }
-        else
-        {
-            var response = await _preferusuClient.Salvar(_sessionManager.uid, dados);
-
-            if (response.IsSuccessStatusCode)
-            {
-                string y = await response.Content.ReadAsStringAsync();
-                var result = JsonSerializer.Deserialize<FarmPlannerClient.PreferUsu.PreferUsuViewModel>(y);
-            }
-            else
-            {
-                string x = await response.Content.ReadAsStringAsync();
-
-                ModelState.AddModelError(string.Empty, x);
-                return View("PreferUsu");
-            }
-        }
-        ret = _preferusuClient.Lista(_sessionManager.uid);
-        c = await ret;
-        _sessionManager.descanoagricola = c.descano;
-        _sessionManager.descorganizacao = c.descorg;
-        _sessionManager.idorganizacao = c.idorganizacao;
-        _sessionManager.idanoagricola = c.idanoagricola;
-
-        _sessionManager.descanoagricola = c.descano;
-        _sessionManager.descorganizacao = c.descorg;
-        _sessionManager.idorganizacao = c.idorganizacao;
-        _sessionManager.idanoagricola = c.idanoagricola;
-
-        TempData["preferencias"] = "Você está usando: " + c.descorg.Trim() + "/" + c.descano.Trim();
-        return RedirectToAction("Index", "Home");
-
-        return View(c);
-    }
-
-    public async Task<IActionResult> SavePreferUsu(int idorganizacao, int idano)
-    {
-        FarmPlannerClient.PreferUsu.PreferUsuViewModel dados = new FarmPlannerClient.PreferUsu.PreferUsuViewModel
-        {
-            idconta = _sessionManager.contaguid,
-            idanoagricola = idano,
-            idorganizacao = idorganizacao,
-            uid = _sessionManager.uid
-        };
-        dados.idconta = _sessionManager.contaguid;
-        Task<FarmPlannerClient.PreferUsu.PreferUsuViewModel> ret = _preferusuClient.Lista(_sessionManager.uid);
-        FarmPlannerClient.PreferUsu.PreferUsuViewModel c = await ret;
-        if (c == null)
-        {
-            dados.uid = _sessionManager.uid;
-            var response = await _preferusuClient.Adicionar(dados);
-
-            if (response.IsSuccessStatusCode)
-            {
-                string y = await response.Content.ReadAsStringAsync();
-                var result = JsonSerializer.Deserialize<FarmPlannerClient.PreferUsu.PreferUsuViewModel>(y);
-            }
-            else
-            {
-                string x = await response.Content.ReadAsStringAsync();
-
-                ModelState.AddModelError(string.Empty, x);
-                return Json(new { success = false, message = x });
-            }
-        }
-        else
-        {
-            var response = await _preferusuClient.Salvar(_sessionManager.uid, dados);
-
-            if (response.IsSuccessStatusCode)
-            {
-                string y = await response.Content.ReadAsStringAsync();
-                var result = JsonSerializer.Deserialize<FarmPlannerClient.PreferUsu.PreferUsuViewModel>(y);
-            }
-            else
-            {
-                string x = await response.Content.ReadAsStringAsync();
-
-                ModelState.AddModelError(string.Empty, x);
-                return Json(new { success = false, message = x });
-            }
-        }
-        ret = _preferusuClient.Lista(_sessionManager.uid);
-        c = await ret;
-        _sessionManager.descanoagricola = c.descano;
-        _sessionManager.descorganizacao = c.descorg;
-        _sessionManager.idorganizacao = c.idorganizacao;
-        _sessionManager.idanoagricola = c.idanoagricola;
-
-        _sessionManager.descanoagricola = c.descano;
-        _sessionManager.descorganizacao = c.descorg;
-        _sessionManager.idorganizacao = c.idorganizacao;
-        _sessionManager.idanoagricola = c.idanoagricola;
-
-        TempData["preferencias"] = "Você está usando: " + c.descorg.Trim() + "/" + c.descano.Trim();
-
-        return Json(new { success = true, message = "Dados gravados com sucesso" });
-    }
-
-    public async Task<JsonResult> LoadPrefUsu()
-    {
-        Task<FarmPlannerClient.PreferUsu.PreferUsuViewModel> ret = _preferusuClient.Lista(_sessionManager.uid);
-        FarmPlannerClient.PreferUsu.PreferUsuViewModel c = await ret;
-        if (c != null)
-        {
-            _sessionManager.descanoagricola = c.descano;
-            _sessionManager.descorganizacao = c.descorg;
-            _sessionManager.idorganizacao = c.idorganizacao;
-            _sessionManager.idanoagricola = c.idanoagricola;
-
-            _sessionManager.descanoagricola = c.descano;
-            _sessionManager.descorganizacao = c.descorg;
-            _sessionManager.idorganizacao = c.idorganizacao;
-            _sessionManager.idanoagricola = c.idanoagricola;
-
-            if (!string.IsNullOrWhiteSpace(_sessionManager.descorganizacao) && !string.IsNullOrWhiteSpace(_sessionManager.descanoagricola))
-            {
-                var x = new { pref = _sessionManager.descorganizacao.Trim(), anoAgricola = _sessionManager.descanoagricola.Trim(), idorg = c.idorganizacao, idano = c.idanoagricola };
-                return Json(x);
-            }
-            else
-            {
-                var x = new { pref = "DEFINA ORGANIZAÇÃO", anoAgricola = "DEFINA ANO AGRIC" };
-                return Json(x);
-            }
-        }
-        else
-        {
-            var x = new { pref = "DEFINA ORGANIZAÇÃO", anoAgricola = "DEFINA ANO AGRIC" };
-            return Json(x);
-        }
     }
 }

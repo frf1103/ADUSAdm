@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace FarmPlannerAdm.Shared
+namespace ADUSAdm.Shared
 {
     public interface IUsuarioService
     {

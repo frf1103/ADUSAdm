@@ -1,13 +1,13 @@
-﻿using FarmPlannerAdm.Models;
+﻿using ADUSAdm.Models;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace FarmPlannerAdm.Data
+namespace ADUSAdm.Data
 {
-    public class FarmPlannercontext : IdentityDbContext
+    public class ADUScontext : IdentityDbContext
     {
-        public FarmPlannercontext(DbContextOptions<FarmPlannercontext> options)
+        public ADUScontext(DbContextOptions<ADUScontext> options)
             : base(options)
         {
         }

@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace FarmPlannerAdm.ViewModel.Auth;
+namespace ADUSAdm.ViewModel.Auth;
 
 public class AlterarSenhaViewModel
 {

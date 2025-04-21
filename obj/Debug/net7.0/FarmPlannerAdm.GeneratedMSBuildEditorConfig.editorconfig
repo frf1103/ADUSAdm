@@ -7,487 +7,487 @@ build_property.InvariantGlobalization =
 build_property.PlatformNeutralAssembly = 
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
-build_property.RootNamespace = FarmPlannerAdm
-build_property.RootNamespace = FarmPlannerAdm
-build_property.ProjectDir = C:\Users\user\source\repos\FarmPlannerAdm\
+build_property.RootNamespace = ADUSAdm
+build_property.RootNamespace = ADUSAdm
+build_property.ProjectDir = C:\Users\user\source\repos\ADUS\ADUSAdm\
 build_property.RazorLangVersion = 7.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\user\source\repos\FarmPlannerAdm
+build_property.MSBuildProjectDirectory = C:\Users\user\source\repos\ADUS\ADUSAdm
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Areas/Identity/Pages/_ViewStart.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Areas/Identity/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/AnoAgricola/Adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/AnoAgricola/Adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5vQWdyaWNvbGFcQWRpY2lvbmFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/AnoAgricola/Adicionarsafra.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/AnoAgricola/Adicionarsafra.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5vQWdyaWNvbGFcQWRpY2lvbmFyc2FmcmEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/AnoAgricola/Index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/AnoAgricola/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5vQWdyaWNvbGFcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/AnoAgricola/Indexsafra.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/AnoAgricola/Indexsafra.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5vQWdyaWNvbGFcSW5kZXhzYWZyYS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Auth/AlterarSenha.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Auth/AlterarSenha.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxBbHRlcmFyU2VuaGEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Auth/Login.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Auth/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Auth/PreferUsu.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Auth/PreferUsu.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxQcmVmZXJVc3UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Auth/PreferUsu2.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Auth/PreferUsu2.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxQcmVmZXJVc3UyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Auth/resetarsenha.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Auth/resetarsenha.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxyZXNldGFyc2VuaGEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/ClasseConta/Adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/ClasseConta/Adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhc3NlQ29udGFcQWRpY2lvbmFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/ClasseConta/Editar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/ClasseConta/Editar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhc3NlQ29udGFcRWRpdGFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/ClasseConta/Excluir.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/ClasseConta/Excluir.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhc3NlQ29udGFcRXhjbHVpci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/ClasseConta/Index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/ClasseConta/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhc3NlQ29udGFcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Comercializacao/adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Comercializacao/adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tZXJjaWFsaXphY2FvXGFkaWNpb25hci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Comercializacao/index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Comercializacao/index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tZXJjaWFsaXphY2FvXGluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/ConfigArea/adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/ConfigArea/adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29uZmlnQXJlYVxhZGljaW9uYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/ConfigArea/assistente - Copy.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/ConfigArea/assistente - Copy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29uZmlnQXJlYVxhc3Npc3RlbnRlIC0gQ29weS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/ConfigArea/assistente.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/ConfigArea/assistente.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29uZmlnQXJlYVxhc3Npc3RlbnRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/ConfigArea/index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/ConfigArea/index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29uZmlnQXJlYVxpbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/ConfigArea/planejplantio.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/ConfigArea/planejplantio.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29uZmlnQXJlYVxwbGFuZWpwbGFudGlvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Conta/Adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Conta/Adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFcQWRpY2lvbmFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Conta/assinaturaconfirmada.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Conta/assinaturaconfirmada.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFcYXNzaW5hdHVyYWNvbmZpcm1hZGEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Conta/Editar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Conta/Editar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFcRWRpdGFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Conta/Index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Conta/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Cultura/Adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Cultura/Adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VsdHVyYVxBZGljaW9uYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Cultura/AdicionarVariedade.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Cultura/AdicionarVariedade.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VsdHVyYVxBZGljaW9uYXJWYXJpZWRhZGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Cultura/Editar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Cultura/Editar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VsdHVyYVxFZGl0YXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Cultura/EditarVariedade.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Cultura/EditarVariedade.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VsdHVyYVxFZGl0YXJWYXJpZWRhZGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Cultura/Excluir.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Cultura/Excluir.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VsdHVyYVxFeGNsdWlyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Cultura/ExcluirVariedade.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Cultura/ExcluirVariedade.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VsdHVyYVxFeGNsdWlyVmFyaWVkYWRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Cultura/Index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Cultura/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VsdHVyYVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/CustoIndireto/adicionarconta.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/CustoIndireto/adicionarconta.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9JbmRpcmV0b1xhZGljaW9uYXJjb250YS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/CustoIndireto/adicionargrupoconta.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/CustoIndireto/adicionargrupoconta.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9JbmRpcmV0b1xhZGljaW9uYXJncnVwb2NvbnRhLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/CustoIndireto/index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/CustoIndireto/index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9JbmRpcmV0b1xpbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/DefAreas/Adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/DefAreas/Adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVmQXJlYXNcQWRpY2lvbmFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/DefAreas/adicionartalhao.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/DefAreas/adicionartalhao.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVmQXJlYXNcYWRpY2lvbmFydGFsaGFvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/DefAreas/Index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/DefAreas/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVmQXJlYXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/GrupoProduto/Adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/GrupoProduto/Adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3J1cG9Qcm9kdXRvXEFkaWNpb25hci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/GrupoProduto/Editar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/GrupoProduto/Editar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3J1cG9Qcm9kdXRvXEVkaXRhci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/GrupoProduto/Excluir.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/GrupoProduto/Excluir.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3J1cG9Qcm9kdXRvXEV4Y2x1aXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/GrupoProduto/Index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/GrupoProduto/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3J1cG9Qcm9kdXRvXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Home/Index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Home/Privacy.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/MaquinaParametro/adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/MaquinaParametro/adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFxdWluYVBhcmFtZXRyb1xhZGljaW9uYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/MaquinaParametro/index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/MaquinaParametro/index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFxdWluYVBhcmFtZXRyb1xpbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Maquina/adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Maquina/adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFxdWluYVxhZGljaW9uYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Maquina/index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Maquina/index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFxdWluYVxpbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/MarcaMaquina/Adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/MarcaMaquina/Adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFyY2FNYXF1aW5hXEFkaWNpb25hci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/MarcaMaquina/Editar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/MarcaMaquina/Editar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFyY2FNYXF1aW5hXEVkaXRhci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/MarcaMaquina/Excluir.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/MarcaMaquina/Excluir.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFyY2FNYXF1aW5hXEV4Y2x1aXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/MarcaMaquina/Index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/MarcaMaquina/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFyY2FNYXF1aW5hXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/ModeloMaquina/Adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/ModeloMaquina/Adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9kZWxvTWFxdWluYVxBZGljaW9uYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/ModeloMaquina/Editar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/ModeloMaquina/Editar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9kZWxvTWFxdWluYVxFZGl0YXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/ModeloMaquina/Excluir.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/ModeloMaquina/Excluir.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9kZWxvTWFxdWluYVxFeGNsdWlyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/ModeloMaquina/Index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/ModeloMaquina/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9kZWxvTWFxdWluYVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/ModeloParametro/adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/ModeloParametro/adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9kZWxvUGFyYW1ldHJvXGFkaWNpb25hci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/ModeloParametro/index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/ModeloParametro/index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9kZWxvUGFyYW1ldHJvXGluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Moeda/Adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Moeda/Adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9lZGFcQWRpY2lvbmFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Moeda/AdicionarCotacao.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Moeda/AdicionarCotacao.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9lZGFcQWRpY2lvbmFyQ290YWNhby5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Moeda/Editar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Moeda/Editar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9lZGFcRWRpdGFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Moeda/Excluir.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Moeda/Excluir.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9lZGFcRXhjbHVpci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Moeda/ExcluirCotacao.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Moeda/ExcluirCotacao.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9lZGFcRXhjbHVpckNvdGFjYW8uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Moeda/Index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Moeda/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9lZGFcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Operacao/Adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Operacao/Adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3BlcmFjYW9cQWRpY2lvbmFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Operacao/Index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Operacao/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3BlcmFjYW9cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/OrcamentoProduto/adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/OrcamentoProduto/adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JjYW1lbnRvUHJvZHV0b1xhZGljaW9uYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/OrcamentoProduto/adicionarproduto.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/OrcamentoProduto/adicionarproduto.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JjYW1lbnRvUHJvZHV0b1xhZGljaW9uYXJwcm9kdXRvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/OrcamentoProduto/index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/OrcamentoProduto/index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JjYW1lbnRvUHJvZHV0b1xpbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Organizacao/Adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Organizacao/Adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JnYW5pemFjYW9cQWRpY2lvbmFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Organizacao/Index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Organizacao/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JnYW5pemFjYW9cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Parceiro/Adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Parceiro/Adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFyY2Vpcm9cQWRpY2lvbmFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Parceiro/Editar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Parceiro/Editar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFyY2Vpcm9cRWRpdGFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Parceiro/Excluir.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Parceiro/Excluir.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFyY2Vpcm9cRXhjbHVpci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Parceiro/Index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Parceiro/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFyY2Vpcm9cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/PedidoCompra/adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/PedidoCompra/adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVkaWRvQ29tcHJhXGFkaWNpb25hci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/PedidoCompra/adicionarproduto.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/PedidoCompra/adicionarproduto.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVkaWRvQ29tcHJhXGFkaWNpb25hcnByb2R1dG8uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/PedidoCompra/index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/PedidoCompra/index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVkaWRvQ29tcHJhXGluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/PlanejamentoCompra/adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/PlanejamentoCompra/adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGxhbmVqYW1lbnRvQ29tcHJhXGFkaWNpb25hci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/PlanejamentoCompra/index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/PlanejamentoCompra/index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGxhbmVqYW1lbnRvQ29tcHJhXGluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/PlanejOperacao/adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/PlanejOperacao/adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGxhbmVqT3BlcmFjYW9cYWRpY2lvbmFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/PlanejOperacao/adicionarmaquinaplanejada.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/PlanejOperacao/adicionarmaquinaplanejada.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGxhbmVqT3BlcmFjYW9cYWRpY2lvbmFybWFxdWluYXBsYW5lamFkYS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/PlanejOperacao/adicionarprodplanejado.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/PlanejOperacao/adicionarprodplanejado.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGxhbmVqT3BlcmFjYW9cYWRpY2lvbmFycHJvZHBsYW5lamFkby5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/PlanejOperacao/assistente.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/PlanejOperacao/assistente.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGxhbmVqT3BlcmFjYW9cYXNzaXN0ZW50ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/PlanejOperacao/index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/PlanejOperacao/index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGxhbmVqT3BlcmFjYW9caW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/PrincipioAtivo/Adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/PrincipioAtivo/Adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJpbmNpcGlvQXRpdm9cQWRpY2lvbmFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/PrincipioAtivo/Editar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/PrincipioAtivo/Editar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJpbmNpcGlvQXRpdm9cRWRpdGFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/PrincipioAtivo/Excluir.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/PrincipioAtivo/Excluir.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJpbmNpcGlvQXRpdm9cRXhjbHVpci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/PrincipioAtivo/Index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/PrincipioAtivo/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJpbmNpcGlvQXRpdm9cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Produto/adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Produto/adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHV0b1xhZGljaW9uYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Produto/AdicionarProdutoPrincipio.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Produto/AdicionarProdutoPrincipio.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHV0b1xBZGljaW9uYXJQcm9kdXRvUHJpbmNpcGlvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Produto/index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Produto/index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHV0b1xpbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Regiao/Adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Regiao/Adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVnaWFvXEFkaWNpb25hci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Regiao/Editar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Regiao/Editar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVnaWFvXEVkaXRhci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Regiao/Excluir.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Regiao/Excluir.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVnaWFvXEV4Y2x1aXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Regiao/Index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Regiao/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVnaWFvXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Shared/AccessDenied.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Shared/AccessDenied.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEFjY2Vzc0RlbmllZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Shared/Error.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Shared/_Layout.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Shared/_LoginPartial.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Shared/_LoginPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Mb2dpblBhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Tecnologia/Adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Tecnologia/Adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVjbm9sb2dpYVxBZGljaW9uYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Tecnologia/Editar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Tecnologia/Editar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVjbm9sb2dpYVxFZGl0YXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Tecnologia/Excluir.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Tecnologia/Excluir.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVjbm9sb2dpYVxFeGNsdWlyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Tecnologia/Index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Tecnologia/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVjbm9sb2dpYVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/TipoOperacao/Adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/TipoOperacao/Adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlwb09wZXJhY2FvXEFkaWNpb25hci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/TipoOperacao/Editar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/TipoOperacao/Editar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlwb09wZXJhY2FvXEVkaXRhci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/TipoOperacao/Excluir.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/TipoOperacao/Excluir.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlwb09wZXJhY2FvXEV4Y2x1aXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/TipoOperacao/Index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/TipoOperacao/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlwb09wZXJhY2FvXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Unidade/Adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Unidade/Adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVW5pZGFkZVxBZGljaW9uYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Unidade/Editar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Unidade/Editar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVW5pZGFkZVxFZGl0YXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Unidade/Excluir.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Unidade/Excluir.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVW5pZGFkZVxFeGNsdWlyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Unidade/Index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Unidade/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVW5pZGFkZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Usuarios/Adicionar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Usuarios/Adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb3NcQWRpY2lvbmFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Usuarios/Editar.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Usuarios/Editar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb3NcRWRpdGFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Usuarios/Index.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Usuarios/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb3NcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/_ViewImports.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/_ViewStart.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/source/repos/FarmPlannerAdm/Views/Shared/_Layout1.cshtml]
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Shared/_Layout1.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQxLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = b-6hytbfsvwq

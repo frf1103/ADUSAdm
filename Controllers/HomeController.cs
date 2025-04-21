@@ -1,9 +1,9 @@
-﻿using FarmPlannerAdm.Models;
+﻿using ADUSAdm.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace FarmPlannerAdm.Controllers
+namespace ADUSAdm.Controllers
 {
     [Authorize]
     public class HomeController : Controller

@@ -1,4 +1,4 @@
-﻿namespace FarmPlannerAdm.Models
+﻿namespace ADUSAdm.Models
 {
     public class UsuOrg
     {

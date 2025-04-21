@@ -1,4 +1,4 @@
-﻿namespace FarmPlannerAdm.ViewModel.Auth
+﻿namespace ADUSAdm.ViewModel.Auth
 {
     public class PreferUsuViewModel
     {

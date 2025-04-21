@@ -1,19 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using FarmPlannerClient.Moeda;
-using FarmPlannerClient.Controller;
+using ADUSClient.Moeda;
+using ADUSClient.Controller;
 using System.Xml.Xsl;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
-using FarmPlannerAdm.Shared;
+using ADUSAdm.Shared;
 
-namespace FarmPlannerAdm.Controllers
+namespace ADUSAdm.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class MoedaController : Controller
     {
-        private readonly FarmPlannerClient.Controller.MoedaControllerClient _clienteAPI;
+        private readonly ADUSClient.Controller.MoedaControllerClient _clienteAPI;
         private readonly SessionManager _sessionManager;
 
         public MoedaController(MoedaControllerClient clienteAPI, SessionManager sessionManager)
@@ -213,7 +213,7 @@ namespace FarmPlannerAdm.Controllers
         [HttpPost]
         public async Task<IActionResult> ExcluirCotacao(int id, CotacaoMoedaViewModel dados)
         {
-            //FarmPlannerClient.Variedade.CotacaoMoedaViewModel dados=new FarmPlannerClient.Variedade.CotacaoMoedaViewModel();
+            //ADUSClient.Variedade.CotacaoMoedaViewModel dados=new ADUSClient.Variedade.CotacaoMoedaViewModel();
             var response = await _clienteAPI.ExcluirCotacao(id);
 
             if (response.IsSuccessStatusCode)

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace FarmPlannerAdm.Data.Migrations
+namespace ADUSAdm.Data.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {

@@ -294,8 +294,8 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       }
     }
     // Fall through means this is global
-    if (parserConfig.FarmPlannerAdm.Shared.GlobaVars && !inList(varname, state.FarmPlannerAdm.Shared.GlobaVars))
-      state.FarmPlannerAdm.Shared.GlobaVars = new Var(varname, state.FarmPlannerAdm.Shared.GlobaVars)
+    if (parserConfig.ADUSAdm.Shared.GlobaVars && !inList(varname, state.ADUSAdm.Shared.GlobaVars))
+      state.ADUSAdm.Shared.GlobaVars = new Var(varname, state.ADUSAdm.Shared.GlobaVars)
   }
   function registerVarScoped(varname, context) {
     if (!context) {
@@ -874,8 +874,8 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
         context: parserConfig.localVars && new Context(null, null, false),
         indented: basecolumn || 0
       };
-      if (parserConfig.FarmPlannerAdm.Shared.GlobaVars && typeof parserConfig.FarmPlannerAdm.Shared.GlobaVars == "object")
-        state.FarmPlannerAdm.Shared.GlobaVars = parserConfig.FarmPlannerAdm.Shared.GlobaVars;
+      if (parserConfig.ADUSAdm.Shared.GlobaVars && typeof parserConfig.ADUSAdm.Shared.GlobaVars == "object")
+        state.ADUSAdm.Shared.GlobaVars = parserConfig.ADUSAdm.Shared.GlobaVars;
       return state;
     },
 

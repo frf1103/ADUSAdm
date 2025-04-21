@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 
 using System;
 
-namespace FarmPlannerAdm.Shared
+namespace ADUSAdm.Shared
 {
     public class SessionManager
     {

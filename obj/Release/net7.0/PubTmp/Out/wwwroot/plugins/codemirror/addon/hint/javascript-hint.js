@@ -149,7 +149,7 @@
       for (var v = token.state.localVars; v; v = v.next) maybeAdd(v.name);
       for (var c = token.state.context; c; c = c.prev)
         for (var v = c.vars; v; v = v.next) maybeAdd(v.name)
-      for (var v = token.state.FarmPlannerAdm.Shared.GlobaVars; v; v = v.next) maybeAdd(v.name);
+      for (var v = token.state.ADUSAdm.Shared.GlobaVars; v; v = v.next) maybeAdd(v.name);
       if (options && options.additionalContext != null)
         for (var key in options.additionalContext)
           maybeAdd(key);

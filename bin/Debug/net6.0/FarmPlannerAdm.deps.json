@@ -6,10 +6,10 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "FarmPlannerAdm/1.0.0": {
+      "ADUSAdm/1.0.0": {
         "dependencies": {
           "FBSLIb": "1.0.0",
-          "FarmPlannerClient": "1.0.0",
+          "ADUSClient": "1.0.0",
           "FluentValidation.AspNetCore": "11.3.0",
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "6.0.14",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "6.0.14",
@@ -18,7 +18,7 @@
           "Microsoft.EntityFrameworkCore.Tools": "6.0.14"
         },
         "runtime": {
-          "FarmPlannerAdm.dll": {}
+          "ADUSAdm.dll": {}
         }
       },
       "Azure.Core/1.24.0": {
@@ -810,13 +810,13 @@
           }
         }
       },
-      "FarmPlannerClient/1.0.0": {
+      "ADUSClient/1.0.0": {
         "dependencies": {
           "System.Net.Http.Json": "8.0.0",
           "System.Text.Json": "8.0.4"
         },
         "runtime": {
-          "FarmPlannerClient.dll": {}
+          "ADUSClient.dll": {}
         }
       },
       "FBSLIb/1.0.0": {
@@ -827,7 +827,7 @@
     }
   },
   "libraries": {
-    "FarmPlannerAdm/1.0.0": {
+    "ADUSAdm/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -1378,7 +1378,7 @@
       "path": "system.windows.extensions/5.0.0",
       "hashPath": "system.windows.extensions.5.0.0.nupkg.sha512"
     },
-    "FarmPlannerClient/1.0.0": {
+    "ADUSClient/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

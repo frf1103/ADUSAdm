@@ -202,9 +202,9 @@ CodeMirror.defineMode("haxe", function(config, parserConfig) {
       cx.marked = "def";
       if (inList(varname, state.localVars)) return;
       state.localVars = {name: varname, next: state.localVars};
-    } else if (state.FarmPlannerAdm.Shared.GlobaVars) {
-      if (inList(varname, state.FarmPlannerAdm.Shared.GlobaVars)) return;
-      state.FarmPlannerAdm.Shared.GlobaVars = {name: varname, next: state.FarmPlannerAdm.Shared.GlobaVars};
+    } else if (state.ADUSAdm.Shared.GlobaVars) {
+      if (inList(varname, state.ADUSAdm.Shared.GlobaVars)) return;
+      state.ADUSAdm.Shared.GlobaVars = {name: varname, next: state.ADUSAdm.Shared.GlobaVars};
     }
   }
 
@@ -401,8 +401,8 @@ CodeMirror.defineMode("haxe", function(config, parserConfig) {
         context: parserConfig.localVars && {vars: parserConfig.localVars},
         indented: 0
       };
-      if (parserConfig.FarmPlannerAdm.Shared.GlobaVars && typeof parserConfig.FarmPlannerAdm.Shared.GlobaVars == "object")
-        state.FarmPlannerAdm.Shared.GlobaVars = parserConfig.FarmPlannerAdm.Shared.GlobaVars;
+      if (parserConfig.ADUSAdm.Shared.GlobaVars && typeof parserConfig.ADUSAdm.Shared.GlobaVars == "object")
+        state.ADUSAdm.Shared.GlobaVars = parserConfig.ADUSAdm.Shared.GlobaVars;
       return state;
     },
 

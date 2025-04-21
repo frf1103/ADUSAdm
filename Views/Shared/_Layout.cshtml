@@ -178,20 +178,28 @@
               role="menu"
               data-accordion="false"
             >
-              @if (User.IsInRole("Admin")) {
+              @if (User.IsInRole("Super")) {
               <li class="nav-item menu-open">
                 <a href="#" class="nav-link">
                   <img class="icon" src="/svg/icons/folder.svg" />
                   <p>
-                    Cadastros Únicos da Plataforma
+                    Cadastros
                     <img class="icon right" src="/svg/icons/angle-left.svg" />
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="/parceiro" class="nav-link">
+                            <img class="icon" src="/svg/icons/partner.svg" />
+                            <p>Parceiros</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-treeview">
                   <li class="nav-item">
                     <a href="/cultura" class="nav-link">
                       <img class="icon" src="/svg/icons/plant.svg"/>
-                      <p>Culturas</p>
+                      <p>Escolas</p>
                     </a>
                   </li>
                 </ul>
@@ -199,91 +207,52 @@
                   <li class="nav-item">
                     <a href="/moeda" class="nav-link">
                                             <img class="icon" src="/svg/icons/dollar-sign.svg" />
-                      <p>Moedas</p>
+                      <p>Alunos</p>
                     </a>
                   </li>
                 </ul>
 
                 <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/classeconta" class="nav-link">
-                                            <img class="icon" src="/svg/icons/grouped-list.svg" />
-                      <p>Classes de Conta</p>
-                    </a>
-                  </li>
+                    <li class="nav-item">
+                        <a href="/custoindireto" class="nav-link">
+                            <img class="icon" src="/svg/icons/simple-invoice.svg" />
+                            <p>Plano de Contas</p>
+                        </a>
+                    </li>
                 </ul>
                 <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/grupoproduto" class="nav-link">
-                                            <img class="icon" src="/svg/icons/product-group.svg" />
-                      <p>Grupos de Produtos</p>
-                    </a>
-                  </li>
+                    <li class="nav-item">
+                        <a href="/banco" class="nav-link">
+                            <img class="icon" src="/svg/icons/simple-invoice.svg" />
+                            <p>Bancos</p>
+                        </a>
+                    </li>
                 </ul>
                 <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/marcamaquina" class="nav-link">
-                                            <img class="icon" src="/svg/icons/tractor.svg" />
-                      <p>Marcas de Máquinas</p>
-                    </a>
-                  </li>
-                </ul>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/modelomaquina" class="nav-link">
-                                            <img class="icon" src="/svg/icons/tractor.svg" />
-                      <p>Modelos de Máquinas</p>
-                    </a>
-                  </li>
-                </ul>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/regiao" class="nav-link">
-                                            <img class="icon" src="/svg/icons/map.svg" />
-                      <p>Regiões</p>
-                    </a>
-                  </li>
-                </ul>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/tecnologia" class="nav-link">
-                                            <img class="icon" src="/svg/icons/tech.svg" />
-                      <p>Tecnologias</p>
-                    </a>
-                  </li>
-                </ul>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/tipooperacao" class="nav-link">
-                                            <img class="icon" src="/svg/icons/operation-types.svg" />
-                      <p>Tipos de Operações</p>
-                    </a>
-                  </li>
-                </ul>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/unidade" class="nav-link">
-                                            <img class="icon" src="/svg/icons/measure.svg" />
-                      <p>Unidades</p>
-                    </a>
-                  </li>
+                    <li class="nav-item">
+                        <a href="/custoindireto" class="nav-link">
+                            <img class="icon" src="/svg/icons/simple-invoice.svg" />
+                            <p>Centro de Custos</p>
+                        </a>
+                    </li>
                 </ul>
               </li>
-              } @if (User.IsInRole("Admin") || User.IsInRole("AdminC") ||
+              } 
+              @if (User.IsInRole("Super") || User.IsInRole("Admin") ||
               User.IsInRole("User") || User.IsInRole("UserV")) {
               <li class="nav-item menu-open">
                 <a href="#" class="nav-link">
                                     <img class="icon" src="/svg/icons/folder.svg" />
                   <p>
-                    Cadastros Gerais
+                    Administrativo
                     <img class="icon right" src="/svg/icons/angle-left.svg" />
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="/organizacao" class="nav-link">
+                    <a href="/assinatura" class="nav-link">
                                             <img class="icon" src="/svg/icons/company.svg" />
-                      <p>Organização</p>
+                      <p>Gestão de Assinaturas</p>
                     </a>
                   </li>
                 </ul>
@@ -291,7 +260,7 @@
                   <li class="nav-item">
                     <a href="/anoagricola" class="nav-link">
                                             <img class="icon" src="/svg/icons/agricultural-year.svg" />
-                      <p>Ano Agrícola</p>
+                      <p>Gestão de Bolsas de Estudo</p>
                     </a>
                   </li>
                 </ul>
@@ -300,188 +269,53 @@
                     <li class="nav-item">
                         <a href="/cultura" class="nav-link">
                                             <img class="icon" src="/svg/icons/plant.svg" />
-                            <p>Culturas</p>
+                            <p>Gestão de Contratos</p>
                         </a>
                     </li>
-                </ul>
-
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/anoagricola/indexsafra" class="nav-link">
-                                            <img class="icon" src="/svg/icons/crop.svg" />
-                        <p>Safra</p>
-                    </a>
-                  </li>
-                </ul>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/defareas" class="nav-link">
-                                            <img class="icon" src="/svg/icons/farm.svg" />
-                      <p>Fazenda</p>
-                    </a>
-                  </li>
-                </ul>
-
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/parceiro" class="nav-link">
-                                            <img class="icon" src="/svg/icons/partner.svg" />
-                      <p>Parceiros</p>
-                    </a>
-                  </li>
-                </ul>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/principioativo" class="nav-link">
-                                            <img class="icon" src="/svg/icons/agricultural-year.svg" />
-                      <p>Princípios Ativos</p>
-                    </a>
-                  </li>
-                </ul>
-
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/grupoproduto" class="nav-link">
-                                            <img class="icon" src="/svg/icons/product-group.svg" />
-                      <p>Grupos de Produtos</p>
-                    </a>
-                  </li>
-                </ul>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="/marcamaquina" class="nav-link">
-                                            <img class="icon" src="/svg/icons/tractor.svg" />
-                            <p>Marcas de Máquinas</p>
-                        </a>
-                    </li>
-                </ul>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="/modelomaquina" class="nav-link">
-                                            <img class="icon" src="/svg/icons/tractor.svg" />
-                            <p>Modelos de Máquinas</p>
-                        </a>
-                    </li>
-                </ul>
-
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/maquina" class="nav-link">
-                                            <img class="icon" src="/svg/icons/tractor.svg" />
-                      <p>Máquinas</p>
-                    </a>
-                  </li>
-                </ul>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/configarea" class="nav-link">
-                                            <img class="icon" src="/svg/icons/area-configuration.svg" />
-                      <p>Configuração de Área</p>
-                    </a>
-                  </li>
-                </ul>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/configarea/planejplantio" class="nav-link">
-                                            <img class="icon" src="/svg/icons/plant-planning.svg" />
-                      <p>Planejamento de Plantio</p>
-                    </a>
-                  </li>
-                </ul>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/planejoperacao" class="nav-link">
-                                            <img class="icon" src="/svg/icons/operation-planning.svg" />
-                      <p>Planejamento de Operações</p>
-                    </a>
-                  </li>
-                </ul>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/produto" class="nav-link">
-                                            <img class="icon" src="/svg/icons/product.svg" />
-                      <p>Produtos</p>
-                    </a>
-                  </li>
-                </ul>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/tipooperacao" class="nav-link">
-                                            <img class="icon" src="/svg/icons/operation-types.svg" />
-                      <p>Tipos de Operações</p>
-                    </a>
-                  </li>
-                </ul>
-
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/operacao" class="nav-link">
-                                            <img class="icon" src="/svg/icons/operation.svg" />
-                        <p>Operações</p>
-                    </a>
-                  </li>
-                </ul>
-
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/modeloparametro" class="nav-link">
-                                            <img class="icon" src="/svg/icons/parameters.svg" />
-                      <p>Parametrização de Modelos de Máquina</p>
-                    </a>
-                  </li>
-                </ul>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/maquinaparametro" class="nav-link">
-                                            <img class="icon" src="/svg/icons/machine-parameters.svg" />
-                      <p>Parametrização de Máquinas</p>
-                    </a>
-                  </li>
-                </ul>
-
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/planejamentocompra" class="nav-link">
-                                            <img class="icon" src="/svg/icons/positive-cart.svg" />
-                      <p>Planejamento de Compras</p>
-                    </a>
-                  </li>
-                </ul>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/orcamentoproduto" class="nav-link">
-                                            <img class="icon" src="/svg/icons/money-split.svg" />
-                      <p>Orçamento Hectarizado</p>
-                    </a>
-                  </li>
-                </ul>
-
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/pedidocompra" class="nav-link">
-                                            <img class="icon" src="/svg/icons/invoice.svg" />
-                      <p>Pedido de Compra</p>
-                    </a>
-                  </li>
-                </ul>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/comercializacao" class="nav-link">
-                      <img src="/svg/icons/logistics.svg" />
-                      <p>Comercializacao</p>
-                    </a>
-                  </li>
-                </ul>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/custoindireto" class="nav-link">
-                                            <img class="icon" src="/svg/icons/simple-invoice.svg" />
-                      <p>Definição de Contas</p>
-                    </a>
-                  </li>
                 </ul>
               </li>
-              } @if (User.IsInRole("AdminC") || User.IsInRole("Admin") ||
+              }
+
+            @if (User.IsInRole("Admin") || User.IsInRole("Super") ||
+            User.IsInRole("User") || User.IsInRole("UserV"))
+            {
+                <li class="nav-item menu-open">
+                    <a href="#" class="nav-link">
+                        <img class="icon" src="/svg/icons/folder.svg" />
+                        <p>
+                            Financeiro
+                            <img class="icon right" src="/svg/icons/angle-left.svg" />
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="/organizacao" class="nav-link">
+                                <img class="icon" src="/svg/icons/company.svg" />
+                                <p>Contas a Pagar</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="/anoagricola" class="nav-link">
+                                <img class="icon" src="/svg/icons/agricultural-year.svg" />
+                                <p>Contas a Receber</p>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="/cultura" class="nav-link">
+                                <img class="icon" src="/svg/icons/plant.svg" />
+                                <p>Movimento do Caixa</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            }
+
+            @if (User.IsInRole("Super") || User.IsInRole("Admin") ||
               User.IsInRole("Repres")) {
               <li class="nav-item menu-open">
                 <a href="#" class="nav-link">
@@ -492,28 +326,67 @@
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
-                  @if (User.IsInRole("Admin")) {
+                  @if (User.IsInRole("Super")) {
                   <li class="nav-item">
                     <a href="/conta" class="nav-link">
                                                 <img class="icon" src="/svg/icons/accounts.svg" />
-                      <p>Cadastro de Contas</p>
+                      <p>Usuários</p>
                     </a>
                   </li>
-                  } @if (!User.IsInRole("Repres")) {
-                  <li class="nav-item">
-                    <a href="/usuarios" class="nav-link">
-                                                <img class="icon" src="/svg/icons/users.svg" />
-                     <p>Usuários</p>
-                    </a>
-                  </li>
-                  } @if (User.IsInRole("Repres")) {
-                  <li class="nav-item">
-                    <a href="/conta" class="nav-link">
-                                                <img class="icon" src="/svg/icons/my-accounts.svg" />
-                      <p>Minhas Contas</p>
-                    </a>
-                  </li>
-                  }
+                  } 
+                </ul>
+              </li>
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link">
+                    <img class="icon" src="/svg/icons/folder.svg" />
+                    <p>
+                        Integração
+                        <img class="icon right" src="/svg/icons/angle-left.svg" />
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    @if (User.IsInRole("Super"))
+                    {
+                        <li class="nav-item">
+                            <a href="/conta" class="nav-link">
+                                <img class="icon" src="/svg/icons/accounts.svg" />
+                                <p>Guru</p>
+                            </a>
+                        </li>
+                    }
+                </ul>
+                <ul class="nav nav-treeview">
+                    @if (User.IsInRole("Super"))
+                    {
+                        <li class="nav-item">
+                            <a href="/conta" class="nav-link">
+                                <img class="icon" src="/svg/icons/accounts.svg" />
+                                <p>Domínio</p>
+                            </a>
+                        </li>
+                    }
+                </ul>
+                <ul class="nav nav-treeview">
+                    @if (User.IsInRole("Super"))
+                    {
+                        <li class="nav-item">
+                            <a href="/conta" class="nav-link">
+                                <img class="icon" src="/svg/icons/accounts.svg" />
+                                <p>DocSign</p>
+                            </a>
+                        </li>
+                    }
+                </ul>
+                <ul class="nav nav-treeview">
+                    @if (User.IsInRole("Super"))
+                    {
+                        <li class="nav-item">
+                            <a href="/conta" class="nav-link">
+                                <img class="icon" src="/svg/icons/accounts.svg" />
+                                <p>Pagar.me</p>
+                            </a>
+                        </li>
+                    }
                 </ul>
               </li>
               }
@@ -574,6 +447,7 @@
     <script src="~/js/bootstrap-multiselect.js"></script>
     <script src="~/js/adminlte.min.js"></script>
     <script type="text/javascript">
+        /*
       $(document).ready(function () {
         $.ajax({
           type: "get",
@@ -588,6 +462,7 @@
           },
         });
       });
+      */
     </script>
     <script src="https://unpkg.com/feather-icons"></script>
     <script>

@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace FarmPlannerAdm.ViewModel.Usuario;
+namespace ADUSAdm.ViewModel.Usuario;
 
 public class AdicionarUsuarioViewModel : BaseFormUsuarioViewModel
 {

@@ -1,33 +1,37 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using FarmPlannerClient.Enum;
+using ADUSClient.Enum;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
-using FarmPlannerAdm.Shared;
-using FarmPlannerClient.Organizacao;
-using Newtonsoft.Json;
-using FarmPlannerClient.Parceiro;
+using ADUSAdm.Shared;
 
-namespace FarmPlannerAdm.Controllers
+using Newtonsoft.Json;
+using ADUSClient.Parceiro;
+using ADUSClient.Localidade;
+using System.Net.Http;
+
+namespace ADUSAdm.Controllers
 {
-    [Authorize(Roles = "Admin,AdminC,User, UserV")]
+    [Authorize(Roles = "Admin,Super,User, UserV")]
     public class ParceiroController : Controller
     {
-        private readonly FarmPlannerClient.Controller.ParceiroControllerClient _culturaAPI;
+        private readonly ADUSClient.Controller.ParceiroControllerClient _culturaAPI;
+        private readonly ADUSClient.Controller.SharedControllerClient _shareAPI;
         private const int TAMANHO_PAGINA = 5;
         private readonly SessionManager _sessionManager;
 
-        public ParceiroController(FarmPlannerClient.Controller.ParceiroControllerClient culturaAPI, SessionManager sessionManager)
+        public ParceiroController(ADUSClient.Controller.ParceiroControllerClient culturaAPI, SessionManager sessionManager, ADUSClient.Controller.SharedControllerClient shareAPI)
         {
             _culturaAPI = culturaAPI;
             _sessionManager = sessionManager;
+            _shareAPI = shareAPI;
         }
 
         public async Task<IActionResult> Index(string? filtro, int pagina = 1)
         {
-            Task<List<FarmPlannerClient.Parceiro.ListParceiroViewModel>> ret = _culturaAPI.Lista(_sessionManager.contaguid, filtro);
-            List<FarmPlannerClient.Parceiro.ListParceiroViewModel> c = await ret;
+            Task<List<ADUSClient.Parceiro.ListParceiroViewModel>> ret = _culturaAPI.Lista(filtro);
+            List<ADUSClient.Parceiro.ListParceiroViewModel> c = await ret;
 
             ViewBag.filtro = filtro;
             ViewBag.role = _sessionManager.userrole;
@@ -36,16 +40,40 @@ namespace FarmPlannerAdm.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin,AdminC,User")]
-        
+        [Authorize(Roles = "Admin,Super,User")]
         public async Task<IActionResult> Adicionar()
         {
-            FarmPlannerClient.Parceiro.ParceiroViewModel c = new FarmPlannerClient.Parceiro.ParceiroViewModel();
+            ADUSClient.Parceiro.ParceiroViewModel c = new ADUSClient.Parceiro.ParceiroViewModel();
 
             ViewBag.TiposPessoa = new[] {
                 new SelectListItem { Text = "Física", Value = TipodePessoa.Física.ToString() },
                 new SelectListItem { Text = "Jurídica", Value = TipodePessoa.Jurídica.ToString() }
             };
+
+            ViewBag.TipoSexo = new[] {
+                new SelectListItem {Text = "Masculino", Value = TipoSexo.Masculino.ToString()},
+                new SelectListItem { Text = "Feminino", Value = TipoSexo.Feminino.ToString() },
+                new SelectListItem { Text = "Indiferente", Value = TipoSexo.Indiferente.ToString() }
+            };
+
+            ViewBag.TipoEstadoCivil = new[] {
+                new SelectListItem {Text = "Solteiro", Value =TipoEstadoCivil.Solteiro.ToString()},
+                new SelectListItem {Text = "Casado", Value =TipoEstadoCivil.Casado.ToString()},
+                new SelectListItem {Text = "Divorciado", Value =TipoEstadoCivil.Divorciado.ToString()},
+                new SelectListItem {Text = "Viuvo", Value =TipoEstadoCivil.Viuvo.ToString()},
+                new SelectListItem {Text = "Indiferente", Value =TipoEstadoCivil.Indiferente.ToString()},
+            };
+
+            Task<List<ListParceiroViewModel>> retc = _culturaAPI.Lista("");
+            List<ListParceiroViewModel> t = await retc;
+
+            ViewBag.Representantes = t.Select(m => new SelectListItem { Text = m.razaoSocial, Value = m.id.ToString() });
+
+            Task<List<UFViewModel>> retu = _shareAPI.ListaUF("");
+            List<UFViewModel> uf = await retu;
+
+            ViewBag.Ufs = uf.Select(m => new SelectListItem { Text = m.sigla, Value = m.id.ToString() });
+
             if (TempData["Erro"] != null)
             {
                 if (TempData["dados"] != null)
@@ -56,24 +84,47 @@ namespace FarmPlannerAdm.Controllers
                 ModelState.AddModelError(string.Empty, TempData["Erro"].ToString());
             }
 
-
             return View(c);
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin,AdminC,User")]
-
-        public async Task<IActionResult> Editar(int id,int acao=0)
+        [Authorize(Roles = "Admin,Super,User")]
+        public async Task<IActionResult> Editar(string id, int acao = 0)
         {
             ViewBag.acao = acao;
-            Task<FarmPlannerClient.Parceiro.ParceiroViewModel> ret = _culturaAPI.ListaById(id, _sessionManager.contaguid);
-            FarmPlannerClient.Parceiro.ParceiroViewModel c = await ret;
+            Task<ADUSClient.Parceiro.ParceiroViewModel> ret = _culturaAPI.ListaById(id);
+            ADUSClient.Parceiro.ParceiroViewModel c = await ret;
 
             ViewBag.Id = id;
             ViewBag.TiposPessoa = new[] {
                 new SelectListItem { Text = "Física", Value = TipodePessoa.Física.ToString() },
                 new SelectListItem { Text = "Jurídica", Value = TipodePessoa.Jurídica.ToString() }
             };
+
+            ViewBag.TipoSexo = new[] {
+                new SelectListItem {Text = "Masculino", Value = TipoSexo.Masculino.ToString()},
+                new SelectListItem { Text = "Feminino", Value = TipoSexo.Feminino.ToString() },
+                new SelectListItem { Text = "Indiferente", Value = TipoSexo.Indiferente.ToString() }
+            };
+
+            ViewBag.TipoEstadoCivil = new[] {
+                new SelectListItem {Text = "Solteiro", Value =TipoEstadoCivil.Solteiro.ToString()},
+                new SelectListItem {Text = "Casado", Value =TipoEstadoCivil.Casado.ToString()},
+                new SelectListItem {Text = "Divorciado", Value =TipoEstadoCivil.Divorciado.ToString()},
+                new SelectListItem {Text = "Viuvo", Value =TipoEstadoCivil.Viuvo.ToString()},
+                new SelectListItem {Text = "Indiferente", Value =TipoEstadoCivil.Indiferente.ToString()},
+            };
+
+            Task<List<ListParceiroViewModel>> retc = _culturaAPI.Lista("");
+            List<ListParceiroViewModel> t = await retc;
+
+            ViewBag.Representantes = t.Select(m => new SelectListItem { Text = m.razaoSocial, Value = m.id.ToString() });
+
+            Task<List<UFViewModel>> retu = _shareAPI.ListaUF("");
+            List<UFViewModel> uf = await retu;
+
+            ViewBag.Ufs = uf.Select(m => new SelectListItem { Text = m.sigla, Value = m.id.ToString() });
+
             if (TempData["Erro"] != null)
             {
                 if (TempData["dados"] != null)
@@ -83,17 +134,26 @@ namespace FarmPlannerAdm.Controllers
                 }
                 ModelState.AddModelError(string.Empty, TempData["Erro"].ToString());
             }
+            ViewBag.iduf = c.uf;
+            ViewBag.idcid = c.cidade;
+            if (acao == 3)
+            {
+                ViewBag.acao = "disable";
+            }
+            else
+            {
+                ViewBag.acao = "";
+            }
 
             return View(c);
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin,AdminC,User")]
-
-        public async Task<IActionResult> Excluir(int id)
+        [Authorize(Roles = "Admin,Super,User")]
+        public async Task<IActionResult> Excluir(string id)
         {
-            Task<FarmPlannerClient.Parceiro.ParceiroViewModel> ret = _culturaAPI.ListaById(id, _sessionManager.contaguid);
-            FarmPlannerClient.Parceiro.ParceiroViewModel c = await ret;
+            Task<ADUSClient.Parceiro.ParceiroViewModel> ret = _culturaAPI.ListaById(id);
+            ADUSClient.Parceiro.ParceiroViewModel c = await ret;
             ViewBag.TiposPessoa = new[] {
                 new SelectListItem { Text = "Física", Value = TipodePessoa.Física.ToString() },
                 new SelectListItem { Text = "Jurídica", Value = TipodePessoa.Jurídica.ToString() }
@@ -104,12 +164,10 @@ namespace FarmPlannerAdm.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,AdminC,User")]
-
-        public async Task<IActionResult> Editar(int id, FarmPlannerClient.Parceiro.ParceiroViewModel dados)
+        [Authorize(Roles = "Admin,Super,User")]
+        public async Task<IActionResult> Editar(string id, ADUSClient.Parceiro.ParceiroViewModel dados)
         {
-            dados.idconta = _sessionManager.contaguid;
-            var response = await _culturaAPI.Salvar(id, _sessionManager.contaguid, dados);
+            var response = await _culturaAPI.Salvar(id, dados);
 
             if (response.IsSuccessStatusCode)
             {
@@ -123,25 +181,23 @@ namespace FarmPlannerAdm.Controllers
             ModelState.AddModelError(string.Empty, x);
             //return View("editar");
 
-
-            return RedirectToAction("editar",new {id=dados.id,acao=2});
+            return RedirectToAction("editar", new { id = dados.id, acao = 2 });
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,AdminC,User")]
-
-        public async Task<IActionResult> Adicionar(FarmPlannerClient.Parceiro.ParceiroViewModel dados)
+        [Authorize(Roles = "Admin,Super,User")]
+        public async Task<IActionResult> Adicionar(ADUSClient.Parceiro.ParceiroViewModel dados)
         {
-            dados.idconta = _sessionManager.contaguid;
+            dados.id = Guid.NewGuid().ToString("N");
             var response = await _culturaAPI.Adicionar(dados);
 
             if (response.IsSuccessStatusCode)
             {
                 string y = await response.Content.ReadAsStringAsync();
-                var result = System.Text.Json.JsonSerializer.Deserialize<FarmPlannerClient.Parceiro.ParceiroViewModel>(y);
+                var result = System.Text.Json.JsonSerializer.Deserialize<ADUSClient.Parceiro.ParceiroViewModel>(y);
                 return RedirectToAction(nameof(Adicionar));
             }
-            
+
             var x = await response.Content.ReadAsStringAsync();
 
             TempData["Erro"] = x;
@@ -152,12 +208,11 @@ namespace FarmPlannerAdm.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,AdminC,User")]
-
-        public async Task<IActionResult> Excluir(int id, FarmPlannerClient.Parceiro.ParceiroViewModel dados)
+        [Authorize(Roles = "Admin,Super,User")]
+        public async Task<IActionResult> Excluir(string id, ADUSClient.Parceiro.ParceiroViewModel dados)
         {
-            //FarmPlannerClient.Parceiro.ParceiroViewModel dados=new FarmPlannerClient.Parceiro.ParceiroViewModel();
-            var response = await _culturaAPI.Excluir(id, _sessionManager.contaguid);
+            //ADUSClient.Parceiro.ParceiroViewModel dados=new ADUSClient.Parceiro.ParceiroViewModel();
+            var response = await _culturaAPI.Excluir(id);
 
             if (response.IsSuccessStatusCode)
             {
@@ -172,11 +227,10 @@ namespace FarmPlannerAdm.Controllers
 
         public async Task<JsonResult> GetData(string? filtro)
         {
-            Task<List<FarmPlannerClient.Parceiro.ListParceiroViewModel>> ret = _culturaAPI.Lista(_sessionManager.contaguid, filtro);
-            List<FarmPlannerClient.Parceiro.ListParceiroViewModel> c = await ret;
+            Task<List<ADUSClient.Parceiro.ListParceiroViewModel>> ret = _culturaAPI.Lista(filtro);
+            List<ADUSClient.Parceiro.ListParceiroViewModel> c = await ret;
 
             return Json(c);
         }
-
     }
 }

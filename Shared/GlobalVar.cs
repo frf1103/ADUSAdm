@@ -1,4 +1,4 @@
-﻿namespace FarmPlannerAdm.Shared
+﻿namespace ADUSAdm.Shared
 {
     public static class GlobaVar
 

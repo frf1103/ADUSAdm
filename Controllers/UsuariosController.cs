@@ -1,5 +1,5 @@
-using FarmPlannerAdm.Shared;
-using FarmPlannerAdm.ViewModel.Usuario;
+using ADUSAdm.Shared;
+using ADUSAdm.ViewModel.Usuario;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
@@ -8,14 +8,14 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 
-namespace FarmPlannerAdm.Controllers;
+namespace ADUSAdm.Controllers;
 
 [Authorize(Roles = "Admin,AdminC")]
 public class UsuariosController : Controller
 {
     private readonly UserManager<IdentityUser> _userManager;
 
-    private readonly FarmPlannerClient.Controller.ContaControllerClient _conta;
+    //  private readonly ADUSClient.Controller.ContaControllerClient _conta;
 
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly Shared.IEmailSender _emailSender;
@@ -27,7 +27,7 @@ public class UsuariosController : Controller
         //     IValidator<EditarUsuarioViewModel> editarUsuarioValidator,
         RoleManager<IdentityRole> roleManager
 ,
-        FarmPlannerClient.Controller.ContaControllerClient conta,
+    //    ADUSClient.Controller.ContaControllerClient conta,
         Shared.IEmailSender emailSender,
         SessionManager sessionManager)
     {
@@ -35,7 +35,7 @@ public class UsuariosController : Controller
         _userManager = userManager;
         //  _editarUsuarioValidator = editarUsuarioValidator;
         _roleManager = roleManager;
-        _conta = conta;
+        // _conta = conta;
         _emailSender = emailSender;
         _sessionManager = sessionManager;
     }
@@ -44,12 +44,8 @@ public class UsuariosController : Controller
     {
         List<string> xusus = new List<string> { };
         string contaguid = _sessionManager.contaguid.ToString();
-        Task<List<FarmPlannerClient.Conta.UsuarioContaViewModel>> ret = _conta.ListaUsuariosByConta(contaguid);
-        List<FarmPlannerClient.Conta.UsuarioContaViewModel> c = await ret;
-        for (var i = 0; i < c.Count; i++)
-        {
-            xusus.Add(c[i].uid);
-        }
+        // Task<List<ADUSClient.Conta.UsuarioContaViewModel>> ret = _conta.ListaUsuariosByConta(contaguid);
+        // List<ADUSClient.Conta.UsuarioContaViewModel> c = await ret;
 
         var usuarios = _userManager.Users.Where(u => xusus.Contains(u.Id))
             .Select(u => new ListaUsuarioViewModel
@@ -110,13 +106,6 @@ public class UsuariosController : Controller
         }
 
         await _userManager.AddToRoleAsync(user, dados.Role);
-
-        await _conta.AddUsuarioConta(new FarmPlannerClient.Conta.UsuarioContaViewModel
-        {
-            contaguid = _sessionManager.contaguid,
-            idconta = _sessionManager.contaguid,
-            uid = user.Id.ToString()
-        });
 
         return RedirectToAction(nameof(Index));
     }

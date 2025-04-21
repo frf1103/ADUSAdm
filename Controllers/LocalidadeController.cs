@@ -1,15 +1,15 @@
-﻿using FarmPlannerAdm.Shared;
-using FarmPlannerClient.Controller;
+﻿using ADUSAdm.Shared;
+using ADUSClient.Controller;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FarmPlannerAdm.Controllers
+namespace ADUSAdm.Controllers
 {
-    [Authorize(Roles = "Admin,User,AdminC")]
+    [Authorize(Roles = "Super,User,Admin")]
     public class LocalidadeController : Controller
     {
-        private readonly FarmPlannerClient.Controller.SharedControllerClient _sharedAPI;
+        private readonly SharedControllerClient _sharedAPI;
         private readonly SessionManager _sessionManager;
 
         public LocalidadeController(SharedControllerClient sharedAPI, SessionManager sessionManager)
@@ -20,8 +20,8 @@ namespace FarmPlannerAdm.Controllers
 
         public async Task<JsonResult> GetCidades(int iduf)
         {
-            Task<List<FarmPlannerClient.Localidade.MunicipioViewModel>> ret = _sharedAPI.ListaCidade(iduf, "");
-            List<FarmPlannerClient.Localidade.MunicipioViewModel> c = await ret;
+            Task<List<ADUSClient.Localidade.MunicipioViewModel>> ret = _sharedAPI.ListaCidade(iduf, "");
+            List<ADUSClient.Localidade.MunicipioViewModel> c = await ret;
 
             return Json(c);
         }

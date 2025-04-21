@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace FarmPlannerAdm.FormatingConfiguration
+namespace ADUSAdm.FormatingConfiguration
 {
     public class DecimalModelBinderProvider : IModelBinderProvider
     {

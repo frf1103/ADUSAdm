@@ -1,4 +1,4 @@
-﻿@model List<FarmPlannerClient.Parceiro.ListParceiroViewModel>
+﻿@model List<ADUSClient.Parceiro.ListParceiroViewModel>
 
 @{
     ViewBag.Title = "Parceiro";
@@ -98,7 +98,7 @@
             },
 
             fields: [
-                { name: "id", type: "number", width: 20, title: "ID", visible: false },
+                { name: "id", type: "text", width: 20, title: "ID", visible: false },
                 { name: "razaoSocial", type: "text", width: 80, title: "Razão Social" },
                 { name: "fantasia", type: "text", width: 120, title: "Fantasia" },
                 { name: "desctipo", type: "text", width: 20, title: "Tipo" },
@@ -131,7 +131,7 @@
                             .text("Visualizar")
                             .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
                             .on("click", function () {
-                                window.location.href = '/parceiro/editar/' + item.id;
+                                window.location.href = '/parceiro/editar/' + item.id + '?acao=3';
                             });
 
                         var $edit = $("<a>").addClass("dropdown-item")

@@ -2626,7 +2626,7 @@
           "lib/netstandard1.3/System.Xml.XDocument.dll": {}
         }
       },
-      "FarmPlannerClient/1.0.0": {
+      "ADUSClient/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v7.0",
         "dependencies": {
@@ -2636,10 +2636,10 @@
           "System.Text.Json": "8.0.4"
         },
         "compile": {
-          "bin/placeholder/FarmPlannerClient.dll": {}
+          "bin/placeholder/ADUSClient.dll": {}
         },
         "runtime": {
-          "bin/placeholder/FarmPlannerClient.dll": {}
+          "bin/placeholder/ADUSClient.dll": {}
         }
       },
       "FBSLIb/1.0.0": {
@@ -8147,10 +8147,10 @@
         "system.xml.xdocument.nuspec"
       ]
     },
-    "FarmPlannerClient/1.0.0": {
+    "ADUSClient/1.0.0": {
       "type": "project",
-      "path": "../FarmPlannerClient/FarmPlannerClient.csproj",
-      "msbuildProject": "../FarmPlannerClient/FarmPlannerClient.csproj"
+      "path": "../ADUSClient/ADUSClient.csproj",
+      "msbuildProject": "../ADUSClient/ADUSClient.csproj"
     },
     "FBSLIb/1.0.0": {
       "type": "project",
@@ -8160,8 +8160,8 @@
   },
   "projectFileDependencyGroups": {
     "net7.0": [
+      "ADUSClient >= 1.0.0",
       "FBSLIb >= 1.0.0",
-      "FarmPlannerClient >= 1.0.0",
       "FluentValidation.AspNetCore >= 11.3.0",
       "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore >= 6.0.14",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 6.0.14",
@@ -8177,11 +8177,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\FarmPlannerAdm.csproj",
-      "projectName": "FarmPlannerAdm",
-      "projectPath": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\FarmPlannerAdm.csproj",
+      "projectUniqueName": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\ADUSAdm.csproj",
+      "projectName": "ADUSAdm",
+      "projectPath": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\ADUSAdm.csproj",
       "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\user\\source\\repos\\FarmPlannerAdm\\obj\\",
+      "outputPath": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -8198,11 +8198,11 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\Users\\user\\source\\repos\\FarmPlannerClient\\FarmPlannerClient.csproj": {
-              "projectPath": "C:\\Users\\user\\source\\repos\\FarmPlannerClient\\FarmPlannerClient.csproj"
+            "C:\\Users\\user\\source\\repos\\ADUS\\ADUSClient\\ADUSClient.csproj": {
+              "projectPath": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSClient\\ADUSClient.csproj"
             },
-            "C:\\Users\\user\\source\\repos\\FBSLIb\\FBSLIb.csproj": {
-              "projectPath": "C:\\Users\\user\\source\\repos\\FBSLIb\\FBSLIb.csproj"
+            "C:\\Users\\user\\source\\repos\\ADUS\\FBSLIb\\FBSLIb.csproj": {
+              "projectPath": "C:\\Users\\user\\source\\repos\\ADUS\\FBSLIb\\FBSLIb.csproj"
             }
           }
         }

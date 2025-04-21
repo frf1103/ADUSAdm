@@ -1,4 +1,4 @@
-﻿namespace FarmPlannerAdm.ViewModel.Variedade
+﻿namespace ADUSAdm.ViewModel.Variedade
 {
     public class VariedadeViewModel
     {

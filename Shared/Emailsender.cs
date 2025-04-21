@@ -1,4 +1,4 @@
-﻿namespace FarmPlannerAdm.Shared
+﻿namespace ADUSAdm.Shared
 {
     using System.Net;
     using System.Net.Mail;

@@ -1,0 +1,385 @@
+﻿<!-- Content Header (Page header) -->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+
+
+<style>
+    /* Estilo padrão para o ícone */
+    .icon-default {
+        color: 38b6ff;
+    }
+
+    .select2-container {
+        width: 250px !important; /* Ajuste o tamanho conforme necessário */
+        display: inline-block;
+    }
+
+    .form-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .submit-button {
+        margin-left: 10px; /* Espaço entre o select e o botão */
+    }
+
+    .select2-container {
+        width: 100% !important; /* Força a largura de 100% */
+        a
+    }
+
+    .select2-selection {
+        width: 100% !important; /* Força a largura do container de seleção */
+    }
+
+    .jsgrid-cell {
+        font-size: 0.85em;
+        padding: 0.2em !important;
+        line-height: 0.8;
+    }
+
+    .jsgrid-header-cell {
+        font-size: 0.85em;
+        padding: 0.2em !important;
+        line-height: 1;
+    }
+
+    .subgrid {
+        padding: 20px;
+    }
+
+    .truck-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+        .truck-button i {
+            color: blue; /* Escolha a cor que você deseja para o ícone */
+        }
+
+
+    .truck-button1 {
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+        .truck-button1 i {
+            color: cadetblue; /* Escolha a cor que você deseja para o ícone */
+        }
+
+    .modal-fullscreen {
+        width: 100%;
+        max-width: 100%; /* Ocupa toda a largura da tela */
+        height: 100%;
+        margin: 0; /* Remove as margens */
+    }
+
+        .modal-fullscreen .modal-content {
+            height: 100%;
+            border: none; /* Remover bordas se necessário */
+            border-radius: 0; /* Remover cantos arredondados */
+        }
+
+    .modal-backdrop {
+        background-color: rgba(0, 0, 0, 0.5); /* Fundo semitransparente */
+    }
+
+</style>
+
+
+<!-- Main content -->
+<section class="content">
+    <form asp-action="Index">
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-default" type="button" data-bs-toggle="collapse" data-bs-target="#filter" aria-expanded="false" aria-controls="filter">
+                    <img class="icon" src="/svg/icons/filter.svg" />
+                    Filtro
+                </button>
+
+                <div class="collapse mt-2" id="filter">
+                    <div class="card card-primary card-outline">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-container">
+
+                                    <select class="select2" name="idparceiro" id="idparceiro" data-placeholder="escolha um parceiro" style="width: 100%;">
+                                        <option value="0">escolha um parceiro</option>
+                                        @foreach (var item in ViewBag.parceiros)
+                                        {
+                                            if (@item.Value == ViewBag.SelectedOptionS)
+                                            {
+                                                <option value="@item.Value" selected>@item.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-container">
+
+                                    <select class="select2" name="status" id="status" data-placeholder="escolha um status" style="width: 100%;">
+                                        <option value="0">Ativa</option>
+                                        <option value="1">Pendente</option>
+                                        <option value="2">Cancelada</option>    
+                                        <option value="3">Todos</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-container">
+
+                                    <select class="select2" name="forma" id="forma" data-placeholder="escolha uma forma" style="width: 100%;">
+                                        <option value="0">Cartão</option>
+                                        <option value="1">Boleto</option>
+                                        <option value="1">Pix</option>
+                                        <option value="3">Todos</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <div class="form-container">
+                                    <input type="date" class="form-control" id="dtinicio" value="@ViewBag.dtinicio" name="ini" placeholder="inicio">
+                                    <input type="date" class="form-control" id="dtfim" value="@ViewBag.dtfim" name="fim" placeholder="fim">
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-container">
+                                    <input type="text" class="form-control" id="filtro" value="@ViewBag.filtro" name="filtro" placeholder="busque pela observacao ou id da plataforma">
+                                    <button type="submit" class="btn btn-md btn-default">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </form>
+
+    <h2>Assinaturas</h2>
+    <input id="idassinatura" hidden />
+    
+    <div class="col text-right">
+        @if (ViewBag.permissao == true)
+        {
+            <a href="/assinatura/adicionar?acao=1 class="btn btn-default" role="button">
+                <img class="icon" src="/svg/icons/plus.svg" />
+            </a>
+
+        }
+    </div>
+
+    <div id="jsGrid"></div>
+    
+
+</section>
+<!-- /.content -->
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/css/adminlte.min.css" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/tempus-dominus/5.39.0/css/tempus-dominus.min.css" rel="stylesheet">
+
+<style>
+    .custom-no-data {
+        text-align: center;
+        color: red;
+        font-weight: bold;
+    }
+</style>
+<!-- Bootstrap 4 -->
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tempus-dominus/5.39.0/js/tempus-dominus.min.js"></script>
+
+
+<script src="~/js/loadprodutos.js"></script>
+
+<script>
+
+   
+    $(document).ready(function () {
+
+        
+
+        $('select').select2();
+
+        $('#status').val(@ViewBag.Status).trigger('change');
+        $('#forma').val(@ViewBag.Forma).trigger('change');
+
+
+
+        $("#idparceiro").val(@ViewBag.SelectedOptionF);
+        //$('#idfazenda').trigger("change");
+
+
+    });
+
+
+
+    $(function () {
+        $("#jsGrid").jsGrid({
+            width: "100%",
+            height: "620px",
+
+            sorting: true,
+            paging: true,
+            pageSize: 10,                 // Define o número de registros por página
+            pageButtonCount: 5,          // Número de botões de navegação exibidos
+            pagerFormat: "Páginas: {pages} {prev} {next} {first} {last}",  // Formato do pager,
+            pageLoading: false,
+            pagePrevText: "Anterior", // Texto para o botão "Anterior"
+            pageNextText: "Próximo",  // Texto para o botão "Próximo",
+            pageFirstText: "Primeira",  // Adicionando "Primeira" página
+            pageLastText: "Última",     // Adicionando "Última" página
+
+            autoload: true,
+            noDataContent: "<div class='custom-no-data'>Nenhum dado encontrado</div>",
+
+
+
+            controller: {
+                loadData: function () {
+                    return $.ajax({
+                        type: "GET",
+                        url: "/assinatura/GetData",
+                        data: {
+                            idparceiro: "@ViewBag.SelectedOptionS",
+                            status: @ViewBag.Status,
+                            ini: $("#dtinicio").val(),
+                            fim: $("#dtfim").val(),  
+                            forma: @ViewBag.Forma,
+                            filtro: "@ViewBag.filtro"
+
+                        },
+                        dataType: "json"
+                    });
+                }
+            },
+
+            fields: [
+                { name: "id", type: "text", width: 20, title: "ID", visible: false },
+
+                { name: "nomeparceiro", type: "text", width: 100, title: "Parceiro" },
+                {
+                    name: "descstatus", type: "text", width: 100, title: "Status",
+                },
+
+                {
+                    name: "descforma", type: "text", width: 100, title: "Forma Pagto",
+                },
+
+                {
+                    name: "datavenda", type: "text", width: 40, title: "Data",
+                    itemTemplate: function (value) {
+                        return new Date(value).toLocaleDateString();
+                    }
+
+                },
+                {
+                    name: "qtd", type: "number", width: 60, title: "Quantidade",align:"right",
+                    headerTemplate: function () {
+                            return $("<div>").text("Quantidade").css("text-align", "right");
+                        }
+                },
+
+                {
+                    name: "valor", type: "number", width: 60, title: "Valor", align: "right",
+                        headerTemplate: function () {
+                        return $("<div>").text("Valor").css("text-align", "right");
+                    }
+                },
+                
+
+                {
+                    type: "control",
+                    itemTemplate: function (_, item) {
+                        var $result = $("<div>").addClass("dropdown");
+
+                        var $button = $("<button>").addClass("btn btn-default dropdown-toggle")
+                            .attr("type", "button")
+                            .attr("id", "dropdownMenuButton")
+                            .attr("data-toggle", "dropdown")
+                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
+                            .text("Ações");
+
+                        var $menu = $("<div>").addClass("dropdown-menu")
+                            .attr("aria-labelledby", "dropdownMenuButton");
+
+                        var $details = $("<a>").addClass("dropdown-item")
+                            .attr("href", "#")
+                            .text("Visualizar")
+                            .on("click", function () {
+                                window.location.href = '/assinatura/adicionar/' + item.id + '?acao=4';
+                            });
+
+                        var $edit = $("<a>").addClass("dropdown-item")
+                            .attr("href", "#")
+                            .text("Editar")
+                            .on("click", function () {
+                                window.location.href = '/assinatura/editar/' + item.id + '?acao=2';
+                            });
+
+                        var $delete = $("<a>").addClass("dropdown-item")
+                            .attr("href", "#")
+                            .text("Excluir")
+                            .on("click", function () {
+                                window.location.href = '/assinatura/excluir/' + item.id + '?acao=3';
+                            });
+
+                        $menu.append($details).append($edit).append($delete);
+                        $result.append($button).append($menu);
+
+                        return $result;
+                    }
+                }
+            ]
+        });
+
+    });
+
+    
+
+
+
+
+
+
+    
+
+
+</script>
+
+
+

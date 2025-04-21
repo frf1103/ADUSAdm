@@ -1,6 +1,6 @@
-using FarmPlannerAdm.Data;
-using FarmPlannerAdm.FormatingConfiguration;
-using FarmPlannerAdm.Shared;
+using ADUSAdm.Data;
+using ADUSAdm.FormatingConfiguration;
+using ADUSAdm.Shared;
 using MathNet.Numerics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -15,169 +15,74 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 var urlconvite = builder.Configuration.GetSection("AppSettings").GetSection("urlconvite").Value;
 var urlAPI = builder.Configuration.GetSection("AppSettings").GetSection("urlapi").Value;
-builder.Services.AddDbContext<FarmPlannercontext>(options =>
+builder.Services.AddDbContext<ADUScontext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 /*builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<FarmPlannercontext>();
+    .AddEntityFrameworkStores<ADUScontext>();
 */
 
 //builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-//    .AddEntityFrameworkStores<FarmPlannercontext>();
+//    .AddEntityFrameworkStores<ADUScontext>();
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
     options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultProvider;
 })
-    .AddEntityFrameworkStores<FarmPlannercontext>()
+    .AddEntityFrameworkStores<ADUScontext>()
     .AddDefaultTokenProviders();
 
 builder.Services.ConfigureApplicationCookie(options => options.LoginPath = "/Auth/Login");
 
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.CulturaControllerClient>(client =>
+builder.Services.AddHttpClient<ADUSClient.Controller.MoedaControllerClient>(client =>
 {
     client.BaseAddress = new Uri(urlAPI.ToString());
 });
 
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.TecnologiaControllerClient>(client =>
+builder.Services.AddHttpClient<ADUSClient.Controller.ParceiroControllerClient>(client =>
 {
     client.BaseAddress = new Uri(urlAPI.ToString());
 });
 
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.MoedaControllerClient>(client =>
+builder.Services.AddHttpClient<ADUSClient.Controller.SharedControllerClient>(client =>
 {
     client.BaseAddress = new Uri(urlAPI.ToString());
 });
 
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.ClasseContaControllerClient>(client =>
+builder.Services.AddHttpClient<ADUSClient.Controller.AssinaturaControllerClient>(client =>
 {
     client.BaseAddress = new Uri(urlAPI.ToString());
 });
 
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.GrupoProdutoControllerClient>(client =>
+builder.Services.AddHttpClient<ADUSClient.Controller.ParceiroControllerClient>(client =>
 {
     client.BaseAddress = new Uri(urlAPI.ToString());
 });
 
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.MarcaMaquinaControllerClient>(client =>
+builder.Services.AddHttpClient<ADUSClient.Controller.ParcelaControllerClient>(client =>
 {
     client.BaseAddress = new Uri(urlAPI.ToString());
 });
 
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.PrincipioAtivoControllerClient>(client =>
+builder.Services.AddHttpClient<ADUSClient.Controller.ParametroGuruControllerClient>(client =>
 {
     client.BaseAddress = new Uri(urlAPI.ToString());
 });
 
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.RegiaoControllerClient>(client =>
+builder.Services.AddHttpClient<ADUSClient.Controller.BancoControllerClient>(client =>
 {
     client.BaseAddress = new Uri(urlAPI.ToString());
 });
 
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.TipoOperacaoControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.ModeloMaquinaControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.ParceiroControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.ContaControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.OrganizacaoControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.PreferUsuControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.AnoAgricolaControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.FazendaControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.SharedControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.ProdutoControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.OperacaoControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.MaquinaControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.ConfigAreaControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.UnidadeControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.PlanejOperacaoControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.PlanejamentoCompraControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.OrcamentoProdutoControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.PedidoCompraControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.ComercializacaoControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<FarmPlannerClient.Controller.CustoIndiretoControllerClient>(client =>
+builder.Services.AddHttpClient<ADUSClient.Controller.ContaCorrenteControllerClient>(client =>
 {
     client.BaseAddress = new Uri(urlAPI.ToString());
 });
 
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
-builder.Services.AddTransient<FarmPlannerAdm.Shared.IEmailSender, EmailSender>();
-builder.Services.AddTransient<IUsuarioService, UsuContservice>();
+builder.Services.AddTransient<ADUSAdm.Shared.IEmailSender, EmailSender>();
+//builder.Services.AddTransient<IUsuarioService, UsuContservice>();
 
 builder.Services.AddControllers(options =>
 {
@@ -226,6 +131,7 @@ var config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", optional: false)
     .SetBasePath(Directory.GetCurrentDirectory())
     .Build();
+
 /*
 builder.WebHost.ConfigureKestrel((context, serverOptions) =>
 {
@@ -237,7 +143,7 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<FarmPlannercontext>();
+    var db = scope.ServiceProvider.GetRequiredService<ADUScontext>();
     db.Database.Migrate();
 }
 
@@ -248,6 +154,12 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
+    builder.WebHost.ConfigureKestrel((context, serverOptions) =>
+    {
+        serverOptions.Listen(System.Net.IPAddress.Any, config.GetValue<int>("HOST:HTTP"));
+        serverOptions.Listen(System.Net.IPAddress.Any, config.GetValue<int>("HOST:HTTPS"));
+    });
+
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
