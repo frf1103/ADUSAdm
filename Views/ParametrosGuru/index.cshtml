@@ -1,7 +1,19 @@
 ﻿@model ADUSClient.ParametrosGuruViewModel;
 
 @{
-    ViewData["Title"] = "Parâmetros Guru";
+    if (ViewBag.idplataforma == 1)
+    {
+        ViewData["Title"] = "Integração  Guru";
+    }
+    if (ViewBag.idplataforma == 2)
+    {
+        ViewData["Title"] = "Integração ASAAS";
+    }
+    if (ViewBag.idplataforma == 3)
+    {
+        ViewData["Title"] = "Integração Pagarme";
+    }
+
 }
 
 <div class="container-fluid mt-3">
@@ -22,29 +34,85 @@
             <form asp-action="Editar" method="post" novalidate>
                 <input type="hidden" asp-for="id" />
 
-                <div class="mb-3">
-                    <label asp-for="token" class="form-label fw-bold"></label>
-                    <input asp-for="token" class="form-control" />
-                    <span asp-validation-for="token" class="text-danger small"></span>
-                </div>
+                @if (ViewBag.idplataforma == 1)
+                {
+                    <div class="mb-3">
+                        <label asp-for="token" class="form-label fw-bold"></label>
+                        <input asp-for="token" class="form-control" readonly/>
+                        <span asp-validation-for="token" class="text-danger small"></span>
+                    </div>
 
-                <div class="mb-3">
-                    <label asp-for="ultdata" class="form-label fw-bold"></label>
-                    <input asp-for="ultdata" type="date" class="form-control" />
-                    <span asp-validation-for="ultdata" class="text-danger small"></span>
-                </div>
+                    <div class="mb-3">
+                        <label asp-for="ultdata" class="form-label fw-bold"></label>
+                        <input asp-for="ultdata" type="date" class="form-control" />
+                        <span asp-validation-for="ultdata" class="text-danger small"></span>
+                    </div>
 
-                <div class="mb-3">
-                    <label asp-for="urlsub" class="form-label fw-bold"></label>
-                    <input asp-for="urlsub" class="form-control" />
-                    <span asp-validation-for="urlsub" class="text-danger small"></span>
-                </div>
+                    <div class="mb-3">
+                        <label asp-for="urlsub" class="form-label fw-bold"></label>
+                        <input asp-for="urlsub" class="form-control" />
+                        <span asp-validation-for="urlsub" class="text-danger small"></span>
+                    </div>
 
-                <div class="mb-3">
-                    <label asp-for="urltransac" class="form-label fw-bold"></label>
-                    <input asp-for="urltransac" class="form-control" />
-                    <span asp-validation-for="urltransac" class="text-danger small"></span>
-                </div>
+                    <div class="mb-3">
+                        <label asp-for="urltransac" class="form-label fw-bold"></label>
+                        <input asp-for="urltransac" class="form-control" />
+                        <span asp-validation-for="urltransac" class="text-danger small"></span>
+                    </div>
+                }
+
+                @if (ViewBag.idplataforma != 1)
+                {
+                    <div class="row">
+                        <div class="mb-3">
+                            <label asp-for="token" class="form-label fw-bold"></label>
+                            <input asp-for="token" class="form-control" readonly />
+                            <span asp-validation-for="token" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ultdata" class="form-label fw-bold"></label>
+                            <input asp-for="ultdata" type="date" class="form-control" />
+                            <span asp-validation-for="ultdata" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="urltransac" class="form-label fw-bold">URL Pagamentos</label>
+                            <input asp-for="urltransac" class="form-control" />
+                            <span asp-validation-for="urltransac" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label asp-for="idtransacao" class="form-label fw-bold">Transação</label>
+                            <select asp-for="idtransacao" class="form-control" asp-items="ViewBag.Transacoes"></select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label asp-for="idccusto" class="form-label fw-bold">Centro de Custo</label>
+                            <select asp-for="idccusto" class="form-control" asp-items="ViewBag.CentroCustos"></select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label asp-for="idconta" class="form-label fw-bold">Conta Corrente</label>
+                            <select asp-for="idconta" class="form-control" asp-items="ViewBag.Contas"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label asp-for="idcategoria" class="form-label fw-bold">Categoria</label>
+                            <select asp-for="idcategoria" class="form-control" asp-items="ViewBag.Categorias"></select>
+                        </div>
+                        <div class="col-md-8">
+                            <label asp-for="idparceiro" class="form-label fw-bold">Parceiro</label>
+                            <select asp-for="idparceiro" class="form-control" asp-items="ViewBag.Parceiros"></select>
+                        </div>
+
+                    </div>
+                
+
+                }
 
                 <div class="text-end mt-3">
                     <button type="submit" class="btn btn-success">
@@ -83,6 +151,11 @@
                             0%
                         </div>
                     </div>
+                </div>
+
+                <div class="mt-3">
+                    <label class="form-label fw-bold">Registros com erro</label>
+                    <div id="logArea" class="form-control" style="height: 200px; overflow-y: auto; background-color: #f8f9fa; font-family: monospace; white-space: pre-wrap;"></div>
                 </div>
             </form>
         </div>
@@ -143,6 +216,12 @@
                     }
                 });
 
+                connection.on("ReceiveLog", function (mensagem) {
+                    const logArea = document.getElementById("logArea");
+                    logArea.innerText += mensagem + "\n";
+                    logArea.scrollTop = logArea.scrollHeight; // Scroll automático
+                });
+
                 formImportar.addEventListener('submit', function (e) {
                     /*
                     if (!connectionIdReady) {
@@ -165,7 +244,18 @@
                     progressBar.classList.remove("bg-success");
                     progressBar.classList.add("progress-bar-animated");
                     progressBar.innerText = "0%";
-                    const url = `/ParametrosGuru/Importar?dataInicio=${encodeURIComponent(dataInicio)}&dataFim=${encodeURIComponent(dataFim)}&connectionId=${encodeURIComponent(currentId)}`;
+                     url="";
+                    if (@ViewBag.idplataforma==1)
+                    {
+                         url = `/ParametrosGuru/Importar?dataInicio=${encodeURIComponent(dataInicio)}&dataFim=${encodeURIComponent(dataFim)}&connectionId=${encodeURIComponent(currentId)}`;
+                    }
+                    if (@ViewBag.idplataforma== 2) 
+                    {
+                         url = `/ParametrosGuru/GetBaixasAsaasByData?ini=${encodeURIComponent(dataInicio)}&fim=${encodeURIComponent(dataFim)}&connectionId=${encodeURIComponent(currentId)}`;
+                    }
+                    if (@ViewBag.idplataforma== 3) {
+                         url = `/ParametrosGuru/GetBaixasPagarmeByData?ini=${encodeURIComponent(dataInicio)}&fim=${encodeURIComponent(dataFim)}&connectionId=${encodeURIComponent(currentId)}`;
+                    }
 
                     fetch(url, {
                         method: "POST"

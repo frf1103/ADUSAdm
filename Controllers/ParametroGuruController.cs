@@ -9,6 +9,14 @@ using System.Text.Json;
 using ADUSClient.Parceiro;
 using ADUSClient.Enum;
 using ADUSClient.Assinatura;
+using RestSharp;
+using System.Text;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using static RootObject;
+using Newtonsoft.Json;
+using ADUSClient.MovimentoCaixa;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using static System.Net.WebRequestMethods;
 
 public class ParametrosGuruController : Controller
 {
@@ -19,8 +27,16 @@ public class ParametrosGuruController : Controller
     private readonly ParcelaControllerClient _parcela;
     private readonly AssinaturaControllerClient _assinatura;
     private readonly SharedControllerClient _shared;
+    private readonly TransacaoControllerClient _transacaoAPI;
+    private readonly CentroCustoControllerClient _centroCustoAPI;
+    private readonly PlanoContaControllerClient _categoriaAPI;
+    private readonly ContaCorrenteControllerClient _contaCorrenteAPI;
+    private readonly MovimentoCaixaControllerClient _movcaixaAPI;
 
-    public ParametrosGuruController(ParametroGuruControllerClient client, ImportacaoService service, IHubContext<ImportProgressHub> hubContext, ParceiroControllerClient parceiroapi, ParcelaControllerClient parcela, AssinaturaControllerClient assinatura, SharedControllerClient shared)
+    public ParametrosGuruController(ParametroGuruControllerClient client, ImportacaoService service, IHubContext<ImportProgressHub> hubContext, ParceiroControllerClient parceiroapi, ParcelaControllerClient parcela,
+        AssinaturaControllerClient assinatura, SharedControllerClient shared, TransacaoControllerClient transacaoAPI,
+        CentroCustoControllerClient centroCustoAPI, PlanoContaControllerClient categoriaAPI,
+        ContaCorrenteControllerClient contaCorrenteAPI, MovimentoCaixaControllerClient movcaixaAPI)
     {
         _client = client;
         _service = service;
@@ -29,12 +45,35 @@ public class ParametrosGuruController : Controller
         _parcela = parcela;
         _assinatura = assinatura;
         _shared = shared;
+        _transacaoAPI = transacaoAPI;
+        _centroCustoAPI = centroCustoAPI;
+        _categoriaAPI = categoriaAPI;
+
+        _contaCorrenteAPI = contaCorrenteAPI;
+        _movcaixaAPI = movcaixaAPI;
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int idplataforma = 1)
     {
-        var model = await _client.ListaById(1);
+        var model = await _client.ListaById(idplataforma);
+        ViewBag.idplataforma = idplataforma;
+
+        var transacoes = await _transacaoAPI.Listar("");
+        ViewBag.Transacoes = new SelectList(transacoes, "Id", "Descricao");
+
+        var centros = await _centroCustoAPI.Listar("");
+        ViewBag.CentroCustos = new SelectList(centros, "Id", "Descricao");
+
+        var categorias = await _categoriaAPI.ListarAsync("");
+        ViewBag.Categorias = new SelectList(categorias, "Id", "Descricao");
+
+        var parceiros = await _parceiroapi.Lista("");
+        ViewBag.Parceiros = new SelectList(parceiros, "id", "razaoSocial");
+
+        var contas = await _contaCorrenteAPI.Listar("", null);
+        ViewBag.Contas = new SelectList(contas, "id", "descricao");
+
         return View(model);
     }
 
@@ -42,17 +81,20 @@ public class ParametrosGuruController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Editar(ParametrosGuruViewModel dados)
     {
+        /*
         if (!ModelState.IsValid)
         {
             return View(dados);
         }
-
-        var response = await _client.Salvar("1", dados);
+        */
+        if (dados.urlsub == null)
+            dados.urlsub = " ";
+        var response = await _client.Salvar(dados.id.ToString(), dados);
 
         if (response.IsSuccessStatusCode)
         {
             TempData["Mensagem"] = "Parâmetros atualizados com sucesso.";
-            return RedirectToAction(nameof(Editar));
+            return RedirectToAction("index", new { id = dados.id });
         }
 
         var erro = await response.Content.ReadAsStringAsync();
@@ -125,7 +167,7 @@ public class ParametrosGuruController : Controller
                 try
                 {
                     var itemJson = element.GetRawText();
-                    var transacao = JsonSerializer.Deserialize<RootObject>(itemJson);
+                    var transacao = System.Text.Json.JsonSerializer.Deserialize<RootObject>(itemJson);
                     if (transacao != null)
                         transactions.Add(transacao);
                 }
@@ -194,7 +236,7 @@ public class ParametrosGuruController : Controller
                     };
 
                     // Verificar se já existe
-                    Task<ADUSClient.Assinatura.AssinaturaViewModel> reta = _assinatura.ListaById(sub.subscription.id);
+                    Task<ADUSClient.Assinatura.AssinaturaViewModel> reta = _assinatura.ListaById(sub.subscription.internal_id);
                     ADUSClient.Assinatura.AssinaturaViewModel a = await reta;
 
                     FormaPagto forma = FormaPagto.Pix;
@@ -215,13 +257,18 @@ public class ParametrosGuruController : Controller
                             datavenda = createdAt,
                             idformapagto = forma,
                             idparceiro = sub.contact.id,
-                            idplataforma = sub.subscription.id,
+                            idplataforma = sub.subscription.internal_id,
                             status = (StatusAssinatura)1,
                             preco = sub.product.unit_value,
                             qtd = sub.product.qty,
                             valor = sub.product.total_value,
                             observacao = sub.product.marketplace_name
                         });
+                    }
+                    else
+                    {
+                        a.datavenda = createdAt;
+                        _assinatura.Salvar(a.id, a);
                     }
 
                     //incluir parcela
@@ -237,14 +284,14 @@ public class ParametrosGuruController : Controller
                     if (parc == null)
                     {
                         string nossonumero = null;
-                        if (sub.payment.marketplace_name.ToLower() == "pagarme" || sub.payment.marketplace_name.ToLower() == "pagarme2")
-                        {
-                            nossonumero = sub.payment.acquirer.nsu;
-                        }
-                        else
-                        {
-                            nossonumero = sub.payment.marketplace_id;
-                        }
+                        //  if (sub.payment.marketplace_name.ToLower() == "pagarme" || sub.payment.marketplace_name.ToLower() == "pagarme2")
+                        //   {
+                        //       nossonumero = sub.payment.acquirer.nsu;
+                        //   }
+                        //   else
+                        //   {
+                        nossonumero = sub.payment.marketplace_id;
+                        //   }
                         _parcela.Adicionar(new ADUSClient.Parcela.ParcelaViewModel
                         {
                             id = Guid.NewGuid().ToString("N"),
@@ -290,6 +337,244 @@ public class ParametrosGuruController : Controller
             ultdata = fim.AddDays(1),
         });
 
+        return Json("OK");
+    }
+
+    public async Task<JsonResult> GetBaixasAsaasByData(string ini, string fim, string connectionId)
+    {
+        var model = await _client.ListaById(2);
+
+        var secretKey = model.token;
+
+        var base64Auth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{secretKey}:"));
+
+        var allPayables = new List<string>(); // ou seu model
+        string cursor = null;
+        bool hasMore = true;
+        int linhas = 0, linha = 0;
+        int offset = 0;
+        int limit = 50;
+
+        while (hasMore)
+        {
+            string url = model.urltransac;
+
+            if (ini != fim)
+            {
+                url += "?paymentDate[ge]=" + ini + "&paymentDate[le]=" + fim;
+            }
+            else
+            {
+                url += "?paymentDate=" + ini;
+            }
+            url = url + "&status=RECEIVED&limit=" + limit.ToString() +
+                "&offset=" + offset.ToString();
+            var options = new RestClientOptions(url);
+            var client = new RestClient(options);
+
+            var request = new RestRequest();
+            request.AddHeader("access_token", secretKey);
+
+            request.AddHeader("accept", "application/json");
+
+            var response = await client.ExecuteGetAsync(request);
+
+            if (!response.IsSuccessful)
+            {
+                Console.WriteLine("Erro: " + response.ErrorMessage);
+                break;
+            }
+
+            // Adicione sua lógica de deserialização aqui
+            allPayables.Add(response.Content); // ou deserialize
+
+            var json = response.Content; // string com JSON recebido do Pagar.me
+
+            using var doc = JsonDocument.Parse(json);
+            var root = doc.RootElement;
+            linhas = root.GetProperty("totalCount").GetInt32();
+
+            if (root.TryGetProperty("data", out var dataArray))
+            {
+                foreach (var item in dataArray.EnumerateArray())
+                {
+                    var id = item.GetProperty("id").GetString();
+                    var parc = await _parcela.ListaByIdCheckout(id);
+                    if (parc != null)
+                    {
+                        var sobs = item.GetProperty("description").GetString();
+                        if (item.GetProperty("pixTransaction").GetString() != null)
+                        {
+                            sobs = sobs + " " + "PIX TRANSACTION: " + item.GetProperty("pixTransaction").GetString() + " " +
+                                "PIXQRCODE: " + item.GetProperty("pixQrCodeId").GetString();
+                        }
+
+                        var respc = await _movcaixaAPI.AdicionarAsync(new ADUSClient.MovimentoCaixa.MovimentoCaixaViewModel
+                        {
+                            DataMov = item.GetProperty("paymentDate").GetDateTime().Date,
+                            IdCategoria = (int)model.idcategoria,
+                            IdCentroCusto = (int)model.idccusto,
+                            IdContaCorrente = model.idconta,
+                            IdTransacao = (int)model.idtransacao,
+                            idparceiro = model.idparceiro,
+                            Valor = item.GetProperty("netValue").GetDecimal(),
+                            Sinal = "C",
+                            Observacao = sobs
+                        });
+                        string y = await respc.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<MovimentoCaixaViewModel>(y);
+                        if (item.GetProperty("billingType").GetString() != "CREDIT_CARD")
+                        {
+                            parc.databaixa = item.GetProperty("paymentDate").GetDateTime().Date;
+                        }
+                        parc.idcaixa = result.Id;
+                        parc.descontoplataforma = (double)((decimal)parc.valor - item.GetProperty("netValue").GetDecimal());
+                        if (item.TryGetProperty("split", out var comissao))
+                        {
+                            parc.comissao = item.GetProperty("split")[0].GetProperty("totalValue").GetDouble();
+                        }
+                        else parc.comissao = 0;
+                        parc.valorliquido = item.GetProperty("netValue").GetDouble() - parc.comissao;
+                        await _parcela.Salvar(parc.id, parc);
+                    }
+                    else
+                    {
+                        var erro = "Registro de cobrança: " + id + "-" + item.GetProperty("billingType").GetString();
+                        await _hubContext.Clients.Client(connectionId)
+                            .SendAsync("ReceiveLog", $"Erro ao importar registro X: {erro}");
+                    }
+
+                    //var acquirerNSU = item.GetProperty("gateway_id").GetString();
+                    linha++;
+                    if (connectionId != null)
+                    {
+                        await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveProgress", (int)((linha * 100.0) / linhas));
+                    }
+                }
+            }
+            hasMore = root.GetProperty("hasMore").GetBoolean();
+            // Verifica o header 'X-PagarMe-Cursor'
+            if (root.TryGetProperty("paging", out var page))
+            {
+                if (page.TryGetProperty("next", out var x))
+                {
+                    cursor = x.GetString();
+                }
+                else hasMore = false;
+            }
+            else
+            {
+                hasMore = false; // última página
+            }
+            /*
+            var options = new RestClientOptions(url);
+            var client = new RestClient(options);
+            var request = new RestRequest("");
+
+            var base64Auth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{secretKey}:"));
+            request.AddHeader("accept", "application/json");
+
+            request.AddHeader("Authorization", $"Basic {base64Auth}");
+            var response = await client.GetAsync(request);
+
+            //            Console.WriteLine("{0}", response.Content);
+            */
+        }
+        await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveProgress", 100);
+        return Json("OK");
+    }
+
+    public async Task<JsonResult> GetBaixasPagarmeByData(string ini, string fim, string connectionId)
+    {
+        var model = await _client.ListaById(3);
+
+        var secretKey = model.token;
+
+        var base64Auth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{secretKey}:"));
+
+        var allPayables = new List<string>(); // ou seu model
+        string cursor = null;
+        bool hasMore = true;
+
+        while (hasMore)
+        {
+            string url = model.urltransac;
+
+            if (cursor == null)
+                url += "?payment_date_since=" + ini + "&payment_date_until=" + fim;
+            else
+                url = cursor;
+            url = url + "&size=1000";
+            //  url = "https://api.pagar.me/core/v5/charges?created_since=" + ini + "&created_until=" + fim;
+            var options = new RestClientOptions(url);
+            var client = new RestClient(options);
+
+            var request = new RestRequest();
+            request.AddHeader("Authorization", $"Basic {base64Auth}");
+            request.AddHeader("accept", "application/json");
+
+            var response = await client.ExecuteGetAsync(request);
+
+            if (!response.IsSuccessful)
+            {
+                Console.WriteLine("Erro: " + response.ErrorMessage);
+                break;
+            }
+
+            // Adicione sua lógica de deserialização aqui
+            allPayables.Add(response.Content); // ou deserialize
+
+            var json = response.Content; // string com JSON recebido do Pagar.me
+            int linhas = 0; int linha = 0;
+            using var doc = JsonDocument.Parse(json);
+            var root = doc.RootElement;
+
+            if (root.TryGetProperty("data", out var dataArray))
+            {
+                foreach (var item in dataArray.EnumerateArray())
+                {
+                    var id = item.GetProperty("charge_id").GetString();
+                    string urlc = "https://api.pagar.me/core/v5/charges/" + id;
+                    var optionsc = new RestClientOptions(urlc);
+                    var clientc = new RestClient(optionsc);
+
+                    var requestc = new RestRequest();
+                    requestc.AddHeader("Authorization", $"Basic {base64Auth}");
+                    requestc.AddHeader("accept", "application/json");
+
+                    var responsec = await clientc.ExecuteGetAsync(requestc);
+                    var jsonc = responsec.Content; // string com JSON recebido do Pagar.me
+
+                    //     var acquirerNSU = item.GetProperty("gateway_id").GetString();
+                }
+            }
+            // Verifica o header 'X-PagarMe-Cursor'
+            if (root.TryGetProperty("paging", out var page))
+            {
+                if (page.TryGetProperty("next", out var x))
+                {
+                    cursor = x.GetString();
+                }
+                else hasMore = false;
+            }
+            else
+            {
+                hasMore = false; // última página
+            }
+            /*
+            var options = new RestClientOptions(url);
+            var client = new RestClient(options);
+            var request = new RestRequest("");
+
+            var base64Auth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{secretKey}:"));
+            request.AddHeader("accept", "application/json");
+
+            request.AddHeader("Authorization", $"Basic {base64Auth}");
+            var response = await client.GetAsync(request);
+
+            //            Console.WriteLine("{0}", response.Content);
+            */
+        }
         return Json("OK");
     }
 }

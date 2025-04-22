@@ -406,9 +406,21 @@
                     @if (User.IsInRole("Super"))
                     {
                         <li class="nav-item">
-                            <a href="/conta" class="nav-link">
+                            <a href="/parametrosguru/index?idplataforma=3" class="nav-link">
                                 <img class="icon" src="/svg/icons/accounts.svg" />
                                 <p>Pagar.me</p>
+                            </a>
+                        </li>
+                    }
+                </ul>
+
+                <ul class="nav nav-treeview">
+                    @if (User.IsInRole("Super"))
+                    {
+                        <li class="nav-item">
+                            <a href="/parametrosguru/index?idplataforma=2" class="nav-link">
+                                <img class="icon" src="/svg/icons/accounts.svg" />
+                                <p>ASAAS</p>
                             </a>
                         </li>
                     }
