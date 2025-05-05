@@ -16,7 +16,8 @@
           "Microsoft.AspNetCore.Identity.UI": "6.0.14",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.5",
           "Microsoft.EntityFrameworkCore.Tools": "6.0.14",
-          "jquery-globalize": "1.4.2"
+          "jquery-globalize": "1.4.2",
+          "RestSharp": "112.1.0"
         },
         "runtime": {
           "ADUSAdm.dll": {}
@@ -697,6 +698,14 @@
           "lib/net7.0/PagSeguro.DotNet.Sdk.PublicKey.dll": {
             "assemblyVersion": "3.1.0.0",
             "fileVersion": "3.1.0.0"
+          }
+        }
+      },
+      "RestSharp/112.1.0": {
+        "runtime": {
+          "lib/net7.0/RestSharp.dll": {
+            "assemblyVersion": "112.1.0.0",
+            "fileVersion": "112.1.0.0"
           }
         }
       },
@@ -1949,6 +1958,13 @@
       "sha512": "sha512-AXf/4HSnpiTH0jd1Wg6FrKQHYjINbafRWXLNspirbmEbaQxi0+P6Te4WemMSuG3XkriavWAE0TrF+DIyE/3GWA==",
       "path": "pagseguro.dotnet.sdk.publickey/3.1.0",
       "hashPath": "pagseguro.dotnet.sdk.publickey.3.1.0.nupkg.sha512"
+    },
+    "RestSharp/112.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-bOUGNZqhhv/QeCXHTKEUil846yBjwWXpzPKjO67kFvaAOoF361z7jLY5BMnuZ6WD2WQRA750sNMcK7MSPCQ5Mg==",
+      "path": "restsharp/112.1.0",
+      "hashPath": "restsharp.112.1.0.nupkg.sha512"
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
       "type": "package",

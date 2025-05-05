@@ -233,6 +233,20 @@
 <script>
 
    
+    function abrirParcelas(item) {
+        const id = item.id;
+        const idparceiro = $('#idparceiro').val();
+        const forma = $('#forma').val();
+        const status = $('#status').val();
+        const ini = '2001-01-01';
+        const fim = $('#dtfim').val();
+        const filtro = $('#filtro').val();
+
+        const url = `/Parcela/Index?idassinatura=${id}&idparceiro=${idparceiro}&formaS=${forma}&statusS=${status}&iniS=${ini}&fimS=${fim}&filtroS=${encodeURIComponent(filtro)}`;
+
+        window.location.href = url;
+    }
+
     $(document).ready(function () {
 
         
@@ -388,8 +402,11 @@
                             .addClass("btn btn-sm btn-primary")
                             .attr("title", "Ver Parcelas")
                             .append($("<i>").addClass("fa fa-file-invoice-dollar"))
-                            .on("click", function () {
-                                window.location.href = "/Parcela/Index?idassinatura=" + item.id+"&idparceiro="+item.idparceiro+"&ini=2001-01-01&&forma=3";
+                            
+                                    .on("click", function () {
+                                abrirParcelas(item);
+                            
+                                //window.location.href = "/Parcela/Index?idassinatura=" + item.id+"&idparceiro="+item.idparceiro+"&ini=2001-01-01&&forma=3";
                             });
                     }
                 },
@@ -403,7 +420,7 @@
                         var $button = $("<button>").addClass("btn btn-default dropdown-toggle")
                             .attr("type", "button")
                             .attr("id", "dropdownMenuButton")
-                            .attr("data-toggle", "dropdown")
+                            .attr("data-bs-toggle", "dropdown")
                             .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
                             .text("Ações");
 

@@ -25,6 +25,7 @@ using RestSharp;
 using Azure.Core;
 using Humanizer;
 using MathNet.Numerics;
+using Azure;
 
 namespace ADUSAdm.Controllers
 {
@@ -335,8 +336,8 @@ namespace ADUSAdm.Controllers
                             numero = "0",
                             email = sub.Contact.Email,
                             id = sub.Contact.Id,
-                            uf = 26,
-                            cidade = 1928,
+                            iduf = 26,
+                            idcidade = 1928,
                             profissao = "A DEFINIR"
                         });
                     };
@@ -507,8 +508,8 @@ namespace ADUSAdm.Controllers
                             complemento = sub.contact.address_comp,
                             email = sub.contact.email,
                             id = sub.contact.id,
-                            uf = uf.id,
-                            cidade = cid.id,
+                            iduf = uf.id,
+                            idcidade = cid.id,
                             profissao = "A DEFINIR"
                         });
                     };
@@ -576,12 +577,12 @@ namespace ADUSAdm.Controllers
                             numparcela = sub.invoice.cycle,
                             idassinatura = sub.subscription.internal_id,
                             plataforma = sub.payment.marketplace_name,
-                            valor = sub.product.total_value,
+                            valor = (decimal)sub.product.total_value,
                             idcheckout = sub.id,
                             nossonumero = nossonumero,
                             descontos = 0,
                             acrescimos = 0,
-                            valorliquido = sub.product.total_value,
+                            valorliquido = (decimal)sub.product.total_value,
                             descontoantecipacao = 0,
                             descontoplataforma = 0,
                             comissao = 0,
@@ -731,13 +732,14 @@ namespace ADUSAdm.Controllers
             var allPayables = new List<string>(); // ou seu model
             string cursor = null;
             bool hasMore = true;
+            int pagina = 1;
 
             while (hasMore)
             {
-                string url = "https://api.pagar.me/core/v5/payables";
+                string url = "https://api.pagar.me/core/v5/balance/operations";
 
                 if (cursor == null)
-                    url += "?payment_date_since=" + ini + "&payment_date_until=" + fim;
+                    url += "?created_since=" + ini + "&created_until=" + fim + "&size=100&page=" + pagina.ToString();
                 else
                     url = cursor;
 
@@ -764,12 +766,22 @@ namespace ADUSAdm.Controllers
                 using var doc = JsonDocument.Parse(json);
                 var root = doc.RootElement;
 
+                //var data = JsonConvert.DeserializeObject<List<Operation>>(json);
+
+                if (root.GetProperty("data").GetArrayLength() == 0)
+                    hasMore = false;
+                else
+                {
+                    // Processar dados
+                    pagina++;
+                }
+                /*
                 if (root.TryGetProperty("data", out var dataArray))
                 {
                     foreach (var item in dataArray.EnumerateArray())
                     {
-                        var id = item.GetProperty("id").GetString();
-                        var acquirerNSU = item.GetProperty("gateway_id").GetString();
+                   //     var id = item.GetProperty("id").GetString();
+                   //     var acquirerNSU = item.GetProperty("gateway_id").GetString();
                     }
                 }
                 // Verifica o header 'X-PagarMe-Cursor'
@@ -785,7 +797,7 @@ namespace ADUSAdm.Controllers
                 {
                     hasMore = false; // última página
                 }
-                /*
+
                 var options = new RestClientOptions(url);
                 var client = new RestClient(options);
                 var request = new RestRequest("");
@@ -918,11 +930,11 @@ namespace ADUSAdm.Controllers
 
             while (hasMore)
             {
-                string url = "https://api.asaas.com/v3/payments";
+                string url = "https://api.asaas.com/v3/financialTransactions";
 
                 if (cursor == null)
-                    //   url += "?paymentDate[ge]=" + ini + "&paymentDate[le]=" + fim;
-                    url += "?paymentDate=" + ini;
+                    url += "?startDate=" + ini + "&finishDate=" + fim;
+                //url += "?paymentDate=" + ini;
                 else
                     url = cursor;
 
@@ -1015,7 +1027,7 @@ namespace ADUSAdm.Controllers
                 string url = "https://api.asaas.com/v3/payments/";
 
                 if (cursor == null)
-                    url +=  nsu;
+                    url += nsu;
                 else
                     url = cursor;
 
@@ -1026,7 +1038,6 @@ namespace ADUSAdm.Controllers
                 request.AddHeader("access_token", secretKey); // ou "Authorization", $"Bearer {apiKey}"
 
                 request.AddHeader("accept", "application/json");
-
 
                 var response = await client.ExecuteGetAsync(request);
 

@@ -24,3 +24,9 @@ body * {
 img.icon {
     width: 20px;
 }
+
+
+.alinha-direita {
+    text-align: right !important;
+}
+

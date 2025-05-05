@@ -1,0 +1,109 @@
+﻿@* _Menu.cshtml completo com todos os níveis colapsáveis *@
+
+<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+    <!-- ADMINISTRATIVO -->
+    <li class="nav-item has-treeview">
+        <a href="#" class="nav-link">
+            <img class="icon" src="/svg/icons/folder.svg" />
+            <p>Administrativo <img class="icon right" src="/svg/icons/angle-left.svg" /></p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                    <p>Cadastros <img class="icon right" src="/svg/icons/angle-left.svg" /></p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item"><a href="/parceiro" class="nav-link"><p>Parceiros</p></a></li>
+                    <li class="nav-item"><a href="/escolas" class="nav-link"><p>Escolas</p></a></li>
+                    <li class="nav-item"><a href="/alunos" class="nav-link"><p>Alunos</p></a></li>
+                    <li class="nav-item"><a href="/centrocusto" class="nav-link"><p>Centro de Custos</p></a></li>
+                    <li class="nav-item"><a href="/categorias" class="nav-link"><p>Categorias de Conta</p></a></li>
+                </ul>
+            </li>
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                    <p>Processos <img class="icon right" src="/svg/icons/angle-left.svg" /></p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item"><a href="/gestaobolsas" class="nav-link"><p>Bolsas de Estudo</p></a></li>
+                    <li class="nav-item"><a href="/gestaoassinaturas" class="nav-link"><p>Assinaturas</p></a></li>
+                    <li class="nav-item"><a href="/gestaocontratos" class="nav-link"><p>Contratos</p></a></li>
+                </ul>
+            </li>
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                    <p>Relatórios <img class="icon right" src="/svg/icons/angle-left.svg" /></p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item"><a href="/relatoriocontratos" class="nav-link"><p>Relação de Contratos</p></a></li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+
+    <!-- FINANCEIRO -->
+    <li class="nav-item has-treeview">
+        <a href="#" class="nav-link">
+            <img class="icon" src="/svg/icons/dollar-sign.svg" />
+            <p>Financeiro <img class="icon right" src="/svg/icons/angle-left.svg" /></p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                    <p>Cadastros <img class="icon right" src="/svg/icons/angle-left.svg" /></p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item"><a href="/banco" class="nav-link"><p>Bancos</p></a></li>
+                    <li class="nav-item"><a href="/transacao" class="nav-link"><p>Transações</p></a></li>
+                    <li class="nav-item"><a href="/parceirofinanceiro" class="nav-link"><p>Parceiros</p></a></li>
+                </ul>
+            </li>
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                    <p>Processos <img class="icon right" src="/svg/icons/angle-left.svg" /></p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item"><a href="/parcelas" class="nav-link"><p>Parcelas</p></a></li>
+                    <li class="nav-item"><a href="/movimentocaixa" class="nav-link"><p>Movimento do Caixa</p></a></li>
+                </ul>
+            </li>
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                    <p>Relatórios <img class="icon right" src="/svg/icons/angle-left.svg" /></p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item"><a href="/visaogeralcarteira" class="nav-link"><p>Visão Geral da Carteira</p></a></li>
+                    <li class="nav-item"><a href="/fluxocaixa" class="nav-link"><p>Fluxo de Caixa</p></a></li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+
+    <!-- CONFIGURAÇÕES -->
+    <li class="nav-item has-treeview">
+        <a href="#" class="nav-link">
+            <img class="icon" src="/svg/icons/settings.svg" />
+            <p>Configurações <img class="icon right" src="/svg/icons/angle-left.svg" /></p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item"><a href="/usuarios" class="nav-link"><p>Cadastro de Usuários</p></a></li>
+        </ul>
+    </li>
+
+    <!-- INTEGRAÇÃO -->
+    <li class="nav-item has-treeview">
+        <a href="#" class="nav-link">
+            <img class="icon" src="/svg/icons/integration.svg" />
+            <p>Integração <img class="icon right" src="/svg/icons/angle-left.svg" /></p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item"><a href="/parametrosguru" class="nav-link"><p>Guru</p></a></li>
+            <li class="nav-item"><a href="/conta" class="nav-link"><p>Domínio</p></a></li>
+            <li class="nav-item"><a href="/docsign" class="nav-link"><p>DocSign</p></a></li>
+            <li class="nav-item"><a href="/parametrosguru/index?idplataforma=3" class="nav-link"><p>Pagar.me</p></a></li>
+            <li class="nav-item"><a href="/parametrosguru/index?idplataforma=2" class="nav-link"><p>ASAAS</p></a></li>
+        </ul>
+    </li>
+
+</ul>

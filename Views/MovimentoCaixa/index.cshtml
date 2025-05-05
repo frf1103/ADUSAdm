@@ -111,10 +111,16 @@
                 height: "500px",
                 sorting: true,
                 paging: true,
-                autoload: true,
-                pageSize: 10,
-                pageButtonCount: 5,
+                pageSize: 10,                 // Define o número de registros por página
+                pageButtonCount: 5,          // Número de botões de navegação exibidos
+                pagerFormat: "Páginas: {pages} {prev} {next} {first} {last}",  // Formato do pager,
+                pageLoading: false,
+                pagePrevText: "Anterior", // Texto para o botão "Anterior"
+                pageNextText: "Próximo",  // Texto para o botão "Próximo",
+                pageFirstText: "Primeira",  // Adicionando "Primeira" página
+                pageLastText: "Última",     // Adicionando "Última" página
                 noDataContent: "Nenhum movimento encontrado",
+                autoload: true,
                 controller: {
                     loadData: function () {
                         return $.ajax({
@@ -135,6 +141,7 @@
                     }
                 },
                 fields: [
+                    { name: "id", title: "ID", type: "text", width: 40 },
                     { name: "dataMov", title: "Data", type: "text", width: 60, itemTemplate: v => new Date(v).toLocaleDateString() },
                     { name: "descTransacao", title: "Transação", type: "text", width: 120 },
                     { name: "descCentroCusto", title: "Centro Custo", type: "text", width: 120 },
@@ -150,7 +157,7 @@
 
                             var $button = $("<button>").addClass("btn btn-default dropdown-toggle")
                                 .attr("type", "button")
-                                .attr("data-toggle", "dropdown")
+                                .attr("data-bs-toggle", "dropdown")
                                 .text("Ações");
 
                             var $menu = $("<div>").addClass("dropdown-menu");

@@ -40,7 +40,7 @@
 
                                     <div class="col-md-4">
                                         <label asp-for="idcaixa"></label>
-                                        <input asp-for="idcaixa" class="form-control" />
+                                        <input asp-for="idcaixa" class="form-control" readonly />
                                     </div>
                                 </div>
 
@@ -101,11 +101,11 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label asp-for="idcheckout"></label>
-                                        <input asp-for="idcheckout" class="form-control" />
+                                        <input asp-for="idcheckout" class="form-control" readonly />
                                     </div>
                                     <div class="col-md-4">
                                         <label asp-for="nossonumero"></label>
-                                        <input asp-for="nossonumero" class="form-control" />
+                                        <input asp-for="nossonumero" class="form-control" readonly />
                                     </div>
                                 </div>
 
@@ -118,7 +118,7 @@
 
                             <div class="card-footer text-right">
                                 <button type="submit" class="btn btn-success">Salvar</button>
-                                <a href="/Parcela/Index?idassinatura=@Model.idassinatura" class="btn btn-default">Voltar</a>
+                                <a href="/Parcela/Index?idassinatura=@ViewBag.idassinatura&idparceiro=@ViewBag.idparceiro&forma=@ViewBag.forma&status=@ViewBag.status&ini=@ViewBag.ini&fim=@ViewBag.fim" class="btn btn-default">Voltar</a>
                             </div>
                         </div>
                     </form>
@@ -129,25 +129,23 @@
 </div>
 
 @section Scripts {
-    <script>
+     <script src="~/js/comuns.js"></script>
 
-        $.validator.methods.number = function (value, element) {
-            return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:,\d{3})+)?(?:\,\d+)?$/.test(value);
-        }
+    <script>     
 
 
 
         function calcularValorLiquido() {
             const valor = parseFloat($('#valor').val());
-            const descontoPlataforma = parseFloat($('#descontoplataforma').val());
-            const comissao = parseFloat($('#comissao').val());
-            const descontoAntecipacao = parseFloat($('#descontoantecipacao').val());
-            const acrescimos = parseFloat($('#acrescimos').val());
-            const descontos = parseFloat($('#descontos').val());
+            const descontoPlataforma = parseFloat($('#descontoplataforma').val().replace(',','.'));
+            const comissao = parseFloat($('#comissao').val().replace(',', '.'));
+            const descontoAntecipacao = parseFloat($('#descontoantecipacao').val().replace(',', '.'));
+            const acrescimos = parseFloat($('#acrescimos').val().replace(',', '.'));
+            const descontos = parseFloat($('#descontos').val().replace(',', '.'));
 
             const liquido = valor - descontoPlataforma - comissao - descontoAntecipacao + acrescimos - descontos;
 
-            $('#valorliquido').val(liquido.toFixed(2));
+            $('#valorliquido').val(liquido.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
         }
 
         $(document).ready(function () {

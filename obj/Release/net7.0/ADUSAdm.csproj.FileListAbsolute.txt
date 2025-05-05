@@ -99,3 +99,4 @@ C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\refint\ADUSAdm.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\ADUSAdm.pdb
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\ADUSAdm.genruntimeconfig.cache
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\ref\ADUSAdm.dll
+C:\Users\user\source\repos\ADUS\ADUSAdm\bin\Release\net7.0\RestSharp.dll

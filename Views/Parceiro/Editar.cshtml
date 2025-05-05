@@ -165,17 +165,17 @@
                                         <div class="row">
                                             <div class="col-md-2">
                                                 <div class="form-group">
-                                                    <label asp-for="uf" class="control-label"></label>
-                                                    <select asp-for="uf" id="iduf" class="form-control" value="@ViewBag.iduf" asp-items="@ViewBag.Ufs" disabled onchange="loadcidades(0,@ViewBag.idcid)"></select>
-                                                    <input asp-for="uf" type="hidden" id="huf" />
+                                                    <label asp-for="iduf" class="control-label"></label>
+                                                    <select asp-for="iduf" id="iduf" class="form-control" value="@ViewBag.iduf" asp-items="@ViewBag.Ufs" disabled onchange="loadcidades(0,@ViewBag.idcid)"></select>
+                                                    <input asp-for="iduf" type="hidden" id="huf" />
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label asp-for="cidade" class="control-label"></label>
-                                                    <select asp-for="cidade" id="idmun" class="form-control" asp-items="@ViewBag.municipios" disabled></select>
-                                                    <input asp-for="cidade" type="hidden" id="hcidade" />
-                                                    <span asp-validation-for="cidade" class="text-danger"></span>
+                                                    <label asp-for="idcidade" class="control-label"></label>
+                                                    <select asp-for="idcidade" id="idmun" class="form-control" asp-items="@ViewBag.municipios" disabled></select>
+                                                    <input asp-for="idcidade" type="hidden" id="hcidade" />
+                                                    <span asp-validation-for="idcidade" class="text-danger"></span>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">

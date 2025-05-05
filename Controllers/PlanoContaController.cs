@@ -42,7 +42,7 @@ namespace ADUSAdm.Controllers
             if (acao == 1)
             {
                 model = new PlanoContaViewModel();
-                ViewBag.Titulo = "Adicionar Plano de Conta";
+                ViewBag.Titulo = "Adicionar uma Categoria";
                 ViewBag.Acao = "adicionar";
             }
             else
@@ -50,17 +50,17 @@ namespace ADUSAdm.Controllers
                 model = await _clienteAPI.BuscarPorIdAsync(id);
                 if (acao == 2)
                 {
-                    ViewBag.Titulo = "Editar Plano de Conta";
+                    ViewBag.Titulo = "Editar uma Categoria";
                     ViewBag.Acao = "editar";
                 }
                 if (acao == 3)
                 {
-                    ViewBag.Titulo = "Excluir Plano de Conta";
+                    ViewBag.Titulo = "Excluir uma Categoria";
                     ViewBag.Acao = "excluir";
                 }
                 if (acao == 4)
                 {
-                    ViewBag.Titulo = "Visualizar Plano de Conta";
+                    ViewBag.Titulo = "Visualizar uma Categoria";
                     ViewBag.Acao = "ver";
                 }
             }

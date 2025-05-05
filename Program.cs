@@ -100,6 +100,11 @@ builder.Services.AddHttpClient<ADUSClient.Controller.TransacaoControllerClient>(
     client.BaseAddress = new Uri(urlAPI.ToString());
 });
 
+builder.Services.AddHttpClient<ADUSClient.Controller.TransacBancoControllerClient>(client =>
+{
+    client.BaseAddress = new Uri(urlAPI.ToString());
+});
+
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 builder.Services.AddTransient<ADUSAdm.Shared.IEmailSender, EmailSender>();
 //builder.Services.AddTransient<IUsuarioService, UsuContservice>();
@@ -155,19 +160,16 @@ var config = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .Build();
 
-/*
-builder.WebHost.ConfigureKestrel((context, serverOptions) =>
-{
-    serverOptions.Listen(System.Net.IPAddress.Any, config.GetValue<int>("HOST:HTTP"));
-    serverOptions.Listen(System.Net.IPAddress.Any, config.GetValue<int>("HOST:HTTPS"));
-});
-*/
+var sectionDev = config.GetSection("AMBIENTE:DEV");
 
-/*builder.WebHost.ConfigureKestrel((context, serverOptions) =>
+if (sectionDev.Exists() && sectionDev.Value.ToString() == "0")
 {
-    serverOptions.Listen(System.Net.IPAddress.Any, config.GetValue<int>("HOST:HTTP"));
-    serverOptions.Listen(System.Net.IPAddress.Any, config.GetValue<int>("HOST:HTTPS"));
-}); */
+    builder.WebHost.ConfigureKestrel((context, serverOptions) =>
+    {
+        serverOptions.Listen(System.Net.IPAddress.Any, config.GetValue<int>("HOST:HTTP"));
+        serverOptions.Listen(System.Net.IPAddress.Any, config.GetValue<int>("HOST:HTTPS"));
+    });
+}
 
 //builder.Services.AddScoped<ImportacaoService>();
 

@@ -1,0 +1,249 @@
+﻿@model List<ADUSClient.MovimentoCaixa.ExtratoViewModel>
+
+@{
+    ViewData["Title"] = "Importar Extrato";
+}
+
+<!-- CSS Select2 -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+
+<h4 class="mb-4">Importar Extrato</h4>
+
+<form asp-action="ImportarExtrato" method="get" class="row gy-3 gx-3 mb-4">
+    <div class="col-md-3">
+        <label for="dataInicio" class="form-label fw-bold">Data Início</label>
+        <input type="date" class="form-control" id="dataInicio" name="dataInicio" required value="@ViewBag.dtinicio" />
+    </div>
+    <div class="col-md-3">
+        <label for="dataFim" class="form-label fw-bold">Data Fim</label>
+        <input type="date" class="form-control" id="dataFim" name="dataFim" required value="@ViewBag.dtfim" />
+    </div>
+    <div class="col-md-3">
+        <label for="plataforma" class="form-label fw-bold">Plataforma</label>
+        <select class="form-select select2" id="plataforma" name="plataforma" data-placeholder="Selecione a plataforma" style="width: 100%;" required>
+            <option></option>
+            @{
+                if (ViewBag.plataforma=="pagarme")
+                {
+                    <option value="pagarme" selected>Pagar.me</option>
+                }
+                else
+                {
+                    <option value="pagarme">Pagar.me</option>
+                }
+
+                if (ViewBag.plataforma == "asaas")
+                {
+                    <option value="asaas" selected>Asaas</option>
+                }
+                else
+                {
+                    <option value="asaas">Asaas</option>
+                }
+
+            }           
+            
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label for="contaCorrente" class="form-label fw-bold">Conta Corrente</label>
+        <select class="form-select select2-conta" id="contaCorrente" name="idContaCorrente" data-placeholder="Escolha a conta" style="width: 100%;" required>
+            <option></option>
+            @foreach (var conta in ViewBag.contas)
+            {
+                if (@conta.Value == ViewBag.contaCorrente)
+                {
+                    <option value="@conta.Value" selected>@conta.Text</option>
+                }
+                else
+                {
+                    <option value="@conta.Value" >@conta.Text</option>
+                }
+            }
+        </select>
+        <input name="acao" value="1" hidden />
+    </div>
+    <div class="col-md-12 d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary px-4">
+            <i class="fas fa-search me-1"></i> Consultar
+        </button>
+        <button id="btnImportarExtrato" class="btn btn-success ms-2">
+            <i class="fas fa-save me-1"></i> Salvar Extrato
+        </button>
+    </div>
+</form>
+
+@if (Model != null && Model.Any())
+{
+    <div style="max-height: 70vh; overflow-y: auto;">
+        <table class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th width="8%">Data</th>
+                    <th width="20%">Histórico</th>
+                    <th width="12%">Valor</th>
+                    <th width="20%">Transação</th>
+                    <th width="20%">Categoria</th>
+                    <th width="20%">Centro Custo</th>
+                </tr>
+            </thead>
+            @{
+                if (Model.Count > 0)
+                {
+                    <input type="text" id="idparceiro" value="@Model[0].idparceiro" hidden />
+                    <input type="text" id="idbanco" value="@Model[0].idbanco" hidden />
+                }
+            }
+            <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <tr class="@(Model[i].IdTransacao > 0 && Model[i].idCategoria > 0 ? "table-success" : "")">
+                        <td>@Model[i].datamov.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <input type="hidden" name="[@i].id" value="@Model[i].id" />
+                            <input type="hidden" name="[@i].IdTransacBanco" value="@Model[i].IdTransacBanco" />
+                            <input type="hidden" name="[@i].datamov" value="@Model[i].datamov.ToString("yyyy-MM-dd")" />
+                            <input type="text" name="[@i].Historico" class="form-control" value="@Model[i].Historico" readonly />
+                        </td>
+                        <td>
+                            <input type="text" name="[@i].Valor" class="form-control text-end" value="@Model[i].Valor.ToString("N2")" readonly />
+                        </td>
+                        <td>
+                            <select name="[@i].IdTransacao" class="form-select select2-transacao" style="width:100%;">
+                                <option></option>
+                                @foreach (var item in ViewBag.transacoes)
+                                {
+                                    if (item.Value == Model[i].IdTransacao.ToString())
+                                    {
+                                        <option value="@item.Value" selected>@item.Text</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <select name="[@i].idcategoria" class="form-select select2-categoria" style="width:100%;">
+                                <option></option>
+                                @foreach (var item in ViewBag.categorias)
+                                {
+                                    if (item.Value == Model[i].idCategoria.ToString())
+                                    {
+                                        <option value="@item.Value" selected>@item.Text</option>
+                                    }
+                                    else 
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <select name="[@i].idcentrocusto" class="form-select select2-centrocusto" style="width:100%;">
+                                <option></option>
+                                @foreach (var item in ViewBag.centroscusto)
+                                {
+                                    if (item.Value == Model[i].idCentrocusto.ToString())
+                                    {
+                                        <option value="@item.Value" selected>@item.Text</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<!-- JS Select2 -->
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.select2, .select2-transacao, .select2-conta, .select2-categoria, .select2-centrocusto').select2({
+                theme: 'bootstrap-5',
+                allowClear: true
+            });
+
+            $('#plataforma').val("@ViewBag.plataforma");
+            $('#contaCorrente').val("@ViewBag.contaCorrente");
+
+            function mostrarMensagem(tipo, mensagem) {
+                const alertBox = `<div class="alert alert-${tipo} alert-dismissible fade show mt-3" role="alert">
+                    ${mensagem}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>`;
+                $('.alert').remove();
+                $('form').after(alertBox);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                // Auto-dismiss após 5 segundos
+                setTimeout(() => {
+                    $('.alert').fadeOut('slow', function () {
+                        $(this).remove();
+                    });
+                }, 5000);
+            }
+
+            $('#btnImportarExtrato').on('click', function (e) {
+                e.preventDefault();
+                $('#btnImportarExtrato').prop('disabled', true).text('Salvando...');
+
+                const extratos = [];
+                $('table tbody tr').each(function () {
+                    const row = $(this);
+                    const id = row.find('input[name$=".id"]').val();
+                    const idTransacBanco = row.find('input[name$=".IdTransacBanco"]').val();
+                    const historico = row.find('input[name$=".Historico"]').val();
+                    var valor = row.find('input[name$=".Valor"]').val();
+                    const datamov = row.find('input[name$=".datamov"]').val();
+                    const idconta = $('#contaCorrente').val();
+
+                    const idTransacao = row.find('select[name$=".IdTransacao"]').val() || 0;
+                    const idcategoria = row.find('select[name$=".idcategoria"]').val() || 0;
+                    const idcentrocusto = row.find('select[name$=".idcentrocusto"]').val() || 0;
+                    valor = valor.replace('.', '')
+                    extratos.push({
+                        Id: id,
+                        IdTransacBanco: idTransacBanco,
+                        Historico: historico,
+                        Valor: parseFloat(valor.replace(',', '.')),
+                        IdTransacao: parseInt(idTransacao),
+                        DataMov: datamov,
+                        idCategoria: parseInt(idcategoria),
+                        idCentrocusto: parseInt(idcentrocusto),
+                        idConta: idconta,
+                        idparceiro: $('#idparceiro').val(),
+                        idbanco: $('#idbanco').val()
+                    });
+                });
+
+                $.ajax({
+                    url: '/MovimentoCaixa/SalvarExtrato',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(extratos),
+                    success: function (response) {
+                        mostrarMensagem('success', 'Extrato salvo com sucesso!');
+                    },
+                    error: function (xhr, status, error) {
+                        mostrarMensagem('danger', 'Erro ao salvar: ' + error);
+                    },
+                    complete: function () {
+                        $('#btnImportarExtrato').prop('disabled', false).text('Salvar Extrato');
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -281,6 +281,7 @@
         public int TrialDays { get; set; }
         public object TrialFinishedAt { get; set; }
         public object TrialStartedAt { get; set; }
+        public int started_at { get; set; }
     }
 
     public Subscription subscription { get; set; }

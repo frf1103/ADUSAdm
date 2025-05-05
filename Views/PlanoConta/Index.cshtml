@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Mvc.Rendering
 
 @{
-    ViewData["Title"] = "Plano de Contas";
+    ViewData["Title"] = "Categoria de Receitas/Despesas";
 }
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
@@ -37,7 +37,7 @@
         </div>
     </form>
 
-    <h2>Plano de Contas</h2>
+    <h2>Categorias de Receitas/Despesas</h2>
     <div class="col text-right">
         @if (ViewBag.permissao == true)
         {
@@ -97,7 +97,7 @@
 
                         var $button = $("<button>").addClass("btn btn-default dropdown-toggle")
                             .attr("type", "button")
-                            .attr("data-toggle", "dropdown")
+                            .attr("data-bs-toggle", "dropdown")
                             .text("Ações");
 
                         var $menu = $("<div>").addClass("dropdown-menu");

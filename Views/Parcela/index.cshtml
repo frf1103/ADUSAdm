@@ -9,6 +9,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
 
+
+@await Html.PartialAsync("_ModalProcessando")
 <section class="content">
     <form asp-action="index" method="get">
         <div class="row">
@@ -28,7 +30,7 @@
                                         <option value="0">escolha um parceiro</option>
                                         @foreach (var item in ViewBag.parceiros)
                                         {
-                                            if (@item.Value == ViewBag.SelectedOptionS)
+                                            if (@item.Value == ViewBag.idparceiro)
                                             {
                                                 <option value="@item.Value" selected>@item.Text</option>
                                             }
@@ -105,9 +107,17 @@
     <h2>Parcelas</h2>
 
     <div class="col text-right mb-2">
-        <a href="@Url.Action("Adicionar", new { acao = 1 })" class="btn btn-default">
-            <img class="icon" src="/svg/icons/plus.svg" /> Nova Parcela
+        <a href="@Url.Action("Adicionar", new { acao = 1,forma=ViewBag.forma, status= ViewBag.status,tipodata=ViewBag.tipodata,ini=ViewBag.dtinicio,fim=ViewBag.dtfim,idassinatura=ViewBag.idassinatura,idparceiro=ViewBag.idparceiro})" class="btn btn-default">
+            <img class="icon" src="/svg/icons/plus.svg" />
+        </a>        
+        
+        <a href="#" class="btn btn-default" id="btnSyncGuru" title="Sincronizar Recebíveis">
+            <i class="fas fa-sync-alt"></i>
         </a>
+        <a href="#" class="btn btn-default" id="btnSyncGuru" title="Exportar pro Excel" onclick="parcelasExcel()">
+            <i class="fas fa-file-excel"></i>
+        </a>
+
     </div>
 
     <div id="jsGrid"></div>
@@ -117,6 +127,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+    
+    <script src='~/js/excelexportjs.js'></script>
+    <script src="~/js/comuns.js"></script>
 
     <script>
         $(document).ready(function () {
@@ -130,11 +143,82 @@
             $('#tipodata').val(@ViewBag.tipodata).trigger('change');
 
 
-            $("#idparceiro").val("@ViewBag.SelectedOptionS");
+            $("#idparceiro").val("@ViewBag.idparceiro");
             $("#idassinatura").val("@ViewBag.idassinatura");
             //$('#idfazenda').trigger("change");
 
 
+        });
+
+        function mostrarProcessando() {
+            const modal = new bootstrap.Modal(document.getElementById("modalProcessando"), {
+                backdrop: 'static',
+                keyboard: false
+            });
+            modal.show();
+            window.modalRefProcessando = modal;
+        }
+
+        function esconderProcessando() {
+            if (window.modalRefProcessando) {
+                window.modalRefProcessando.hide();
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const btnSync = document.getElementById("btnSyncGuru");
+            if (btnSync) {
+                btnSync.addEventListener("click", function (e) {
+                    e.preventDefault();
+
+                    atualizarTextoModalProcessando("Processando Pagarme...","Favor aguardar");
+                    mostrarProcessando();
+
+                    const hoje = formatarData(new Date());
+                    var ontem = new Date();
+                    ontem.setDate(ontem.getDate() - 1);
+                    ontem = formatarData(ontem);
+
+                    url = "/ParametrosGuru/GetBaixasPagarmeByData?ini="+ontem+"&fim="+hoje+"&connectionId=null";
+
+                    fetch(url, {
+                        method: "GET"
+                    })
+                        .then(resp => {
+                            if (!resp.ok) throw new Error("Erro ao sincronizar com o Pagarme.");
+                            return resp.json();
+                        })
+                        .then(data => {
+                            esconderProcessando();
+                            alert("Sincronização Pagarme concluída!");
+                            // Opcional: location.reload(); para recarregar dados
+                        })
+                        .catch(err => {
+                            esconderProcessando();
+                            alert("Erro: " + err.message);
+                        });
+
+
+                    url = "/ParametrosGuru/GetBaixasAsaasByData?ini=" + ontem + "&fim=" + hoje + "&connectionId=null";
+                    atualizarTextoModalProcessando("Processando AsaaS...", "Favor aguardar");
+                    fetch(url, {
+                        method: "GET"
+                    })
+                        .then(resp => {
+                            if (!resp.ok) throw new Error("Erro ao sincronizar com o Asaas.");
+                            return resp.json();
+                        })
+                        .then(data => {
+                            esconderProcessando();
+                            alert("Sincronização Asaas concluída!");
+                            Opcional: location.reload(); 
+                        })
+                        .catch(err => {
+                            esconderProcessando();
+                            alert("Erro: " + err.message);
+                        });
+                });
+            }
         });
 
             $("#jsGrid").jsGrid({
@@ -158,7 +242,7 @@
                             data: {
                                 ini: $("input[name='ini']").val(),
                                 fim: $("input[name='fim']").val(),
-                                idparceiro: "@ViewBag.SelectedOptionF",
+                                idparceiro: "@ViewBag.idparceiro",
                                 idassinatura: "@ViewBag.idassinatura",
                                 status: @ViewBag.Status,
                                 forma: @ViewBag.Forma,
@@ -185,7 +269,7 @@
                     },
 
                 {
-                    name: "descontoplataforma", type: "number", title: "Valor", width: 20,
+                    name: "descontoplataforma", type: "number", title: "Valor", width: 25,
                     headerTemplate: function () {
                         return $("<div>").text("Desc Plataforma").css("text-align", "right");
                     },
@@ -199,7 +283,7 @@
                 },
 
                 {
-                    name: "comissao", type: "number", title: "Valor", width: 20,
+                    name: "comissao", type: "number", title: "Valor", width: 25,
                     headerTemplate: function () {
                         return $("<div>").text("Comissão").css("text-align", "right");
                     },
@@ -213,7 +297,7 @@
                 },
 
 
-                    { name: "datavencimento", type: "text", title: "Vencimento", width: 20,
+                    { name: "datavencimento", type: "text", title: "Vencimento", width: 25,
                     itemTemplate: function (value) {
                         const data = new Date(value);
                         const dia = String(data.getDate()).padStart(2, '0');
@@ -222,8 +306,23 @@
                         return `${dia}/${mes}/${ano}`;
                     }
                 },
+                { name: "nomeparceiro", type: "text", title: "Parceiro", width: 80 },
                     { name: "status", type: "text", title: "Status", width: 20 },
                     { name: "descforma", type: "text", title: "Forma Pag", width: 20 },
+                {
+                    name: "dataestimadapagto", type: "text", title: "Data Estimada", width: 28,
+                    itemTemplate: function (value) {
+                        const data = new Date(value);
+                        if (data.toLocaleDateString()!="31/12/2500"){
+                        const dia = String(data.getDate()).padStart(2, '0');
+                        const mes = String(data.getMonth() + 1).padStart(2, '0');
+                        const ano = String(data.getFullYear()).slice(0); // apenas 2 dígitos
+                        return `${dia}/${mes}/${ano}`;}
+                        else {
+                            return " ";
+                        }
+                    }
+                },
                     {
                         type: "control",
                         itemTemplate: function (_, item) {
@@ -231,27 +330,106 @@
 
                             var $button = $("<button>").addClass("btn btn-default dropdown-toggle")
                                 .attr("type", "button")
-                                .attr("data-toggle", "dropdown")
+                                .attr("data-bs-toggle", "dropdown")
                                 .text("Ações");
 
                             var $menu = $("<div>").addClass("dropdown-menu");
 
                             var $edit = $("<a>").addClass("dropdown-item")
-                                .attr("href", "/Parcela/Adicionar?id=" + item.id + "&acao=2&idparceiro=@ViewBag.idparceiro")
+                            .attr("href", "/Parcela/Adicionar?id=" + item.id + "&acao=2&idassinatura=@ViewBag.idassinatura&idparceiro=@ViewBag.idparceiro&forma=@ViewBag.forma&status=@ViewBag.status&ini=@ViewBag.dtinicio&fim=@ViewBag.dtfim")
                                 .text("Editar");
 
                             var $delete = $("<a>").addClass("dropdown-item")
-                                .attr("href", "/Parcela/Adicionar?id=" + item.id + "&acao=3")
+                            .attr("href", "/Parcela/Adicionar?id=" + item.id + "&acao=3&idassinatura=@ViewBag.idassinatura&idparceiro=@ViewBag.idparceiro&forma=@ViewBag.forma&status=@ViewBag.status&ini=@ViewBag.dtinicio&fim=@ViewBag.dtfim")
                                 .text("Excluir");
 
                             $menu.append($edit).append($delete);
                             $result.append($button).append($menu);
 
                             return $result;
+                        },
+                    },
+                    {
+                        type: "control",
+                        
+                            itemTemplate: function (_, item) {
+                            var link = $("<a>")
+                                .addClass("btn btn-sm btn-success")
+                                .attr("href", "/movimentocaixa/adicionar?acao=4&id=" + item.idcaixa)
+                                .attr("title", "Ir para Movimento de Caixa");
+
+                            var icon = $("<i>")
+                                .addClass("fas fa-money-bill-wave");
+
+                            link.append(icon);
+                            return link;
                         }
                     }
                 ]
             });
+
+        function parcelasExcel()
+        {
+           
+
+            $.ajax({
+                type: "GET",
+                url: "/Parcela/GetData",
+                data: {
+                    ini: $("input[name='ini']").val(),
+                    fim: $("input[name='fim']").val(),
+                    idparceiro: "@ViewBag.SelectedOptionF",
+                    idassinatura: "@ViewBag.idassinatura",
+                    status: @ViewBag.Status,
+                    forma: @ViewBag.Forma,
+                    tipodata: @ViewBag.tipodata ,
+                    filtro: $("input[name='filtro']").val()
+                },
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    if (obj != null) {
+                        parcelas=obj;
+                        excelconsulta(parcelas);
+                    }
+                }
+            });
+            
+            
+        }
+
+        function excelconsulta(parcelas) {
+
+            xdata = [];
+
+            for (var i=0;i<=parcelas.length-1;i++) {
+                
+                xdata.push({
+                    //"Talhao": data[i].codigo,
+                    "Numero": parcelas[i].numparcela,
+                    "Valor": parcelas[i].valor.toLocaleString('pt-br', { style: 'decimal', maximumFractionDigits: 2 }),
+                    "Desc Plat": parcelas[i].descontoplataforma.toLocaleString('pt-br', { style: 'decimal', maximumFractionDigits: 2 }),
+                    "Comissao": parcelas[i].comissao.toLocaleString('pt-br', { style: 'decimal', maximumFractionDigits: 2 }),
+                    "Vcto": parcelas[i].datavencimento,
+                    "Parceiro":parcelas[i].nomeparceiro,
+                    "Plataforma":parcelas[i].plataforma,
+                    "Situacao":parcelas[i].status,
+                    "Forma":parcelas[i].descforma
+
+                })
+            }
+            
+            $("#jsGrid").excelexportjs({
+                containerid: "jsGrid"
+                , datatype: 'json'
+                , dataset: xdata
+                , columns: getColumns(xdata)
+            });
+
+
+
+        }
+
         
     </script>
 }

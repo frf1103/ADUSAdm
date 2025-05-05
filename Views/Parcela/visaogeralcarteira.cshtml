@@ -1,0 +1,173 @@
+﻿@model List<ADUSClient.Parcela.visaogeralviewmodel>
+
+@{
+    ViewData["Title"] = "Visão Geral da Carteira";
+}
+
+<h4 class="mb-4">Visão Geral da Carteira</h4>
+
+<style>
+    .tabela-wrapper {
+        overflow-x: auto;
+        max-width: 100%;
+    }
+
+    #tabelaCarteira {
+        min-width: 1800px;
+        width: max-content;
+    }
+
+    body {
+        overflow: auto !important;
+    }
+</style>
+
+<!-- Formulário de Filtros -->
+<form method="get" class="row gy-2 gx-3 align-items-end mb-4">
+    <div class="col-md-3">
+        <label for="vencimentoInicio" class="form-label fw-bold">Vencimento Início</label>
+        <input type="date" name="vencimentoInicio" id="vencimentoInicio" class="form-control form-control-sm" />
+    </div>
+
+    <div class="col-md-3">
+        <label for="vencimentoFim" class="form-label fw-bold">Vencimento Fim</label>
+        <input type="date" name="vencimentoFim" id="vencimentoFim" class="form-control form-control-sm" />
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-container">
+            <label for="idParceiro" class="form-label fw-bold d-block">Parceiro</label>
+            <select class="select2" name="idParceiro" id="idparceiro" data-placeholder="escolha um parceiro" style="width: 100%;">
+                <option value="">Todos</option>
+                @foreach (var item in ViewBag.parceiros)
+                {
+                    if (@item.Value == ViewBag.idParceiro)
+                    {
+                        <option value="@item.Value" selected>@item.Text</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="col-md-4 d-flex align-items-end gap-2">
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-search me-1"></i> Consultar
+        </button>
+        <button type="button" class="btn btn-outline-success" id="btnExportarExcel" disabled>
+            <i class="fas fa-file-excel me-1"></i> Exportar Excel
+        </button>
+    </div>
+
+</form>
+
+<!-- Botões de Ação -->
+
+
+
+
+<div class="tabela-wrapper">
+    <table class="table table-bordered table-striped" id="tabelaCarteira">
+        <thead class="table-light">
+            <tr>
+                <th class="text-start" style="width: 280px;">Parceiro</th>
+                <th class="text-start" style="width: 160px;">Forma de Pagto</th>
+                <th class="text-start" style="width: 160px;">Plataforma</th>
+                <th class="alinha-direita" style="width: 70px;">Árvores</th>
+                <th class="alinha-direita" style="width: 140px;">Total</th>
+                <th class="alinha-direita" style="width: 140px;">Valor Pago</th>
+                <th class="alinha-direita" style="width: 140px;">Valor Vencido</th>
+                <th class="alinha-direita" style="width: 140px;">A Vencer</th>
+                <th class="alinha-direita" style="width: 160px;">Comissão Paga</th>
+                <th class="alinha-direita" style="width: 160px;">Taxa de Antecipação</th>
+                <th class="alinha-direita" style="width: 160px;">Taxa da Plataforma</th>
+                <th class="alinha-direita" style="width: 160px;">Valor Recebido</th>
+                <th class="alinha-direita" style="width: 160px;">A Compensar</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-start">@item.nomeParceiro</td>
+                    <td class="text-start">@item.formaPagamento</td>
+                    <td class="text-start">@item.plataForma</td>
+                    <td class="alinha-direita">@item.arvores.ToString()</td>
+                    <td class="alinha-direita">@item.valortotal.ToString("C")</td>
+                    <td class="alinha-direita">@item.valorPago.ToString("C")</td>
+                    <td class="alinha-direita"><a href="/parcela/index?ini=2000-01-01&fim=@ViewBag.hoje&idparceiro=@item.idParceiro&status=0">@item.valorVencidas.ToString("C")</a></td>
+                    <td class="alinha-direita">@item.valorAVencer.ToString("C")</td>
+                    <td class="alinha-direita">@item.comissaoPaga.ToString("C")</td>
+                    <td class="alinha-direita">@item.taxaAntecipacao.ToString("C")</td>
+                    <td class="alinha-direita">@item.taxaPlataforma.ToString("C")</td>
+                    <td class="alinha-direita">@item.valorRecebido.ToString("C")</td>
+                    <td class="alinha-direita">@item.acompensar.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot class="table-light fw-bold">
+            <tr>
+                <td colspan="3" class="text-end">Totais:</td>
+                <td class="alinha-direita">@ViewBag.arvores?.ToString()</td>
+                <td class="alinha-direita">@ViewBag.TotalValor?.ToString("C")</td>
+                <td class="alinha-direita">@ViewBag.TotalPago?.ToString("C")</td>
+                <td class="alinha-direita">@ViewBag.TotalVencido?.ToString("C")</td>
+                <td class="alinha-direita">@ViewBag.TotalAVencer?.ToString("C")</td>
+                <td class="alinha-direita">@ViewBag.TotalComissao?.ToString("C")</td>
+                <td class="alinha-direita">@ViewBag.TotalAntecipacao?.ToString("C")</td>
+                <td class="alinha-direita">@ViewBag.TotalPlataforma?.ToString("C")</td>
+                <td class="alinha-direita">@ViewBag.TotalRecebido?.ToString("C")</td>
+                <td class="alinha-direita">@ViewBag.Acompensar?.ToString("C")</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+@section Scripts {
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Inicializa Select2
+            
+
+            // Verifica se há linhas na tabela (exceto o cabeçalho) e habilita o botão
+            const linhas = document.querySelectorAll("#tabelaCarteira tbody tr");
+            if (linhas.length > 0) {
+                $('#btnExportarExcel').prop("disabled", false);
+            }
+
+            $('#btnExportarExcel').on('click', function () {
+                const tabela = document.getElementById("tabelaCarteira");
+                const wb = XLSX.utils.book_new();
+                const ws = XLSX.utils.table_to_sheet(tabela, { raw: true });
+
+                // Corrige valores monetários para números
+                const colunasNumericas = [4, 5, 6, 7, 8, 9, 10, 11, 12];
+                for (const R in ws) {
+                    if (R[0] === '!') continue;
+                    const colIndex = XLSX.utils.decode_cell(R).c;
+                    if (colunasNumericas.includes(colIndex)) {
+                        const cell = ws[R];
+                        if (cell && typeof cell.v === 'string') {
+                            const valor = cell.v.replace(/[^\d,-]/g, '').replace(',', '.');
+                            const numero = parseFloat(valor);
+                            if (!isNaN(numero)) {
+                                cell.v = numero;
+                                cell.t = 'n';
+                            }
+                        }
+                    }
+                }
+
+                XLSX.utils.book_append_sheet(wb, ws, "Carteira");
+                XLSX.writeFile(wb, "visao_geral.xlsx");
+            });
+        });
+    </script>
+
+}
