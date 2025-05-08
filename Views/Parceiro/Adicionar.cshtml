@@ -26,6 +26,7 @@
                     <div class="tab-content" id="custom-content-above-tabContent">
                         <div class="tab-pane fade show active" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab">
                             <form asp-action="adicionar">
+                                @Html.AntiForgeryToken()
                                 <div class="card">
                                     <div class="card-body">
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -216,6 +217,12 @@
 </div>
 
 @section scripts {
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@4.0.0/dist/jquery.validate.unobtrusive.min.js"></script>
+
+
     <script>
         var cidades=[]
 

@@ -91,7 +91,7 @@ namespace ADUSAdm.Controllers
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var plano = JsonConvert.DeserializeObject<PlanoContaViewModel>(json);
-                return RedirectToAction("Adicionar", new { acao = 2, id = plano.Id });
+                return RedirectToAction("Adicionar", new { acao = 1});
             }
 
             string erro = await response.Content.ReadAsStringAsync();

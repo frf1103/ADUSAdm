@@ -259,6 +259,20 @@ namespace ADUSAdm.Controllers
             return View("excluir");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Cancelar(string id, string motivo)
+        {
+            motivo = "MOTIVO: " + motivo.Trim() + " CANCELADA POR: " + _sessionManager.username + " EM " + DateTime.Now.ToString();
+            var response = await _culturaAPI.Cancelar(id, motivo);
+            if (response != null)
+            {
+                return RedirectToAction("Index");
+            }
+            ModelState.AddModelError(string.Empty, "Ocorreu um erro ao tentar cancelar a assinatura");
+
+            return View("index");
+        }
+
         public async Task<JsonResult> GetData(DateTime ini, DateTime fim, string idparceiro, string status, int forma, string? filtro)
         {
             Task<List<ADUSClient.Assinatura.ListAssinaturaViewModel>> ret = _culturaAPI.Lista(ini, fim, idparceiro, status, forma, filtro);

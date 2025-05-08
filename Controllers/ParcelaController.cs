@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using System.Globalization;
 using System.Text.Json;
 
 namespace ADUSAdm.Controllers
@@ -77,6 +78,8 @@ namespace ADUSAdm.Controllers
             }
 
             //var lista = await _clienteAPI.ListarParcela(dataIni, dataFim, tipodata, status, idparceiro, forma, idassinatura, filtro);
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
             return View("Index");
         }
 
@@ -139,6 +142,9 @@ namespace ADUSAdm.Controllers
             ViewBag.ini = ini.ToString("yyyy-MM-dd");
             ViewBag.fim = fim.ToString("yyyy-MM-dd");
             ViewBag.status = status;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+            Console.WriteLine($"idassinatura = {c.idassinatura}");
 
             return View(c);
         }
@@ -146,6 +152,8 @@ namespace ADUSAdm.Controllers
         [HttpPost]
         public async Task<IActionResult> Adicionar(ParcelaViewModel dados)
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
             var response = await _clienteAPI.Adicionar(dados);
             if (response.IsSuccessStatusCode)
             {

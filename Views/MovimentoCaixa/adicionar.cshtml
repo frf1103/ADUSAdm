@@ -14,9 +14,8 @@
     </div>
 </section>
 
-
 @{
-    var desabilitar = ViewBag.Acao=="Visualizar" ? "disabled" : "";
+    var desabilitar = ViewBag.Acao == "Visualizar" ? "disabled" : "";
 }
 <div class="wrapper">
     <section class="content">
@@ -29,7 +28,7 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <label asp-for="IdTransacao" class="form-label fw-bold">Transação</label>
-                                <select asp-for="IdTransacao" id="idtransacao" class="form-control" asp-items="ViewBag.Transacoes" ></select>
+                                <select asp-for="IdTransacao" id="idtransacao" class="form-control" asp-items="ViewBag.Transacoes"></select>
                             </div>
 
                             <div class="col-md-3">
@@ -60,9 +59,9 @@
                             </div>
 
                             <div class="col-md-3">
-                                <label asp-for="Valor" class="form-label fw-bold">Valor</label>
-                                <input asp-for="Valor" class="form-control" />
-                                <span asp-validation-for="Valor" class="text-danger small"></span>
+                                <label asp-for="valorInput" class="form-label fw-bold">Valor</label>
+                                <input asp-for="valorInput" class="form-control moeda" id="valorInput" />
+                                <span asp-validation-for="valorInput" class="text-danger small"></span>
                             </div>
 
                             <div class="col-md-3">
@@ -103,16 +102,20 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
 @section Scripts {
+
     <script src="~/js/comuns.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 
     <script>
 
-
+        function parseDecimal(valor) {
+            if (!valor) return 0;
+            return parseFloat(valor.replace(/\./g, '').replace(',', '.')) || 0;
+        }
 
         window.addEventListener('DOMContentLoaded', () => {
             const acao = '@ViewBag.Acao';
             if (acao === 'Ver') {
-                // Seleciona todos os campos de formulário dentro da `<form>`
                 const form = document.querySelector('form');
                 if (form) {
                     const elementos = form.querySelectorAll('input, select, textarea, button');
@@ -121,6 +124,10 @@
                     });
                 }
             }
+        });
+
+        $(document).ready(function () {
+            $('.moeda').mask('#.##0,00', { reverse: true });
         });
     </script>
 }

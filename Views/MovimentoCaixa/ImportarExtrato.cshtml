@@ -4,6 +4,15 @@
     ViewData["Title"] = "Importar Extrato";
 }
 
+
+@if (ViewBag.Erro != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert" id="mensagemErro">
+        @ViewBag.Erro
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
+}
+
 <!-- CSS Select2 -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
@@ -103,6 +112,7 @@
                         <td>
                             <input type="hidden" name="[@i].id" value="@Model[i].id" />
                             <input type="hidden" name="[@i].IdTransacBanco" value="@Model[i].IdTransacBanco" />
+                            <input type="hidden" name="[@i].idparceiro" value="@Model[i].idparceiro" />
                             <input type="hidden" name="[@i].datamov" value="@Model[i].datamov.ToString("yyyy-MM-dd")" />
                             <input type="text" name="[@i].Historico" class="form-control" value="@Model[i].Historico" readonly />
                         </td>
@@ -195,6 +205,15 @@
                 }, 5000);
             }
 
+            setTimeout(function () {
+                const alerta = document.getElementById("mensagemErro");
+                if (alerta) {
+                    alerta.classList.remove("show");
+                    alerta.classList.add("fade");
+                    alerta.style.display = "none";
+                }
+            }, 10000); // 5 segundos
+
             $('#btnImportarExtrato').on('click', function (e) {
                 e.preventDefault();
                 $('#btnImportarExtrato').prop('disabled', true).text('Salvando...');
@@ -204,6 +223,7 @@
                     const row = $(this);
                     const id = row.find('input[name$=".id"]').val();
                     const idTransacBanco = row.find('input[name$=".IdTransacBanco"]').val();
+                    const idparceiro = row.find('input[name$=".idparceiro"]').val();
                     const historico = row.find('input[name$=".Historico"]').val();
                     var valor = row.find('input[name$=".Valor"]').val();
                     const datamov = row.find('input[name$=".datamov"]').val();
@@ -223,7 +243,7 @@
                         idCategoria: parseInt(idcategoria),
                         idCentrocusto: parseInt(idcentrocusto),
                         idConta: idconta,
-                        idparceiro: $('#idparceiro').val(),
+                        idparceiro: idparceiro,
                         idbanco: $('#idbanco').val()
                     });
                 });

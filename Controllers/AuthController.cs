@@ -122,6 +122,7 @@ public class AuthController : Controller
 
         _sessionManager.uid = userid;
         _sessionManager.userrole = role;
+        _sessionManager.username = dados.Username;
 
         _sessionManager.urlconvite = _configuration.GetValue<string>("AppSettings:urlconvite");
 

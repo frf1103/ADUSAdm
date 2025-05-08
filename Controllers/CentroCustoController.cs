@@ -68,7 +68,7 @@ namespace ADUSAdm.Controllers
             {
                 var json = await response.Content.ReadAsStringAsync();
                 var obj = JsonConvert.DeserializeObject<CentroCustoViewModel>(json);
-                return RedirectToAction("Adicionar", new { acao = 2, id = obj!.Id });
+                return RedirectToAction("Adicionar", new { acao = 1});
             }
 
             string erro = await response.Content.ReadAsStringAsync();

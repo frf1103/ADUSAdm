@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ADUSClient.MovimentoCaixa.MovimentoCaixaViewModel>
+﻿
 @{
     ViewData["Title"] = "Movimento de Caixa";
 }
@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
 
 <section class="content">
-    <form id="formFiltro">
+    <form id="formFiltro" asp-controller="MovimentoCaixa" asp-action="Index" method="get">
         <div class="row">
             <div class="col-md-12">
                 <button class="btn btn-default" type="button" data-bs-toggle="collapse" data-bs-target="#filter" aria-expanded="false" aria-controls="filter">
@@ -37,33 +37,33 @@
                             <div class="col-md-4">
                                 <label>Transação</label>
                                 <select class="form-control select2" id="idTransacao" name="idTransacao" asp-items="ViewBag.Transacoes">
-                                    <option value="">Todas</option>
+                                    <option value="0">Todas</option>
                                 </select>
                             </div>
                             <div class="col-md-4">
                                 <label>Centro de Custo</label>
                                 <select class="form-control select2" id="idCentroCusto" name="idCentroCusto" asp-items="ViewBag.CentroCustos">
-                                    <option value="">Todos</option>
+                                    <option value="0">Todos</option>
                                 </select>
                             </div>
                             <div class="col-md-4">
                                 <label>Categoria</label>
                                 <select class="form-control select2" id="idCategoria" name="idCategoria" asp-items="ViewBag.Categorias">
-                                    <option value="">Todas</option>
+                                    <option value="0">Todas</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-4">
                                 <label>Conta Corrente</label>
-                                <select class="form-control select2" id="idContaCorrente" name="idContaCorrente" asp-items="ViewBag.ContasCorrentes">
-                                    <option value="">Todas</option>
+                                <select class="form-control select2" id="idContaCorrente" name="idContaCorrente" asp-items="ViewBag.Contas">
+                                    <option value="0">Todas</option>
                                 </select>
                             </div>
                             <div class="col-md-4">
                                 <label>Parceiro</label>
                                 <select class="form-control select2" id="idParceiro" name="idParceiro" asp-items="ViewBag.Parceiros">
-                                    <option value="">Todos</option>
+                                    <option value="0">Todos</option>
                                 </select>
                             </div>
                             <div class="col-md-4 d-flex align-items-end">
@@ -101,10 +101,22 @@
         $(document).ready(function () {
             $('.select2').select2({ theme: 'bootstrap-5' });
 
+
+            $("#dataInicio").val("@ViewBag.ini").trigger('change');
+            $("#dataFim").val("@ViewBag.fim").trigger('change');
+            $("#idTransacao").val("@ViewBag.idtransacao").trigger('change');
+            $("#idCentroCusto").val("@ViewBag.idcentrocusto").trigger('change');
+            $("#idCategoria").val("@ViewBag.idcategoria").trigger('change');
+            $("#idContaCorrente").val("@ViewBag.idcontacorrente").trigger('change');
+            $("#idParceiro").val("@ViewBag.idparceiro").trigger('change');
+/*
             $("#formFiltro").on("submit", function (e) {
                 e.preventDefault();
                 $("#jsGrid").jsGrid("loadData");
+                $('#filter').collapse('hide');
             });
+            */
+
 
             $("#jsGrid").jsGrid({
                 width: "100%",
@@ -127,8 +139,8 @@
                             type: "GET",
                             url: "/MovimentoCaixa/GetData",
                             data: {
-                                dataInicio: $("#dataInicio").val(),
-                                dataFim: $("#dataFim").val(),
+                                dataInicio: "@ViewBag.ini",
+                                dataFim: "@ViewBag.fim",
                                 descricao: $("#descricao").val(),
                                 idTransacao: $("#idTransacao").val(),
                                 idCentroCusto: $("#idCentroCusto").val(),
@@ -142,7 +154,7 @@
                 },
                 fields: [
                     { name: "id", title: "ID", type: "text", width: 40 },
-                    { name: "dataMov", title: "Data", type: "text", width: 60, itemTemplate: v => new Date(v).toLocaleDateString() },
+                    { name: "dataMov", title: "Data", type: "text", width: 65, itemTemplate: v => new Date(v).toLocaleDateString() },
                     { name: "descTransacao", title: "Transação", type: "text", width: 120 },
                     { name: "descCentroCusto", title: "Centro Custo", type: "text", width: 120 },
                     { name: "descCategoria", title: "Categoria", type: "text", width: 120 },
@@ -185,6 +197,9 @@
                     }
                 ]
             });
+
         });
+
+
     </script>
 }

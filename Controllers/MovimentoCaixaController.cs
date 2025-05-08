@@ -24,6 +24,7 @@ namespace ADUSAdm.Controllers
         private readonly SessionManager _sessionManager;
         private readonly TransacBancoControllerClient _extratoAPI;
         private readonly ParametroGuruControllerClient _parametro;
+        private readonly ParcelaControllerClient _parcela;
 
         public MovimentoCaixaController(
             MovimentoCaixaControllerClient clienteAPI,
@@ -34,7 +35,8 @@ namespace ADUSAdm.Controllers
             ContaCorrenteControllerClient contaCorrenteAPI,
             SessionManager sessionManager,
             TransacBancoControllerClient extratoAPI,
-            ParametroGuruControllerClient parametro)
+            ParametroGuruControllerClient parametro,
+            ParcelaControllerClient parcela)
         {
             _clienteAPI = clienteAPI;
             _transacaoAPI = transacaoAPI;
@@ -45,6 +47,7 @@ namespace ADUSAdm.Controllers
             _sessionManager = sessionManager;
             _extratoAPI = extratoAPI;
             _parametro = parametro;
+            _parcela = parcela;
         }
 
         private async Task CarregarViewBagsAsync()
@@ -71,19 +74,25 @@ namespace ADUSAdm.Controllers
             }, "Valor", "Texto");
         }
 
-        public async Task<IActionResult> Index(DateTime? ini, DateTime? fim, int? idtransacao, int? idcentrocusto, string? idparceiro, int? idcontacorrente, int? idcategoria, string? filtro)
+        public async Task<IActionResult> Index(DateTime? dataInicio, DateTime? dataFim, int? idtransacao, int? idcentrocusto, string? idparceiro, int? idcontacorrente, int? idcategoria, string? filtro)
         {
             ViewBag.permissao = (_sessionManager.userrole != "UserV");
 
             //var lista = await _clienteAPI.ListarAsync(ini, fim, idtransacao, idcentrocusto, idparceiro, idcontacorrente, idcategoria, filtro);
-
+            DateTime? ini, fim;
+            ini = dataInicio; fim = dataFim;
+            if (ini == null)
+            {
+                ini = DateTime.Now.Date.AddDays(-7);
+                fim = DateTime.Now.Date;
+            }
             ViewBag.ini = ini?.ToString("yyyy-MM-dd");
             ViewBag.fim = fim?.ToString("yyyy-MM-dd");
-            ViewBag.idtransacao = idtransacao;
-            ViewBag.idcentrocusto = idcentrocusto;
-            ViewBag.idparceiro = idparceiro;
-            ViewBag.idcontacorrente = idcontacorrente;
-            ViewBag.idcategoria = idcategoria;
+            ViewBag.idtransacao = idtransacao ?? 0;
+            ViewBag.idcentrocusto = idcentrocusto ?? 0;
+            ViewBag.idparceiro = idparceiro ?? "0";
+            ViewBag.idcontacorrente = idcontacorrente ?? 0;
+            ViewBag.idcategoria = idcategoria ?? 0;
             ViewBag.filtro = filtro;
 
             await CarregarViewBagsAsync();
@@ -193,16 +202,23 @@ namespace ADUSAdm.Controllers
             List<ExtratoViewModel> extrato = new List<ExtratoViewModel>();
             if (acao == 1)
             {
-                var conta = await _contaCorrenteAPI.GetById(idContaCorrente);
-                int idbanco = conta.bancoId;
-                if (plataforma == "pagarme")
+                try
                 {
-                    extrato = await ExtratoPagarme(dataInicio, dataFim, idbanco, idContaCorrente);
-                }
+                    var conta = await _contaCorrenteAPI.GetById(idContaCorrente);
+                    int idbanco = conta.bancoId;
 
-                if (plataforma == "asaas")
+                    if (plataforma == "pagarme")
+                    {
+                        extrato = await ExtratoPagarme(dataInicio, dataFim, idbanco, idContaCorrente);
+                    }
+                    else if (plataforma == "asaas")
+                    {
+                        extrato = await ExtratoAsaas(dataInicio, dataFim, idbanco, idContaCorrente);
+                    }
+                }
+                catch (Exception ex)
                 {
-                    extrato = await ExtratoAsaas(dataInicio, dataFim, idbanco, idContaCorrente);
+                    ViewBag.Erro = "Erro ao importar extrato: " + ex.Message;
                 }
             }
             dini = dataInicio;
@@ -274,11 +290,13 @@ namespace ADUSAdm.Controllers
 
                 var response = await client.ExecuteGetAsync(request);
 
+                /*
                 if (!response.IsSuccessful)
                 {
                     Console.WriteLine("Erro: " + response.ErrorMessage);
+
                     break;
-                }
+                }*/
 
                 // Adicione sua lógica de deserialização aqui
 
@@ -291,11 +309,15 @@ namespace ADUSAdm.Controllers
                     foreach (var item in dataArray.EnumerateArray())
                     {
                         string idrec = "";
-                        if (item.TryGetProperty("movement_object.recipient_id", out var rec))
+                        if (item.TryGetProperty("movement_object", out var mov))
                         {
-                            idrec = rec.GetString();
+                            if (mov.TryGetProperty("recipient_id", out var rec))
+                            {
+                                idrec = rec.GetString();
+                            }
                         }
-                        if (idrec != "re_cm4dczn1igtsv0l9tj0rmd5gt" && item.GetProperty("type").GetString() != "external_settlement" & item.GetProperty("type").GetString() != "payable")
+                        //"re_cm4dczn1igtsv0l9tj0rmd5gt"
+                        if (item.GetProperty("type").GetString() != "external_settlement" & item.GetProperty("type").GetString() != "payable")
                         {
                             //"external_settlement"
                             //"re_cm4dczn1igtsv0l9tj0rmd5gt"
@@ -314,7 +336,7 @@ namespace ADUSAdm.Controllers
                                     idCentrocusto = v[2],
                                     idparceiro = model.idparceiro,
                                     idbanco = bancoid,
-                                    Valor = item.GetProperty("amount").GetDecimal() / 100 - item.GetProperty("fee").GetDecimal() / 100
+                                    Valor = (item.GetProperty("amount").GetDecimal() / 100 - item.GetProperty("fee").GetDecimal() / 100)
                                 });
                             }
                         }
@@ -357,13 +379,13 @@ namespace ADUSAdm.Controllers
                 request.AddHeader("accept", "application/json");
 
                 var response = await client.ExecuteGetAsync(request);
-
-                if (!response.IsSuccessful)
-                {
-                    Console.WriteLine("Erro: " + response.ErrorMessage);
-                    break;
-                }
-
+                /*
+                                if (!response.IsSuccessful)
+                                {
+                                    Console.WriteLine("Erro: " + response.ErrorMessage);
+                                    break;
+                                }
+                */
                 // Adicione sua lógica de deserialização aqui
 
                 var json = response.Content; // string com JSON recebido do Pagar.me
@@ -379,7 +401,9 @@ namespace ADUSAdm.Controllers
                     foreach (var item in dataArray.EnumerateArray())
                     {
                         string idrec = "";
-                        if (item.GetProperty("type").GetString() != "PAYMENT_RECEIVED" && item.GetProperty("type").GetString() != "INTERNAL_TRANSFER_DEBIT")
+                        if (item.GetProperty("type").GetString() != "PAYMENT_RECEIVED"
+                        && item.GetProperty("type").GetString() != "INTERNAL_TRANSFER_DEBIT")
+                        //&& item.GetProperty("type").GetString() != "PAYMENT_FEE")
                         {
                             //"external_settlement"
                             //"re_cm4dczn1igtsv0l9tj0rmd5gt"
@@ -387,6 +411,19 @@ namespace ADUSAdm.Controllers
                             if (movcaixa == null || movcaixa.Count == 0)
                             {
                                 var v = await BuscaTransacao(item.GetProperty("type").GetString(), bancoid);
+                                string idparceiro = model.idparceiro;
+                                if (item.GetProperty("type").GetString() == "PAYMENT_FEE")
+                                {
+                                    //paymentId
+                                    if (item.GetProperty("paymentId").GetString() != null)
+                                    {
+                                        var parcela = await _parcela.ListaByIdCheckout(item.GetProperty("paymentId").GetString());
+                                        if (parcela != null)
+                                        {
+                                            idparceiro = parcela.idparceiro;
+                                        }
+                                    }
+                                }
                                 lista.Add(new ExtratoViewModel
                                 {
                                     datamov = item.GetProperty("date").GetDateTime().Date,
@@ -396,10 +433,10 @@ namespace ADUSAdm.Controllers
                                     idCategoria = v[1],
                                     IdTransacBanco = item.GetProperty("type").GetString(),
                                     idCentrocusto = v[2],
-                                    idparceiro = model.idparceiro,
+                                    idparceiro = idparceiro,
                                     idbanco = bancoid,
                                     Valor = item.GetProperty("value").GetDecimal()
-                                });
+                                }); ;
                             }
                         }
                     }
@@ -431,6 +468,7 @@ namespace ADUSAdm.Controllers
                 foreach (var item in extratos)
                 {
                     // Exemplo: salvar em API TransacBanco (ou montar uma TransacBancoViewModel e enviar)
+                    
                     var transac = new MovimentoCaixaViewModel
                     {
                         DataMov = item.datamov,

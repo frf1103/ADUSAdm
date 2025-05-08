@@ -417,7 +417,7 @@ public class ParametrosGuruController : Controller
 
             if (!response.IsSuccessful)
             {
-                Console.WriteLine("Erro: " + response.ErrorMessage);
+                Console.WriteLine("Erro: " + response.ErrorException.Message);
                 break;
             }
 
@@ -461,10 +461,44 @@ public class ParametrosGuruController : Controller
                                 IdContaCorrente = model.idconta,
                                 IdTransacao = (int)model.idtransacao,
                                 idparceiro = parc.idparceiro,
-                                Valor = item.GetProperty("netValue").GetDecimal() - parc.comissao,
+                                Valor = item.GetProperty("value").GetDecimal(),
                                 Sinal = "C",
-                                Observacao = sobs
+                                Observacao = sobs,
+                                idmovbanco = item.GetProperty("id").GetString()
                             });
+
+                            var respcomiss = await _movcaixaAPI.AdicionarAsync(new ADUSClient.MovimentoCaixa.MovimentoCaixaViewModel
+                            {
+                                DataMov = item.GetProperty("creditDate").GetDateTime().Date,
+                                IdCategoria = (int)model.idcategoriacomiss,
+                                IdCentroCusto = (int)model.idccusto,
+                                IdContaCorrente = model.idconta,
+                                IdTransacao = (int)model.idtransacaocomiss,
+                                idparceiro = parc.idparceiro,
+                                Valor = parc.comissao,
+                                Sinal = "D",
+                                Observacao = "PAGTO COMISSAO",
+                                idmovbanco = item.GetProperty("id").GetString()
+                            });
+                            /*
+                            if (item.GetProperty("value").GetDecimal() != item.GetProperty("netValue").GetDecimal())
+                            {
+                                var resptaxa = await _movcaixaAPI.AdicionarAsync(new ADUSClient.MovimentoCaixa.MovimentoCaixaViewModel
+                                {
+                                    DataMov = item.GetProperty("creditDate").GetDateTime().Date,
+                                    IdCategoria = (int)model.idcategoriataxa,
+                                    IdCentroCusto = (int)model.idccusto,
+                                    IdContaCorrente = model.idconta,
+                                    IdTransacao = (int)model.idtransacaotaxa,
+                                    idparceiro = parc.idparceiro,
+                                    Valor = item.GetProperty("value").GetDecimal() - item.GetProperty("netValue").GetDecimal(),
+                                    Sinal = "D",
+                                    Observacao = "TAXA PLATAFORMA ",
+                                    idmovbanco = item.GetProperty("id").GetString()
+                                });
+                            };
+                            */
+
                             string y = await respc.Content.ReadAsStringAsync();
                             var result = JsonConvert.DeserializeObject<MovimentoCaixaViewModel>(y);
                             if (item.GetProperty("billingType").GetString() != "CREDIT_CARD")
@@ -566,11 +600,11 @@ public class ParametrosGuruController : Controller
                             adiant = 0;
                             taxa = 0;
                             comissao = 0;
-                            if (item.GetProperty("recipient_id").GetString() == "re_cm4dczn1igtsv0l9tj0rmd5gt")
-                            {
-                                comissao = item.GetProperty("amount").GetDecimal() / 100;
-                            }
-                            else
+                            if (item.GetProperty("recipient_id").GetString() != "re_cm4dczn1igtsv0l9tj0rmd5gt")
+                            //                            {
+                            //                                comissao = item.GetProperty("amount").GetDecimal() / 100;
+                            //                            }
+                            //                            else
                             {
                                 valor = item.GetProperty("amount").GetDecimal() / 100;
                                 adiant = item.GetProperty("anticipation_fee").GetDecimal() / 100;
@@ -578,17 +612,6 @@ public class ParametrosGuruController : Controller
                             }
                             if (valor != 0)
                             {
-                                var respc = await _movcaixaAPI.AdicionarAsync(new ADUSClient.MovimentoCaixa.MovimentoCaixaViewModel
-                                {
-                                    DataMov = item.GetProperty("payment_date").GetDateTime().Date,
-                                    IdCategoria = (int)model.idcategoria,
-                                    IdCentroCusto = (int)model.idccusto,
-                                    IdContaCorrente = model.idconta,
-                                    IdTransacao = (int)model.idtransacao,
-                                    idparceiro = parc.idparceiro,
-                                    Valor = (decimal)(valor - adiant - taxa),
-                                    Sinal = "C"
-                                });
                                 if (comissao == 0)
                                 {
                                     string urlc = model.urltransac + "?charge_id=" + id + "&recipient_id=re_cm4dczn1igtsv0l9tj0rmd5gt";
@@ -607,7 +630,75 @@ public class ParametrosGuruController : Controller
                                         using var docc = JsonDocument.Parse(jsonc);
                                         comissao = docc.RootElement.GetProperty("data")[0].GetProperty("amount").GetDecimal() / 100;
                                     }
+                                    if (comissao != 0)
+                                    {
+                                        var respcomiss = await _movcaixaAPI.AdicionarAsync(new ADUSClient.MovimentoCaixa.MovimentoCaixaViewModel
+                                        {
+                                            DataMov = item.GetProperty("payment_date").GetDateTime().Date,
+                                            IdCategoria = (int)model.idcategoriacomiss,
+                                            IdCentroCusto = (int)model.idccusto,
+                                            IdContaCorrente = model.idconta,
+                                            IdTransacao = (int)model.idtransacaocomiss,
+                                            idparceiro = parc.idparceiro,
+                                            //Valor = (decimal)(valor - adiant - taxa + comissao),
+                                            Valor = (decimal)(comissao),
+                                            Sinal = "D",
+                                            idmovbanco = item.GetProperty("id").GetUInt64().ToString(),
+                                            Observacao = "PAGTO COMISSÂO "
+                                        });
+                                    }
                                 }
+
+                                var respc = await _movcaixaAPI.AdicionarAsync(new ADUSClient.MovimentoCaixa.MovimentoCaixaViewModel
+                                {
+                                    DataMov = item.GetProperty("payment_date").GetDateTime().Date,
+                                    IdCategoria = (int)model.idcategoria,
+                                    IdCentroCusto = (int)model.idccusto,
+                                    IdContaCorrente = model.idconta,
+                                    IdTransacao = (int)model.idtransacao,
+                                    idparceiro = parc.idparceiro,
+                                    //Valor = (decimal)(valor - adiant - taxa + comissao),
+                                    Valor = (decimal)(valor + comissao),
+                                    Sinal = "C",
+                                    idmovbanco = item.GetProperty("id").GetUInt64().ToString(),
+                                    Observacao = "RECEBIMENTO"
+                                });
+                                if (adiant != 0)
+                                {
+                                    var respadiant = await _movcaixaAPI.AdicionarAsync(new ADUSClient.MovimentoCaixa.MovimentoCaixaViewModel
+                                    {
+                                        DataMov = item.GetProperty("payment_date").GetDateTime().Date,
+                                        IdCategoria = (int)model.idcategoriaant,
+                                        IdCentroCusto = (int)model.idccusto,
+                                        IdContaCorrente = model.idconta,
+                                        IdTransacao = (int)model.idtransacaoant,
+                                        idparceiro = parc.idparceiro,
+                                        //Valor = (decimal)(valor - adiant - taxa + comissao),
+                                        Valor = (decimal)(adiant),
+                                        Sinal = "D",
+                                        idmovbanco = item.GetProperty("id").GetUInt64().ToString(),
+                                        Observacao = "TAXA ANTECIPACAO "
+                                    });
+                                }
+
+                                if (taxa != 0)
+                                {
+                                    var respadiant = await _movcaixaAPI.AdicionarAsync(new ADUSClient.MovimentoCaixa.MovimentoCaixaViewModel
+                                    {
+                                        DataMov = item.GetProperty("payment_date").GetDateTime().Date,
+                                        IdCategoria = (int)model.idcategoriataxa,
+                                        IdCentroCusto = (int)model.idccusto,
+                                        IdContaCorrente = model.idconta,
+                                        IdTransacao = (int)model.idtransacaotaxa,
+                                        idparceiro = parc.idparceiro,
+                                        //Valor = (decimal)(valor - adiant - taxa + comissao),
+                                        Valor = (decimal)(taxa),
+                                        Sinal = "D",
+                                        idmovbanco = item.GetProperty("id").GetUInt64().ToString(),
+                                        Observacao = "TAXA PLATAFORMA"
+                                    });
+                                }
+
                                 string y = await respc.Content.ReadAsStringAsync();
                                 var result = JsonConvert.DeserializeObject<MovimentoCaixaViewModel>(y);
 

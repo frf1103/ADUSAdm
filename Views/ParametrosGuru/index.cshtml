@@ -110,7 +110,41 @@
                         </div>
 
                     </div>
-                
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <label asp-for="idcategoriataxa" class="form-label fw-bold">Categoria para Taxa </label>
+                            <select asp-for="idcategoriataxa" class="form-control" asp-items="ViewBag.Categorias"></select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label asp-for="idcategoriaant" class="form-label fw-bold">Categoria Tx Antecip</label>
+                            <select asp-for="idcategoriaant" class="form-control" asp-items="ViewBag.Categorias"></select>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="idcategoriacomiss" class="form-label fw-bold">Categoria Comissão</label>
+                            <select asp-for="idcategoriacomiss" class="form-control" asp-items="ViewBag.Categorias"></select>
+                        </div>
+
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <label asp-for="idtransacaotaxa" class="form-label fw-bold"></label>
+                            <select asp-for="idtransacaotaxa" class="form-control" asp-items="ViewBag.Transacoes"></select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label asp-for="idtransacaoant" class="form-label fw-bold"></label>
+                            <select asp-for="idtransacaoant" class="form-control" asp-items="ViewBag.Transacoes"></select>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="idtransacaocomiss" class="form-label fw-bold"></label>
+                            <select asp-for="idtransacaocomiss" class="form-control" asp-items="ViewBag.Transacoes"></select>
+                        </div>
+
+                    </div>
+
 
                 }
 

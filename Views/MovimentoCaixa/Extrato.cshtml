@@ -37,6 +37,9 @@
         <button type="button" class="btn btn-outline-secondary btn-sm" onclick="imprimirTabela()">
             <i class="fas fa-print me-1"></i> Imprimir
         </button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" id="btnExportarExcel">
+            <i class="fas fa-file-excel me-1"></i> Exportar Excel
+        </button>
     </div>
 </form>
 
@@ -48,8 +51,11 @@
         <table class="table table-bordered table-striped" id="extratoTabela">
             <thead class="table-light">
                 <tr>
-                    <th style="width: 12%;">Data</th>
+                    <th style="width: 8%;">Data</th>
+                    <th>Transação</th>
+                    <th>Parceiro</th>
                     <th>Histórico</th>
+                    <th>ID Banco</th>
                     <th class="text-end">Débito</th>
                     <th class="text-end">Crédito</th>
                     <th class="text-end">Saldo</th>
@@ -60,7 +66,10 @@
                 {
                     <tr>
                         <td>@item.datamov.ToString("dd/MM/yyyy")</td>
+                        <td>@item.desctransacao</td>
+                        <td>@item.nomeparceiro</td>
                         <td>@item.historico</td>
+                        <td>@item.idmovbanco</td>
                         <td class="text-end">@(item.debito.HasValue ? item.debito.Value.ToString("N2") : "")</td>
                         <td class="text-end">@(item.credito.HasValue ? item.credito.Value.ToString("N2") : "")</td>
                         <td class="text-end">@item.saldo.Value.ToString("N2")</td>
@@ -74,6 +83,7 @@
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
         $(document).ready(function () {
             $('.select2-conta').select2({
@@ -91,7 +101,7 @@
                         table { width: 100%; border-collapse: collapse; }
                         th, td { border: 1px solid #ddd; padding: 6px; text-align: right; }
                         th { background-color: #f2f2f2; text-align: center; }
-                        td:nth-child(2) { text-align: left; }
+                        td:nth-child(5) { text-align: left; }
                     </style>`;
 
             const cabecalho = `
@@ -106,5 +116,32 @@
             novaJanela.focus();
             setTimeout(() => novaJanela.print(), 500);
         }
+
+        $('#btnExportarExcel').on('click', function () {
+            const tabela = document.getElementById("extratoTabela");
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.table_to_sheet(tabela, { raw: true });
+
+            // Corrige valores monetários para números
+            const colunasNumericas = [ 5, 6, 7];
+            for (const R in ws) {
+                if (R[0] === '!') continue;
+                const colIndex = XLSX.utils.decode_cell(R).c;
+                if (colunasNumericas.includes(colIndex)) {
+                    const cell = ws[R];
+                    if (cell && typeof cell.v === 'string') {
+                        const valor = cell.v.replace(/[^\d,-]/g, '').replace(',', '.');
+                        const numero = parseFloat(valor);
+                        if (!isNaN(numero)) {
+                            cell.v = numero;
+                            cell.t = 'n';
+                        }
+                    }
+                }
+            }
+
+            XLSX.utils.book_append_sheet(wb, ws, "extrato");
+            XLSX.writeFile(wb, "extratoconta.xlsx");
+        });
     </script>
 }

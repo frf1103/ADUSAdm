@@ -121,6 +121,18 @@ namespace ADUSAdm.Shared
             }
         }
 
+        public string username
+        {
+            get
+            {
+                return Session.GetString("username");
+            }
+            set
+            {
+                Session.SetString("username", value);
+            }
+        }
+
         public string descorganizacao
         {
             get
