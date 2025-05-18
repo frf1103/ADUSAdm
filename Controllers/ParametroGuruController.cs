@@ -402,7 +402,7 @@ public class ParametrosGuruController : Controller
         {
             string url = model.urltransac;
 
-            url += "?dueDate[ge]=" + ini + "&dueDate[le]=" + fim;
+            url += "?creditDateStart=" + ini + "&creditDateFinish=" + fim;
             url = url + "&status=RECEIVED&limit=" + limit.ToString() +
                 "&offset=" + offset.ToString();
             var options = new RestClientOptions(url);
