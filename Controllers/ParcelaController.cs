@@ -33,7 +33,7 @@ namespace ADUSAdm.Controllers
             ViewBag.idBanco = ""; // se for necessário para filtro em select
             ViewBag.Descricao = filtro;
 
-            Task<List<ListParceiroViewModel>> retc = _parceiroAPI.Lista("");
+            Task<List<ListParceiroViewModel>> retc = _parceiroAPI.Lista("", true, false, false, false);
             List<ListParceiroViewModel> t = await retc;
 
             var a = await _assinaturaAPI.ListaById(idassinatura);
@@ -211,7 +211,7 @@ namespace ADUSAdm.Controllers
         [HttpGet]
         public async Task<IActionResult> visaogeralcarteira(DateTime vencimentoInicio, DateTime vencimentoFim, string idparceiro = "0", int acao = 0)
         {
-            List<ListParceiroViewModel> t = await _parceiroAPI.Lista("");
+            List<ListParceiroViewModel> t = await _parceiroAPI.Lista("", true, false, false, false);
 
             ViewBag.parceiros = t.Select(m => new SelectListItem { Text = m.razaoSocial, Value = m.id.ToString() });
 

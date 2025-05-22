@@ -19,7 +19,7 @@
 
 
 <div class="wrapper">
-    <section class="content">
+    <section class="content" style="overflow-y: auto; max-height: calc(100vh - 150px);">
         <div class="container-fluid">
             <div class="card card-primary card-outline">
                 <div class="card-body">
@@ -165,17 +165,16 @@
                                         <div class="row">
                                             <div class="col-md-2">
                                                 <div class="form-group">
-                                                    <label asp-for="iduf" class="control-label"></label>
-                                                    <select asp-for="iduf" id="iduf" class="form-control" asp-items="@ViewBag.Ufs" disabled onchange="loadcidades()"></select>
-                                                    <input asp-for="iduf" type="hidden" id="huf"  />
+                                                    <label asp-for="iduf"></label>
+                                                    <input asp-for="nomeuf" id="iduf" class="form-control"  disabled/>
+                                                    <input asp-for="iduf" type="hidden" id="huf" />
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label asp-for="idcidade" class="control-label"></label>
-                                                    <select asp-for="idcidade" id="idmun" class="form-control" asp-items="@ViewBag.municipios" disabled></select>
-                                                    <input asp-for="idcidade" type="hidden" id="hcidade"   />
-                                                    <span asp-validation-for="idcidade" class="text-danger"></span>
+                                                    <label asp-for="idCidade"></label>
+                                                    <input asp-for="nomecidade" id="idmun" class="form-control" disabled/>
+                                                    <input asp-for="idCidade" id="hcidade" type="hidden" />
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
@@ -189,6 +188,70 @@
                                         </div>
 
 
+                                        <div class="accordion mt-4" id="accordionPerfis">
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="headingPerfis">
+                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePerfis" aria-expanded="false" aria-controls="collapsePerfis">
+                                                        Perfis e Comissões
+                                                    </button>
+                                                </h2>
+                                                <div id="collapsePerfis" class="accordion-collapse collapse" aria-labelledby="headingPerfis" data-bs-parent="#accordionPerfis">
+                                                    <div class="accordion-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input asp-for="isassinante" class="form-check-input" type="checkbox" />
+                                                                    <label asp-for="isassinante" class="form-check-label"></label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input asp-for="isbanco" class="form-check-input" type="checkbox" />
+                                                                    <label asp-for="isbanco" class="form-check-label"></label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input asp-for="isafiliado" class="form-check-input" type="checkbox" />
+                                                                    <label asp-for="isafiliado" class="form-check-label"></label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input asp-for="iscoprodutor" class="form-check-input" type="checkbox" />
+                                                                    <label asp-for="iscoprodutor" class="form-check-label"></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mt-3">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label asp-for="idcoprodutor"></label>
+                                                                    <select asp-for="idcoprodutor" class="form-control" asp-items="@ViewBag.coprodutores"></select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label asp-for="percomissao"></label>
+                                                                    <input asp-for="percomissao" class="form-control" id="percomissao" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-3">
+                                                            <div class="col-md-10">
+                                                                <div class="form-group">
+                                                                    <label asp-for="urlafiliado"></label>
+                                                                    <input asp-for="urlafiliado" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <!-- /.card-body -->
                                     <div class="card-footer">
@@ -264,10 +327,10 @@
 
 
 
-        function loadcidades(uf,mun) {
+       function loadcidades(ibge) {
             $.ajax({
                 type: "get",
-                url: "/localidade/getcidades?iduf=" + $("#iduf").val(),
+                url: "/localidade/getcidadebyibge?ibge="+ibge,
                 data: {},
                 dataType: 'json',
                 aSync:false,
@@ -275,22 +338,10 @@
                 success: function (obj) {
                     if (obj != null) {
                         var data = obj;
-                        var selectbox = $('#idmun');
-                        selectbox.find('option').remove();
-                        cidade2=[]
-                        $.each(data, function (i, d) {
-                            $('<option>').val(d.id).text(d.nome).appendTo(selectbox);
-                            cidades.push({"id":d.id,"nome":d.nome});
-                        });
-                        if (mun!="0")
-                        {
-                            cidade = cidades.filter(l => l.nome.trim().toLowerCase() == mun);
-                            if (cidade.length > 0) {
-                                x = cidade[0].id.toString();
-                                $("#idmun").val(x);
-                                $("#hcidade").val(x);
-                            }
-                        }
+                   //     $("#idmun").val(data.nome);
+                   //     $("#iduf").val(data.siglauf);
+                        $("#huf").val(data.idUF);
+                        $("#hcidade").val(data.id);
                     }
                 }
             });
@@ -312,19 +363,13 @@
                     } else {
                         document.getElementById("logradouro").value = data.logradouro;
                         document.getElementById("bairro").value = data.bairro;
-                      //  document.getElementById("idmun").value = data.localidade;
-                      //  document.getElementById("iduf").value = data.uf;
-                      
-                        selectuf = document.getElementById("iduf");
-                        options = Array.from(selectuf.options);
+                        document.getElementById("idmun").value = data.localidade;
+                        document.getElementById("iduf").value = data.uf;
 
-                        encontrada = options.find(opt => opt.text.trim().toLowerCase() === data.uf.trim().toLowerCase());
-                        $("#iduf").val(encontrada.value);
-                        $("#huf").val(encontrada.value);
 
-                        loadcidades(encontrada.value, data.localidade.trim().toLowerCase());
-                        
-                       
+                        loadcidades(data.ibge);
+
+
                     }
                 })
                 .catch(error => {
@@ -333,6 +378,27 @@
                 });
         }
 
+        $(document).ready(function () {
+            // Executa no carregamento da página
+            toggleCamposCoprodutor();
+
+            // Executa ao mudar estado dos checkboxes
+            $('#iscoprodutor, #isafiliado').on('change', function () {
+                toggleCamposCoprodutor();
+            });
+        });
+
+        function toggleCamposCoprodutor() {
+            const isCoprodutor = $('#iscoprodutor').is(':checked');
+            const isAfiliado = $('#isafiliado').is(':checked');
+
+            const habilitar = isCoprodutor || isAfiliado;
+
+            $('#idcoprodutor').prop('disabled', !habilitar);
+            $('#percomissao').prop('disabled', !habilitar);
+        }
+
+      
 
        
 

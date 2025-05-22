@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "tjnSLu1x3deggxpaN5P8mjrSJJ/YCAmwH8AXKrA8lqw=",
+  "Hash": "353c6N2nlqd0okX5KjNlZyem5gWWpsmga4nhus+9Nbg=",
   "Source": "ADUSAdm",
   "BasePath": "_content/ADUSAdm",
   "Mode": "Default",
@@ -38046,6 +38046,23 @@
       "OriginalItemSpec": "wwwroot\\svg\\icons\\company.svg"
     },
     {
+      "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\svg\\icons\\copy.svg",
+      "SourceId": "ADUSAdm",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\",
+      "BasePath": "_content/ADUSAdm",
+      "RelativePath": "svg/icons/copy.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\svg\\icons\\copy.svg"
+    },
+    {
       "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\svg\\icons\\crop.svg",
       "SourceId": "ADUSAdm",
       "SourceType": "Discovered",
@@ -38078,6 +38095,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\svg\\icons\\dollar-sign.svg"
+    },
+    {
+      "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\svg\\icons\\email.svg",
+      "SourceId": "ADUSAdm",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\",
+      "BasePath": "_content/ADUSAdm",
+      "RelativePath": "svg/icons/email.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\svg\\icons\\email.svg"
     },
     {
       "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\svg\\icons\\farm.svg",
@@ -38571,6 +38605,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\svg\\icons\\users.svg"
+    },
+    {
+      "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\svg\\icons\\whatsapp.svg",
+      "SourceId": "ADUSAdm",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\",
+      "BasePath": "_content/ADUSAdm",
+      "RelativePath": "svg/icons/whatsapp.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\svg\\icons\\whatsapp.svg"
     },
     {
       "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\webfonts\\check-circle.svg",

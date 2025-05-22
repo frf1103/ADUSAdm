@@ -3,21 +3,97 @@
 @{
     ViewBag.Title = "Parceiro";
 }
+<style>
+    .select2-container--default .select2-selection--multiple {
+        min-height: 38px;
+        border: 1px solid #ced4da;
+        border-radius: .2rem;
+    }
+</style>
 
-<form asp-action="Index">
-    <div class="input-group input-group-sm" style="width: 300px;">
-        <input type="text" class="form-control" placeholder="Buscar parceiro" name="filtro" value="@ViewBag.Filtro">
-        <div class="input-group-append">
-            <button type="submit" class="btn btn-default">
-                <i class="fas fa-search"></i>
+
+<form asp-action="Index" method="get">
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-default" type="button" data-bs-toggle="collapse" data-bs-target="#filter" aria-expanded="false" aria-controls="filter">
+                <img class="icon" src="/svg/icons/filter.svg" />
+                Filtro
             </button>
+
+            <div class="collapse mt-2" id="filter">
+                <div class="card card-primary card-outline p-3">
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="perfis">Perfis</label>
+                            <select class="select2" id="perfis" name="perfis" multiple="multiple" style="width: 100%;" data-placeholder="Selecione os perfis">
+                             @{
+                                if (ViewBag.PerfisSelecionados.Contains("assinante"))
+                                {
+                                    <option value="assinante" selected>Assinante</option>
+                                }
+                                else
+                                {
+                                    <option value="assinante" >Assinante</option>
+                                }
+
+                                if (ViewBag.PerfisSelecionados.Contains("banco"))
+                                {
+                                    <option value="banco" selected>Banco</option>
+                                }
+                                else
+                                {
+                                    <option value="banco" >Banco</option>
+                                }
+
+                               if (ViewBag.PerfisSelecionados.Contains("afiliado"))
+                                {
+                                    <option value="afiliado" selected>Afiliado</option>
+                                }
+                                else
+                                {
+                                    <option value="afiliado" >Afiliado</option>
+                                } 
+
+                                if (ViewBag.PerfisSelecionados.Contains("coprodutor"))
+                                {
+                                    <option value="coprodutor" selected>Coprodutor</option>
+                                }
+                                else
+                                {
+                                    <option value="coprodutor" >Coprodutor</option>
+                                } 
+
+                            }
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div class="d-flex gap-2">
+                                <input type="text" class="form-control" name="filtro" id="filtro" value="@ViewBag.Filtro" placeholder="Buscar parceiro por nome, fantasia ou registro">
+                                <button type="submit" class="btn btn-md btn-default">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
     </div>
-    <div>
+     <div>
         @Html.ValidationSummary(true)
     </div>
-
 </form>
+
+
+
+
 
 <h2>Parceiros de Negócio</h2>
 <div class="col text-right">
@@ -35,7 +111,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
-
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <style>
     .custom-no-data {
         text-align: center;
@@ -45,6 +121,8 @@
 </style>
 <!-- Bootstrap 4 -->
 
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
@@ -62,9 +140,11 @@
 <script>
 
     $(document).ready(function () {
-
-       
-
+        $('#perfis').select2({
+            placeholder: "Selecione os perfis",
+            allowClear: true,
+            width: '100%'
+        });
     });
 
     $(function () {
@@ -88,12 +168,21 @@
             noDataContent: "<div class='custom-no-data'>Nenhum dado encontrado</div>",
 
             controller: {
+                
                 loadData: function () {
-                    return $.ajax({
-                        type: "GET",
-                        url: "/parceiro/GetData?idorganizacao=" + $('#idorg').val() + "&filtro=@ViewBag.filtro",
-                        dataType: "json"
-                    });
+                   const perfisSelecionados = $('#perfis').val(); 
+
+                   return $.ajax({
+                   type: "GET",
+                   url: "/parceiro/GetData",
+                   data: {
+                        idorganizacao: $('#idorg').val(),
+                        filtro: "@ViewBag.filtro",
+                        perfis: perfisSelecionados
+                   },
+                   traditional: true, // para arrays no query string
+                   dataType: "json"
+        });
                 }
             },
 

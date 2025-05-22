@@ -21,6 +21,7 @@ using ADUSClient.Parcela;
 using System.Drawing;
 using Humanizer;
 using MathNet.Numerics;
+using Microsoft.AspNetCore.Authorization;
 
 public class ParametrosGuruController : Controller
 {
@@ -58,8 +59,16 @@ public class ParametrosGuruController : Controller
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> Index(int idplataforma = 1)
     {
+        string idAfiliado = Request.Cookies["idafiliado"];
+        string plata = Request.Cookies["idplataforma"];
+        if (!string.IsNullOrEmpty(idAfiliado))
+        {
+            // Você pode validar o ID e registrar no banco
+            ViewBag.IdAfiliado = idAfiliado;
+        }
         var model = await _client.ListaById(idplataforma);
         ViewBag.idplataforma = idplataforma;
 
@@ -72,7 +81,7 @@ public class ParametrosGuruController : Controller
         var categorias = await _categoriaAPI.ListarAsync("");
         ViewBag.Categorias = new SelectList(categorias, "Id", "Descricao");
 
-        var parceiros = await _parceiroapi.Lista("");
+        var parceiros = await _parceiroapi.Lista("", true, false, false, false);
         ViewBag.Parceiros = new SelectList(parceiros, "id", "razaoSocial");
 
         var contas = await _contaCorrenteAPI.Listar("", null);
@@ -234,7 +243,7 @@ public class ParametrosGuruController : Controller
                             email = sub.contact.email,
                             id = sub.contact.id,
                             iduf = uf.id,
-                            idcidade = cid.id,
+                            idCidade = cid.id,
                             profissao = "A DEFINIR"
                         });
                     };

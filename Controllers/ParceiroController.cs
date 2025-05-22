@@ -28,14 +28,14 @@ namespace ADUSAdm.Controllers
             _shareAPI = shareAPI;
         }
 
-        public async Task<IActionResult> Index(string? filtro, int pagina = 1)
+        public async Task<IActionResult> Index(string? filtro, List<string> perfis, int pagina = 1)
         {
-            Task<List<ADUSClient.Parceiro.ListParceiroViewModel>> ret = _culturaAPI.Lista(filtro);
-            List<ADUSClient.Parceiro.ListParceiroViewModel> c = await ret;
-
             ViewBag.filtro = filtro;
             ViewBag.role = _sessionManager.userrole;
             ViewBag.permissao = (_sessionManager.userrole != "UserV");
+            if (perfis.Count == 0)
+                ViewBag.PerfisSelecionados = new List<string> { "assinante" };
+            else ViewBag.PerfisSelecionados = perfis;
             return View();
         }
 
@@ -64,7 +64,7 @@ namespace ADUSAdm.Controllers
                 new SelectListItem {Text = "Indiferente", Value =TipoEstadoCivil.Indiferente.ToString()},
             };
 
-            Task<List<ListParceiroViewModel>> retc = _culturaAPI.Lista("");
+            Task<List<ListParceiroViewModel>> retc = _culturaAPI.Lista("", true, false, false, false);
             List<ListParceiroViewModel> t = await retc;
 
             ViewBag.Representantes = t.Select(m => new SelectListItem { Text = m.razaoSocial, Value = m.id.ToString() });
@@ -115,10 +115,13 @@ namespace ADUSAdm.Controllers
                 new SelectListItem {Text = "Indiferente", Value =TipoEstadoCivil.Indiferente.ToString()},
             };
 
-            Task<List<ListParceiroViewModel>> retc = _culturaAPI.Lista("");
+            Task<List<ListParceiroViewModel>> retc = _culturaAPI.Lista("", true, false, false, true);
             List<ListParceiroViewModel> t = await retc;
 
             ViewBag.Representantes = t.Select(m => new SelectListItem { Text = m.razaoSocial, Value = m.id.ToString() });
+
+            var coprod = t.Where(x => x.iscoprodutor == true);
+            ViewBag.coprodutores = coprod.Select(m => new SelectListItem { Text = m.razaoSocial, Value = m.id.ToString() });
 
             Task<List<UFViewModel>> retu = _shareAPI.ListaUF("");
             List<UFViewModel> uf = await retu;
@@ -135,7 +138,7 @@ namespace ADUSAdm.Controllers
                 ModelState.AddModelError(string.Empty, TempData["Erro"].ToString());
             }
             ViewBag.iduf = c.iduf;
-            ViewBag.idcid = c.idcidade;
+            ViewBag.idcid = c.idCidade;
             if (acao == 3)
             {
                 ViewBag.acao = "disable";
@@ -225,9 +228,14 @@ namespace ADUSAdm.Controllers
             return View("excluir");
         }
 
-        public async Task<JsonResult> GetData(string? filtro)
+        public async Task<JsonResult> GetData(string? filtro, List<string> perfis)
         {
-            Task<List<ADUSClient.Parceiro.ListParceiroViewModel>> ret = _culturaAPI.Lista(filtro);
+            bool isbanco = (perfis.Contains("banco"));
+            bool isassinante = (perfis.Contains("assinante"));
+            bool isafiliado = (perfis.Contains("afiliado"));
+            bool iscoprodutor = (perfis.Contains("coprodutor"));
+
+            Task<List<ADUSClient.Parceiro.ListParceiroViewModel>> ret = _culturaAPI.Lista(filtro, isassinante, isbanco, isafiliado, iscoprodutor);
             List<ADUSClient.Parceiro.ListParceiroViewModel> c = await ret;
 
             return Json(c);

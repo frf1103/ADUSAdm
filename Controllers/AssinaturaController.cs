@@ -62,7 +62,7 @@ namespace ADUSAdm.Controllers
             //Task<List<ADUSClient.Assinatura.ListAssinaturaViewModel>> ret = _culturaAPI.Lista(filtro);
             //List<ADUSClient.Assinatura.ListAssinaturaViewModel> c = await ret;
 
-            Task<List<ListParceiroViewModel>> retc = _parceiroAPI.Lista("");
+            Task<List<ListParceiroViewModel>> retc = _parceiroAPI.Lista("", true, false, false, false);
             List<ListParceiroViewModel> t = await retc;
 
             ViewBag.parceiros = t.Select(m => new SelectListItem { Text = m.razaoSocial, Value = m.id.ToString() });
@@ -111,7 +111,7 @@ namespace ADUSAdm.Controllers
                 new SelectListItem { Text = "Pix", Value = FormaPagto.Pix.ToString() },
             };
 
-            Task<List<ListParceiroViewModel>> retc = _parceiroAPI.Lista("");
+            Task<List<ListParceiroViewModel>> retc = _parceiroAPI.Lista("", true, false, false, false);
             List<ListParceiroViewModel> t = await retc;
 
             ViewBag.parceiros = t.Select(m => new SelectListItem { Text = m.razaoSocial, Value = m.id.ToString() });
@@ -151,7 +151,7 @@ namespace ADUSAdm.Controllers
                 new SelectListItem { Text = "Pix", Value = FormaPagto.Pix.ToString() },
             };
 
-            Task<List<ListParceiroViewModel>> retc = _parceiroAPI.Lista("");
+            Task<List<ListParceiroViewModel>> retc = _parceiroAPI.Lista("", true, false, false, false);
             List<ListParceiroViewModel> t = await retc;
 
             ViewBag.Parceiros = t.Select(m => new SelectListItem { Text = m.razaoSocial, Value = m.id.ToString() });
@@ -185,7 +185,7 @@ namespace ADUSAdm.Controllers
                 new SelectListItem { Text = "Boleto", Value = FormaPagto.Boleto.ToString() }
             };
 
-            Task<List<ListParceiroViewModel>> retc = _parceiroAPI.Lista("");
+            Task<List<ListParceiroViewModel>> retc = _parceiroAPI.Lista("", true, false, false, false);
             List<ListParceiroViewModel> t = await retc;
 
             ViewBag.Parceiros = t.Select(m => new SelectListItem { Text = m.razaoSocial, Value = m.id.ToString() });
@@ -351,7 +351,7 @@ namespace ADUSAdm.Controllers
                             email = sub.Contact.Email,
                             id = sub.Contact.Id,
                             iduf = 26,
-                            idcidade = 1928,
+                            idCidade = 1928,
                             profissao = "A DEFINIR"
                         });
                     };
@@ -523,7 +523,7 @@ namespace ADUSAdm.Controllers
                             email = sub.contact.email,
                             id = sub.contact.id,
                             iduf = uf.id,
-                            idcidade = cid.id,
+                            idCidade = cid.id,
                             profissao = "A DEFINIR"
                         });
                     };

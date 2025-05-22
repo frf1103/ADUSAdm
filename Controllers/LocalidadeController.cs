@@ -18,10 +18,18 @@ namespace ADUSAdm.Controllers
             _sessionManager = sessionManager;
         }
 
-        public async Task<JsonResult> GetCidades(int iduf)
+        public async Task<JsonResult> GetCidades(int iduf, string? nomecidade = "")
         {
-            Task<List<ADUSClient.Localidade.MunicipioViewModel>> ret = _sharedAPI.ListaCidade(iduf, "");
+            Task<List<ADUSClient.Localidade.MunicipioViewModel>> ret = _sharedAPI.ListaCidade(iduf, nomecidade);
             List<ADUSClient.Localidade.MunicipioViewModel> c = await ret;
+
+            return Json(c);
+        }
+
+        public async Task<JsonResult> GetCidadeByIBGE(string ibge)
+        {
+            Task<ADUSClient.Localidade.MunicipioViewModel> ret = _sharedAPI.ListaCidadeIBGE(ibge);
+            ADUSClient.Localidade.MunicipioViewModel c = await ret;
 
             return Json(c);
         }

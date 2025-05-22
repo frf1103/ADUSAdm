@@ -61,7 +61,7 @@ namespace ADUSAdm.Controllers
             var categorias = await _categoriaAPI.ListarAsync("");
             ViewBag.Categorias = new SelectList(categorias, "Id", "Descricao");
 
-            var parceiros = await _parceiroAPI.Lista("");
+            var parceiros = await _parceiroAPI.Lista("", true, false, false, false);
             ViewBag.Parceiros = new SelectList(parceiros, "id", "razaoSocial");
 
             var contas = await _contaCorrenteAPI.Listar("", null);
@@ -468,7 +468,7 @@ namespace ADUSAdm.Controllers
                 foreach (var item in extratos)
                 {
                     // Exemplo: salvar em API TransacBanco (ou montar uma TransacBancoViewModel e enviar)
-                    
+
                     var transac = new MovimentoCaixaViewModel
                     {
                         DataMov = item.datamov,

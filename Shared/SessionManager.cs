@@ -41,26 +41,26 @@ namespace ADUSAdm.Shared
 
         private ISession Session => _httpContextAccessor.HttpContext?.Session;
 
-/*
-        public SessionManager(IConfiguration configuration)
-        {
-            // Carrega os valores do appsettings.json
-         
-            _urlconvite = configuration.GetValue<string>("AppSetings:urlconvite");
-        }
+        /*
+                public SessionManager(IConfiguration configuration)
+                {
+                    // Carrega os valores do appsettings.json
 
-        public void SetConvite(HttpContext context, string value)
-        {
-            context.Session.SetString(_urlconvite, value);
-            // Define o tempo de expiração da sessão, se necessário
-            
-        }
+                    _urlconvite = configuration.GetValue<string>("AppSetings:urlconvite");
+                }
 
-        public string GetConvite(HttpContext context)
-        {
-            return context.Session.GetString(_urlconvite);
-        }
-*/
+                public void SetConvite(HttpContext context, string value)
+                {
+                    context.Session.SetString(_urlconvite, value);
+                    // Define o tempo de expiração da sessão, se necessário
+                }
+
+                public string GetConvite(HttpContext context)
+                {
+                    return context.Session.GetString(_urlconvite);
+                }
+        */
+
         public string contaguid
         {
             get
@@ -154,6 +154,30 @@ namespace ADUSAdm.Shared
             set
             {
                 Session.SetString("descanoagricola", value);
+            }
+        }
+
+        public string idafiliado
+        {
+            get
+            {
+                return Session.GetString("idafiliado");
+            }
+            set
+            {
+                Session.SetString("idafiliado", value);
+            }
+        }
+
+        public string idcoprodutor
+        {
+            get
+            {
+                return Session.GetString("idcoprodutor");
+            }
+            set
+            {
+                Session.SetString("idcoprodutor", value);
             }
         }
 

@@ -105,6 +105,11 @@ builder.Services.AddHttpClient<ADUSClient.Controller.TransacBancoControllerClien
     client.BaseAddress = new Uri(urlAPI.ToString());
 });
 
+builder.Services.AddHttpClient<ADUSClient.Controller.ConviteControllerClient>(client =>
+{
+    client.BaseAddress = new Uri(urlAPI.ToString());
+});
+
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 builder.Services.AddTransient<ADUSAdm.Shared.IEmailSender, EmailSender>();
 //builder.Services.AddTransient<IUsuarioService, UsuContservice>();

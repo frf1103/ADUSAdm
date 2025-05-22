@@ -21,16 +21,19 @@ public class BaseFormUsuarioViewModel
     {
         new SelectListItem() { Value = "Admin", Text = "Administrativo" },
         new SelectListItem() { Value = "Financ", Text = "Financeiro" },
-        new SelectListItem() { Value = "Super", Text = "Supervisor" },
-        new SelectListItem() { Value = "Comer", Text = "Comercial" }
-        
+        new SelectListItem() { Value = "Super", Text = "Adm Plataforma" },
+        new SelectListItem() { Value = "Comer", Text = "Comercial" },
+        new SelectListItem() { Value = "Afiliado", Text = "Afiliado" },
+        new SelectListItem() { Value = "Coprodutor", Text = "Coprodutor" }
     };
 
     public List<SelectListItem> RolesComuns { get; set; } = new List<SelectListItem>()
     {
         new SelectListItem() { Value = "Admin", Text = "Administrativo" },
         new SelectListItem() { Value = "Financ", Text = "Financeiro" },
-        new SelectListItem() { Value = "Super", Text = "Supervisor" },
-        new SelectListItem() { Value = "Comer", Text = "Comercial" }
+        new SelectListItem() { Value = "Super", Text = "Adm Plataforma" },
+        new SelectListItem() { Value = "Comer", Text = "Comercial" },
+        new SelectListItem() { Value = "Afiliado", Text = "Afiliado" },
+        new SelectListItem() { Value = "Coprodutor", Text = "Coprodutor" }
     };
 }
