@@ -134,6 +134,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<SessionManager>();
 
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.AddScoped<ILogService, LogService>();
 
 builder.Services.AddScoped<ImportacaoService>();
 builder.Services.AddSignalR();

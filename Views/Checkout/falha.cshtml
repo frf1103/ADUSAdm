@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Falha no Pagamento";
+}
+
+<div class="container mt-5">
+    <div class="alert alert-danger text-center">
+        <h4 class="alert-heading">❌ Ocorreu uma falha</h4>
+        <p>@ViewBag.Mensagem</p>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="@Url.Action("Index", "Checkout")" class="btn btn-primary">Tentar novamente</a>
+    </div>
+</div>

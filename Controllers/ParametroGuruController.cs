@@ -62,13 +62,6 @@ public class ParametrosGuruController : Controller
     [AllowAnonymous]
     public async Task<IActionResult> Index(int idplataforma = 1)
     {
-        string idAfiliado = Request.Cookies["idafiliado"];
-        string plata = Request.Cookies["idplataforma"];
-        if (!string.IsNullOrEmpty(idAfiliado))
-        {
-            // Você pode validar o ID e registrar no banco
-            ViewBag.IdAfiliado = idAfiliado;
-        }
         var model = await _client.ListaById(idplataforma);
         ViewBag.idplataforma = idplataforma;
 

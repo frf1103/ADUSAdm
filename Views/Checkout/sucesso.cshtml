@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Pagamento realizado com sucesso";
+}
+
+<div class="container mt-5">
+    <div class="alert alert-success text-center">
+        <h4 class="alert-heading">✅ Pagamento criado com sucesso!</h4>
+        <p>@ViewBag.Mensagem</p>
+
+        @if (!string.IsNullOrEmpty(ViewBag.Link))
+        {
+            <p>
+                <a href="@ViewBag.Link" target="_blank" class="btn btn-primary mt-3">
+                    Acessar link da cobrança
+                </a>
+            </p>
+        }
+    </div>
+
+    @if (ViewBag.TipoPagamento == "PIX" && !string.IsNullOrEmpty(ViewBag.QrCode))
+    {
+        <div class="alert alert-info text-center">
+            <h5>Pagamento via PIX</h5>
+            <p>Escaneie o QR Code abaixo ou copie a chave Pix:</p>
+            <img src="https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=@ViewBag.QrCode" alt="QR Code Pix" />
+            <textarea class="form-control mt-3 text-center" rows="4" readonly>@ViewBag.QrCode</textarea>
+        </div>
+    }
+
+    @if (ViewBag.TipoPagamento == "BOLETO" && !string.IsNullOrEmpty(ViewBag.LinhaDigitavel))
+    {
+        <div class="alert alert-warning text-center">
+            <h5>Pagamento via Boleto</h5>
+            <p>Copie a linha digitável abaixo para efetuar o pagamento:</p>
+            <textarea class="form-control text-center" rows="2" readonly>@ViewBag.LinhaDigitavel</textarea>
+        </div>
+    }
+
+    <div class="text-center mt-4">
+        <a href="@Url.Action("Index", "Checkout")" class="btn btn-secondary">Voltar</a>
+    </div>
+</div>
