@@ -26,13 +26,13 @@
                 <h5 class="mb-3">OS SEUS DADOS</h5>
                 <div class="row g-2">
                     <div class="col-md-12">
-                        <input asp-for="Nome" class="form-control" placeholder="Nome e sobrenome *" required />
+                        <input asp-for="Nome" class="form-control" placeholder="Nome e sobrenome *" value="@ViewBag.nome" required />
                     </div>
                     <div class="col-md-12">
                         <input asp-for="cpfCnpj" id="cpfCnpj" class="form-control" placeholder="CPF ou CNPJ *" required pattern="\d{11}|\d{14}" title="Informe um CPF (11 dígitos) ou CNPJ (14 dígitos)" />
                     </div>
                     <div class="col-md-6">
-                        <input asp-for="Email" class="form-control" placeholder="E-mail *" required type="email" />
+                        <input asp-for="Email" class="form-control" placeholder="E-mail *" required type="email" value="@ViewBag.email" />
                     </div>
                     <div class="col-md-6">
                         <input asp-for="EmailConfirmacao" class="form-control" placeholder="Confirme o e-mail *" required type="email" />
@@ -42,7 +42,7 @@
                             <option value="55">🇧🇷 +55</option>
                             <option value="1">🇺🇸 +1</option>
                         </select>
-                        <input asp-for="Telefone" class="form-control" placeholder="Celular *" required pattern="\d{9,15}" />
+                        <input asp-for="Telefone" class="form-control" placeholder="Celular *" value="@ViewBag.fone" required pattern="\d{9,15}" />
                     </div>
                     <div class="col-md-6">
                         <input asp-for="Cep" class="form-control" id="cep" placeholder="CEP *" onchange="buscarEndereco()" required pattern="\d{8}" />

@@ -277,7 +277,7 @@ namespace ADUSAdm.Controllers
 
                 Response.Cookies.Append("idplataforma", @idplataforma, options);
             }
-            return Redirect("https://localhost:7030/");
+            return Redirect("http://localhost:5000/");
             //return Json(new { success = true, redirectUrl = "https://localhost:7030" });
             // Redireciona para a página que desejar
             //return Redirect("https://localhost:7030/");

@@ -24,23 +24,30 @@ public class CheckoutController : Controller
     }
 
     [HttpGet]
-    public IActionResult Index()
+    public IActionResult Index(string nome, string fone, string email)
     {
         var userAgent = Request.Headers["User-Agent"].ToString().ToLower();
         string idAfiliado = Request.Cookies["idafiliado"];
         string plata = Request.Cookies["idplataforma"];
         if (userAgent.Contains("iphone") || userAgent.Contains("android") || userAgent.Contains("mobile"))
         {
-            return RedirectToAction("Mobile");
+            return RedirectToAction("Mobile", new { nome = nome, fone = fone, email = email });
         }
+        ViewBag.nome = nome;
+        ViewBag.fone = fone;
+        ViewBag.email = email;
         return View();
     }
 
     [HttpGet]
-    public IActionResult Mobile()
+    public IActionResult Mobile(string nome, string fone, string email)
     {
         string idAfiliado = Request.Cookies["idafiliado"];
         string plata = Request.Cookies["idplataforma"];
+        ViewBag.nome = nome;
+        ViewBag.fone = fone;
+        ViewBag.email = email;
+
         return View("IndexMobile");
     }
 
