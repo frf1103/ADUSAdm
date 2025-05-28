@@ -94,7 +94,8 @@ namespace ADUSAdm.Controllers
             {
                 c = new ParcelaViewModel
                 {
-                    id = Guid.NewGuid().ToString("N")
+                    id = Guid.NewGuid().ToString("N"),
+                    idassinatura = idassinatura
                 };
                 ViewBag.Titulo = "Adicionar Parcela";
                 ViewBag.Acao = "adicionar";
