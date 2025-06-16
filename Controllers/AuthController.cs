@@ -259,7 +259,7 @@ public class AuthController : Controller
             var result = await _userManager.ResetPasswordAsync(user, token, pwd);
             try
             {
-                await _emailSender.SendEmailAsync(uid.ToString(), "Acesso à plataforma", "Seja muito bem-vindo(a) a plataforma de planejamento agricola, segue sua senha provisória: " + pwd);
+                await _emailSender.SendEmailAsync(uid.ToString(), "Acesso à plataforma", "Seja muito bem-vindo(a) a plataforma da AUDS, segue sua senha provisória: " + pwd);
             }
             catch (Exception ex)
             {

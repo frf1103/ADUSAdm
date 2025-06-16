@@ -14,7 +14,7 @@
             <p class="mb-0">R$ 47,00 cada</p>
             <div class="d-flex justify-content-center align-items-center my-3">
                 <label for="quantidade" class="me-2 mb-0">Qtd:</label>
-                <input type="number" id="quantidade" name="QuantidadeArvores" value="1" min="1" class="form-control w-auto text-center" style="max-width: 80px;" onchange="atualizarValor()">
+                <input asp-for="QuantidadeArvores" type="number" id="quantidade" name="QuantidadeArvores" value="1" min="1" class="form-control w-auto text-center" style="max-width: 80px;" onchange="atualizarValor()">
             </div>
             <p class="fw-bold fs-5 mt-2">TOTAL: <span id="valorTotal">R$ 47,00</span></p>
             <p class="text-muted small">Cobrada a cada 1 mês<br>Automaticamente por 84 ciclos</p>
@@ -23,13 +23,14 @@
         <!-- Coluna da direita -->
         <div class="col-md-7 col-12 p-4">
             <form asp-action="Index" method="post" onsubmit="return validarFormulario()">
+                @Html.AntiForgeryToken()
                 <h5 class="mb-3">OS SEUS DADOS</h5>
                 <div class="row g-2">
                     <div class="col-md-12">
                         <input asp-for="Nome" class="form-control" placeholder="Nome e sobrenome *" value="@ViewBag.nome" required />
                     </div>
                     <div class="col-md-12">
-                        <input asp-for="cpfCnpj" id="cpfCnpj" class="form-control" placeholder="CPF ou CNPJ *" required pattern="\d{11}|\d{14}" title="Informe um CPF (11 dígitos) ou CNPJ (14 dígitos)" />
+                        <input asp-for="cpfCnpj" id="cpfCnpj" class="form-control" placeholder="CPF ou CNPJ *" title="Informe um CPF (11 dígitos) ou CNPJ (14 dígitos)" />
                     </div>
                     <div class="col-md-6">
                         <input asp-for="Email" class="form-control" placeholder="E-mail *" required type="email" value="@ViewBag.email" />

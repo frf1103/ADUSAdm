@@ -1,9 +1,17 @@
-﻿// Controllers/CheckoutController.cs
+﻿// Controller refatorado com boas práticas e validações
 using ADUSAdm.Data;
 using ADUSClient.Assinatura;
 using ADUSClient.Controller;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
+using System.Text.RegularExpressions;
+using FBSLIb;
 
+[RequireHttps]
 public class CheckoutController : Controller
 {
     private readonly IConfiguration _config;
@@ -26,12 +34,21 @@ public class CheckoutController : Controller
     [HttpGet]
     public IActionResult Index(string nome, string fone, string email)
     {
+        if (!Request.Cookies.ContainsKey("session_id"))
+        {
+            var sessionId = Guid.NewGuid().ToString();
+            Response.Cookies.Append("session_id", sessionId, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTimeOffset.UtcNow.AddDays(7)
+            });
+        }
         var userAgent = Request.Headers["User-Agent"].ToString().ToLower();
-        string idAfiliado = Request.Cookies["idafiliado"];
-        string plata = Request.Cookies["idplataforma"];
         if (userAgent.Contains("iphone") || userAgent.Contains("android") || userAgent.Contains("mobile"))
         {
-            return RedirectToAction("Mobile", new { nome = nome, fone = fone, email = email });
+            return RedirectToAction("Mobile", new { nome, fone, email });
         }
         ViewBag.nome = nome;
         ViewBag.fone = fone;
@@ -42,20 +59,53 @@ public class CheckoutController : Controller
     [HttpGet]
     public IActionResult Mobile(string nome, string fone, string email)
     {
-        string idAfiliado = Request.Cookies["idafiliado"];
-        string plata = Request.Cookies["idplataforma"];
         ViewBag.nome = nome;
         ViewBag.fone = fone;
         ViewBag.email = email;
-
         return View("IndexMobile");
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Index(CheckoutViewModel model)
     {
-        if (!ModelState.IsValid || model.Email != model.EmailConfirmacao)
+        var sessionId = Request.Cookies["session_id"];
+        model.QuantidadeArvores = 10;
+        if (string.IsNullOrWhiteSpace(sessionId))
+        {
+            ModelState.AddModelError("", "Sessão inválida ou expirada.");
+            return View("Falha");
+        }
+
+        if (!ModelState.IsValid)
+        {
             return View(model);
+        }
+
+        if (model.QuantidadeArvores <= 0 || model.QuantidadeArvores > 100)
+        {
+            ModelState.AddModelError("QuantidadeArvores", "Quantidade inválida.");
+            return View(model);
+        }
+        /*
+                if (!Regex.IsMatch(model.cpfCnpj, @"^\d{11}|\d{14}$"))
+                {
+                    ModelState.AddModelError("cpfCnpj", "CPF ou CNPJ inválido.");
+                    return View(model);
+                }
+             */
+        if (!Regex.IsMatch(model.Validade ?? "", @"^(0[1-9]|1[0-2])/\d{4}$"))
+        {
+            ModelState.AddModelError("Validade", "Formato da validade inválido (MM/AAAA).");
+            return View(model);
+        }
+
+        string remoteip = HttpContext.Connection.RemoteIpAddress?.ToString();
+
+        if (HttpContext.Request.Headers.ContainsKey("X-Forwarded-For"))
+        {
+            remoteip = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault()?.Split(',')[0];
+        }
 
         try
         {
@@ -63,9 +113,9 @@ public class CheckoutController : Controller
 
             var http = _httpClientFactory.CreateClient();
             http.BaseAddress = new Uri("https://sandbox.asaas.com/api/v3/");
-            http.DefaultRequestHeaders.Add(par.token, _config["Asaas:SandboxToken"]);
+            http.DefaultRequestHeaders.Add("access_token", "$aact_hmlg_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OmNjODVmNDllLTg2ZDYtNDFhMy05MDFhLTkyY2MwZDIyZWYxZDo6JGFhY2hfZWQwZjU1ODQtMjY3Yi00OGVhLTllOTUtYTlmNWQ4M2IwZGY5");
 
-            // Criar cliente no Asaas
+            //Criar cliente caso não exista
             var clientePayload = new
             {
                 name = model.Nome,
@@ -73,12 +123,46 @@ public class CheckoutController : Controller
                 phone = $"+{model.Ddi}{model.Telefone}",
                 cpfCnpj = model.cpfCnpj
             };
-            var clienteRes = await http.PostAsJsonAsync("customers", clientePayload);
-            var cliente = await clienteRes.Content.ReadFromJsonAsync<dynamic>();
 
-            model.IdClienteAsaas = cliente.id;
-            var valorTotal = model.QuantidadeArvores * 47;
-            var billingType = model.FormaPagamento.ToUpper() switch
+            var json = JsonSerializer.Serialize(clientePayload);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("https://api-sandbox.asaas.com/v3/customers?cpfCnpj=" + FBSLIb.StringLib.Somentenumero(model.cpfCnpj)),
+                Headers =
+                {
+                    { "accept", "application/json" },
+                    { "access_token", "$aact_hmlg_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OmNjODVmNDllLTg2ZDYtNDFhMy05MDFhLTkyY2MwZDIyZWYxZDo6JGFhY2hfZWQwZjU1ODQtMjY3Yi00OGVhLTllOTUtYTlmNWQ4M2IwZGY5" },
+                    {"User-Agent", "ADUSCheckout/1.0 (sandbox)"}
+                }
+            };
+            var response = await client.SendAsync(request);
+            if (response.Content == null)
+            {
+                request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Post,
+                    RequestUri = new Uri("https://api-sandbox.asaas.com/v3/customers"),
+                    Headers =
+                {
+                    { "accept", "application/json" },
+                    { "access_token", "$aact_hmlg_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OmNjODVmNDllLTg2ZDYtNDFhMy05MDFhLTkyY2MwZDIyZWYxZDo6JGFhY2hfZWQwZjU1ODQtMjY3Yi00OGVhLTllOTUtYTlmNWQ4M2IwZGY5" },
+                    {"User-Agent", "ADUSCheckout/1.0 (sandbox)"}
+                },
+                    Content = content
+                };
+                response = await client.SendAsync(request);
+            }
+            var body = await response.Content.ReadAsStringAsync();
+            using var doc = JsonDocument.Parse(body);
+
+            string idcliente = doc.RootElement.GetProperty("data")[0].GetProperty("id").GetString();
+
+            //var body = await response.Content.ReadAsStringAsync();
+
+            string billingType = model.FormaPagamento.ToUpper() switch
             {
                 "PIX" => "PIX",
                 "BOLETO" => "BOLETO",
@@ -90,8 +174,15 @@ public class CheckoutController : Controller
 
             if (billingType == "CREDIT_CARD")
             {
+                if (string.IsNullOrWhiteSpace(model.NumeroCartao) || string.IsNullOrWhiteSpace(model.Cvv))
+                {
+                    ModelState.AddModelError("", "Dados do cartão estão incompletos.");
+                    return View(model);
+                }
+
                 var tokenPayload = new
                 {
+                    customer = idcliente,
                     creditCard = new
                     {
                         holderName = model.NomeTitular,
@@ -99,78 +190,103 @@ public class CheckoutController : Controller
                         expiryMonth = model.Validade.Split('/')[0],
                         expiryYear = model.Validade.Split('/')[1],
                         ccv = model.Cvv
-                    }
+                    },
+                    creditCardHolderInfo = new
+                    {
+                        name = model.Nome,
+                        email = model.Email,
+                        cpfCnpj = StringLib.Somentenumero(model.cpfCnpj),
+                        postalCode = model.Cep,
+                        addressNumber = model.Numero,
+                        addressComplement = model.Complemento,
+                        phone = model.Telefone
+                    },
+                    remoteIp = "187.100.100.100" //remoteip
                 };
-                var tokenRes = await http.PostAsJsonAsync("creditCard/tokenize", tokenPayload);
-                var tokenObj = await tokenRes.Content.ReadFromJsonAsync<dynamic>();
+                json = JsonSerializer.Serialize(tokenPayload);
+                content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                if (tokenObj?.creditCardToken == null)
+                request = new HttpRequestMessage
                 {
-                    await _logService.RegistrarAsync("Warning", "CheckoutController", "Falha na tokenização do cartão.", tokenObj?.ToString());
-                    ViewBag.Mensagem = "Falha na tokenização do cartão.";
-                    return View("Falha");
+                    Method = HttpMethod.Post,
+                    RequestUri = new Uri("https://api-sandbox.asaas.com/v3/creditCard/tokenizeCreditCard"),
+                    Headers =
+                    {
+                        {"User-Agent", "ADUSCheckout/1.0 (sandbox)"},
+                        { "accept", "application/json" },
+                        { "access_token", "$aact_hmlg_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OmNjODVmNDllLTg2ZDYtNDFhMy05MDFhLTkyY2MwZDIyZWYxZDo6JGFhY2hfZWQwZjU1ODQtMjY3Yi00OGVhLTllOTUtYTlmNWQ4M2IwZGY5" },
+                    },
+                    Content = content
+                };
+                using (response = await client.SendAsync(request))
+                {
+                    response.EnsureSuccessStatusCode();
+                    body = await response.Content.ReadAsStringAsync();
+                    //Console.WriteLine(body);
                 }
-                token = tokenObj.creditCardToken;
+                using var doct = JsonDocument.Parse(body);
+                string cctoken = doct.RootElement.GetProperty("creditCardToken").GetString();
+                string ccbandeira = doct.RootElement.GetProperty("creditCardBrand").GetString();
+                string ccnumber = doct.RootElement.GetProperty("creditCardNumber").GetString();
+                model.NumeroCartao = null;
+                model.Cvv = null;
 
-                cobrancaPayload = new
-                {
-                    customer = cliente.id.ToString(),
-                    billingType = billingType,
-                    creditCardToken = token,
-                    value = valorTotal,
-                    installmentCount = model.FormaPagamento == "Parcelado" ? model.Parcelas : null,
-                    description = string.Format("{0} árvore(s) - R$47 cada", model.QuantidadeArvores),
-                    dueDate = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"),
-                    postalService = false
-                };
+                //criar cobranca Cartao
+
+                /*
+                var tokenJson = await tokenRes.Content.ReadFromJsonAsync<JsonElement>();
+                token = tokenJson.GetProperty("creditCardToken").GetString();
+                model.TokenCartao = token;
+                */
             }
-            else
-            {
-                cobrancaPayload = new
-                {
-                    customer = cliente.id.ToString(),
-                    billingType = billingType,
-                    value = valorTotal,
-                    description = string.Format("{0} árvore(s) - R$47 cada", model.QuantidadeArvores),
-                    dueDate = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"),
-                    postalService = false
-                };
-            }
+            /*
+                        cobrancaPayload = new
+                        {
+                            customer = clienteId,
+                            billingType,
+                            creditCardToken = token,
+                            value = model.ValorTotal,
+                            installmentCount = model.FormaPagamento == "Parcelado" ? model.Parcelas : null,
+                            description = $"{model.QuantidadeArvores} árvore(s) - R$47 cada",
+                            dueDate = model.FormaPagamento == "Boleto" && model.DataVencimento.HasValue
+                            ? model.DataVencimento.Value.ToString("yyyy-MM-dd")
+                            : DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"),
+                            postalService = false
+                        };
 
-            var cobrancaRes = await http.PostAsJsonAsync("payments", cobrancaPayload);
-            var cobranca = await cobrancaRes.Content.ReadFromJsonAsync<dynamic>();
+                        var cobrancaRes = await http.PostAsJsonAsync("payments", cobrancaPayload);
+                        if (!cobrancaRes.IsSuccessStatusCode)
+                        {
+                            var errorBody = await cobrancaRes.Content.ReadAsStringAsync();
+                            _logger.LogWarning("Erro na criação da cobrança: {0}", errorBody);
+                            ModelState.AddModelError("", "Erro ao criar cobrança. Verifique os dados e tente novamente.");
+                            return View(model);
+                        }
 
-            if (!cobrancaRes.IsSuccessStatusCode)
-            {
-                var erro = cobranca?.errors?[0]?.description ?? "Erro desconhecido na cobrança.";
-                await _logService.RegistrarAsync("Warning", "CheckoutController", $"Falha na cobrança: {erro}", cobranca?.ToString());
-                ViewBag.Mensagem = $"Falha na cobrança: {erro}";
-                return View("Falha");
-            }
+                        var cobrancaJson = await cobrancaRes.Content.ReadFromJsonAsync<JsonElement>();
+                        model.IdCobrancaAsaas = cobrancaJson.GetProperty("id").GetString();
+                        model.LinkCobranca = cobrancaJson.GetProperty("invoiceUrl").GetString();
+                        model.LinhaDigitavel = cobrancaJson.GetProperty("bankSlip").GetProperty("digitableLine").GetString();
+                        model.PayloadQrCode = cobrancaJson.GetProperty("pix").GetProperty("payload").GetString();
+                        model.TipoPagamentoEfetivado = billingType;
 
-            model.IdCobrancaAsaas = cobranca.id;
-            model.LinkCobranca = cobranca.invoiceUrl;
-            model.TipoPagamentoEfetivado = billingType;
-            model.TokenCartao = token;
-            model.LinhaDigitavel = cobranca.bankSlip?.digitableLine;
-            model.PayloadQrCode = cobranca.pix?.payload;
+                        _context.Add(model);
+                        await _context.SaveChangesAsync();
 
-            _context.Add(model);
-            await _context.SaveChangesAsync();
-
-            ViewBag.Mensagem = "Cobrança criada com sucesso.";
-            ViewBag.Link = model.LinkCobranca;
-            ViewBag.TipoPagamento = model.TipoPagamentoEfetivado;
-            ViewBag.QrCode = model.PayloadQrCode;
-            ViewBag.LinhaDigitavel = model.LinhaDigitavel;
-
+                        ViewBag.Mensagem = "Cobrança criada com sucesso.";
+                        ViewBag.Link = model.LinkCobranca;
+                        ViewBag.TipoPagamento = model.TipoPagamentoEfetivado;
+                        ViewBag.QrCode = model.PayloadQrCode;
+                        ViewBag.LinhaDigitavel = model.LinhaDigitavel;
+            */
             return View("Sucesso");
         }
         catch (Exception ex)
         {
             await _logService.RegistrarAsync("Error", "CheckoutController", "Erro inesperado durante checkout", ex.ToString());
-            ViewBag.Mensagem = $"Erro inesperado: {ex.Message}";
-            return View("Falha");
+            _logger.LogError(ex, "Erro inesperado no checkout");
+            ModelState.AddModelError("", "Erro inesperado. Tente novamente mais tarde.");
+            return View(model);
         }
     }
 }
