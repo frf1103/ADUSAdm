@@ -141,7 +141,7 @@ public class UsuariosController : Controller
             var pwd = "PwdF2024#!";
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var result = await _userManager.ResetPasswordAsync(user, token, pwd);
-            await _emailSender.SendEmailAsync(user.Email, "Acesso à plataforma", "Seja muito bem-vindo(a) a plataforma de planejamento agricola, segue sua senha provisória: " + pwd);
+            await _emailSender.SendEmailAsync(user.Email, "Acesso à plataforma", "Seja muito bem-vindo(a) a plataforma ADUS, segue sua senha provisória: " + pwd);
             TempData["msg"] = "Senha provisória enviada para " + user.Email;
         }
         return RedirectToAction(nameof(Index));

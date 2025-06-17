@@ -516,7 +516,9 @@ public class ParametrosGuruController : Controller
                     {
                         if (connectionId != null)
                         {
-                            var erro = "Registro de cobrança: " + id + "-" + item.GetProperty("billingType").GetString() + "-" + item.GetProperty("paymentDate").GetDateTime().ToString() + " " + item.GetProperty("netValue").GetDecimal().ToString();
+                            var idcustomer = item.GetProperty("customer").GetString();
+                            string nome = await BuscarCustomer(idcustomer);
+                            var erro = "Registro de cobrança: " + id + "-" + item.GetProperty("billingType").GetString() + "-" + item.GetProperty("paymentDate").GetDateTime().ToString() + " " + item.GetProperty("netValue").GetDecimal().ToString() + " " + nome;
                             await _hubContext.Clients.Client(connectionId)
                                 .SendAsync("ReceiveLog", $"Erro ao importar registro X: {erro}");
                         }
@@ -832,5 +834,46 @@ public class ParametrosGuruController : Controller
 
             return JsonDocument.Parse(json).RootElement.GetProperty("estimatedCreditDate").GetDateTime().Date;
         }
+    }
+
+    public async Task<string>? BuscarCustomer(string idcustomer)
+    {
+        var model = await _client.ListaById(2);
+
+        var secretKey = model.token;
+
+        var base64Auth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{secretKey}:"));
+
+        var allPayables = new List<string>(); // ou seu model
+        string cursor = null;
+        bool hasMore = true;
+        int linhas = 0, linha = 0;
+        int offset = 0;
+        int limit = 50;
+
+        string url = "https://api.asaas.com/v3/customers/" + idcustomer;
+
+        var options = new RestClientOptions(url);
+        var client = new RestClient(options);
+
+        var request = new RestRequest();
+        request.AddHeader("access_token", secretKey);
+
+        request.AddHeader("accept", "application/json");
+
+        var response = await client.ExecuteGetAsync(request);
+
+        if (!response.IsSuccessful)
+        {
+            Console.WriteLine("Erro: " + response.ErrorMessage);
+            return string.Empty;
+        }
+
+        // Adicione sua lógica de deserialização aqui
+        //allPayables.Add(response.Content); // ou deserialize
+
+        var json = response.Content; // string com JSON recebido do Pagar.me
+
+        return JsonDocument.Parse(json).RootElement.GetProperty("name").GetString();
     }
 }
