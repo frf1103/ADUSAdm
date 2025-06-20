@@ -14,8 +14,10 @@
             <p class="mb-0">R$ 47,00 cada</p>
             <div class="d-flex justify-content-center align-items-center my-3">
                 <label for="quantidade" class="me-2 mb-0">Qtd:</label>
-                <input asp-for="QuantidadeArvores" type="number" id="quantidade" name="QuantidadeArvores" value="1" min="1" class="form-control w-auto text-center" style="max-width: 80px;" onchange="atualizarValor()">
-            </div>
+                <input type="number" name="Qtd" id="Qtd" min="1" value="1" class="form-control w-auto text-center" style="max-width: 80px;" onchange="atualizarValor()">
+
+            </div>           
+
             <p class="fw-bold fs-5 mt-2">TOTAL: <span id="valorTotal">R$ 47,00</span></p>
             <p class="text-muted small">Cobrada a cada 1 mês<br>Automaticamente por 84 ciclos</p>
         </div>
@@ -116,9 +118,9 @@
                         <div class="col">
                             <input asp-for="Cvv" class="form-control" placeholder="CVV *" pattern="\d{3,4}" />
                         </div>
+                        <input asp-for="QuantidadeArvores" type="text" class="form-control" hidden/>
                     </div>
-                </div>
-
+                </div>                
                 <div class="text-center mt-4">
                     <button type="submit" class="btn btn-success w-100">Confirmar Pagamento</button>
                 </div>
@@ -135,7 +137,7 @@
             alert("Os e-mails não coincidem.");
             return false;
         }
-        const qtd = parseInt(document.getElementById("quantidade")?.value || 0);
+        const qtd = parseInt(document.querySelector('[name="Qtd"]')?.value || 0);
         if (qtd <= 0) {
             alert("A quantidade de árvores deve ser maior que zero.");
             return false;
@@ -148,16 +150,19 @@
                 alert("Informe um CPF com 11 dígitos ou CNPJ com 14 dígitos.");
                 return false;
             }
-        }   
+        }  
+        x=document.getElementById("QuantidadeArvores");
+        x.value=qtd;
+
         return true;
     }
     
     function atualizarValor() {
-        const qtd = parseInt(document.getElementById("quantidade")?.value || 1);
+        const qtd = parseInt(document.querySelector('[name="Qtd"]')?.value || 1);
         const total = qtd * 47;
         const totalEl = document.getElementById("valorTotal");
-        if (totalEl) totalEl.innerText = `R$${total.toFixed(2).replace('.', ',')}`;
-        gerarParcelas(total);
+        if (totalEl) totalEl.innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+            gerarParcelas(total);
     }
     function mostrarParcelas(valor) {
         const isCartao = valor === "Recorrente" || valor === "Parcelado";

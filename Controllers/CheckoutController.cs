@@ -10,6 +10,12 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using FBSLIb;
+using ADUSClient.Enum;
+using ADUSClient.Parceiro;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.SignalR;
+using ADUSClient.Parcela;
+using Newtonsoft.Json.Linq;
 
 [RequireHttps]
 public class CheckoutController : Controller
@@ -20,8 +26,13 @@ public class CheckoutController : Controller
     private readonly ILogService _logService;
     private readonly ADUScontext _context;
     private readonly ParametroGuruControllerClient _parametros;
+    private readonly CartaoAssinaturaControllerClient _cartoes;
+    private readonly ParceiroControllerClient _parceiro;
+    private readonly SharedControllerClient _shared;
+    private readonly AssinaturaControllerClient _assinatura;
+    private readonly ParcelaControllerClient _parcela;
 
-    public CheckoutController(IConfiguration config, IHttpClientFactory httpClientFactory, ILogger<CheckoutController> logger, ILogService logService, ADUScontext context, ParametroGuruControllerClient parametros)
+    public CheckoutController(IConfiguration config, IHttpClientFactory httpClientFactory, ILogger<CheckoutController> logger, ILogService logService, ADUScontext context, ParametroGuruControllerClient parametros, CartaoAssinaturaControllerClient cartoes, ParceiroControllerClient parceiro, SharedControllerClient shared, AssinaturaControllerClient assinatura, ParcelaControllerClient parcela)
     {
         _config = config;
         _httpClientFactory = httpClientFactory;
@@ -29,6 +40,11 @@ public class CheckoutController : Controller
         _logService = logService;
         _context = context;
         _parametros = parametros;
+        _cartoes = cartoes;
+        _parceiro = parceiro;
+        _shared = shared;
+        _assinatura = assinatura;
+        _parcela = parcela;
     }
 
     [HttpGet]
@@ -45,6 +61,7 @@ public class CheckoutController : Controller
                 Expires = DateTimeOffset.UtcNow.AddDays(7)
             });
         }
+
         var userAgent = Request.Headers["User-Agent"].ToString().ToLower();
         if (userAgent.Contains("iphone") || userAgent.Contains("android") || userAgent.Contains("mobile"))
         {
@@ -70,7 +87,13 @@ public class CheckoutController : Controller
     public async Task<IActionResult> Index(CheckoutViewModel model)
     {
         var sessionId = Request.Cookies["session_id"];
-        model.QuantidadeArvores = 10;
+        string idAfiliado = null;
+        if (Request.Cookies.ContainsKey("idafiliado"))
+        {
+            idAfiliado = Request.Cookies["idafiliado"];
+        }
+
+        //model.QuantidadeArvores = 10;
         if (string.IsNullOrWhiteSpace(sessionId))
         {
             ModelState.AddModelError("", "Sessão inválida ou expirada.");
@@ -82,7 +105,7 @@ public class CheckoutController : Controller
             return View(model);
         }
 
-        if (model.QuantidadeArvores <= 0 || model.QuantidadeArvores > 100)
+        if (model.QuantidadeArvores <= 0)
         {
             ModelState.AddModelError("QuantidadeArvores", "Quantidade inválida.");
             return View(model);
@@ -110,12 +133,11 @@ public class CheckoutController : Controller
         try
         {
             var par = await _parametros.ListaById(2);
-
             var http = _httpClientFactory.CreateClient();
             http.BaseAddress = new Uri("https://sandbox.asaas.com/api/v3/");
             http.DefaultRequestHeaders.Add("access_token", "$aact_hmlg_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OmNjODVmNDllLTg2ZDYtNDFhMy05MDFhLTkyY2MwZDIyZWYxZDo6JGFhY2hfZWQwZjU1ODQtMjY3Yi00OGVhLTllOTUtYTlmNWQ4M2IwZGY5");
 
-            //Criar cliente caso não exista
+            //Criar cliente no Asaas caso não exista
             var clientePayload = new
             {
                 name = model.Nome,
@@ -139,7 +161,12 @@ public class CheckoutController : Controller
                 }
             };
             var response = await client.SendAsync(request);
-            if (response.Content == null)
+            var body = await response.Content.ReadAsStringAsync();
+
+            var docx = JsonDocument.Parse(body);
+
+            string idcliente = " ";
+            if (docx.RootElement.GetProperty("data").GetArrayLength() == 0)
             {
                 request = new HttpRequestMessage
                 {
@@ -154,11 +181,56 @@ public class CheckoutController : Controller
                     Content = content
                 };
                 response = await client.SendAsync(request);
-            }
-            var body = await response.Content.ReadAsStringAsync();
-            using var doc = JsonDocument.Parse(body);
+                body = await response.Content.ReadAsStringAsync();
+                using var doc = JsonDocument.Parse(body);
 
-            string idcliente = doc.RootElement.GetProperty("data")[0].GetProperty("id").GetString();
+                idcliente = doc.RootElement.GetProperty("id").GetString();
+            }
+            else
+            {
+                idcliente = docx.RootElement.GetProperty("data")[0].GetProperty("id").GetString();
+            }
+
+            string idcl;
+
+            //Checar parceiro na ADUS, adicionar caso não exista
+            var cliente = await _parceiro.Lista(FBSLIb.StringLib.Somentenumero(model.cpfCnpj), true, true, true, true);
+            if (cliente.Count == 0)
+            {
+                var uf = await _shared.ListaUFBySigla(model.Estado);
+                int icoduf = uf[0].id;
+                var cidade = await _shared.ListaCidade(icoduf, model.Cidade);
+                idcl = Guid.NewGuid().ToString();
+                var parv = new ParceiroViewModel
+                {
+                    idCidade = cidade[0].id,
+                    fantasia = model.Nome,
+                    email = model.Email,
+                    fone1 = model.Telefone,
+                    estadoCivil = 0,
+                    dtNascimento = DateTime.Now.Date,
+                    bairro = model.Bairro,
+                    logradouro = model.Logradouro,
+                    numero = model.Numero,
+                    razaoSocial = model.Nome,
+                    cep = model.Cep,
+                    complemento = model.Complemento,
+                    iduf = uf[0].id,
+                    isassinante = true,
+                    sexo = ADUSClient.Enum.TipoSexo.Indiferente,
+                    tipodePessoa = (model.cpfCnpj.Length > 15) ? ADUSClient.Enum.TipodePessoa.Jurídica : ADUSClient.Enum.TipodePessoa.Física,
+                    profissao = "INDEFINIDO",
+                    registro = FBSLIb.StringLib.Somentenumero(model.cpfCnpj),
+                    id = idcl
+                };
+                var respc = await _parceiro.Adicionar(parv);
+            }
+            else
+            {
+                idcl = cliente[0].id;
+            }
+
+            string idplataforma = "";
 
             //var body = await response.Content.ReadAsStringAsync();
 
@@ -171,7 +243,8 @@ public class CheckoutController : Controller
 
             object cobrancaPayload;
             string token = null;
-
+            string cctoken = " ", ccbandeira = " ", ccnumber = " ";
+            object subsPayload;
             if (billingType == "CREDIT_CARD")
             {
                 if (string.IsNullOrWhiteSpace(model.NumeroCartao) || string.IsNullOrWhiteSpace(model.Cvv))
@@ -225,20 +298,77 @@ public class CheckoutController : Controller
                     //Console.WriteLine(body);
                 }
                 using var doct = JsonDocument.Parse(body);
-                string cctoken = doct.RootElement.GetProperty("creditCardToken").GetString();
-                string ccbandeira = doct.RootElement.GetProperty("creditCardBrand").GetString();
-                string ccnumber = doct.RootElement.GetProperty("creditCardNumber").GetString();
+                cctoken = doct.RootElement.GetProperty("creditCardToken").GetString();
+                ccbandeira = doct.RootElement.GetProperty("creditCardBrand").GetString();
+                ccnumber = doct.RootElement.GetProperty("creditCardNumber").GetString();
+
                 model.NumeroCartao = null;
                 model.Cvv = null;
 
-                //criar cobranca Cartao
-
-                /*
-                var tokenJson = await tokenRes.Content.ReadFromJsonAsync<JsonElement>();
-                token = tokenJson.GetProperty("creditCardToken").GetString();
-                model.TokenCartao = token;
-                */
+                subsPayload = new
+                {
+                    customer = idcliente,
+                    billingType = "CREDIT_CARD",
+                    value = model.ValorTotal,
+                    nextDueDate = DateTime.Now.Date,
+                    cycle = "MONTHLY",
+                    description = model.QuantidadeArvores.ToString() + " ARVORES PROJETO TECA SOCIAL",
+                    maxPayments = 84,
+                    creditCardToken = cctoken,
+                    remoteIp = "187.100.100.100" //remoteip
+                };
             }
+            else
+            {
+                subsPayload = new
+                {
+                    customer = idcliente,
+                    billingType = billingType,
+                    value = model.ValorTotal,
+                    nextDueDate = DateTime.Now.Date,
+                    cycle = "MONTHLY",
+                    description = model.QuantidadeArvores.ToString() + " ARVORES PROJETO TECA SOCIAL",
+                    maxPayments = 84,
+                    remoteIp = "187.100.100.100" //remoteip
+                };
+            }
+            json = JsonSerializer.Serialize(subsPayload);
+            content = new StringContent(json, Encoding.UTF8, "application/json");
+            request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri("https://api-sandbox.asaas.com/v3/subscriptions"),
+                Headers =
+                    {
+                        {"User-Agent", "ADUSCheckout/1.0 (sandbox)"},
+                        { "accept", "application/json" },
+                        { "access_token", "$aact_hmlg_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OmNjODVmNDllLTg2ZDYtNDFhMy05MDFhLTkyY2MwZDIyZWYxZDo6JGFhY2hfZWQwZjU1ODQtMjY3Yi00OGVhLTllOTUtYTlmNWQ4M2IwZGY5" },
+                    },
+                Content = content
+            };
+            using (response = await client.SendAsync(request))
+            {
+                response.EnsureSuccessStatusCode();
+                body = await response.Content.ReadAsStringAsync();
+                //Console.WriteLine(body);
+            }
+            using var docs = JsonDocument.Parse(body);
+            string idsub = docs.RootElement.GetProperty("id").GetString();
+            AddAssinaturaADUS(model, idsub, idcl, idAfiliado);
+            if (billingType == "CREDIT_CARD" && ccbandeira != null && ccnumber != null && cctoken != null)
+            {
+                CartaoAssinaturaViewModel xx = new CartaoAssinaturaViewModel
+                {
+                    Ativo = true,
+                    Bandeira = ccbandeira,
+                    UltimosDigitos = ccnumber,
+                    IdToken = cctoken,
+                    IdAssinatura = idsub
+                };
+
+                await _cartoes.Adicionar(xx);
+            }
+
             /*
                         cobrancaPayload = new
                         {
@@ -288,5 +418,27 @@ public class CheckoutController : Controller
             ModelState.AddModelError("", "Erro inesperado. Tente novamente mais tarde.");
             return View(model);
         }
+    }
+
+    public async Task<string> AddAssinaturaADUS(CheckoutViewModel m, string id, string idcliente, string idafiliado)
+    {
+        FormaPagto idforma = (m.FormaPagamento == "CREDIT_CARD") ? FormaPagto.Cartao : (m.FormaPagamento == "BOLETO") ? FormaPagto.Boleto : FormaPagto.Pix;
+        await _assinatura.Adicionar(new AssinaturaViewModel
+        {
+            id = id,
+            datavenda = DateTime.Now.Date,
+            idformapagto = idforma,
+            idparceiro = idcliente,
+            idplataforma = id,
+            status = (StatusAssinatura)1,
+            preco = 47,
+            qtd = m.QuantidadeArvores,
+            valor = m.QuantidadeArvores * 47,
+            observacao = " ",
+            plataforma = "ASAAS",
+            idafiliado = idafiliado
+        });
+
+        return null;
     }
 }
