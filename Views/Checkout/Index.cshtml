@@ -53,7 +53,7 @@
                     <div class="col-md-8">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
-                            <input asp-for="Logradouro" id="logradouro" class="form-control" placeholder="Logradouro" readonly />
+                            <input asp-for="Logradouro" id="logradouro" class="form-control" placeholder="Logradouro"  />
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -65,19 +65,19 @@
                     <div class="col-md-6">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-signpost"></i></span>
-                            <input asp-for="Bairro" id="bairro" class="form-control" placeholder="Bairro" readonly />
+                            <input asp-for="Bairro" id="bairro" class="form-control" placeholder="Bairro"  />
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-building"></i></span>
-                            <input asp-for="Cidade" id="cidade" class="form-control" placeholder="Cidade" readonly />
+                            <input asp-for="Cidade" id="cidade" class="form-control" placeholder="Cidade"  />
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-flag"></i></span>
-                            <input asp-for="Estado" id="estado" class="form-control" placeholder="Estado" readonly />
+                            <input asp-for="Estado" id="estado" class="form-control" placeholder="Estado"  />
                         </div>
                     </div>
                 </div>
@@ -173,12 +173,13 @@
     function gerarParcelas(valorTotal) {
         let combo = document.getElementById("comboParcelas");
         combo.innerHTML = "";
-        for (let i = 1; i <= 24; i++) {
+        for (let i = 1; i <= 21; i++) {
             let valorParcela = (valorTotal / i).toFixed(2);
             let opt = document.createElement("option");
             opt.value = i;
             opt.text = `${i}x de R$${valorParcela.replace('.', ',')}`;
             combo.appendChild(opt);
+            
         }
     }
     async function buscarEndereco() {

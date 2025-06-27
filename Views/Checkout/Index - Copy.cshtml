@@ -4,18 +4,34 @@
     Layout = "_LayoutCheckout";
 }
 
-<div class="container-fluid px-2">
-    <div class="row g-0 flex-column-reverse flex-md-row">
-        <!-- Coluna da direita (formulário) -->
-        <div class="col-md-7 col-12 p-3">
+<div class="container-fluid px-0">
+    <div class="row g-0">
+        <!-- Coluna da esquerda -->
+        <div class="col-md-5 col-12 bg-light p-4 text-center">
+            <img src="/images/teca-social.jpg" class="img-fluid mb-3" style="max-height: 160px;">
+            <h5 class="fw-bold">Árvore Teca Social - Tectona Grandis</h5>
+            <p class="mb-0 text-muted">Assinatura</p>
+            <p class="mb-0">R$ 47,00 cada</p>
+            <div class="d-flex justify-content-center align-items-center my-3">
+                <label for="quantidade" class="me-2 mb-0">Qtd:</label>
+                <input type="number" name="Qtd" id="Qtd" min="1" value="1" class="form-control w-auto text-center" style="max-width: 80px;" onchange="atualizarValor()">
+
+            </div>           
+
+            <p class="fw-bold fs-5 mt-2">TOTAL: <span id="valorTotal">R$ 47,00</span></p>
+            <p class="text-muted small">Cobrada a cada 1 mês<br>Automaticamente por 84 ciclos</p>
+        </div>
+
+        <!-- Coluna da direita -->
+        <div class="col-md-7 col-12 p-4">
             <form asp-action="Index" method="post" onsubmit="return validarFormulario()">
                 @Html.AntiForgeryToken()
-                <h5 class="mb-3">SEUS DADOS</h5>
+                <h5 class="mb-3">OS SEUS DADOS</h5>
                 <div class="row g-2">
-                    <div class="col-12">
+                    <div class="col-md-12">
                         <input asp-for="Nome" class="form-control" placeholder="Nome e sobrenome *" value="@ViewBag.nome" required />
                     </div>
-                    <div class="col-12">
+                    <div class="col-md-12">
                         <input asp-for="cpfCnpj" id="cpfCnpj" class="form-control" placeholder="CPF ou CNPJ *" title="Informe um CPF (11 dígitos) ou CNPJ (14 dígitos)" />
                     </div>
                     <div class="col-md-6">
@@ -37,7 +53,7 @@
                     <div class="col-md-8">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
-                            <input asp-for="Logradouro" id="logradouro" class="form-control" placeholder="Logradouro" />
+                            <input asp-for="Logradouro" id="logradouro" class="form-control" placeholder="Logradouro" readonly />
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -49,19 +65,19 @@
                     <div class="col-md-6">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-signpost"></i></span>
-                            <input asp-for="Bairro" id="bairro" class="form-control" placeholder="Bairro" />
+                            <input asp-for="Bairro" id="bairro" class="form-control" placeholder="Bairro" readonly />
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-building"></i></span>
-                            <input asp-for="Cidade" id="cidade" class="form-control" placeholder="Cidade" />
+                            <input asp-for="Cidade" id="cidade" class="form-control" placeholder="Cidade" readonly />
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-flag"></i></span>
-                            <input asp-for="Estado" id="estado" class="form-control" placeholder="Estado" />
+                            <input asp-for="Estado" id="estado" class="form-control" placeholder="Estado" readonly />
                         </div>
                     </div>
                 </div>
@@ -80,6 +96,8 @@
                         <select asp-for="Parcelas" id="comboParcelas" class="form-select"></select>
                     </div>
                 </div>
+
+
 
                 <div id="vencimentoBoleto" class="mb-3" style="display:none;">
                     <label for="dataVencimento">Data de vencimento do boleto:</label>
@@ -100,72 +118,51 @@
                         <div class="col">
                             <input asp-for="Cvv" class="form-control" placeholder="CVV *" pattern="\d{3,4}" />
                         </div>
-                        <input asp-for="QuantidadeArvores" type="text" class="form-control" hidden />
+                        <input asp-for="QuantidadeArvores" type="text" class="form-control" hidden/>
                     </div>
-                </div>
-
+                </div>                
                 <div class="text-center mt-4">
                     <button type="submit" class="btn btn-success w-100">Confirmar Pagamento</button>
                 </div>
             </form>
         </div>
-
-        <!-- Coluna da esquerda (informações do produto) -->
-        <div class="col-md-5 col-12 bg-light p-4 text-center">
-            <img src="/images/teca-social.jpg" class="img-fluid mb-3" style="max-height: 160px;">
-            <h5 class="fw-bold">Árvore Teca Social - Tectona Grandis</h5>
-            <p class="mb-0 text-muted">Assinatura</p>
-            <p class="mb-0">R$ 47,00 cada</p>
-            <div class="d-flex justify-content-center align-items-center my-3">
-                <label for="quantidade" class="me-2 mb-0">Qtd:</label>
-                <input type="number" name="Qtd" id="Qtd" min="1" value="1" class="form-control w-auto text-center" style="max-width: 80px;" onchange="atualizarValor()">
-            </div>
-            <p class="fw-bold fs-5 mt-2">TOTAL: <span id="valorTotal">R$ 47,00</span></p>
-            <p class="text-muted small">Cobrada a cada 1 mês<br>Automaticamente por 84 ciclos</p>
-            <hr>
-            <p class="text-muted small mt-4">
-                A cada árvore plantada, você contribui com a recuperação florestal e o desenvolvimento social. Sua assinatura é renovada automaticamente e pode ser cancelada a qualquer momento.
-            </p>
-        </div>
     </div>
 </div>
 
-
 <script>
-    
-        function validarFormulario() {
-            const email = document.querySelector('[name="Email"]').value;
-            const emailConf = document.querySelector('[name="EmailConfirmacao"]').value;
-            if (email !== emailConf) {
-                alert("Os e-mails não coincidem.");
-                return false;
-            }
-            const qtd = parseInt(document.querySelector('[name="Qtd"]')?.value || 0);
-            if (qtd <= 0) {
-                alert("A quantidade de árvores deve ser maior que zero.");
-                return false;
-            }
-
-            const cpfCnpj = document.querySelector('[name="CpfCnpj"]');
-            if (cpfCnpj) {
-                const valor = cpfCnpj.value.replace(/\D/g, "");
-                if (!(valor.length === 11 || valor.length === 14)) {
-                    alert("Informe um CPF com 11 dígitos ou CNPJ com 14 dígitos.");
-                    return false;
-                }
-            }
-            x = document.getElementById("QuantidadeArvores");
-            x.value = qtd;
-
-            return true;
+    function validarFormulario() {
+        const email = document.querySelector('[name="Email"]').value;
+        const emailConf = document.querySelector('[name="EmailConfirmacao"]').value;
+        if (email !== emailConf) {
+            alert("Os e-mails não coincidem.");
+            return false;
+        }
+        const qtd = parseInt(document.querySelector('[name="Qtd"]')?.value || 0);
+        if (qtd <= 0) {
+            alert("A quantidade de árvores deve ser maior que zero.");
+            return false;
         }
 
+        const cpfCnpj = document.querySelector('[name="CpfCnpj"]');
+        if (cpfCnpj) {
+            const valor = cpfCnpj.value.replace(/\D/g, "");
+            if (!(valor.length === 11 || valor.length === 14)) {
+                alert("Informe um CPF com 11 dígitos ou CNPJ com 14 dígitos.");
+                return false;
+            }
+        }  
+        x=document.getElementById("QuantidadeArvores");
+        x.value=qtd;
+
+        return true;
+    }
+    
     function atualizarValor() {
         const qtd = parseInt(document.querySelector('[name="Qtd"]')?.value || 1);
         const total = qtd * 47;
         const totalEl = document.getElementById("valorTotal");
         if (totalEl) totalEl.innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
-        gerarParcelas(total);
+            gerarParcelas(total);
     }
     function mostrarParcelas(valor) {
         const isCartao = valor === "Recorrente" || valor === "Parcelado";
@@ -182,7 +179,7 @@
             opt.value = i;
             opt.text = `${i}x de R$${valorParcela.replace('.', ',')}`;
             combo.appendChild(opt);
-
+            
         }
     }
     async function buscarEndereco() {
@@ -223,6 +220,5 @@
             });
         }
     });
+
 </script>
-
-

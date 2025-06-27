@@ -115,8 +115,15 @@ builder.Services.AddHttpClient<ADUSClient.Controller.CartaoAssinaturaControllerC
     client.BaseAddress = new Uri(urlAPI.ToString());
 });
 
+builder.Services.AddHttpClient<ADUSClient.Controller.LogCheckoutControllerClient>(client =>
+{
+    client.BaseAddress = new Uri(urlAPI.ToString());
+});
+
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+builder.Services.Configure<ASAASSettings>(builder.Configuration.GetSection("ASAASSettings"));
 builder.Services.AddTransient<ADUSAdm.Shared.IEmailSender, EmailSender>();
+builder.Services.AddTransient<ADUSAdm.Shared.ASAASSettings, ASAASSettings>();
 //builder.Services.AddTransient<IUsuarioService, UsuContservice>();
 
 builder.Services.AddControllers(options =>

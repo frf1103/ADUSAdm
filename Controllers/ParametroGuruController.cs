@@ -22,6 +22,8 @@ using System.Drawing;
 using Humanizer;
 using MathNet.Numerics;
 using Microsoft.AspNetCore.Authorization;
+using ADUSAdm.Shared;
+using Microsoft.Extensions.Options;
 
 public class ParametrosGuruController : Controller
 {
@@ -37,11 +39,13 @@ public class ParametrosGuruController : Controller
     private readonly PlanoContaControllerClient _categoriaAPI;
     private readonly ContaCorrenteControllerClient _contaCorrenteAPI;
     private readonly MovimentoCaixaControllerClient _movcaixaAPI;
+    private readonly ASAASSettings _AsaasSettings;
 
     public ParametrosGuruController(ParametroGuruControllerClient client, ImportacaoService service, IHubContext<ImportProgressHub> hubContext, ParceiroControllerClient parceiroapi, ParcelaControllerClient parcela,
         AssinaturaControllerClient assinatura, SharedControllerClient shared, TransacaoControllerClient transacaoAPI,
         CentroCustoControllerClient centroCustoAPI, PlanoContaControllerClient categoriaAPI,
-        ContaCorrenteControllerClient contaCorrenteAPI, MovimentoCaixaControllerClient movcaixaAPI)
+        ContaCorrenteControllerClient contaCorrenteAPI, MovimentoCaixaControllerClient movcaixaAPI,
+        IOptions<ASAASSettings> asaasSettings)
     {
         _client = client;
         _service = service;
@@ -53,6 +57,7 @@ public class ParametrosGuruController : Controller
         _transacaoAPI = transacaoAPI;
         _centroCustoAPI = centroCustoAPI;
         _categoriaAPI = categoriaAPI;
+        _AsaasSettings = asaasSettings.Value;
 
         _contaCorrenteAPI = contaCorrenteAPI;
         _movcaixaAPI = movcaixaAPI;
@@ -402,7 +407,7 @@ public class ParametrosGuruController : Controller
 
         while (hasMore)
         {
-            string url = model.urltransac;
+            string url = _AsaasSettings.urlpayments;//model.urltransac;
 
             url += "?creditDateStart=" + ini + "&creditDateFinish=" + fim;
             url = url + "&status=RECEIVED&limit=" + limit.ToString() +
@@ -411,7 +416,7 @@ public class ParametrosGuruController : Controller
             var client = new RestClient(options);
 
             var request = new RestRequest();
-            request.AddHeader("access_token", secretKey);
+            request.AddHeader("access_token", _AsaasSettings.access_token);
 
             request.AddHeader("accept", "application/json");
 
@@ -482,7 +487,7 @@ public class ParametrosGuruController : Controller
                                 Observacao = "PAGTO COMISSAO",
                                 idmovbanco = item.GetProperty("id").GetString()
                             });
-                            /*
+                            
                             if (item.GetProperty("value").GetDecimal() != item.GetProperty("netValue").GetDecimal())
                             {
                                 var resptaxa = await _movcaixaAPI.AdicionarAsync(new ADUSClient.MovimentoCaixa.MovimentoCaixaViewModel
@@ -499,7 +504,7 @@ public class ParametrosGuruController : Controller
                                     idmovbanco = item.GetProperty("id").GetString()
                                 });
                             };
-                            */
+                            
 
                             string y = await respc.Content.ReadAsStringAsync();
                             var result = JsonConvert.DeserializeObject<MovimentoCaixaViewModel>(y);
@@ -512,6 +517,7 @@ public class ParametrosGuruController : Controller
                             parc.valorliquido = item.GetProperty("netValue").GetDecimal() - parc.comissao;
                             parc.dataestimadapagto = item.GetProperty("estimatedCreditDate").GetDateTime().Date;
                             await _parcela.Salvar(parc.id, parc);
+                            
                         }
                     }
                     else

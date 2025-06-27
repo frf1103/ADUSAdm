@@ -22,10 +22,9 @@ using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Text;
 using RestSharp;
-using Azure.Core;
+
 using Humanizer;
 using MathNet.Numerics;
-using Azure;
 
 namespace ADUSAdm.Controllers
 {

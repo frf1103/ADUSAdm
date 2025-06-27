@@ -22,8 +22,11 @@
         <div class="alert alert-info text-center">
             <h5>Pagamento via PIX</h5>
             <p>Escaneie o QR Code abaixo ou copie a chave Pix:</p>
-            <img src="https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=@ViewBag.QrCode" alt="QR Code Pix" />
-            <textarea class="form-control mt-3 text-center" rows="4" readonly>@ViewBag.QrCode</textarea>
+            <img src="https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=@Uri.EscapeDataString((string)ViewBag.QrCode)" alt="QR Code Pix" />
+
+            <textarea id="pixChave" class="form-control mt-3 text-center" rows="4" readonly>@ViewBag.QrCode</textarea>
+
+            <button class="btn btn-outline-secondary mt-2" onclick="copiarTexto('pixChave')">Copiar Chave PIX</button>
         </div>
     }
 
@@ -32,7 +35,9 @@
         <div class="alert alert-warning text-center">
             <h5>Pagamento via Boleto</h5>
             <p>Copie a linha digitável abaixo para efetuar o pagamento:</p>
-            <textarea class="form-control text-center" rows="2" readonly>@ViewBag.LinhaDigitavel</textarea>
+            <textarea id="linhaBoleto" class="form-control text-center" rows="2" readonly>@ViewBag.LinhaDigitavel</textarea>
+
+            <button class="btn btn-outline-secondary mt-2" onclick="copiarTexto('linhaBoleto')">Copiar Linha Digitável</button>
         </div>
     }
 
@@ -40,3 +45,14 @@
         <a href="@Url.Action("Index", "Checkout")" class="btn btn-secondary">Voltar</a>
     </div>
 </div>
+
+<script>
+    function copiarTexto(idCampo) {
+        var campo = document.getElementById(idCampo);
+        if (campo) {
+            navigator.clipboard.writeText(campo.value)
+                .then(() => alert('Copiado para a área de transferência!'))
+                .catch(err => alert('Erro ao copiar: ' + err));
+        }
+    }
+</script>

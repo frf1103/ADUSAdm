@@ -101,7 +101,7 @@ namespace ADUSAdm.Shared
         {
             get
             {
-                return Session.GetString("uulrconviteid");
+                return Session.GetString("ulrconvite");
             }
             set
             {
