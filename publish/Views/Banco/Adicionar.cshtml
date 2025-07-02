@@ -1,0 +1,112 @@
+﻿@model ADUSClient.Banco.BancoViewModel
+
+<link rel="stylesheet" href="~/sweetalert2.min.css">
+<link rel="stylesheet" href="~/toastr.min.css">
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>@ViewBag.Titulo</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-primary card-outline">
+                <div class="card-body">
+                    <form asp-action="@ViewBag.Acao">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="id" class="control-label"></label>
+                                            <input asp-for="id" class="form-control" readonly />
+                                            <span asp-validation-for="id" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="descricao" class="control-label"></label>
+                                            <input asp-for="descricao" class="form-control" />
+                                            <span asp-validation-for="descricao" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="codigo" class="control-label"></label>
+                                            <input asp-for="codigo" class="form-control" />
+                                            <span asp-validation-for="codigo" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-footer">
+                                <div class="row">
+                                    <div class="col text-right">
+                                        @if (ViewBag.idacao <= 2)
+                                        {
+                                            <button type="submit" class="btn btn-success">Salvar</button>
+                                        }
+                                        else if (ViewBag.idacao == 3)
+                                        {
+                                            <button type="submit" class="btn btn-danger">Excluir</button>
+                                        }
+                                        <a href="/banco/index" class="btn btn-default">Voltar</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                @if (Model.ContasCorrentes != null && Model.ContasCorrentes.Any())
+                {
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title">Contas Correntes</h3>
+                            <div class="card-tools">
+                                <a href="/contacorrente/adicionar?idBanco=@Model.id&descBanco=@Model.descricao" class="btn btn-default">
+                                    <img class="icon" src="/svg/icons/plus.svg" />
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Descrição</th>
+                                        <th>Agência</th>
+                                        <th>Conta</th>
+                                        <th>Titular</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var conta in Model.ContasCorrentes)
+                                    {
+                                        <tr>
+                                            <td>@conta.descricao</td>
+                                            <td>@conta.agencia</td>
+                                            <td>@conta.contaBanco</td>
+                                            <td>@conta.titular</td>
+                                            <td>
+                                                <a href="/contacorrente/editar/@conta.id" class="btn btn-sm btn-primary">Editar</a>
+                                                <a href="/contacorrente/excluir/@conta.id" class="btn btn-sm btn-danger">Excluir</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+</div>

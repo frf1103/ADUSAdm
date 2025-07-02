@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>ADUS ADM</title>
+    <base href="~/">
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
@@ -28,10 +29,6 @@
     <link rel="stylesheet" href="~/css/theme.css" />
 </head>
 
-<style>
-    /* Seu CSS personalizado aqui (mantido conforme enviado) */
-</style>
-
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
 
@@ -40,7 +37,7 @@
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button">
-                        <img class="icon" src="/svg/icons/menu.svg" />
+                        <img class="icon" src="~/svg/icons/menu.svg" />
                     </a>
                 </li>
             </ul>
@@ -51,7 +48,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" asp-controller="Auth" asp-action="Logout" role="button">
-                        <img class="icon" src="/svg/icons/sign-out.svg" />
+                        <img class="icon" src="~/svg/icons/sign-out.svg" />
                     </a>
                 </li>
             </ul>
@@ -80,7 +77,6 @@
     <!-- Select2 -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-    <!-- Inicialização global do Select2 -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             $('.select2').select2({

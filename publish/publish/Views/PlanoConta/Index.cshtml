@@ -1,0 +1,122 @@
+﻿@model IEnumerable<ADUSClient.PlanoConta.PlanoContaViewModel>
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Categoria de Receitas/Despesas";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+
+<section class="content">
+    <form asp-action="Index">
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-default" type="button" data-bs-toggle="collapse" data-bs-target="#filter" aria-expanded="false" aria-controls="filter">
+                    <img class="icon" src="/svg/icons/filter.svg" />
+                    Filtro
+                </button>
+
+                <div class="collapse mt-2" id="filter">
+                    <div class="card card-primary card-outline">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <input type="search" class="form-control form-control-md" name="filtro" value="@ViewBag.filtro" placeholder="Buscar por descrição ou sinal">
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-md btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <h2>Categorias de Receitas/Despesas</h2>
+    <div class="col text-right">
+        @if (ViewBag.permissao == true)
+        {
+            <a href="/PlanoConta/Adicionar?acao=1" class="btn btn-default">
+                <img class="icon" src="/svg/icons/plus.svg" />
+            </a>
+        }
+    </div>
+
+    <div id="jsGrid"></div>
+</section>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/css/adminlte.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+
+<script>
+    $(function () {
+        $("#jsGrid").jsGrid({
+            width: "100%",
+            height: "400px",
+            sorting: true,
+            paging: true,
+            pageSize: 10,
+            pageButtonCount: 5,
+            pagerFormat: "Páginas: {pages} {prev} {next} {first} {last}",
+            pagePrevText: "Anterior",
+            pageNextText: "Próximo",
+            pageFirstText: "Primeira",
+            pageLastText: "Última",
+            autoload: true,
+            noDataContent: "<div class='custom-no-data'>Nenhum plano de conta encontrado</div>",
+
+            controller: {
+                loadData: function () {
+                    return $.ajax({
+                        type: "GET",
+                        url: "/PlanoConta/GetData?filtro=@ViewBag.filtro",
+                        dataType: "json"
+                    });
+                }
+            },
+
+            fields: [
+                { name: "id", type: "number", visible: false },
+                { name: "descricao", type: "text", title: "Descrição", width: 200 },
+                { name: "sinal", type: "text", title: "Sinal", width: 50 },
+               // { name: "maeDescricao", type: "text", title: "Conta Mãe", width: 150 },
+                {
+                    type: "control",
+                    itemTemplate: function (_, item) {
+                        var $result = $("<div>").addClass("dropdown");
+
+                        var $button = $("<button>").addClass("btn btn-default dropdown-toggle")
+                            .attr("type", "button")
+                            .attr("data-bs-toggle", "dropdown")
+                            .text("Ações");
+
+                        var $menu = $("<div>").addClass("dropdown-menu");
+
+                        var $edit = $("<a>").addClass("dropdown-item")
+                            .attr("href", "/PlanoConta/Adicionar/" + item.id + "?acao=2")
+                            .text("Editar");
+
+                        var $delete = $("<a>").addClass("dropdown-item")
+                            .attr("href", "/PlanoConta/Adicionar/" + item.id + "?acao=3")
+                            .text("Excluir");
+
+                        $menu.append($edit).append($delete);
+                        $result.append($button).append($menu);
+
+                        return $result;
+                    }
+                }
+            ]
+        });
+    });
+</script>

@@ -351,7 +351,7 @@ namespace ADUSAdm.Controllers
                             email = sub.Contact.Email,
                             id = sub.Contact.Id,
                             iduf = 26,
-                            idcidade = 1928,
+                            idCidade = 1928,
                             profissao = "A DEFINIR"
                         });
                     };
@@ -523,7 +523,7 @@ namespace ADUSAdm.Controllers
                             email = sub.contact.email,
                             id = sub.contact.id,
                             iduf = uf.id,
-                            idcidade = cid.id,
+                            idCidade = cid.id,
                             profissao = "A DEFINIR"
                         });
                     };

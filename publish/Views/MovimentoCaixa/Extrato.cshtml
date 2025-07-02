@@ -1,0 +1,147 @@
+﻿@model List<ADUSClient.MovimentoCaixa.ExtratoConta>
+
+@{
+    ViewData["Title"] = "Extrato da Conta";
+}
+
+<!-- CSS Select2 -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+
+<h4 class="mb-4">Extrato da Conta Corrente</h4>
+
+<form asp-action="Extrato" method="get" class="row gy-3 gx-3 mb-4">
+    <input name="acao" value=1 hidden />
+    <div class="col-md-2">
+        <label for="dataInicio" class="form-label fw-bold">Data Início</label>
+        <input type="date" class="form-control" id="dataInicio" name="dataInicio" required value="@ViewBag.dtinicio" />
+    </div>
+    <div class="col-md-2">
+        <label for="dataFim" class="form-label fw-bold">Data Fim</label>
+        <input type="date" class="form-control" id="dataFim" name="dataFim" required value="@ViewBag.dtfim" />
+    </div>
+    <div class="col-md-4">
+        <label for="contaCorrente" class="form-label fw-bold">Conta Corrente</label>
+        <select class="form-select select2-conta" id="contaCorrente" name="idContaCorrente" data-placeholder="Escolha a conta" style="width: 100%;" required>
+            <option></option>
+            @foreach (var conta in ViewBag.contas)
+            {
+                <option value="@conta.Value">@conta.Text</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-4 d-flex align-items-end gap-2">
+        <button type="submit" class="btn btn-primary btn-sm">
+            <i class="fas fa-search me-1"></i> Consultar
+        </button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="imprimirTabela()">
+            <i class="fas fa-print me-1"></i> Imprimir
+        </button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" id="btnExportarExcel">
+            <i class="fas fa-file-excel me-1"></i> Exportar Excel
+        </button>
+    </div>
+</form>
+
+@if (Model != null && Model.Any())
+{
+    <h6 class="fw-bold">Conta Corrente: @ViewBag.contaNome</h6>
+    <h6 class="fw-bold">Período: @ViewBag.dtinicio a @ViewBag.dtfim</h6>
+    <div style="max-height: 70vh; overflow-y: auto;">
+        <table class="table table-bordered table-striped" id="extratoTabela">
+            <thead class="table-light">
+                <tr>
+                    <th style="width: 8%;">Data</th>
+                    <th>Transação</th>
+                    <th>Parceiro</th>
+                    <th>Histórico</th>
+                    <th>ID Banco</th>
+                    <th class="text-end">Débito</th>
+                    <th class="text-end">Crédito</th>
+                    <th class="text-end">Saldo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.datamov.ToString("dd/MM/yyyy")</td>
+                        <td>@item.desctransacao</td>
+                        <td>@item.nomeparceiro</td>
+                        <td>@item.historico</td>
+                        <td>@item.idmovbanco</td>
+                        <td class="text-end">@(item.debito.HasValue ? item.debito.Value.ToString("N2") : "")</td>
+                        <td class="text-end">@(item.credito.HasValue ? item.credito.Value.ToString("N2") : "")</td>
+                        <td class="text-end">@item.saldo.Value.ToString("N2")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.select2-conta').select2({
+                theme: 'bootstrap-5',
+                allowClear: true
+            });
+            $('#contaCorrente').val("@ViewBag.contaCorrente").trigger('change');
+        });
+
+        function imprimirTabela() {
+            const novaJanela = window.open('', '_blank');
+            const estilo = `<style>
+                        body { font-family: Arial; margin: 20px; }
+                        h4, h6 { margin-bottom: 10px; }
+                        table { width: 100%; border-collapse: collapse; }
+                        th, td { border: 1px solid #ddd; padding: 6px; text-align: right; }
+                        th { background-color: #f2f2f2; text-align: center; }
+                        td:nth-child(5) { text-align: left; }
+                    </style>`;
+
+            const cabecalho = `
+                        <h4>Extrato da Conta Corrente</h4>
+                        <h6>Conta Corrente: @ViewBag.contaNome</h6>
+                        <h6>Período: @ViewBag.dini a @ViewBag.dfim</h6>
+                    `;
+
+            const tabela = document.getElementById("extratoTabela").outerHTML;
+            novaJanela.document.write(`<html><head><title>Impressão</title>${estilo}</head><body>${cabecalho}${tabela}</body></html>`);
+            novaJanela.document.close();
+            novaJanela.focus();
+            setTimeout(() => novaJanela.print(), 500);
+        }
+
+        $('#btnExportarExcel').on('click', function () {
+            const tabela = document.getElementById("extratoTabela");
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.table_to_sheet(tabela, { raw: true });
+
+            // Corrige valores monetários para números
+            const colunasNumericas = [ 5, 6, 7];
+            for (const R in ws) {
+                if (R[0] === '!') continue;
+                const colIndex = XLSX.utils.decode_cell(R).c;
+                if (colunasNumericas.includes(colIndex)) {
+                    const cell = ws[R];
+                    if (cell && typeof cell.v === 'string') {
+                        const valor = cell.v.replace(/[^\d,-]/g, '').replace(',', '.');
+                        const numero = parseFloat(valor);
+                        if (!isNaN(numero)) {
+                            cell.v = numero;
+                            cell.t = 'n';
+                        }
+                    }
+                }
+            }
+
+            XLSX.utils.book_append_sheet(wb, ws, "extrato");
+            XLSX.writeFile(wb, "extratoconta.xlsx");
+        });
+    </script>
+}

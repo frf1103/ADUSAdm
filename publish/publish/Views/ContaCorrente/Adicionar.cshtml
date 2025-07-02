@@ -1,0 +1,87 @@
+﻿@model ADUSClient.Banco.ContaCorrenteViewModel
+
+<link rel="stylesheet" href="~/sweetalert2.min.css">
+<link rel="stylesheet" href="~/toastr.min.css">
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>@ViewBag.Titulo</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-primary card-outline">
+                <div class="card-body">
+                    <form asp-action="@ViewBag.Acao">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="id" class="control-label"></label>
+                                            <input asp-for="id" class="form-control" readonly />
+                                            <span asp-validation-for="id" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <label asp-for="descricao" class="control-label"></label>
+                                            <input asp-for="descricao" class="form-control" />
+                                            <span asp-validation-for="descricao" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="agencia" class="control-label"></label>
+                                            <input asp-for="agencia" class="form-control" />
+                                            <span asp-validation-for="agencia" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label asp-for="contaBanco" class="control-label"></label>
+                                            <input asp-for="contaBanco" class="form-control" />
+                                            <span asp-validation-for="contaBanco" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label asp-for="titular" class="control-label"></label>
+                                            <input asp-for="titular" class="form-control" />
+                                            <span asp-validation-for="titular" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" asp-for="bancoId" />
+                            </div>
+
+                            <div class="card-footer">
+                                <div class="row">
+                                    <div class="col text-right">
+                                        @if (ViewBag.idacao <= 2)
+                                        {
+                                            <button type="submit" class="btn btn-success">Salvar</button>
+                                        }
+                                        else if (ViewBag.idacao == 3)
+                                        {
+                                            <button type="submit" class="btn btn-success">Excluir</button>
+                                        }
+                                        <a href="/contacorrente/index/@Model.bancoId class="btn btn-default">Voltar</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

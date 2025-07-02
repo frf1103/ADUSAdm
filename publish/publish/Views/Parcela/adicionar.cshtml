@@ -1,0 +1,175 @@
+﻿@model ADUSClient.Parcela.ParcelaViewModel
+
+<link rel="stylesheet" href="~/sweetalert2.min.css" />
+<link rel="stylesheet" href="~/toastr.min.css" />
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>@ViewBag.Titulo</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-primary card-outline">
+                <div class="card-body">
+                    <form asp-action="@ViewBag.acao" method="post" novalidate>
+                        <div class="card">
+                            <div class="card-body">
+
+                                <!-- Campos Identificadores -->
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label asp-for="id"></label>
+                                        <input asp-for="id" class="form-control" readonly />
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label asp-for="idassinatura"></label>
+                                        <input asp-for="idassinatura" class="form-control" readonly type="text" value=@Model.idassinatura />
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label asp-for="numparcela"></label>
+                                        <input asp-for="numparcela" class="form-control" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label asp-for="idcaixa"></label>
+                                        <input asp-for="idcaixa" class="form-control" readonly type="text" />
+                                    </div>
+                                </div>
+
+                                <!-- Campos de Datas e Plataforma -->
+                                <div class="row mt-2">
+                                    <div class="col-md-3">
+                                        <label asp-for="idformapagto"></label>
+                                        <select asp-for="idformapagto" class="form-control" asp-items="ViewBag.Formas"></select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label asp-for="datavencimento"></label>
+                                        <input asp-for="datavencimento" type="date" class="form-control" />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label asp-for="databaixa"></label>
+                                        <input asp-for="databaixa" type="date" class="form-control" />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label asp-for="plataforma"></label>
+                                        <input asp-for="plataforma" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <!-- Valores Monetários (com Input bindings) -->
+                                <div class="row mt-2">
+                                    <div class="col-md-2">
+                                        <label asp-for="valorInput"></label>
+                                        <input asp-for="valorInput" id="valorInput" class="form-control moeda" />
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label asp-for="comissaoInput"></label>
+                                        <input asp-for="comissaoInput" id="com" class="form-control moeda" />
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label asp-for="descontoplataformaInput"></label>
+                                        <input asp-for="descontoplataformaInput" id="descontoplataformaInput" class="form-control moeda" />
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label asp-for="descontoantecipacaoInput"></label>
+                                        <input asp-for="descontoantecipacaoInput" id="descontoantecipacaoInput" class="form-control moeda" />
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label asp-for="acrescimosInput"></label>
+                                        <input asp-for="acrescimosInput" id="acrescimosInput" class="form-control moeda" />
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label asp-for="descontosInput"></label>
+                                        <input asp-for="descontosInput" id="descontosInput" class="form-control moeda" />
+                                    </div>
+                                </div>
+
+                                <!-- Valor Líquido -->
+                                <div class="row mt-2">
+                                    <div class="col-md-4">
+                                        <label asp-for="valorliquidoInput"></label>
+                                        <input asp-for="valorliquidoInput" id="valorliquidoInput" class="form-control moeda" readonly />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label asp-for="idcheckout"></label>
+                                        <input asp-for="idcheckout" class="form-control" readonly type="text" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label asp-for="nossonumero"></label>
+                                        <input asp-for="nossonumero" class="form-control"  type="text" />
+                                    </div>
+                                </div>
+
+                                <!-- Observações -->
+                                <div class="form-group mt-3">
+                                    <label asp-for="observacao"></label>
+                                    <textarea asp-for="observacao" class="form-control" rows="3"></textarea>
+                                </div>
+
+                            </div>
+
+                            <div class="card-footer text-right">
+                                <button type="submit" class="btn btn-success">Salvar</button>
+                                <a href="/Parcela/Index?idassinatura=@ViewBag.idassinatura&idparceiro=@ViewBag.idparceiro&forma=@ViewBag.forma&status=@ViewBag.status&ini=@ViewBag.ini&fim=@ViewBag.fim" class="btn btn-default">Voltar</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <script src="~/js/comuns.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
+    <script>
+        function parseDecimal(valor) {
+            if (!valor) return 0;
+            return parseFloat(valor.replace(/\./g, '').replace(',', '.')) || 0;
+        }
+
+        function calcularValorLiquido() {
+            const valor = parseDecimal($('#valorInput').val());
+            const descontoPlataforma = parseDecimal($('#descontoplataformaInput').val());
+            const comissao = parseDecimal($('#comissaoInput').val());
+            const descontoAntecipacao = parseDecimal($('#descontoantecipacaoInput').val());
+            const acrescimos = parseDecimal($('#acrescimosInput').val());
+            const descontos = parseDecimal($('#descontosInput').val());
+
+            const liquido = valor - descontoPlataforma - comissao - descontoAntecipacao + acrescimos - descontos;
+
+            $('#valorliquidoInput').val(liquido.toFixed(2).replace('.', ','));
+        }
+
+        $(document).ready(function () {
+            $('.moeda').mask('#.##0,00', { reverse: true });
+
+            const campos = [
+                '#valorInput',
+                '#comissaoInput',
+                '#descontoplataformaInput',
+                '#descontoantecipacaoInput',
+                '#acrescimosInput',
+                '#descontosInput'
+            ];
+
+            campos.forEach(id => {
+                $(id).on('input paste', function () {
+                    setTimeout(calcularValorLiquido, 50);
+                });
+            });
+
+            calcularValorLiquido();
+        });
+    </script>
+}

@@ -20,6 +20,422 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Areas/Identity/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxBcmVhc1xJZGVudGl0eVxQYWdlc1xfVmlld1N0YXJ0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Areas/Identity/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXEFyZWFzXElkZW50aXR5XFBhZ2VzXF9WaWV3U3RhcnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Assinatura/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXEFzc2luYXR1cmFcQWRpY2lvbmFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Assinatura/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXEFzc2luYXR1cmFcRWRpdGFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Assinatura/excluir.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXEFzc2luYXR1cmFcZXhjbHVpci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Assinatura/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXEFzc2luYXR1cmFcaW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Auth/AlterarSenha.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXEF1dGhcQWx0ZXJhclNlbmhhLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Auth/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXEF1dGhcTG9naW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Auth/resetarsenha.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXEF1dGhccmVzZXRhcnNlbmhhLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Banco/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXEJhbmNvXEFkaWNpb25hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Banco/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXEJhbmNvXGluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/CentroCusto/adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXENlbnRyb0N1c3RvXGFkaWNpb25hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/CentroCusto/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXENlbnRyb0N1c3RvXGluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/ContaCorrente/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXENvbnRhQ29ycmVudGVcQWRpY2lvbmFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/ContaCorrente/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXENvbnRhQ29ycmVudGVcaW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXEhvbWVcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXEhvbWVcUHJpdmFjeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Moeda/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXE1vZWRhXEFkaWNpb25hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Moeda/AdicionarCotacao.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXE1vZWRhXEFkaWNpb25hckNvdGFjYW8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Moeda/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXE1vZWRhXEVkaXRhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Moeda/Excluir.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXE1vZWRhXEV4Y2x1aXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Moeda/ExcluirCotacao.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXE1vZWRhXEV4Y2x1aXJDb3RhY2FvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Moeda/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXE1vZWRhXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/MovimentoCaixa/adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXE1vdmltZW50b0NhaXhhXGFkaWNpb25hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/MovimentoCaixa/Extrato.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXE1vdmltZW50b0NhaXhhXEV4dHJhdG8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/MovimentoCaixa/ImportarExtrato.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXE1vdmltZW50b0NhaXhhXEltcG9ydGFyRXh0cmF0by5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/MovimentoCaixa/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXE1vdmltZW50b0NhaXhhXGluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/ParametrosGuru/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXFBhcmFtZXRyb3NHdXJ1XGluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Parceiro/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXFBhcmNlaXJvXEFkaWNpb25hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Parceiro/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXFBhcmNlaXJvXEVkaXRhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Parceiro/Excluir.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXFBhcmNlaXJvXEV4Y2x1aXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Parceiro/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXFBhcmNlaXJvXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Parcela/adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXFBhcmNlbGFcYWRpY2lvbmFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Parcela/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXFBhcmNlbGFcaW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Parcela/visaogeralcarteira.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXFBhcmNlbGFcdmlzYW9nZXJhbGNhcnRlaXJhLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/PlanoConta/adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXFBsYW5vQ29udGFcYWRpY2lvbmFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/PlanoConta/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXFBsYW5vQ29udGFcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Shared/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXFNoYXJlZFxBY2Nlc3NEZW5pZWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXFNoYXJlZFxFcnJvci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXFNoYXJlZFxfTGF5b3V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Shared/_Layout1.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXFNoYXJlZFxfTGF5b3V0MS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Shared/_LoginPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXFNoYXJlZFxfTG9naW5QYXJ0aWFsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Shared/_Menu.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXFNoYXJlZFxfTWVudS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Shared/_MenuSlimHover.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXFNoYXJlZFxfTWVudVNsaW1Ib3Zlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Shared/_ModalProcessando.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXFNoYXJlZFxfTW9kYWxQcm9jZXNzYW5kby5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXFNoYXJlZFxfVmFsaWRhdGlvblNjcmlwdHNQYXJ0aWFsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Transacao/adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXFRyYW5zYWNhb1xhZGljaW9uYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Transacao/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXFRyYW5zYWNhb1xpbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Usuarios/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXFVzdWFyaW9zXEFkaWNpb25hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Usuarios/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXFVzdWFyaW9zXEVkaXRhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/Usuarios/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXFVzdWFyaW9zXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXF9WaWV3SW1wb3J0cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/publish/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxwdWJsaXNoXFZpZXdzXF9WaWV3U3RhcnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Assinatura/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xBc3NpbmF0dXJhXEFkaWNpb25hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Assinatura/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xBc3NpbmF0dXJhXEVkaXRhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Assinatura/excluir.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xBc3NpbmF0dXJhXGV4Y2x1aXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Assinatura/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xBc3NpbmF0dXJhXGluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Auth/AlterarSenha.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xBdXRoXEFsdGVyYXJTZW5oYS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Auth/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xBdXRoXExvZ2luLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Auth/resetarsenha.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xBdXRoXHJlc2V0YXJzZW5oYS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Banco/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xCYW5jb1xBZGljaW9uYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Banco/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xCYW5jb1xpbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/CentroCusto/adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xDZW50cm9DdXN0b1xhZGljaW9uYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/CentroCusto/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xDZW50cm9DdXN0b1xpbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/ContaCorrente/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xDb250YUNvcnJlbnRlXEFkaWNpb25hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/ContaCorrente/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xDb250YUNvcnJlbnRlXGluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xIb21lXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xIb21lXFByaXZhY3kuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Moeda/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xNb2VkYVxBZGljaW9uYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Moeda/AdicionarCotacao.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xNb2VkYVxBZGljaW9uYXJDb3RhY2FvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Moeda/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xNb2VkYVxFZGl0YXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Moeda/Excluir.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xNb2VkYVxFeGNsdWlyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Moeda/ExcluirCotacao.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xNb2VkYVxFeGNsdWlyQ290YWNhby5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Moeda/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xNb2VkYVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/MovimentoCaixa/adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xNb3ZpbWVudG9DYWl4YVxhZGljaW9uYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/MovimentoCaixa/Extrato.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xNb3ZpbWVudG9DYWl4YVxFeHRyYXRvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/MovimentoCaixa/ImportarExtrato.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xNb3ZpbWVudG9DYWl4YVxJbXBvcnRhckV4dHJhdG8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/MovimentoCaixa/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xNb3ZpbWVudG9DYWl4YVxpbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/ParametrosGuru/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xQYXJhbWV0cm9zR3VydVxpbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Parceiro/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xQYXJjZWlyb1xBZGljaW9uYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Parceiro/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xQYXJjZWlyb1xFZGl0YXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Parceiro/Excluir.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xQYXJjZWlyb1xFeGNsdWlyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Parceiro/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xQYXJjZWlyb1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Parcela/adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xQYXJjZWxhXGFkaWNpb25hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Parcela/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xQYXJjZWxhXGluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Parcela/visaogeralcarteira.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xQYXJjZWxhXHZpc2FvZ2VyYWxjYXJ0ZWlyYS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/PlanoConta/adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xQbGFub0NvbnRhXGFkaWNpb25hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/PlanoConta/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xQbGFub0NvbnRhXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Shared/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xTaGFyZWRcQWNjZXNzRGVuaWVkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xTaGFyZWRcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xTaGFyZWRcX0xheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Shared/_Layout1.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xTaGFyZWRcX0xheW91dDEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Shared/_LoginPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xTaGFyZWRcX0xvZ2luUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Shared/_Menu.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xTaGFyZWRcX01lbnUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Shared/_MenuSlimHover.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xTaGFyZWRcX01lbnVTbGltSG92ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Shared/_ModalProcessando.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xTaGFyZWRcX01vZGFsUHJvY2Vzc2FuZG8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xTaGFyZWRcX1ZhbGlkYXRpb25TY3JpcHRzUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Transacao/adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xUcmFuc2FjYW9cYWRpY2lvbmFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Transacao/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xUcmFuc2FjYW9caW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Usuarios/Adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xVc3Vhcmlvc1xBZGljaW9uYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Usuarios/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xVc3Vhcmlvc1xFZGl0YXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/Usuarios/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xVc3Vhcmlvc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xfVmlld0ltcG9ydHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/publish/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = cHVibGlzaFxWaWV3c1xfVmlld1N0YXJ0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Assinatura/Adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzaW5hdHVyYVxBZGljaW9uYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

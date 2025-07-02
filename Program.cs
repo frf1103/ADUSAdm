@@ -1,4 +1,4 @@
-using ADUSAdm.Data;
+﻿using ADUSAdm.Data;
 using ADUSAdm.FormatingConfiguration;
 using ADUSAdm.Shared;
 using MathNet.Numerics;
@@ -11,20 +11,19 @@ using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// --------------------------------------
+// Configuração do banco de dados
+// --------------------------------------
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-var urlconvite = builder.Configuration.GetSection("AppSettings").GetSection("urlconvite").Value;
-var urlAPI = builder.Configuration.GetSection("AppSettings").GetSection("urlapi").Value;
 builder.Services.AddDbContext<ADUScontext>(options =>
     options.UseSqlServer(connectionString));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-/*builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ADUScontext>();
-*/
-
-//builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-//    .AddEntityFrameworkStores<ADUScontext>();
+// --------------------------------------
+// Identity e autenticação
+// --------------------------------------
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
@@ -33,81 +32,37 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     .AddEntityFrameworkStores<ADUScontext>()
     .AddDefaultTokenProviders();
 
-builder.Services.ConfigureApplicationCookie(options => options.LoginPath = "/Auth/Login");
-
-builder.Services.AddHttpClient<ADUSClient.Controller.MoedaControllerClient>(client =>
+builder.Services.ConfigureApplicationCookie(options =>
 {
-    client.BaseAddress = new Uri(urlAPI.ToString());
+    options.LoginPath = "/Auth/Login";
 });
 
-builder.Services.AddHttpClient<ADUSClient.Controller.ParceiroControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
+// --------------------------------------
+// Configuração dos HttpClients
+// --------------------------------------
 
-builder.Services.AddHttpClient<ADUSClient.Controller.SharedControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
+var urlAPI = builder.Configuration.GetSection("AppSettings").GetSection("urlapi").Value;
 
-builder.Services.AddHttpClient<ADUSClient.Controller.AssinaturaControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
+builder.Services.AddHttpClient<ADUSClient.Controller.MoedaControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
+builder.Services.AddHttpClient<ADUSClient.Controller.ParceiroControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
+builder.Services.AddHttpClient<ADUSClient.Controller.SharedControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
+builder.Services.AddHttpClient<ADUSClient.Controller.AssinaturaControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
+builder.Services.AddHttpClient<ADUSClient.Controller.ParcelaControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
+builder.Services.AddHttpClient<ADUSClient.Controller.ParametroGuruControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
+builder.Services.AddHttpClient<ADUSClient.Controller.BancoControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
+builder.Services.AddHttpClient<ADUSClient.Controller.ContaCorrenteControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
+builder.Services.AddHttpClient<ADUSClient.Controller.MovimentoCaixaControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
+builder.Services.AddHttpClient<ADUSClient.Controller.CentroCustoControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
+builder.Services.AddHttpClient<ADUSClient.Controller.PlanoContaControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
+builder.Services.AddHttpClient<ADUSClient.Controller.TransacaoControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
+builder.Services.AddHttpClient<ADUSClient.Controller.TransacBancoControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
 
-builder.Services.AddHttpClient<ADUSClient.Controller.ParceiroControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<ADUSClient.Controller.ParcelaControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<ADUSClient.Controller.ParametroGuruControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<ADUSClient.Controller.BancoControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<ADUSClient.Controller.ContaCorrenteControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<ADUSClient.Controller.MovimentoCaixaControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<ADUSClient.Controller.CentroCustoControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<ADUSClient.Controller.PlanoContaControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<ADUSClient.Controller.TransacaoControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<ADUSClient.Controller.TransacBancoControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
+// --------------------------------------
+// Configuração de serviços auxiliares
+// --------------------------------------
 
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 builder.Services.AddTransient<ADUSAdm.Shared.IEmailSender, EmailSender>();
-//builder.Services.AddTransient<IUsuarioService, UsuContservice>();
 
 builder.Services.AddControllers(options =>
 {
@@ -124,7 +79,6 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// Adicionar IHttpContextAccessor
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<SessionManager>();
 
@@ -133,49 +87,42 @@ builder.Services.AddLocalization(options => options.ResourcesPath = "Resources")
 builder.Services.AddScoped<ImportacaoService>();
 builder.Services.AddSignalR();
 
-// Carregar configura��es de cultura do appsettings.json
+// --------------------------------------
+// Configuração de Localização (opcional)
+// --------------------------------------
 
-/*
 var supportedCultures = builder.Configuration.GetSection("Culture:SupportedCultures").Get<string[]>();
 var defaultCulture = builder.Configuration["Culture:DefaultCulture"];
 
-builder.Services.Configure<RequestLocalizationOptions>(options =>
+if (supportedCultures != null && supportedCultures.Any() && !string.IsNullOrEmpty(defaultCulture))
 {
-    var supportedCulturesList = supportedCultures.Select(c => new CultureInfo(c)).ToList();
-
-    options.DefaultRequestCulture = new RequestCulture(defaultCulture);
-    options.SupportedCultures = supportedCulturesList;
-    options.SupportedUICultures = supportedCulturesList;
-
-    options.RequestCultureProviders.Insert(0, new CustomRequestCultureProvider(async context =>
+    builder.Services.Configure<RequestLocalizationOptions>(options =>
     {
-        // Here you can customize the culture selection logic
-        return new ProviderCultureResult(defaultCulture);
-    }));
-});
-*/
+        var supportedCulturesList = supportedCultures.Select(c => new CultureInfo(c)).ToList();
 
-var config = new ConfigurationBuilder()
-    .AddJsonFile("appsettings.json", optional: false)
-    .SetBasePath(Directory.GetCurrentDirectory())
-    .Build();
+        options.DefaultRequestCulture = new RequestCulture(defaultCulture);
+        options.SupportedCultures = supportedCulturesList;
+        options.SupportedUICultures = supportedCulturesList;
 
-var sectionDev = config.GetSection("AMBIENTE:DEV");
-
-if (sectionDev.Exists() && sectionDev.Value.ToString() == "0")
-{
-    builder.WebHost.ConfigureKestrel((context, serverOptions) =>
-    {
-        serverOptions.Listen(System.Net.IPAddress.Any, config.GetValue<int>("HOST:HTTP"));
-        serverOptions.Listen(System.Net.IPAddress.Any, config.GetValue<int>("HOST:HTTPS"));
+        options.RequestCultureProviders.Insert(0, new CustomRequestCultureProvider(async context =>
+        {
+            return new ProviderCultureResult(defaultCulture);
+        }));
     });
 }
 
-//builder.Services.AddScoped<ImportacaoService>();
-
-// ?? Se estiver usando SignalR
-//builder.Services.AddSignalR();
 var app = builder.Build();
+
+// ✅ ✅ ADICIONADO PARA FUNCIONAR EM APLICATIVO VIRTUAL:
+var pathBase = Environment.GetEnvironmentVariable("ASPNETCORE_APPL_PATH");
+if (!string.IsNullOrEmpty(pathBase))
+{
+    app.UsePathBase(pathBase);
+}
+
+// --------------------------------------
+// Migrations (opcional, cuidado em produção)
+// --------------------------------------
 
 using (var scope = app.Services.CreateScope())
 {
@@ -183,7 +130,9 @@ using (var scope = app.Services.CreateScope())
     db.Database.Migrate();
 }
 
-// Configure the HTTP request pipeline.
+// --------------------------------------
+// Pipeline de middlewares
+// --------------------------------------
 
 if (app.Environment.IsDevelopment())
 {
@@ -191,15 +140,7 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    /*
-    builder.WebHost.ConfigureKestrel((context, serverOptions) =>
-    {
-        serverOptions.Listen(System.Net.IPAddress.Any, config.GetValue<int>("HOST:HTTP"));
-        serverOptions.Listen(System.Net.IPAddress.Any, config.GetValue<int>("HOST:HTTPS"));
-    }); */
-
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -213,17 +154,16 @@ app.UseAuthorization();
 
 app.UseSession();
 
-// Configurar SessionManager
-var httpContextAccessor = app.Services.GetRequiredService<IHttpContextAccessor>();
-//SessionManager.Configure(httpContextAccessor);
-
-var localizationOptions = app.Services.GetService<IOptions<RequestLocalizationOptions>>().Value;
-app.UseRequestLocalization(localizationOptions);
+var locOptions = app.Services.GetService<IOptions<RequestLocalizationOptions>>()?.Value;
+if (locOptions != null)
+{
+    app.UseRequestLocalization(locOptions);
+}
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-//app.MapRazorPages();
 
 app.MapHub<ImportProgressHub>("/hub/importProgress");
+
 app.Run();

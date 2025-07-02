@@ -114,7 +114,7 @@
         <a href="#" class="btn btn-default" id="btnSyncGuru" title="Sincronizar Recebíveis">
             <i class="fas fa-sync-alt"></i>
         </a>
-        <a href="#" class="btn btn-default" id="btnSyncGuru" title="Exportar pro Excel" onclick="parcelasExcel()">
+        <a href="#" class="btn btn-default" id="btnExcel" title="Exportar pro Excel">
             <i class="fas fa-file-excel"></i>
         </a>
 
@@ -127,6 +127,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     
     <script src='~/js/excelexportjs.js'></script>
     <script src="~/js/comuns.js"></script>
@@ -147,8 +148,110 @@
             $("#idassinatura").val("@ViewBag.idassinatura");
             //$('#idfazenda').trigger("change");
 
+            $("#btnExcel").on("click", function (e) {
+                e.preventDefault();
+                parcelasExcel();                
+            });
+
 
         });
+
+
+        parcelasExcel = function () {
+        
+            $.ajax({
+                type: "GET",
+                url: "/Parcela/GetData",
+                data: {
+                    ini: $("input[name='ini']").val(),
+                    fim: $("input[name='fim']").val(),
+                    idparceiro: "@ViewBag.SelectedOptionF",
+                    idassinatura: "@ViewBag.idassinatura",
+                    status: @ViewBag.Status,
+                    forma: @ViewBag.Forma,
+                    tipodata: @ViewBag.tipodata ,
+                    filtro: $("input[name='filtro']").val()
+                },
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    if (obj != null) {
+                        parcelas = obj;
+                        excelconsultanew(parcelas);
+                    }
+                }
+            });
+        }
+
+
+
+        function excelconsultanew(parcelas) {
+            const wsData = [];
+
+            wsData.push([
+                "Numero", "Valor", "Desc Plat", "Comissao",
+                "Vcto", "Parceiro", "Plataforma", "Situacao", "Forma"
+            ]);
+
+            parcelas.forEach(p => {
+                wsData.push([
+                    p.numparcela,
+                    p.valor,
+                    p.descontoplataforma,
+                    p.comissao,
+                    p.datavencimento,
+                    p.nomeparceiro,
+                    p.plataforma,
+                    p.status,
+                    p.descforma
+                ]);
+            });
+
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(wsData);
+            XLSX.utils.book_append_sheet(wb, ws, "Parcelas");
+            XLSX.writeFile(wb, "parcelas.xlsx");
+        }
+
+
+
+        function excelconsulta(parcelas) {
+
+            xdata = [];
+
+            for (var i = 0; i <= parcelas.length - 1; i++) {
+
+                xdata.push({
+                    //"Talhao": data[i].codigo,
+                    "Numero": parcelas[i].numparcela,
+                    "Valor": parcelas[i].valor.toLocaleString('pt-br', { style: 'decimal', maximumFractionDigits: 2 }),
+                    "Desc Plat": parcelas[i].descontoplataforma.toLocaleString('pt-br', { style: 'decimal', maximumFractionDigits: 2 }),
+                    "Comissao": parcelas[i].comissao.toLocaleString('pt-br', { style: 'decimal', maximumFractionDigits: 2 }),
+                    "Vcto": parcelas[i].datavencimento,
+                    "Parceiro": parcelas[i].nomeparceiro,
+                    "Plataforma": parcelas[i].plataforma,
+                    "Situacao": parcelas[i].status,
+                    "Forma": parcelas[i].descforma
+
+                })
+            }
+           try { 
+               $("#jsGrid").excelexportjs({
+                    containerid: "jsGrid"
+                    , datatype: 'json'
+                    , dataset: xdata
+                    , columns: getColumns(xdata)
+                });
+           } 
+           catch (ex) 
+           {
+            console.error("Erro durante exportação:", ex);
+            alert("Erro durante exportação: " + ex.message);
+           }
+
+
+        }
+
 
         function mostrarProcessando() {
             const modal = new bootstrap.Modal(document.getElementById("modalProcessando"), {
@@ -368,67 +471,7 @@
                 ]
             });
 
-        function parcelasExcel()
-        {
-           
-
-            $.ajax({
-                type: "GET",
-                url: "/Parcela/GetData",
-                data: {
-                    ini: $("input[name='ini']").val(),
-                    fim: $("input[name='fim']").val(),
-                    idparceiro: "@ViewBag.SelectedOptionF",
-                    idassinatura: "@ViewBag.idassinatura",
-                    status: @ViewBag.Status,
-                    forma: @ViewBag.Forma,
-                    tipodata: @ViewBag.tipodata ,
-                    filtro: $("input[name='filtro']").val()
-                },
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (obj) {
-                    if (obj != null) {
-                        parcelas=obj;
-                        excelconsulta(parcelas);
-                    }
-                }
-            });
-            
-            
-        }
-
-        function excelconsulta(parcelas) {
-
-            xdata = [];
-
-            for (var i=0;i<=parcelas.length-1;i++) {
-                
-                xdata.push({
-                    //"Talhao": data[i].codigo,
-                    "Numero": parcelas[i].numparcela,
-                    "Valor": parcelas[i].valor.toLocaleString('pt-br', { style: 'decimal', maximumFractionDigits: 2 }),
-                    "Desc Plat": parcelas[i].descontoplataforma.toLocaleString('pt-br', { style: 'decimal', maximumFractionDigits: 2 }),
-                    "Comissao": parcelas[i].comissao.toLocaleString('pt-br', { style: 'decimal', maximumFractionDigits: 2 }),
-                    "Vcto": parcelas[i].datavencimento,
-                    "Parceiro":parcelas[i].nomeparceiro,
-                    "Plataforma":parcelas[i].plataforma,
-                    "Situacao":parcelas[i].status,
-                    "Forma":parcelas[i].descforma
-
-                })
-            }
-            
-            $("#jsGrid").excelexportjs({
-                containerid: "jsGrid"
-                , datatype: 'json'
-                , dataset: xdata
-                , columns: getColumns(xdata)
-            });
-
-
-
-        }
+        
 
         
     </script>

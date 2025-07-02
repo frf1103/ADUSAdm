@@ -1,0 +1,50 @@
+﻿@model ADUSClient.CentroCusto.CentroCustoViewModel
+@{
+    ViewData["Title"] = "Centro de Custo";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>@ViewBag.Titulo</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-primary card-outline">
+                <div class="card-body">
+                    <form asp-action="@ViewBag.Acao" method="post">
+                        <div class="card">
+                            <div class="card-body">
+                                <input type="hidden" asp-for="Id" />
+
+                                <div class="form-group">
+                                    <label asp-for="Descricao" class="control-label"></label>
+                                    <input asp-for="Descricao" class="form-control" maxlength="100" />
+                                    <span asp-validation-for="Descricao" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="card-footer text-right">
+                                @if (ViewBag.idacao <= 2)
+                                {
+                                    <button type="submit" class="btn btn-success">Salvar</button>
+                                }
+                                else if (ViewBag.idacao == 3)
+                                {
+                                    <button type="submit" class="btn btn-danger">Excluir</button>
+                                }
+                                <a href="/CentroCusto/Index" class="btn btn-default">Voltar</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

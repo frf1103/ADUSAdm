@@ -135,7 +135,7 @@ namespace ADUSAdm.Controllers
                 ModelState.AddModelError(string.Empty, TempData["Erro"].ToString());
             }
             ViewBag.iduf = c.iduf;
-            ViewBag.idcid = c.idcidade;
+            ViewBag.idcid = c.idCidade;
             if (acao == 3)
             {
                 ViewBag.acao = "disable";

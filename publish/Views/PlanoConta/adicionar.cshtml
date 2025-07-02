@@ -1,0 +1,82 @@
+﻿@model ADUSClient.PlanoConta.PlanoContaViewModel
+
+<link rel="stylesheet" href="~/sweetalert2.min.css">
+<link rel="stylesheet" href="~/toastr.min.css">
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>@ViewBag.Titulo</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-primary card-outline">
+                <div class="card-body">
+                    <form asp-action="@ViewBag.Acao" method="post" novalidate>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label asp-for="Id" class="control-label"></label>
+                                            <input asp-for="Id" class="form-control" readonly />
+                                            <span asp-validation-for="Id" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Descricao" class="control-label"></label>
+                                            <input asp-for="Descricao" class="form-control" />
+                                            <span asp-validation-for="Descricao" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label asp-for="Sinal" class="control-label"></label>
+                                            <select asp-for="Sinal" asp-items="ViewBag.Sinais" class="form-control">
+                                                <option value="">Selecione</option>
+                                            </select>
+                                            <span asp-validation-for="Sinal" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label asp-for="IdMae" class="control-label"></label>
+                                            <input asp-for="IdMae" class="form-control" />
+                                            <span asp-validation-for="IdMae" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-footer">
+                                <div class="row">
+                                    <div class="col text-right">
+                                        @if (ViewBag.idacao <= 2)
+                                        {
+                                            <button type="submit" class="btn btn-success">Salvar</button>
+                                        }
+                                        else if (ViewBag.idacao == 3)
+                                        {
+                                            <button type="submit" class="btn btn-danger">Excluir</button>
+                                        }
+                                        <a href="/PlanoConta/Index" class="btn btn-default">Voltar</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

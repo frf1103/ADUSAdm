@@ -1,0 +1,171 @@
+﻿@model ADUSClient.Moeda.MoedaViewModel
+
+
+<link rel="stylesheet" href="~/sweetalert2.min.css">
+<!-- Toastr -->
+<link rel="stylesheet" href="~/toastr.min.css">
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Editar Dados da Moeda</h1>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+
+
+<div class="wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-primary card-outline">
+                <div class="card-body">
+                    <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="principal" data-toggle="pill" href="#custom-content-above-home" role="tab" aria-controls="custom-content-above-home" aria-selected="true">Principal</a>
+                        </li>                        
+                        <li class="nav-item">
+                            <a class="nav-link" id="custom-content-above-consolida-tab" data-toggle="pill" href="#custom-content-above-consolida" role="tab" aria-controls="custom-content-above-consolida" aria-selected="false">Cotações</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="custom-content-above-tabContent">
+                        <div class="tab-pane fade show active" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab">
+                            <form asp-action="Editar">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <div class="form-group">
+                                            <label asp-for="id" class="control-label"></label>
+                                            <input asp-for="id" class="form-control" readonly />
+                                            <span asp-validation-for="id" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="descricao" class="control-label"></label>
+                                            <input asp-for="descricao" class="form-control" />
+                                            <span asp-validation-for="descricao" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <!-- /.card-body -->
+                                    <div class="card-footer">
+                                        <div class="row">
+                                            <div class="col text-right">
+                                                <button type="submit" class="btn btn-primary">Salvar</button>
+                                                <a href="/moeda/index" class="btn btn-danger">Voltar</a>
+                                            </div>                                     
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>                          
+                        
+
+                        
+
+                        </div>
+                        <div class="tab-pane fade" id="custom-content-above-consolida" role="tabpanel" aria-labelledby="custom-content-above-cosolida-tab">                       
+                            
+                            <form asp-action=editar id="formcot" method="get">
+                                <div class="input-group input-group-sm" style="width: 300px;">
+                                    <input type="date" class="form-control" placeholder="Inicio" name="ini" id="ini" value=@ViewBag.Ini />
+                                    <input type="date" class="form-control" placeholder="Fim" name="fim" id="fim" value=@ViewBag.Fim />
+                                    <button type="submit" class="btn btn-default" id="pesquisacotacao">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+
+                                </div>
+                                
+                            </form>
+
+                            <form asp-action=editarcotacao id="formcot">
+
+
+                                <div class="col text-right">
+                                    <a href="/moeda/adicionarcotacao?idmoeda=@Model!.id&descmoeda=@Model.descricao" button type="submit" class="btn btn-primary">Nova</a>
+                                </div>
+                                
+
+                                <div class="card-body table-responsive p-0">
+
+                                    <table class="table table-head-fixed text-nowrap" id="dataTable">
+
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 200px">ID</th>                                                
+                                                <th>Data</th>
+                                                <th>Valor</th>
+                                                <th style="width: 40px"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Model.listcotacoes != null)
+                                            {
+                                                foreach (var m in Model!.listcotacoes)
+                                                {
+                                                    <tr>
+                                                        <td>@m.id</td>
+                                                        <td>@m.cotacaoData</td>
+                                                        <td>@m.cotacaoValor</td>
+                                                        <td>
+                                                                <a href="/moeda/excluircotacao/@m.id" class="btn btn-secondary btn-sm mr-1" title="Excluir">
+                                                                    <span class="fas fa-trash"></span>
+
+                                                                </a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </form>
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+
+</div>
+
+@section scripts {
+
+    <script>
+
+
+        /*
+         function submitFormWithQueryString() {
+        // Obter os valores dos campos do formulário
+        var ini = document.getElementById('ini').value;
+        var fim = document.getElementById('fim').value;
+
+        // Construir a query string
+        var queryString = '?ini=' + ini + '&fim=' + fim+'&pag=2';
+
+        // Obter o formulário
+        var form = document.getElementById('formcot');
+
+        // Modificar a ação do formulário para incluir a query string
+        form.action = form.action + queryString;
+
+        // Submeter o formulário
+        form.submit();
+        */
+    </script>
+}
+
+<!-- /.content -->

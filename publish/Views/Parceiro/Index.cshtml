@@ -1,0 +1,165 @@
+﻿@model List<ADUSClient.Parceiro.ListParceiroViewModel>
+
+@{
+    ViewBag.Title = "Parceiro";
+}
+
+<form asp-action="Index">
+    <div class="input-group input-group-sm" style="width: 300px;">
+        <input type="text" class="form-control" placeholder="Buscar parceiro" name="filtro" value="@ViewBag.Filtro">
+        <div class="input-group-append">
+            <button type="submit" class="btn btn-default">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+    <div>
+        @Html.ValidationSummary(true)
+    </div>
+
+</form>
+
+<h2>Parceiros de Negócio</h2>
+<div class="col text-right">
+     @if (ViewBag.permissao == true)
+     {
+        <a href="/parceiro/adicionar" class="btn btn-default" role="button">
+            <img class="icon" src="/svg/icons/plus.svg" />
+        </a>
+     }
+</div>
+<div id="jsGrid"></div>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/css/adminlte.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+
+<style>
+    .custom-no-data {
+        text-align: center;
+        color: red;
+        font-weight: bold;
+    }
+</style>
+<!-- Bootstrap 4 -->
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+
+
+<script src="~/js/formataregistro.js"></script>
+
+
+<script>
+
+    $(document).ready(function () {
+
+       
+
+    });
+
+    $(function () {
+        $("#jsGrid").jsGrid({
+            width: "100%",
+            height: "400px",
+
+            sorting: true,
+            paging: true,
+            pageSize: 10,                 // Define o número de registros por página
+            pageButtonCount: 5,          // Número de botões de navegação exibidos
+            pagerFormat: "Páginas: {pages} {prev} {next} {first} {last}",  // Formato do pager,
+            pageLoading: false,
+            pagePrevText: "Anterior", // Texto para o botão "Anterior"
+            pageNextText: "Próximo",  // Texto para o botão "Próximo",
+            pageFirstText: "Primeira",  // Adicionando "Primeira" página
+            pageLastText: "Última",     // Adicionando "Última" página
+
+
+            autoload: true,
+            noDataContent: "<div class='custom-no-data'>Nenhum dado encontrado</div>",
+
+            controller: {
+                loadData: function () {
+                    return $.ajax({
+                        type: "GET",
+                        url: "/parceiro/GetData?idorganizacao=" + $('#idorg').val() + "&filtro=@ViewBag.filtro",
+                        dataType: "json"
+                    });
+                }
+            },
+
+            fields: [
+                { name: "id", type: "text", width: 20, title: "ID", visible: false },
+                { name: "razaoSocial", type: "text", width: 80, title: "Razão Social" },
+                { name: "fantasia", type: "text", width: 120, title: "Fantasia" },
+                { name: "desctipo", type: "text", width: 20, title: "Tipo" },
+                {
+                    name: "registro", type: "text", width: 50, title: "Registro",
+
+                    itemTemplate: function (value) {
+                        // Formata o valor DateTime para 'dd/MM/yyyy'
+                        
+                        return formatreg(value);
+                    }
+                },                
+                {
+                    type: "control",
+                    itemTemplate: function (_, item) {
+                        var $result = $("<div>").addClass("dropdown");
+
+                        var $button = $("<button>").addClass("btn btn-default dropdown-toggle")
+                            .attr("type", "button")
+                            .attr("id", "dropdownMenuButton")
+                            .attr("data-bs-toggle", "dropdown")
+                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
+                            .text("Ações");
+
+                        var $menu = $("<div>").addClass("dropdown-menu")
+                            .attr("aria-labelledby", "dropdownMenuButton");
+
+                        var $details = $("<a>").addClass("dropdown-item")
+                            .attr("href", "#")
+                            .text("Visualizar")
+                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
+                            .on("click", function () {
+                                window.location.href = '/parceiro/editar/' + item.id + '?acao=3';
+                            });
+
+                        var $edit = $("<a>").addClass("dropdown-item")
+                            .attr("href", "#")
+                            .text("Editar")
+                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
+                            .on("click", function () {
+                                window.location.href = '/parceiro/editar/' + item.id + '?acao=2';
+                            });
+
+                        var $delete = $("<a>").addClass("dropdown-item")
+                            .attr("href", "#")
+                            .text("Excluir")
+                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
+                            .on("click", function () {
+                                window.location.href = '/parceiro/excluir/' + item.id;
+                            });
+
+                        $menu.append($details).append($edit).append($delete);
+                        $result.append($button).append($menu);
+
+                        return $result;
+                    }
+                }]
+        });
+    });
+
+
+
+
+</script>

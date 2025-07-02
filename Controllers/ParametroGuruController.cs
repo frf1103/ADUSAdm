@@ -234,7 +234,7 @@ public class ParametrosGuruController : Controller
                             email = sub.contact.email,
                             id = sub.contact.id,
                             iduf = uf.id,
-                            idcidade = cid.id,
+                            idCidade = cid.id,
                             profissao = "A DEFINIR"
                         });
                     };
