@@ -21,6 +21,8 @@ using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using static RootObject;
 using ADUSClient;
+using Microsoft.VisualBasic;
+using ADUSAdm.Services;
 
 [RequireHttps]
 public class CheckoutController : Controller
@@ -38,8 +40,14 @@ public class CheckoutController : Controller
     private readonly ParcelaControllerClient _parcela;
     private readonly ASAASSettings _AsaasSettings;
     private readonly LogCheckoutControllerClient _log;
+    private readonly CheckoutService _checkout;
 
-    public CheckoutController(IConfiguration config, IHttpClientFactory httpClientFactory, ILogger<CheckoutController> logger, ILogService logService, ADUScontext context, ParametroGuruControllerClient parametros, CartaoAssinaturaControllerClient cartoes, ParceiroControllerClient parceiro, SharedControllerClient shared, AssinaturaControllerClient assinatura, ParcelaControllerClient parcela, IOptions<ASAASSettings> asaasSettings, LogCheckoutControllerClient log)
+    public CheckoutController(IConfiguration config, IHttpClientFactory httpClientFactory, ILogger<CheckoutController> logger,
+        ILogService logService, ADUScontext context, ParametroGuruControllerClient parametros,
+        CartaoAssinaturaControllerClient cartoes, ParceiroControllerClient parceiro,
+        SharedControllerClient shared, AssinaturaControllerClient assinatura,
+        ParcelaControllerClient parcela, IOptions<ASAASSettings> asaasSettings,
+        LogCheckoutControllerClient log, CheckoutService checkout)
     {
         _config = config;
         _httpClientFactory = httpClientFactory;
@@ -54,6 +62,7 @@ public class CheckoutController : Controller
         _parcela = parcela;
         _AsaasSettings = asaasSettings.Value;
         _log = log;
+        _checkout = checkout;
     }
 
     [HttpGet]
@@ -95,187 +104,37 @@ public class CheckoutController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Index(CheckoutViewModel model)
     {
-        var sessionId = Request.Cookies["session_id"];
-        string idAfiliado = Request.Cookies.ContainsKey("idafiliado") ? Request.Cookies["idafiliado"] : null;
-
-        string remoteIp = HttpContext.Request.Headers.ContainsKey("X-Forwarded-For")
-            ? HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault()?.Split(',')[0]
-            : HttpContext.Connection.RemoteIpAddress?.ToString();
-        remoteIp = "187.100.100.100";
-
-        if (string.IsNullOrWhiteSpace(sessionId))
+        if (!Request.Cookies.ContainsKey("session_id"))
         {
-            await RegistrarLog(model.Nome, remoteIp, "Sessão Inválida", "", "", "", "400", "Sessão expirada");
-            ModelState.AddModelError("", "Sessão inválida ou expirada.");
             return View("Falha");
         }
 
         if (!ModelState.IsValid || model.QuantidadeArvores <= 0)
         {
-            await RegistrarLog(model.Nome, remoteIp, "ModelState Inválido", "", "", "", "400", "Validação de formulário falhou");
             return View(model);
         }
 
-        string billingType = model.FormaPagamento.ToUpper() switch
-        {
-            "PIX" => "PIX",
-            "BOLETO" => "BOLETO",
-            _ => "CREDIT_CARD"
-        };
+        string sessionId = Request.Cookies["session_id"];
+        string idAfiliado = Request.Cookies.ContainsKey("idafiliado") ? Request.Cookies["idafiliado"] : null;
+        string remoteIp = HttpContext.Connection.RemoteIpAddress?.ToString();
+        remoteIp = "187.100.100.100";
 
-        if (billingType == "CREDIT_CARD" && !Regex.IsMatch(model.Validade ?? "", @"^(0[1-9]|1[0-2])/\d{4}$"))
+        if ((model.FormaPagamento == "Recorrente" || model.FormaPagamento == "Parcelado") &&
+            !Regex.IsMatch(model.Validade ?? "", @"^(0[1-9]|1[0-2])/\d{4}$"))
         {
             await RegistrarLog(model.Nome, remoteIp, "Validade Cartão Inválida", "", "", "", "400", "Formato da validade inválido");
-            ModelState.AddModelError("Validade", "Formato da validade inválido (MM/AAAA).");
-            return View(model);
+            return null;
         }
 
-        try
+        string invoiceUrl = await _checkout.ProcessarCheckout(model, idAfiliado, remoteIp, null, null);
+
+        if (invoiceUrl == null)
         {
-            var client = new HttpClient();
-
-            // ----- 1) Consultar Cliente -----
-            var getClientRequest = new HttpRequestMessage(HttpMethod.Get, _AsaasSettings.urlparceiro + "?cpfCnpj=" + FBSLIb.StringLib.Somentenumero(model.cpfCnpj));
-            getClientRequest.Headers.Add("accept", "application/json");
-            getClientRequest.Headers.Add("access_token", _AsaasSettings.access_token);
-            getClientRequest.Headers.Add("User-Agent", _AsaasSettings.useragent);
-
-            await RegistrarLog(model.Nome, remoteIp, "GET Cliente Asaas", getClientRequest.RequestUri.ToString(), "", "", "Iniciando");
-
-            var response = await client.SendAsync(getClientRequest);
-            string body = await response.Content.ReadAsStringAsync();
-            await RegistrarLog(model.Nome, remoteIp, "GET Cliente Asaas", getClientRequest.RequestUri.ToString(), "", body, response.StatusCode.ToString());
-
-            string idcliente, idcl;
-
-            using (var docx = JsonDocument.Parse(body))
-            {
-                if (docx.RootElement.GetProperty("data").GetArrayLength() == 0)
-                {
-                    var clientePayload = new
-                    {
-                        name = model.Nome,
-                        email = model.Email,
-                        phone = $"+{model.Ddi}{model.Telefone}",
-                        cpfCnpj = model.cpfCnpj
-                    };
-
-                    var json = JsonSerializer.Serialize(clientePayload);
-                    var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-                    var postClientRequest = new HttpRequestMessage(HttpMethod.Post, _AsaasSettings.urlparceiro)
-                    {
-                        Content = content
-                    };
-                    postClientRequest.Headers.Add("accept", "application/json");
-                    postClientRequest.Headers.Add("access_token", _AsaasSettings.access_token);
-                    postClientRequest.Headers.Add("User-Agent", _AsaasSettings.useragent);
-
-                    await RegistrarLog(model.Nome, remoteIp, "POST Criação Cliente Asaas", _AsaasSettings.urlparceiro, json, "", "Iniciando");
-
-                    response = await client.SendAsync(postClientRequest);
-                    body = await response.Content.ReadAsStringAsync();
-                    await RegistrarLog(model.Nome, remoteIp, "POST Criação Cliente Asaas", _AsaasSettings.urlparceiro, json, body, response.StatusCode.ToString());
-
-                    using var doc = JsonDocument.Parse(body);
-                    idcliente = doc.RootElement.GetProperty("id").GetString();
-                }
-                else
-                {
-                    idcliente = docx.RootElement.GetProperty("data")[0].GetProperty("id").GetString();
-                }
-            }
-            idcl = await CriarOuRecuperarParceiroADUS(model, idcliente);
-
-            // ----- 2) Tokenizar Cartão -----
-            string cctoken = null;
-            if (billingType == "CREDIT_CARD")
-            {
-                var tokenPayload = new
-                {
-                    customer = idcliente,
-                    creditCard = new
-                    {
-                        holderName = model.NomeTitular,
-                        number = model.NumeroCartao,
-                        expiryMonth = model.Validade.Split('/')[0],
-                        expiryYear = model.Validade.Split('/')[1],
-                        ccv = model.Cvv
-                    },
-                    creditCardHolderInfo = new
-                    {
-                        name = model.Nome,
-                        email = model.Email,
-                        cpfCnpj = StringLib.Somentenumero(model.cpfCnpj),
-                        postalCode = model.Cep,
-                        addressNumber = model.Numero,
-                        addressComplement = model.Complemento,
-                        phone = model.Telefone
-                    },
-                    remoteIp = remoteIp
-                };
-
-                var jsonToken = JsonSerializer.Serialize(tokenPayload);
-                var contentToken = new StringContent(jsonToken, Encoding.UTF8, "application/json");
-
-                var tokenRequest = new HttpRequestMessage(HttpMethod.Post, _AsaasSettings.urltokencartao)
-                {
-                    Content = contentToken
-                };
-                tokenRequest.Headers.Add("accept", "application/json");
-                tokenRequest.Headers.Add("access_token", _AsaasSettings.access_token);
-                tokenRequest.Headers.Add("User-Agent", _AsaasSettings.useragent);
-
-                await RegistrarLog(model.Nome, remoteIp, "POST Tokenizar Cartão", _AsaasSettings.urltokencartao, jsonToken, "", "Iniciando");
-
-                response = await client.SendAsync(tokenRequest);
-                string tokenBody = await response.Content.ReadAsStringAsync();
-
-                await RegistrarLog(model.Nome, remoteIp, "POST Tokenizar Cartão", _AsaasSettings.urltokencartao, jsonToken, tokenBody, response.StatusCode.ToString(), (!response.IsSuccessStatusCode ? "Erro ao tokenizar" : null));
-
-                if (!response.IsSuccessStatusCode)
-                    return View("Falha");
-
-                using var tokenDoc = JsonDocument.Parse(tokenBody);
-                cctoken = tokenDoc.RootElement.GetProperty("creditCardToken").GetString();
-            }
-            //
-            // ----- 3) Criar Assinatura ou Pagamento -----
-            string idsub = await CriarAssinaturaOuPagamento(model, idcliente, cctoken, billingType, remoteIp, idAfiliado);
-
-            if (model.FormaPagamento == "Parcelado")
-            {
-                await AddAssinaturaADUS(model, idsub, idcl, idAfiliado);
-            }
-            // ----- 4) Obter Payments -----
-
-            await Task.Delay(4000);
-            var payments = await ObterPaymentsDaSubscription(idsub, model.FormaPagamento, client);
-
-            if (payments.Count == 0)
-            {
-                await RegistrarLog(model.Nome, remoteIp, "GET Payments", "GET " + _AsaasSettings.urlpayments, "", "Nenhum payment retornado", "404", "Sem cobrança gerada");
-                ViewBag.Mensagem = "Nenhuma cobrança gerada.";
-                return View("Falha");
-            }
-
-            //await ProcessarParcelas(model, billingType, payments, idcliente, idsub);
-
-            var primeiroPayment = payments.FirstOrDefault();
-            if (primeiroPayment != null)
-            {
-                ViewBag.Link = primeiroPayment.InvoiceUrl;
-            }
-
-            return View("Sucesso");
-        }
-        catch (Exception ex)
-        {
-            await RegistrarLog(model.Nome, remoteIp, "Erro Geral Checkout", "", "", "", "500", ex.ToString());
-            _logger.LogError(ex, "Erro inesperado no checkout");
-            ViewBag.Mensagem = "Erro inesperado. Tente novamente mais tarde.";
             return View("Falha");
         }
+
+        ViewBag.Link = invoiceUrl;
+        return View("Sucesso");
     }
 
     public async Task<string> AddAssinaturaADUS(CheckoutViewModel m, string id, string idcliente, string idafiliado)
@@ -339,11 +198,11 @@ public class CheckoutController : Controller
         return idcl;
     }
 
-    private async Task<string> CriarAssinaturaOuPagamento(CheckoutViewModel model, string idcliente, string cctoken, string billingType, string remoteip, string idafiliado)
+    public async Task<string> CriarAssinaturaOuPagamento(CheckoutViewModel model, string idcliente, string cctoken, string billingType, string remoteip, string idafiliado, string ccdigitos, string bandeira, string? subsid = null, string? idparcela = null)
     {
         var client = new HttpClient();
         string idsub;
-
+        /*
         if (model.FormaPagamento != "Parcelado")
         {
             var subscriptionPayload = new
@@ -383,43 +242,150 @@ public class CheckoutController : Controller
             idsub = doc.RootElement.GetProperty("id").GetString();
         }
         else
+        {*/
+        if (subsid == null)
         {
             idsub = Guid.NewGuid().ToString();
-            var paymentPayload = new
-            {
-                customer = idcliente,
-                billingType = billingType,
-                value = model.ValorTotal,
-                dueDate = DateTime.Now.Date,
-                description = $"{model.QuantidadeArvores} ARVORES PROJETO TECA SOCIAL",
-                installmentCount = model.Parcelas,
-                totalValue = model.ValorTotal,
-                creditCardToken = cctoken,
-                externalReference = idsub,
-                remoteIp = remoteip
-            };
+        }
+        else
+        {
+            idsub = subsid;
+            idcliente = await BuscarClienteAsaas(model, remoteip);
+        }
+        string? invoiceurl = null;
+        DateTime vcto = DateTime.Now.Date;
+        if (subsid != null || billingType == "BOLETO")
+        {
+            vcto = model.DataVencimento.Value;
+        }
 
-            var json = JsonSerializer.Serialize(paymentPayload);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var request = new HttpRequestMessage(HttpMethod.Post, _AsaasSettings.urlpayments)
-            {
-                Content = content
-            };
-            request.Headers.Add("accept", "application/json");
-            request.Headers.Add("access_token", _AsaasSettings.access_token);
-            request.Headers.Add("User-Agent", _AsaasSettings.useragent);
+        var paymentPayload = new
+        {
+            customer = idcliente,
+            billingType = billingType,
+            value = model.ValorTotal,
+            dueDate = vcto,
+            description = $"{model.QuantidadeArvores} ARVORES PROJETO TECA SOCIAL",
+            installmentCount = (model.FormaPagamento == "Parcelado") ? model.Parcelas : null,
+            totalValue = model.ValorTotal,
+            creditCardToken = cctoken,
+            externalReference = idsub,
+            remoteIp = remoteip
+        };
 
-            var response = await client.SendAsync(request);
-            var body = await response.Content.ReadAsStringAsync();
-            await RegistrarLog(model.Nome, remoteip, "POST Cobranca parcelada", _AsaasSettings.urlsubscription, json, body, response.StatusCode.ToString(), (!response.IsSuccessStatusCode ? "Erro na cobranca parcelada" : null));
-            if (!response.IsSuccessStatusCode)
+        var json = JsonSerializer.Serialize(paymentPayload);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var request = new HttpRequestMessage(HttpMethod.Post, _AsaasSettings.urlpayments)
+        {
+            Content = content
+        };
+        request.Headers.Add("accept", "application/json");
+        request.Headers.Add("access_token", _AsaasSettings.access_token);
+        request.Headers.Add("User-Agent", _AsaasSettings.useragent);
+
+        var response = await client.SendAsync(request);
+        var body = await response.Content.ReadAsStringAsync();
+
+        await RegistrarLog(model.Nome, remoteip, "POST Cobranca", _AsaasSettings.urlsubscription, json, body, response.StatusCode.ToString(), (!response.IsSuccessStatusCode ? "Erro na cobranca" : null));
+        if (!response.IsSuccessStatusCode)
+        {
+            _logger.LogError($"Erro ao criar pagamento Asaas: {body}");
+            throw new Exception("Falha ao criar pagamento.");
+        }
+        else
+        {
+            using var doc = JsonDocument.Parse(body);
+            string status = doc.RootElement.GetProperty("status").GetString();
+            if (status == "CONFIRMED" || status == "PENDING")
             {
-                _logger.LogError($"Erro ao criar pagamento parcelado Asaas: {body}");
-                throw new Exception("Falha ao criar pagamento parcelado.");
+                string idcl = await CriarOuRecuperarParceiroADUS(model, idcliente);
+                if (subsid == null)
+                {
+                    await AddAssinaturaADUS(model, idsub, idcl, idafiliado);
+                }
+                if (billingType == "CREDIT_CARD" && subsid == null)
+                {
+                    await _cartoes.Adicionar(new CartaoAssinaturaViewModel
+                    {
+                        Ativo = true,
+                        Bandeira = bandeira,
+                        IdAssinatura = idsub,
+                        IdToken = cctoken,
+                        UltimosDigitos = ccdigitos
+                    });
+                }
+
+                string paymentid = doc.RootElement.GetProperty("id").GetString();
+                invoiceurl = doc.RootElement.GetProperty("invoiceUrl").GetString();
+                var netvalue = doc.RootElement.TryGetProperty("netValue", out var nv) && nv.ValueKind == JsonValueKind.Number ? nv.GetDecimal() : (decimal?)model.ValorTotal;
+                if (model.FormaPagamento != "Parcelado")
+                {
+                    if (subsid == null)
+                    {
+                        DateTime dvcto = (model.FormaPagamento != "Boleto") ? DateTime.Now.Date : model.DataVencimento.Value;
+                        int ano = dvcto.Year;
+                        int mes = dvcto.Month;
+                        int dia = dvcto.Day;
+                        for (var i = 1; i <= 84; i++)
+                        {
+                            var parcela = new ParcelaViewModel
+                            {
+                                id = Guid.NewGuid().ToString(),
+                                idassinatura = idsub,
+                                idcheckout = (i == 1) ? invoiceurl : null,
+                                nossonumero = (i == 1) ? paymentid : null,
+                                idparceiro = idcl,
+                                datavencimento = dvcto,
+                                valor = model.ValorTotal,
+                                valorliquido = (decimal)netvalue - (decimal)0.10 * model.ValorTotal,
+                                plataforma = "Asaas",
+                                idformapagto = billingType switch
+                                {
+                                    "PIX" => FormaPagto.Pix,
+                                    "BOLETO" => FormaPagto.Boleto,
+                                    _ => FormaPagto.Cartao
+                                },
+                                dataestimadapagto = null,
+                                numparcela = i,
+                                comissao = (decimal)0.10 * model.ValorTotal,
+                                acrescimos = 0,
+                                descontoantecipacao = 0,
+                                descontoplataforma = model.ValorTotal - (decimal)netvalue,
+                                descontos = 0,
+                                databaixa = (billingType == "CREDIT_CARD" && status == "CONFIRMED" && i == 1) ? DateTime.Now.Date : null
+                            };
+                            await _parcela.Adicionar(parcela);
+
+                            mes++;
+                            if (mes > 12)
+                            {
+                                mes = 1;
+                                ano++;
+                            }
+                            dvcto = FBSLIb.DateLib.ObterDataComDiaFixo(ano, mes, dia);
+                        }
+                    }
+                    else
+                    {
+                        DateTime? estimatedCreditDate = doc.RootElement.GetProperty("payment").TryGetProperty("estimatedCreditDate", out var ec) && ec.ValueKind == JsonValueKind.String
+                            ? ec.GetDateTime()
+                            : null;
+                        var p = await _parcela.ListaByIdCheckout(paymentid);
+                        if (p != null)
+                        {
+                            p.valorliquido = (decimal)netvalue - (decimal)0.10 * model.ValorTotal;
+                            p.nossonumero = paymentid;
+                            p.descontoplataforma = model.ValorTotal - (decimal)netvalue;
+                            p.dataestimadapagto = estimatedCreditDate;
+                            p.idcheckout = invoiceurl;
+                            _parcela.Salvar(p.id, p);
+                        }
+                    }
+                }
             }
         }
 
-        return idsub;
+        return invoiceurl;
     }
 
     private async Task<List<PaymentDTO>> ObterPaymentsDaSubscription(string idsub, string billingType, HttpClient client)
@@ -539,5 +505,61 @@ public class CheckoutController : Controller
             Erro = erro
         };
         _log.Adicionar(log);
+    }
+
+    private async Task<string> BuscarClienteAsaas(CheckoutViewModel model, string remoteIp)
+    {
+        var client = new HttpClient();
+
+        // ----- 1) Consultar Cliente -----
+        var getClientRequest = new HttpRequestMessage(HttpMethod.Get, _AsaasSettings.urlparceiro + "?cpfCnpj=" + FBSLIb.StringLib.Somentenumero(model.cpfCnpj));
+        getClientRequest.Headers.Add("accept", "application/json");
+        getClientRequest.Headers.Add("access_token", _AsaasSettings.access_token);
+        getClientRequest.Headers.Add("User-Agent", _AsaasSettings.useragent);
+
+        await RegistrarLog(model.Nome, remoteIp, "GET Cliente Asaas", getClientRequest.RequestUri.ToString(), "", "", "Iniciando");
+        string idcliente;
+        var response = await client.SendAsync(getClientRequest);
+        string body = await response.Content.ReadAsStringAsync();
+        await RegistrarLog(model.Nome, remoteIp, "GET Cliente Asaas", getClientRequest.RequestUri.ToString(), "", body, response.StatusCode.ToString());
+        using (var docx = JsonDocument.Parse(body))
+        {
+            if (docx.RootElement.GetProperty("data").GetArrayLength() == 0)
+            {
+                var clientePayload = new
+                {
+                    name = model.Nome,
+                    email = model.Email,
+                    phone = $"+{model.Ddi}{model.Telefone}",
+                    cpfCnpj = model.cpfCnpj
+                };
+
+                var json = JsonSerializer.Serialize(clientePayload);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var postClientRequest = new HttpRequestMessage(HttpMethod.Post, _AsaasSettings.urlparceiro)
+                {
+                    Content = content
+                };
+                postClientRequest.Headers.Add("accept", "application/json");
+                postClientRequest.Headers.Add("access_token", _AsaasSettings.access_token);
+                postClientRequest.Headers.Add("User-Agent", _AsaasSettings.useragent);
+
+                await RegistrarLog(model.Nome, remoteIp, "POST Criação Cliente Asaas", _AsaasSettings.urlparceiro, json, "", "Iniciando");
+
+                response = await client.SendAsync(postClientRequest);
+                body = await response.Content.ReadAsStringAsync();
+                await RegistrarLog(model.Nome, remoteIp, "POST Criação Cliente Asaas", _AsaasSettings.urlparceiro, json, body, response.StatusCode.ToString());
+
+                using var doc = JsonDocument.Parse(body);
+                idcliente = doc.RootElement.GetProperty("id").GetString();
+            }
+            else
+            {
+                idcliente = docx.RootElement.GetProperty("data")[0].GetProperty("id").GetString();
+            }
+        }
+
+        return idcliente;
     }
 }

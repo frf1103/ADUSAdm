@@ -1,5 +1,6 @@
 using ADUSAdm.Data;
 using ADUSAdm.FormatingConfiguration;
+using ADUSAdm.Services;
 using ADUSAdm.Shared;
 using MathNet.Numerics;
 using Microsoft.AspNetCore.Identity;
@@ -119,6 +120,10 @@ builder.Services.AddHttpClient<ADUSClient.Controller.LogCheckoutControllerClient
 {
     client.BaseAddress = new Uri(urlAPI.ToString());
 });
+
+builder.Services.AddScoped<CobrancaAsaasService>();
+builder.Services.AddHostedService<AsaasSyncService>();
+builder.Services.AddScoped<CheckoutService>();
 
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 builder.Services.Configure<ASAASSettings>(builder.Configuration.GetSection("ASAASSettings"));
