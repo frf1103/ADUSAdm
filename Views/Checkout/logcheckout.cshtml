@@ -1,0 +1,168 @@
+﻿@model IEnumerable<ADUSClient.LogCheckoutViewModel>
+
+@{
+    ViewData["Title"] = "Logs Checkout";
+    var dataFimDefault = DateTime.Now.Date;
+    var dataInicioDefault = dataFimDefault;
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/css/adminlte.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+
+<style>
+    .jsgrid-cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .jsgrid-header-cell {
+        white-space: nowrap;
+    }
+
+    .jsgrid-cell.wide-text {
+        max-width: 400px;
+    }
+</style>
+
+<section class="content">
+    <h2>Logs de Checkout</h2>
+
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <form asp-action="logcheckout" method="get" class="row gx-3 gy-2 align-items-end">
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Data Início</label>
+                    <input type="date" class="form-control" name="dataInicio" id="dataInicio"
+                           value="@(ViewBag.DataInicio ?? dataInicioDefault.ToString("yyyy-MM-dd"))" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Data Fim</label>
+                    <input type="date" class="form-control" name="dataFim" id="dataFim"
+                           value="@(ViewBag.DataFim ?? dataFimDefault.ToString("yyyy-MM-dd"))" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Filtro</label>
+                    <input type="text" class="form-control" name="filtro" id="filtro" value="@ViewBag.Filtro" placeholder="Buscar por Nome Cliente, IP, Erro..." />
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-primary w-100" id="btnBuscar">
+                        <i class="fa fa-search"></i> Buscar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="jsGrid"></div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+
+<script>
+   $(function () {
+
+    $("#jsGrid").jsGrid({
+        width: "100%",
+        height: "500px",
+        paging: true,
+        pageSize: 50,
+        pageLoading: true,   // importante para paginação no servidor
+        autoload:true,
+
+        controller: {
+            loadData: function (filter) {
+                // Pega valores dos inputs
+                const ini = $("#dataInicio").val() || "";
+                const fim = $("#dataFim").val() || "";
+                const filtro = $("#filtro").val() || "";
+                console.log(fim.toString());
+
+                const pageIndex = filter.pageIndex - 1; // jsGrid começa em 1, nossa API em 0
+                const pageSize = filter.pageSize;
+
+                const url = `/checkout/getdata?ini=${ini}&fim=${fim}&filtro=${encodeURIComponent(filtro)}&pageIndex=${pageIndex}&pageSize=${pageSize}`;
+
+                return $.ajax({
+                    url: url,
+                    method: "GET",
+                    dataType: "json"
+                }).then(function (result) {
+                    return {
+                        data: result.data,
+                        itemsCount: result.totalCount
+                    };
+                });
+            }
+        },
+
+            fields: [
+                {
+                    name: "dataHora",
+                    type: "text",
+                    title: "Data/Hora",
+                    width: 160,
+                    itemTemplate: function (value) {
+                        if (!value) return "";
+                        var d = new Date(value);
+                        const dia = String(d.getDate()).padStart(2, '0');
+                        const mes = String(d.getMonth() + 1).padStart(2, '0');
+                        const ano = d.getFullYear();
+                        const hora = String(d.getHours()).padStart(2, '0');
+                        const minuto = String(d.getMinutes()).padStart(2, '0');
+                        const segundo = String(d.getSeconds()).padStart(2, '0');
+                        return `${dia}/${mes}/${ano} ${hora}:${minuto}:${segundo}`;
+                    }
+                },
+                { name: "nomeCliente", type: "text", title: "Cliente", width: 200 },
+                { name: "ipOrigem", type: "text", title: "IP", width: 40 },
+                { name: "statusHttp", type: "text", title: "Status", width: 80 },
+                {
+                    name: "erro",
+                    type: "text",
+                    title: "Erro",
+                    css: "wide-text",
+                    itemTemplate: function (value) {
+                        if (!value) return "";
+                        // Mostra tooltip ao passar o mouse
+                        return $("<div>")
+                            .text(value.length > 150 ? value.substring(0, 150) + "..." : value)
+                            .attr("title", value);
+                    }
+                },
+                {
+                    title: "Detalhes",
+                    width: 50,
+                    align: "center",
+                    itemTemplate: function (_, item) {
+                        return $("<a>")
+                            .addClass("btn btn-sm btn-default")
+                            .attr("href", "/checkout/detalhes/" + item.id)
+                            .html("<i class='fas fa-eye'></i>");
+                    }
+                }
+            ]
+    });
+
+    $("#btnBuscar").on("click", function () {
+        $("#jsGrid").jsGrid("loadData");
+    });
+
+    // Opcional: preencher datas iniciais ao abrir a tela
+    const today = new Date().toISOString().slice(0, 10);
+    const twoDaysAgo = new Date();
+    twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+    const inicio = twoDaysAgo.toISOString().slice(0, 10);
+
+    $("#dtInicio").val(inicio);
+    $("#dtFim").val(today);
+
+    $("#btnBuscar").click(); // já carrega a grid na abertura
+});
+</script>
+

@@ -41,6 +41,7 @@ public class CheckoutController : Controller
     private readonly ASAASSettings _AsaasSettings;
     private readonly LogCheckoutControllerClient _log;
     private readonly CheckoutService _checkout;
+    
 
     public CheckoutController(IConfiguration config, IHttpClientFactory httpClientFactory, ILogger<CheckoutController> logger,
         ILogService logService, ADUScontext context, ParametroGuruControllerClient parametros,
@@ -63,6 +64,16 @@ public class CheckoutController : Controller
         _AsaasSettings = asaasSettings.Value;
         _log = log;
         _checkout = checkout;
+        
+    }
+
+    public IActionResult Logcheckout(DateTime? dataInicio, DateTime? dataFim, string? filtro = null)
+    {
+        ViewBag.DataInicio = dataInicio?.ToString("yyyy-MM-dd");
+        ViewBag.DataFim = dataFim?.ToString("yyyy-MM-dd");
+        ViewBag.Filtro = filtro;
+
+        return View();
     }
 
     [HttpGet]
@@ -126,7 +137,7 @@ public class CheckoutController : Controller
             return null;
         }
 
-        string invoiceUrl = await _checkout.ProcessarCheckout(model, idAfiliado, remoteIp, null, null);
+        string invoiceUrl = await _checkout.ProcessarCheckout(model,  remoteIp, idAfiliado, null, null);
 
         if (invoiceUrl == null)
         {
@@ -286,15 +297,17 @@ public class CheckoutController : Controller
         var response = await client.SendAsync(request);
         var body = await response.Content.ReadAsStringAsync();
 
-        await RegistrarLog(model.Nome, remoteip, "POST Cobranca", _AsaasSettings.urlsubscription, json, body, response.StatusCode.ToString(), (!response.IsSuccessStatusCode ? "Erro na cobranca" : null));
+        
         if (!response.IsSuccessStatusCode)
         {
+            await RegistrarLog(model.Nome, remoteip, "POST Cobranca", _AsaasSettings.urlsubscription, json, body, response.StatusCode.ToString(), (!response.IsSuccessStatusCode ? "Erro na cobranca" : null));
             _logger.LogError($"Erro ao criar pagamento Asaas: {body}");
             throw new Exception("Falha ao criar pagamento.");
         }
         else
         {
             using var doc = JsonDocument.Parse(body);
+            await RegistrarLog(model.Nome, remoteip, "POST Cobranca", _AsaasSettings.urlsubscription, json, body, response.StatusCode.ToString(), (!response.IsSuccessStatusCode ? "Erro na cobranca" : null), doc.RootElement.GetProperty("id").GetString());
             string status = doc.RootElement.GetProperty("status").GetString();
             if (status == "CONFIRMED" || status == "PENDING")
             {
@@ -354,7 +367,7 @@ public class CheckoutController : Controller
                                 descontos = 0,
                                 databaixa = (billingType == "CREDIT_CARD" && status == "CONFIRMED" && i == 1) ? DateTime.Now.Date : null
                             };
-                            await _parcela.Adicionar(parcela);
+                            await _parcela.Adicionar(parcela);                            
 
                             mes++;
                             if (mes > 12)
@@ -491,7 +504,7 @@ public class CheckoutController : Controller
         public decimal Value { get; set; }
     }
 
-    private async Task RegistrarLog(string nomeCliente, string ip, string tipoOperacao, string url, string payload, string retorno, string statusHttp, string erro = null)
+    private async Task RegistrarLog(string nomeCliente, string ip, string tipoOperacao, string url, string payload, string retorno, string statusHttp, string erro = null,string? idparcela=null)
     {
         var log = new LogCheckoutViewModel
         {
@@ -502,7 +515,8 @@ public class CheckoutController : Controller
             PayloadEnviado = payload,
             RetornoApi = retorno,
             StatusHttp = statusHttp,
-            Erro = erro
+            Erro = erro,
+            idparcela=idparcela
         };
         _log.Adicionar(log);
     }
@@ -561,5 +575,38 @@ public class CheckoutController : Controller
         }
 
         return idcliente;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetData(
+    DateTime ini,
+    DateTime fim,
+    string? filtro,
+    int pageIndex = 0,
+    int pageSize = 50)
+    {
+        var result = await _log.Listar(ini, fim, filtro, pageIndex, pageSize);
+        return Ok(result);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Detalhes(int id)
+    {
+        try
+        {
+            var log = await _log.GetById(id);
+
+            if (log == null)
+            {
+                return NotFound();
+            }
+
+            return View(log);
+        }
+        catch (Exception ex)
+        {
+            ViewBag.ErrorMessage = $"Erro ao buscar log: {ex.Message}";
+            return View("Error");
+        }
     }
 }

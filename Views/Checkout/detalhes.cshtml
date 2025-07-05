@@ -1,0 +1,49 @@
+﻿@model ADUSClient.LogCheckoutViewModel
+
+<h3>Detalhes do Log</h3>
+
+<dl class="row">
+    <dt class="col-sm-3">Data/Hora</dt>
+    <dd class="col-sm-9">@Model.DataHora</dd>
+
+    <dt class="col-sm-3">Nome Cliente</dt>
+    <dd class="col-sm-9">@Model.NomeCliente</dd>
+
+    <dt class="col-sm-3">IP Origem</dt>
+    <dd class="col-sm-9">@Model.IpOrigem</dd>
+
+    <dt class="col-sm-3">Tipo Operação</dt>
+    <dd class="col-sm-9">@Model.TipoOperacao</dd>
+
+    <dt class="col-sm-3">URL Requisição</dt>
+    <dd class="col-sm-9">@Model.UrlRequisicao</dd>
+
+    <dt class="col-sm-3">Payload Enviado</dt>
+    <dd class="col-sm-9">
+        <pre>@Model.PayloadEnviado</pre>
+    </dd>
+
+    <dt class="col-sm-3">Retorno API</dt>
+    <dd class="col-sm-9">
+        <pre>@Model.RetornoApi</pre>
+    </dd>
+
+    <dt class="col-sm-3">Status HTTP</dt>
+    <dd class="col-sm-9">@Model.StatusHttp</dd>
+
+    <dt class="col-sm-3">Erro</dt>
+    <dd class="col-sm-9">@Model.Erro</dd>
+
+    <dt class="col-sm-3">ID Parcela</dt>
+    <dd class="col-sm-9">@Model.idparcela</dd>
+
+    <dt class="col-sm-3">ID Assinatura</dt>
+    <dd class="col-sm-9">@Model.idassinatura</dd>
+
+    <dt class="col-sm-3">ID Checkout</dt>
+    <dd class="col-sm-9">@Model.nossonumero</dd>
+</dl>
+
+<a href="@Url.Action("logcheckout")" class="btn btn-secondary">
+    <i class="fas fa-arrow-left"></i> Voltar
+</a>

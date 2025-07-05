@@ -75,7 +75,21 @@ namespace ADUSAdm.Services
                 string cctoken = "", bandeira = "", ccdigitos = "";
                 if (billingType == "CREDIT_CARD" && subsid == null)
                 {
-                    (cctoken, bandeira, ccdigitos) = await TokenizarCartao(model, idcliente, remoteIp);
+                    TokenCartaoViewModel tc = new TokenCartaoViewModel
+                    {
+                        Email = model.Email,
+                        Cep = model.Cep,
+                        Nome = model.Nome,
+                        NomeTitular = model.NomeTitular,
+                        Complemento = model.Complemento,
+                        cpfCnpj = model.cpfCnpj,
+                        Cvv = model.Cvv,
+                        Numero = model.Numero,
+                        NumeroCartao = model.NumeroCartao,
+                        Telefone = model.Telefone,
+                        Validade = model.Validade
+                    };
+                    (cctoken, bandeira, ccdigitos) = await TokenizarCartao(tc, idcliente, remoteIp);
                 }
                 if (billingType == "CREDIT_CARD" && subsid != null)
                 {
@@ -89,7 +103,7 @@ namespace ADUSAdm.Services
 
                 string invoiceUrl = await AssinaturaOuPagamento(
                     model, idcliente, cctoken, billingType,
-                    idAfiliado, remoteIp, ccdigitos, bandeira, subsid, idparcela);
+                    remoteIp, idAfiliado, ccdigitos, bandeira, subsid, idparcela);
 
                 return invoiceUrl;
             }
@@ -101,9 +115,16 @@ namespace ADUSAdm.Services
             }
         }
 
-        private async Task<(string cctoken, string bandeira, string ccdigitos)> TokenizarCartao(
-            CheckoutViewModel model, string idcliente, string remoteIp)
+        public async Task<(string cctoken, string bandeira, string ccdigitos)> TokenizarCartao(
+            TokenCartaoViewModel model, string idcliente, string remoteIp)
         {
+            if (idcliente == "X")
+            {
+                idcliente = await BuscarClienteAsaas(new CheckoutViewModel
+                {
+                    cpfCnpj = model.cpfCnpj
+                }, remoteIp);
+            }
             var client = _httpClientFactory.CreateClient();
             var payload = new
             {
@@ -334,12 +355,35 @@ namespace ADUSAdm.Services
                 idsub = subsid;
                 idcliente = await BuscarClienteAsaas(model, remoteIp);
             }
+
+            List<object> split = null;
+
+            var afiliado = await _parceiro.ListaById(idAfiliado);
+
+            if (afiliado != null)
+            {
+                split = new List<object>
+                {
+                    new {
+                        walletId = afiliado.idwallet,
+                        percentualValue = afiliado.percomissao,
+                        status = "RECEIVED"
+                    },
+                    new {
+                        walletId = afiliado.idwalletcoprodutor,
+                        percentualValue = afiliado.percomissaocoprodutor,
+                        status = "RECEIVED"
+                    }
+                };
+            }
             string? invoiceurl = null;
             DateTime vcto = DateTime.Now.Date;
             if (subsid != null || billingType == "BOLETO")
             {
                 vcto = model.DataVencimento.Value;
             }
+
+            // ou, se tiver splits:
 
             var paymentPayload = new
             {
@@ -352,10 +396,16 @@ namespace ADUSAdm.Services
                 totalValue = model.ValorTotal,
                 creditCardToken = cctoken,
                 externalReference = idsub,
-                remoteIp = remoteIp
+                remoteIp = remoteIp,
+                split = (split != null && split.Any()) ? split : null
             };
 
-            var json = JsonSerializer.Serialize(paymentPayload);
+            var json = JsonSerializer.Serialize(paymentPayload,
+             new JsonSerializerOptions
+             {
+                 DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+             }
+            );
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var request = new HttpRequestMessage(HttpMethod.Post, _asaasSettings.urlpayments)
             {

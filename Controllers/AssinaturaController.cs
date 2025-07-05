@@ -25,6 +25,9 @@ using RestSharp;
 
 using Humanizer;
 using MathNet.Numerics;
+using ADUSClient.Controller;
+using ADUSAdm.Services;
+using ADUSClient;
 
 namespace ADUSAdm.Controllers
 {
@@ -35,6 +38,8 @@ namespace ADUSAdm.Controllers
         private readonly ADUSClient.Controller.SharedControllerClient _shareAPI;
         private readonly ADUSClient.Controller.ParceiroControllerClient _parceiroAPI;
         private readonly ADUSClient.Controller.ParametroGuruControllerClient _parametroAPI;
+        private readonly CartaoAssinaturaControllerClient _cartoes;
+        private readonly CheckoutService _check;
 
         private readonly ADUSClient.Controller.ParcelaControllerClient _parcelaAPI;
         private const int TAMANHO_PAGINA = 5;
@@ -45,7 +50,7 @@ namespace ADUSAdm.Controllers
             ADUSClient.Controller.ParametroGuruControllerClient parametroAPI,
 
             ADUSClient.Controller.ParcelaControllerClient parcelaAPI
-            )
+, CartaoAssinaturaControllerClient cartoes, CheckoutService check)
         {
             _culturaAPI = culturaAPI;
             _sessionManager = sessionManager;
@@ -54,6 +59,8 @@ namespace ADUSAdm.Controllers
             _parametroAPI = parametroAPI;
 
             _parcelaAPI = parcelaAPI;
+            _cartoes = cartoes;
+            _check = check;
         }
 
         public async Task<IActionResult> Index(DateTime ini, DateTime fim, string? filtro, int pagina = 1, string? idparceiro = "0", int status = 3, int forma = 3)
@@ -89,6 +96,7 @@ namespace ADUSAdm.Controllers
             }
             ViewBag.Status = status.ToString();
             ViewBag.Forma = forma.ToString();
+            ViewBag.urlconvite = _sessionManager.urlconvite;
             return View();
         }
 
@@ -1104,6 +1112,103 @@ namespace ADUSAdm.Controllers
                 */
             }
             return Json("OK");
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> RevisarDados(string idAssinatura)
+        {
+            // Carregar assinatura
+            var assinatura = await _culturaAPI.ListaById(idAssinatura);
+
+            var parceiro = await _parceiroAPI.ListaById(assinatura.idparceiro);
+
+            var cartoes = await _cartoes.ListarPorAssinatura(idAssinatura);
+
+            var vm = new RevisarCartoesViewModel
+            {
+                IdParceiro = parceiro.id,
+                Nome = parceiro.razaoSocial,
+                IdAssinatura = assinatura.id,
+                valor = (decimal)assinatura.valor,
+                Email = parceiro.email,
+                cpfCnpj = parceiro.registro,
+                Telefone = parceiro.fone1,
+                Bairro = parceiro.bairro,
+                Complemento = parceiro.complemento,
+                logradouro = parceiro.logradouro,
+                Numero = parceiro.numero,
+                Cep = parceiro.cep,
+
+                CartoesAtivos = cartoes
+                    .Where(c => c.Ativo)
+                    .Select(c => new CartaoAtivoViewModel
+                    {
+                        Bandeira = c.Bandeira,
+                        UltimosDigitos = c.UltimosDigitos,
+                        ativo = c.Ativo,
+                        id = (int)c.Id
+                    })
+                    .ToList()
+            };
+            var cartaoativo = vm.CartoesAtivos.Where(c => c.ativo).FirstOrDefault();
+            ViewBag.idativo = 0;
+            if (cartaoativo != null)
+            {
+                ViewBag.idativo = cartaoativo.id;
+            }
+
+            return View("RevisarDados", vm);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> CadastrarNovoCartao(RevisarCartoesViewModel model, int idcartao)
+        {
+            if (!ModelState.IsValid)
+                return View("RevisarDados", model);
+
+            // Tokenizar novo cartão via seu serviço ASAAS
+
+            // Inativa todos os anteriores:
+
+            TokenCartaoViewModel tc = new TokenCartaoViewModel
+            {
+                Email = model.Email,
+                Cep = model.Cep,
+                Nome = model.Nome,
+                NomeTitular = model.NomeTitular,
+                Complemento = model.Complemento,
+                cpfCnpj = model.cpfCnpj,
+                Cvv = model.Cvv,
+                Numero = model.Numero,
+                NumeroCartao = model.NumeroCartao,
+                Telefone = model.Telefone,
+                Validade = model.Validade
+            };
+            string remoteIp = "187.100.100.100";
+            string cctoken = "", bandeira = "", ccdigitos = "";
+            (cctoken, bandeira, ccdigitos) = await _check.TokenizarCartao(tc, "X", remoteIp);
+            if (!string.IsNullOrEmpty(cctoken))
+            {
+                CartaoAssinaturaViewModel cass = new CartaoAssinaturaViewModel
+                {
+                    IdAssinatura = model.IdAssinatura,
+                    Ativo = true,
+                    Bandeira = bandeira,
+                    IdToken = cctoken,
+                    UltimosDigitos = ccdigitos
+                };
+                await _cartoes.Adicionar(cass);
+                if (idcartao != 0)
+                {
+                    await _cartoes.Inativar(idcartao);
+                }
+            }
+            // Salva novo cartão
+
+            TempData["Sucesso"] = "Novo cartão salvo e cartões antigos inativados.";
+            return RedirectToAction("RevisarDados", new { idAssinatura = model.IdAssinatura });
         }
     }
 }

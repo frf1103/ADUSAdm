@@ -1,0 +1,100 @@
+﻿@model ADUSClient.Assinatura.RevisarCartoesViewModel
+
+@{
+    ViewData["Title"] = "Revisar Dados do Parceiro";
+    Layout = "_LayoutCheckout";
+}
+
+<div class="container mt-4">
+    <h3 class="mb-4">Dados do Parceiro</h3>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <p><strong>Nome:</strong> @Model.Nome</p>
+            <p><strong>CPF/CNPJ:</strong> @Model.cpfCnpj</p>
+            <p><strong>Email:</strong> @Model.Email</p>
+            <p><strong>Telefone:</strong> @Model.Telefone</p>
+            <p><strong>CEP:</strong> @Model.Cep</p>
+            <p><strong>Endereço:</strong> @Model.logradouro, @Model.Numero @Model.Complemento</p>
+            <p><strong>Bairro:</strong> @Model.Bairro</p>
+            
+        </div>
+    </div>
+
+    <h4>Cartões Ativos</h4>
+
+    @if (Model.CartoesAtivos != null && Model.CartoesAtivos.Any())
+    {
+        <table class="table table-bordered mt-3">
+            <thead class="table-light">
+                <tr>
+                    <th>Bandeira</th>
+                    <th>Últimos Dígitos</th>
+                    <th>Ativo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cartao in Model.CartoesAtivos)
+                {
+                    <tr>
+                        <td>@cartao.Bandeira</td>
+                        <td>@cartao.UltimosDigitos</td>
+                        <td>
+                            @if (cartao.ativo)
+                            {
+                                <span class="badge bg-success">Ativo</span>                                
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Inativo</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p class="text-muted">Nenhum cartão cadastrado.</p>
+    }
+
+    <hr class="my-4" />
+
+    <h4>Adicionar Novo Cartão</h4>
+
+    <form asp-action="CadastrarNovoCartao" method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="row g-2">
+            <div class="col-md-12">
+                <input asp-for="NumeroCartao" class="form-control" placeholder="Número do Cartão *" pattern="\d{13,19}" required />
+            </div>
+            <div class="col-md-12">
+                <input asp-for="NomeTitular" class="form-control" placeholder="Nome Impresso no Cartão *" required />
+            </div>
+            <div class="col-md-6">
+                <input asp-for="Validade" class="form-control" placeholder="Validade (MM/AAAA) *" pattern="(0[1-9]|1[0-2])/\d{4}" required />
+            </div>
+            <div class="col-md-6">
+                <input asp-for="Cvv" class="form-control" placeholder="CVV *" pattern="\d{3,4}" required />
+            </div>
+            <input type="hidden" asp-for="IdAssinatura" /> 
+            <input type="text" id="idcartao" name="idcartao" hidden value=@ViewBag.idativo />            
+        </div>
+
+        <input type="hidden" asp-for="Nome" />
+        <input type="hidden" asp-for="cpfCnpj" />
+        <input type="hidden" asp-for="Email" />
+        <input type="hidden" asp-for="Telefone" />
+        <input type="hidden" asp-for="Cep" />        
+        <input type="hidden" asp-for="Numero" />
+        <input type="hidden" asp-for="Complemento" />
+        <input type="hidden" asp-for="Bairro" />
+        <input type="hidden" asp-for="IdParceiro" />
+        <input type="hidden" asp-for="logradouro" />
+        <input type="hidden" asp-for="valor" />
+
+        <button type="submit" class="btn btn-success mt-3">Salvar Novo Cartão</button>
+    </form>
+</div>

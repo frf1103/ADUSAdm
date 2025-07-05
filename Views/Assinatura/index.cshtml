@@ -348,6 +348,30 @@
         }
     }
 
+    function copiarLink(idParceiro, idAssinatura) {
+        const linkconv="@ViewBag.urlconvite";
+        const url = `${linkconv}/Cartao/RevisarDados?idAssinatura=${idAssinatura}`;
+
+        navigator.clipboard.writeText(url)
+            .then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Link copiado!',
+                    text: 'O link foi copiado para a área de transferência.',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            })
+            .catch(err => {
+                console.error(err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro',
+                    text: 'Não foi possível copiar o link.'
+                });
+            });
+    }
+
 
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -482,15 +506,25 @@
 
                 {
                     name: "cancelar",
-                    title: "Cancelar",
+                    title: "Cancelar / Copiar Link",
                     align: "center",
-                    width: 80,
+                    width: 120,
                     sorting: false,
-                    itemTemplate: (_, item) => $('<button>')
-                        .addClass('btn btn-sm btn-danger')
-                        .attr('title', 'Cancelar assinatura')
-                        .html('<i class="fas fa-ban"></i>')
-                        .on('click', () => abrirModalMotivo(item.id))
+                    itemTemplate: (_, item) => {
+                        const $btnCancelar = $('<button>')
+                            .addClass('btn btn-sm btn-danger me-1')
+                            .attr('title', 'Cancelar assinatura')
+                            .html('<i class="fas fa-ban"></i>')
+                            .on('click', () => abrirModalMotivo(item.id));
+
+                        const $btnCopiar = $('<button>')
+                            .addClass('btn btn-sm btn-info')
+                            .attr('title', 'Copiar link')
+                            .html('<i class="fas fa-link"></i>')
+                            .on('click', () => copiarLink(item.idparceiro, item.id));
+
+                        return $('<div>').append($btnCancelar).append($btnCopiar);
+                    }
                 },
                 
 
