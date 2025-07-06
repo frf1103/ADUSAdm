@@ -1,7 +1,11 @@
 ﻿@model ADUSClient.MovimentoCaixa.MovimentoCaixaViewModel
 
-@{
-    ViewData["Title"] = ViewBag.Titulo;
+@section styles {
+    <style>
+        body {
+            overflow-y: auto;
+        }
+    </style>
 }
 
 <section class="content-header">
@@ -14,120 +18,56 @@
     </div>
 </section>
 
-@{
-    var desabilitar = ViewBag.Acao == "Visualizar" ? "disabled" : "";
-}
-<div class="wrapper">
-    <section class="content">
-        <div class="container-fluid">
-            <div class="card card-primary card-outline">
+<section class="content">
+    <div class="container-fluid">
+        <form asp-action="@ViewBag.Acao" method="post" novalidate>
+            @Html.AntiForgeryToken()
+
+            <div class="card card-success">
+                <div class="card-header">
+                    <h3 class="card-title">Dados do Movimento de Caixa</h3>
+                </div>
                 <div class="card-body">
-                    <form asp-action="@ViewBag.Acao" method="post">
-                        <input asp-for="Id" type="hidden" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label asp-for="IdTransacao" class="form-label fw-bold">Transação</label>
-                                <select asp-for="IdTransacao" id="idtransacao" class="form-control" asp-items="ViewBag.Transacoes"></select>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="IdCentroCusto" class="form-label fw-bold">Centro de Custo</label>
-                                <select asp-for="IdCentroCusto" class="form-control" asp-items="ViewBag.CentroCustos"></select>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="IdContaCorrente" class="form-label fw-bold">Conta Corrente</label>
-                                <select asp-for="IdContaCorrente" class="form-control" asp-items="ViewBag.Contas"></select>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="IdCategoria" class="form-label fw-bold">Categoria</label>
-                                <select asp-for="IdCategoria" class="form-control" asp-items="ViewBag.Categorias"></select>
-                            </div>
-                        </div>
-
-                        <div class="row mt-3">
-                            <div class="col-md-4">
-                                <label asp-for="idparceiro" class="form-label fw-bold">Parceiro</label>
-                                <select asp-for="idparceiro" class="form-control" asp-items="ViewBag.Parceiros"></select>
-                            </div>
-
-                            <div class="col-md-2">
-                                <label asp-for="Sinal" class="form-label fw-bold">Sinal</label>
-                                <select asp-for="Sinal" class="form-control" asp-items="ViewBag.Sinais"></select>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="valorInput" class="form-label fw-bold">Valor</label>
-                                <input asp-for="valorInput" class="form-control moeda" id="valorInput" />
-                                <span asp-validation-for="valorInput" class="text-danger small"></span>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="DataMov" class="form-label fw-bold">Data</label>
-                                <input asp-for="DataMov" class="form-control" type="date" />
-                                <span asp-validation-for="DataMov" class="text-danger small"></span>
-                            </div>
-                        </div>
-
-                        <div class="mt-3">
-                            <label asp-for="Observacao" class="form-label fw-bold">Observação</label>
-                            <textarea asp-for="Observacao" class="form-control" rows="3"></textarea>
-                        </div>
-
-                        <div class="text-end mt-4">
-                            @if (ViewBag.idacao <= 2)
-                            {
-                                <button type="submit" class="btn btn-success">
-                                    <i class="fas fa-save me-1"></i> Salvar
-                                </button>
-                            }
-                            else if (ViewBag.idacao == 3)
-                            {
-                                <button type="submit" class="btn btn-danger">
-                                    <i class="fas fa-trash-alt me-1"></i> Excluir
-                                </button>
-                            }
-
-                            <a asp-action="Index" class="btn btn-default">Voltar</a>
-                        </div>
-                    </form>
+                    @if (ViewBag.Acao == "Excluir" || ViewBag.Acao == "Visualizar")
+                    {
+                        <fieldset disabled>
+                            @Html.Partial("_MovimentoCaixaFormFields", Model)
+                        </fieldset>
+                    }
+                    else
+                    {
+                        @Html.Partial("_MovimentoCaixaFormFields", Model)
+                    }
+                </div>
+                <div class="card-footer text-end">
+                    @if (ViewBag.idacao <= 2)
+                    {
+                        <button type="submit" class="btn btn-success me-2">
+                            <i class="fas fa-save me-1"></i> Salvar
+                        </button>
+                    }
+                    else if (ViewBag.idacao == 3)
+                    {
+                        <button type="submit" class="btn btn-danger me-2">
+                            <i class="fas fa-trash-alt me-1"></i> Excluir
+                        </button>
+                    }
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-1"></i> Voltar
+                    </a>
                 </div>
             </div>
-        </div>
-    </section>
-</div>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+        </form>
+    </div>
+</section>
 
 @section Scripts {
-
-    <script src="~/js/comuns.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
-
     <script>
-
-        function parseDecimal(valor) {
-            if (!valor) return 0;
-            return parseFloat(valor.replace(/\./g, '').replace(',', '.')) || 0;
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            const acao = '@ViewBag.Acao';
-            if (acao === 'Ver') {
-                const form = document.querySelector('form');
-                if (form) {
-                    const elementos = form.querySelectorAll('input, select, textarea, button');
-                    elementos.forEach(el => {
-                        el.setAttribute('disabled', 'disabled');
-                    });
-                }
-            }
-        });
-
         $(document).ready(function () {
-            $('.moeda').mask('#.##0,00', { reverse: true });
+            $(".moeda").mask("#.##0,00", { reverse: true });
         });
     </script>
 }

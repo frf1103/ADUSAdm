@@ -1,238 +1,11 @@
-﻿<!-- Content Header (Page header) -->
-
+﻿@* *************** CSS / STYLE *************** *@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/tempus-dominus/5.39.0/css/tempus-dominus.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempus-dominus/5.39.0/css/tempus-dominus.min.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/css/adminlte.min.css" />
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/tempus-dominus/5.39.0/css/tempus-dominus.min.css" rel="stylesheet">
-
-
-
-<style>
-    /* Estilo padrão para o ícone */
-    .icon-default {
-        color: 38b6ff;
-    }
-
-    .select2-container {
-        width: 250px !important; /* Ajuste o tamanho conforme necessário */
-        display: inline-block;
-    }
-
-    .form-container {
-        display: flex;
-        align-items: center;
-    }
-
-    .submit-button {
-        margin-left: 10px; /* Espaço entre o select e o botão */
-    }
-
-    .select2-container {
-        width: 100% !important; /* Força a largura de 100% */
-        a
-    }
-
-    .select2-selection {
-        width: 100% !important; /* Força a largura do container de seleção */
-    }
-
-    .jsgrid-cell {
-        font-size: 0.85em;
-        padding: 0.2em !important;
-        line-height: 0.8;
-    }
-
-    .jsgrid-header-cell {
-        font-size: 0.85em;
-        padding: 0.2em !important;
-        line-height: 1;
-    }
-
-    .subgrid {
-        padding: 20px;
-    }
-
-    .truck-button {
-        background: none;
-        border: none;
-        cursor: pointer;
-    }
-
-        .truck-button i {
-            color: blue; /* Escolha a cor que você deseja para o ícone */
-        }
-
-
-    .truck-button1 {
-        background: none;
-        border: none;
-        cursor: pointer;
-    }
-
-        .truck-button1 i {
-            color: cadetblue; /* Escolha a cor que você deseja para o ícone */
-        }
-
-    .modal-fullscreen {
-        width: 100%;
-        max-width: 100%; /* Ocupa toda a largura da tela */
-        height: 100%;
-        margin: 0; /* Remove as margens */
-    }
-
-        .modal-fullscreen .modal-content {
-            height: 100%;
-            border: none; /* Remover bordas se necessário */
-            border-radius: 0; /* Remover cantos arredondados */
-        }
-
-    .modal-backdrop {
-        background-color: rgba(0, 0, 0, 0.5); /* Fundo semitransparente */
-    }
-
-</style>
-
-@await Html.PartialAsync("_ModalProcessando")
-
-<!-- Main content -->
-<section class="content">
-    <form asp-action="Index">
-        <div class="row">
-            <div class="col-md-12">
-                <button class="btn btn-default" type="button" data-bs-toggle="collapse" data-bs-target="#filter" aria-expanded="false" aria-controls="filter">
-                    <img class="icon" src="/svg/icons/filter.svg" />
-                    Filtro
-                </button>
-
-                <div class="collapse mt-2" id="filter">
-                    <div class="card card-primary card-outline">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-container">
-
-                                    <select class="select2" name="idparceiro" id="idparceiro" data-placeholder="escolha um parceiro" style="width: 100%;">
-                                        <option value="0">escolha um parceiro</option>
-                                        @foreach (var item in ViewBag.parceiros)
-                                        {
-                                            if (@item.Value == ViewBag.SelectedOptionS)
-                                            {
-                                                <option value="@item.Value" selected>@item.Text</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@item.Value">@item.Text</option>
-                                            }
-                                        }
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-container">
-
-                                    <select class="select2" name="status" id="status" data-placeholder="escolha um status" style="width: 100%;">
-                                        <option value="0">Ativa</option>
-                                        <option value="1">Pendente</option>
-                                        <option value="2">Cancelada</option>    
-                                        <option value="3">Todos</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-container">
-
-                                    <select class="select2" name="forma" id="forma" data-placeholder="escolha uma forma" style="width: 100%;">
-                                        <option value="0">Cartão</option>
-                                        <option value="1">Boleto</option>
-                                        <option value="1">Pix</option>
-                                        <option value="3">Todos</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="row">
-
-                            <div class="col-md-4">
-                                <div class="form-container">
-                                    <input type="date" class="form-control" id="dtinicio" value="@ViewBag.dtinicio" name="ini" placeholder="inicio">
-                                    <input type="date" class="form-control" id="dtfim" value="@ViewBag.dtfim" name="fim" placeholder="fim">
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="form-container">
-                                    <input type="text" class="form-control" id="filtro" value="@ViewBag.filtro" name="filtro" placeholder="busque pela observacao ou id da plataforma">
-                                    <button type="submit" class="btn btn-md btn-default">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-                    <!-- /.card-body -->
-                </div>
-                <!-- /.card -->
-            </div>
-        </div>
-    </form>
-
-    <h2>Assinaturas</h2>
-    <input id="idassinatura" hidden />
-
-
-    <div class="modal fade" id="modalMotivoCancelamento" tabindex="-1" aria-labelledby="motivoLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title" id="motivoLabel">Motivo do Cancelamento</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                </div>
-                <div class="modal-body">
-                    <textarea id="motivoTexto" class="form-control" rows="4" placeholder="Descreva o motivo do cancelamento..." required></textarea>
-                    <div id="erroMotivo" class="text-danger small mt-2" style="display:none;">O motivo é obrigatório.</div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-danger" onclick="confirmarMotivo()">Avançar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col text-right">
-        @if (ViewBag.permissao == true)
-        {
-            <a href="/assinatura/adicionar?acao=1 class="btn btn-default" role="button">
-                <img class="icon" src="/svg/icons/plus.svg" />
-            </a>
-            <a href="#" class="btn btn-outline-secondary ms-2" id="btnSyncGuru" title="Sincronizar com Guru">
-                <i class="fas fa-sync-alt"></i>
-            </a>
-
-        }
-    </div>
-
-    <div id="jsGrid"></div>
-
-    <form id="formCancelamento" method="post" action="/assinatura/cancelar" style="display:none;">
-        <input type="hidden" name="id" id="cancelarId" />
-        <input type="hidden" name="motivo" id="cancelarMotivo" />
-        @Html.AntiForgeryToken()
-    </form>
-    
-
-</section>
-<!-- /.content -->
-
 
 <style>
     .custom-no-data {
@@ -240,45 +13,153 @@
         color: red;
         font-weight: bold;
     }
+
+    .form-container {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+    }
+
+    .select2-container {
+        width: 100% !important;
+    }
+
+    .jsgrid-header-row > .jsgrid-header-cell {
+        background-color: #28a745; /* Verde igual Parceiros */
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .jsgrid-row:hover,
+    .jsgrid-alt-row:hover {
+        background-color: #d4edda;
+    }
 </style>
-<!-- Bootstrap 4 -->
 
 
+@* *************** MODAL MOTIVO CANCELAMENTO *************** *@
+<div class="modal fade" id="modalMotivoCancelamento" tabindex="-1" aria-labelledby="motivoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="motivoLabel">Motivo do Cancelamento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <textarea id="motivoTexto" class="form-control" rows="4" placeholder="Descreva o motivo do cancelamento..." required></textarea>
+                <div id="erroMotivo" class="text-danger small mt-2" style="display:none;">O motivo é obrigatório.</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-danger" onclick="confirmarMotivo()">Avançar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="formCancelamento" method="post" action="/assinatura/cancelar" style="display:none;">
+    <input type="hidden" name="id" id="cancelarId" />
+    <input type="hidden" name="motivo" id="cancelarMotivo" />
+    @Html.AntiForgeryToken()
+</form>
+
+@* *************** TÍTULO E FILTROS *************** *@
+<section class="content">
+    <form asp-action="Index">
+
+        <div class="d-flex justify-content-end mb-3">
+                <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#filter" aria-expanded="false" aria-controls="filter">
+                    <i class="fas fa-filter"></i> Filtro
+                </button>
+        </div>
+        <div class="collapse" id="filter">
+            <div class="card card-success card-outline p-3">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <select class="select2" name="idparceiro" id="idparceiro" data-placeholder="Escolha um parceiro">
+                            <option value="0">Escolha um parceiro</option>
+                            @foreach (var item in ViewBag.parceiros)
+                            {
+                                var selected = ViewBag.SelectedOptionS?.ToString() == item.Value ? "selected" : "";
+                                if (selected=="selected")
+                                {
+                                    <option value="@item.Value" selected>@item.Text</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="select2" name="status" id="status" data-placeholder="Status">
+                            <option value="0">Ativa</option>
+                            <option value="1">Pendente</option>
+                            <option value="2">Cancelada</option>
+                            <option value="3">Todos</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="select2" name="forma" id="forma" data-placeholder="Forma">
+                            <option value="0">Cartão</option>
+                            <option value="1">Boleto</option>
+                            <option value="2">Pix</option>
+                            <option value="3">Todos</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 d-flex">
+                        <input type="date" class="form-control me-2" id="dtinicio" name="ini" value="@ViewBag.dtinicio" placeholder="Início">
+                        <input type="date" class="form-control me-2" id="dtfim" name="fim" value="@ViewBag.dtfim" placeholder="Fim">
+                        <button type="button" class="btn btn-success" id="btnBuscar">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <input type="text" class="form-control" id="filtro" name="filtro" value="@ViewBag.filtro" placeholder="Buscar pela observação ou id da plataforma">
+                    </div>
+                </div>
+            </div>
+        </div>   
+        
+    </form>
+
+    
+
+    <div class="d-flex justify-content-between my-3">
+        <h3 class="mb-3">Assinaturas</h3>
+        @if (ViewBag.permissao == true)        
+        {
+            <div>
+                <a href="/assinatura/editar?acao=1" class="btn btn-success me-2">
+                    <i class="fas fa-plus"></i> Adicionar
+                </a>
+                <a href="#" class="btn btn-success me-2" id="btnSyncGuru" title="Sincronizar com Guru">
+                    <i class="fas fa-sync-alt"></i> Sincronizar
+                </a>
+            </div>
+        }
+    </div>
+
+    <div id="jsGrid"></div>
+</section>
+
+@* *************** JS SCRIPTS *************** *@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tempus-dominus/5.39.0/js/tempus-dominus.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
-
-<script src="~/js/loadprodutos.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
 
 <script>
 
-   
-    function abrirParcelas(item) {
-        const id = item.id;
-        const idparceiro = $('#idparceiro').val();
-        const forma = $('#forma').val();
-        const status = $('#status').val();
-        const ini = '2001-01-01';
-        const fim = $('#dtfim').val();
-        const filtro = $('#filtro').val();
+    $("#jsGrid").jsGrid("loadData");
 
-        const url = `/Parcela/Index?idassinatura=${id}&idparceiro=${idparceiro}&formaS=${forma}&statusS=${status}&iniS=${ini}&fimS=${fim}&filtroS=${encodeURIComponent(filtro)}`;
-
-        window.location.href = url;
-    }
-
+    $("#btnBuscar").on("click", function () {
+        $("#jsGrid").jsGrid("loadData");
+    });
     let idParaCancelar = null;
 
     function abrirModalMotivo(id) {
@@ -296,8 +177,6 @@
             return;
         }
 
-        $('#erroMotivo').hide();
-
         Swal.fire({
             title: 'Tem certeza?',
             text: 'Deseja realmente cancelar esta assinatura?',
@@ -314,43 +193,9 @@
         });
     }
 
-
-
-    $(document).ready(function () {
-
-        
-
-        $('select').select2();
-
-        $('#status').val(@ViewBag.Status).trigger('change');
-        $('#forma').val(@ViewBag.Forma).trigger('change');
-
-
-
-        $("#idparceiro").val(@ViewBag.SelectedOptionF);
-        //$('#idfazenda').trigger("change");
-
-
-    });
-
-    function mostrarProcessando() {
-        const modal = new bootstrap.Modal(document.getElementById("modalProcessando"), {
-            backdrop: 'static',
-            keyboard: false
-        });
-        modal.show();
-        window.modalRefProcessando = modal;
-    }
-
-    function esconderProcessando() {
-        if (window.modalRefProcessando) {
-            window.modalRefProcessando.hide();
-        }
-    }
-
     function copiarLink(idParceiro, idAssinatura) {
-        const linkconv="@ViewBag.urlconvite";
-        const url = `${linkconv}/Cartao/RevisarDados?idAssinatura=${idAssinatura}`;
+        const urlConvite = "@ViewBag.urlconvite";
+        const url = `${urlConvite}/Cartao/RevisarDados?idAssinatura=${idAssinatura}`;
 
         navigator.clipboard.writeText(url)
             .then(() => {
@@ -373,62 +218,24 @@
     }
 
 
-
-        document.addEventListener("DOMContentLoaded", function () {
-            const btnSync = document.getElementById("btnSyncGuru");
-            if (btnSync) {
-                btnSync.addEventListener("click", function (e) {
-                    e.preventDefault();
-
-                    mostrarProcessando();
-
-                    const hoje = new Date().toISOString().split("T")[0];
-                    const url = `/ParametrosGuru/GetDataGuru?ini=${hoje}&fim=${hoje}&connectionId=null`;
-
-                    fetch(url, {
-                        method: "GET"
-                    })
-                        .then(resp => {
-                            if (!resp.ok) throw new Error("Erro ao sincronizar com o Guru.");
-                            return resp.json();
-                        })
-                        .then(data => {
-                            esconderProcessando();
-                            alert("Sincronização concluída!");
-                            // Opcional: location.reload(); para recarregar dados
-                        })
-                        .catch(err => {
-                            esconderProcessando();
-                            alert("Erro: " + err.message);
-                        });
-                });
-            }
+    $(function () {
+        $(".select2").select2({
+            theme: "bootstrap-5"
         });
 
+        $("#status").val("@ViewBag.Status ?? 3").trigger('change');
+        $("#forma").val("@ViewBag.Forma ?? 3").trigger('change');
+        $("#idparceiro").val("@ViewBag.SelectedOptionS ?? 0").trigger('change');
 
-
-
-
-    $(function () {
         $("#jsGrid").jsGrid({
             width: "100%",
-            height: "620px",
-
+            height: "680",
             sorting: true,
             paging: true,
-            pageSize: 10,                 // Define o número de registros por página
-            pageButtonCount: 5,          // Número de botões de navegação exibidos
-            pagerFormat: "Páginas: {pages} {prev} {next} {first} {last}",  // Formato do pager,
-            pageLoading: false,
-            pagePrevText: "Anterior", // Texto para o botão "Anterior"
-            pageNextText: "Próximo",  // Texto para o botão "Próximo",
-            pageFirstText: "Primeira",  // Adicionando "Primeira" página
-            pageLastText: "Última",     // Adicionando "Última" página
-
-            autoload: true,
+            pageSize: 12,
+            pageButtonCount: 5,
             noDataContent: "<div class='custom-no-data'>Nenhum dado encontrado</div>",
-
-
+            autoload:true,
 
             controller: {
                 loadData: function () {
@@ -436,13 +243,12 @@
                         type: "GET",
                         url: "/assinatura/GetData",
                         data: {
-                            idparceiro: "@ViewBag.SelectedOptionS",
-                            status: @ViewBag.Status,
-                            ini: $("#dtinicio").val(),
-                            fim: $("#dtfim").val(),  
-                            forma: @ViewBag.Forma,
-                            filtro: "@ViewBag.filtro"
-
+                            idparceiro: $("#idparceiro").val() || 0,
+                            status: $("#status").val() || 3,
+                            forma: $("#forma").val() || 3,
+                            ini: $("#dtinicio").val() || '',
+                            fim: $("#dtfim").val() || '',
+                            filtro: $("#filtro").val() || ''
                         },
                         dataType: "json"
                     });
@@ -450,144 +256,85 @@
             },
 
             fields: [
-                { name: "id", type: "text", width: 20, title: "ID", visible: false },
-
-                { name: "nomeparceiro", type: "text", width: 100, title: "Parceiro" },
+                { name: "id", type: "text", visible: false },
+                { name: "nomeparceiro", title: "Parceiro", width: 150 },
+                { name: "descstatus", title: "Status", width: 80 },
+                { name: "descforma", title: "Forma Pagto", width: 80 },
                 {
-                    name: "descstatus", type: "text", width: 100, title: "Status",
-                },
-
-                {
-                    name: "descforma", type: "text", width: 100, title: "Forma Pagto",
-                },
-
-                {
-                    name: "datavenda", type: "text", width: 40, title: "Data",
+                    name: "datavenda",
+                    title: "Data",
+                    width: 80,
                     itemTemplate: function (value) {
                         return new Date(value).toLocaleDateString();
                     }
-
                 },
                 {
-                    name: "qtd", type: "number", width: 60, title: "Quantidade",align:"right",
-                    headerTemplate: function () {
-                            return $("<div>").text("Quantidade").css("text-align", "right");
-                        }
+                    name: "qtd",
+                    title: "Quantidade",
+                    width: 60,
+                    align: "right"
                 },
-
                 {
-                    name: "valor", type: "number", width: 60, title: "Valor", align: "right",
-                        headerTemplate: function () {
-                        return $("<div>").text("Valor").css("text-align", "right");
-                    }
+                    name: "valor",
+                    title: "Valor",
+                    width: 80,
+                    align: "right"
                 },
-
-
                 {
-                    name: "parcelas",
-                    title: "Parcelas",
+                    title: "Ações",
+                    width: 300,
                     align: "center",
-                    width: 50,
                     sorting: false,
-                    filtering: false,
                     itemTemplate: function (_, item) {
-                        return $("<button>")
-                            .addClass("btn btn-sm btn-primary")
-                            .attr("title", "Ver Parcelas")
-                            .append($("<i>").addClass("fa fa-file-invoice-dollar"))
-                            
-                                    .on("click", function () {
-                                abrirParcelas(item);
-                            
-                                //window.location.href = "/Parcela/Index?idassinatura=" + item.id+"&idparceiro="+item.idparceiro+"&ini=2001-01-01&&forma=3";
-                            });
-                    }
-                },
+                        var $view = $('<button>')
+                            .addClass('btn btn-sm btn-info me-1')
+                            .attr('title', 'Visualizar')
+                            .html('<i class="fas fa-eye"></i>')
+                            .on('click', () => window.location.href = `/assinatura/editar/${item.id}?acao=4`);
 
-                {
-                    name: "cancelar",
-                    title: "Cancelar / Copiar Link",
-                    align: "center",
-                    width: 120,
-                    sorting: false,
-                    itemTemplate: (_, item) => {
-                        const $btnCancelar = $('<button>')
+                        var $edit = $('<button>')
+                            .addClass('btn btn-sm btn-warning me-1')
+                            .attr('title', 'Editar')
+                            .html('<i class="fas fa-edit"></i>')
+                            .on('click', () => window.location.href = `/assinatura/editar/${item.id}?acao=2`);
+
+                        var $del = $('<button>')
                             .addClass('btn btn-sm btn-danger me-1')
-                            .attr('title', 'Cancelar assinatura')
-                            .html('<i class="fas fa-ban"></i>')
-                            .on('click', () => abrirModalMotivo(item.id));
+                            .attr('title', 'Excluir')
+                            .html('<i class="fas fa-trash"></i>')
+                            .on('click', () => window.location.href = `/assinatura/editar/${item.id}?acao=3`);
 
-                        const $btnCopiar = $('<button>')
-                            .addClass('btn btn-sm btn-info')
+                        var $copy = $('<button>')
+                            .addClass('btn btn-sm btn-secondary me-1')
                             .attr('title', 'Copiar link')
                             .html('<i class="fas fa-link"></i>')
                             .on('click', () => copiarLink(item.idparceiro, item.id));
 
-                        return $('<div>').append($btnCancelar).append($btnCopiar);
-                    }
-                },
-                
+                        var $cancel = $('<button>')
+                            .addClass('btn btn-sm btn-danger')
+                            .attr('title', 'Cancelar Assinatura')
+                            .html('<i class="fas fa-ban"></i>')
+                            .on('click', () => abrirModalMotivo(item.id));
 
-                {
-                    type: "control",
-                    itemTemplate: function (_, item) {
-                        var $result = $("<div>").addClass("dropdown");
+                        var $parcela = $('<button>')
+                            .addClass("btn btn-sm btn-success")
+                            .attr('title', 'Parcelas')
+                            .html('<i class="fas fa-dollar"></i>')
+                            .on('click', () => window.location.href = "/parcela?idassinatura="+item.id+"&idparceiro="+item.idparceiro);
 
-                        var $button = $("<button>").addClass("btn btn-default dropdown-toggle")
-                            .attr("type", "button")
-                            .attr("id", "dropdownMenuButton")
-                            .attr("data-bs-toggle", "dropdown")
-                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
-                            .text("Ações");
 
-                        var $menu = $("<div>").addClass("dropdown-menu")
-                            .attr("aria-labelledby", "dropdownMenuButton");
-
-                        var $details = $("<a>").addClass("dropdown-item")
-                            .attr("href", "#")
-                            .text("Visualizar")
-                            .on("click", function () {
-                                window.location.href = '/assinatura/adicionar/' + item.id + '?acao=4';
-                            });
-
-                        var $edit = $("<a>").addClass("dropdown-item")
-                            .attr("href", "#")
-                            .text("Editar")
-                            .on("click", function () {
-                                window.location.href = '/assinatura/editar/' + item.id + '?acao=2';
-                            });
-
-                        var $delete = $("<a>").addClass("dropdown-item")
-                            .attr("href", "#")
-                            .text("Excluir")
-                            .on("click", function () {
-                                window.location.href = '/assinatura/excluir/' + item.id + '?acao=3';
-                            });
-
-                       
-
-                        $menu.append($details).append($edit).append($delete).append($delete);
-                        $result.append($button).append($menu);
-
-                        return $result;
+                        return $('<div>').append($view, $edit, $del, $copy, $cancel, $parcela);
                     }
                 }
             ]
         });
-
     });
 
-    
+    $("#jsGrid").jsGrid("loadData");
 
-
-
-
-
-
-    
+    $("#btnBuscar").on("click", function () {
+        $("#jsGrid").jsGrid("loadData");
+    });
 
 
 </script>
-
-
-

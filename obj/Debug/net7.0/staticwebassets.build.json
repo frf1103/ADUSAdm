@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "353c6N2nlqd0okX5KjNlZyem5gWWpsmga4nhus+9Nbg=",
+  "Hash": "sx8W1S08ErxwBgFsLEStHh+iwSMzKZVpH4ZsFr16kwY=",
   "Source": "ADUSAdm",
   "BasePath": "_content/ADUSAdm",
   "Mode": "Default",
@@ -1256,6 +1256,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\theme.css"
+    },
+    {
+      "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\css\\theme-green.css",
+      "SourceId": "ADUSAdm",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\",
+      "BasePath": "_content/ADUSAdm",
+      "RelativePath": "css/theme-green.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\theme-green.css"
     },
     {
       "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\css\\toastr.min.css",

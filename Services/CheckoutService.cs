@@ -357,7 +357,7 @@ namespace ADUSAdm.Services
             }
 
             List<object> split = null;
-
+            /*
             var afiliado = await _parceiro.ListaById(idAfiliado);
 
             if (afiliado != null)
@@ -376,6 +376,7 @@ namespace ADUSAdm.Services
                     }
                 };
             }
+            */
             string? invoiceurl = null;
             DateTime vcto = DateTime.Now.Date;
             if (subsid != null || billingType == "BOLETO")
@@ -522,7 +523,7 @@ namespace ADUSAdm.Services
 
         public async Task<string> AddAssinaturaADUS(CheckoutViewModel m, string id, string idcliente, string idafiliado)
         {
-            FormaPagto idforma = (m.FormaPagamento == "PIX") ? FormaPagto.Pix : (m.FormaPagamento == "BOLETO") ? FormaPagto.Boleto : FormaPagto.Cartao;
+            FormaPagto idforma = (m.FormaPagamento.ToUpper() == "PIX") ? FormaPagto.Pix : (m.FormaPagamento.ToUpper() == "BOLETO") ? FormaPagto.Boleto : FormaPagto.Cartao;
             await _assinatura.Adicionar(new AssinaturaViewModel
             {
                 id = id,

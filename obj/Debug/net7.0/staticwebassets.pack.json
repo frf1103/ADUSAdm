@@ -45,6 +45,10 @@
       "PackagePath": "staticwebassets\\css\\sweetalert2.css"
     },
     {
+      "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\css\\theme-green.css",
+      "PackagePath": "staticwebassets\\css\\theme-green.css"
+    },
+    {
       "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\css\\theme.css",
       "PackagePath": "staticwebassets\\css\\theme.css"
     },

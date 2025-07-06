@@ -3,252 +3,285 @@
 @{
     ViewBag.Title = "Parceiro";
 }
-<style>
-    .select2-container--default .select2-selection--multiple {
-        min-height: 38px;
-        border: 1px solid #ced4da;
-        border-radius: .2rem;
-    }
-</style>
-
-
-<form asp-action="Index" method="get">
-    <div class="row">
-        <div class="col-md-12">
-            <button class="btn btn-default" type="button" data-bs-toggle="collapse" data-bs-target="#filter" aria-expanded="false" aria-controls="filter">
-                <img class="icon" src="/svg/icons/filter.svg" />
-                Filtro
-            </button>
-
-            <div class="collapse mt-2" id="filter">
-                <div class="card card-primary card-outline p-3">
-
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <label for="perfis">Perfis</label>
-                            <select class="select2" id="perfis" name="perfis" multiple="multiple" style="width: 100%;" data-placeholder="Selecione os perfis">
-                             @{
-                                if (ViewBag.PerfisSelecionados.Contains("assinante"))
-                                {
-                                    <option value="assinante" selected>Assinante</option>
-                                }
-                                else
-                                {
-                                    <option value="assinante" >Assinante</option>
-                                }
-
-                                if (ViewBag.PerfisSelecionados.Contains("banco"))
-                                {
-                                    <option value="banco" selected>Banco</option>
-                                }
-                                else
-                                {
-                                    <option value="banco" >Banco</option>
-                                }
-
-                               if (ViewBag.PerfisSelecionados.Contains("afiliado"))
-                                {
-                                    <option value="afiliado" selected>Afiliado</option>
-                                }
-                                else
-                                {
-                                    <option value="afiliado" >Afiliado</option>
-                                } 
-
-                                if (ViewBag.PerfisSelecionados.Contains("coprodutor"))
-                                {
-                                    <option value="coprodutor" selected>Coprodutor</option>
-                                }
-                                else
-                                {
-                                    <option value="coprodutor" >Coprodutor</option>
-                                } 
-
-                            }
-
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-10">
-                            <div class="d-flex gap-2">
-                                <input type="text" class="form-control" name="filtro" id="filtro" value="@ViewBag.Filtro" placeholder="Buscar parceiro por nome, fantasia ou registro">
-                                <button type="submit" class="btn btn-md btn-default">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-    </div>
-     <div>
-        @Html.ValidationSummary(true)
-    </div>
-</form>
-
-
-
-
-
-<h2>Parceiros de Negócio</h2>
-<div class="col text-right">
-     @if (ViewBag.permissao == true)
-     {
-        <a href="/parceiro/adicionar" class="btn btn-default" role="button">
-            <img class="icon" src="/svg/icons/plus.svg" />
-        </a>
-     }
-</div>
-<div id="jsGrid"></div>
-
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/css/adminlte.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 <style>
+    .card-filter {
+        background-color: #e9f7ef;
+        border: 1px solid #28a745;
+    }
+
+    .card-filter label {
+        font-weight: bold;
+    }
+
+    .btn-buscar {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+    .btn-buscar:hover {
+        background-color: #218838;
+        color: #fff;
+    }
+
+    .jsgrid-header-row > .jsgrid-header-cell {
+        background-color: #28a745;
+        color: #fff;
+        font-weight: bold;
+        font-size: 0.85rem;
+    }
+
+    .jsgrid-row > .jsgrid-cell,
+    .jsgrid-alt-row > .jsgrid-cell {
+        font-size: 0.85rem;
+        padding: 4px 8px;
+    }
+
+    .jsgrid-row:hover,
+    .jsgrid-alt-row:hover {
+        background-color: #d4edda;
+    }
+
     .custom-no-data {
         text-align: center;
         color: red;
         font-weight: bold;
+        padding: 10px;
+    }
+
+    .dropdown-toggle::after {
+        display: none;
+    }
+
+    .select2-selection__choice {
+        font-size: 0.8rem;
+        padding: 2px 5px;
+        margin-right: 4px;
+        background-color: #28a745;
+        border-color: #28a745;
+        color: #fff;
+    }
+
+    .select2-selection__rendered 
+    {
+        display: none !important;
+    }
+
+    .select2-selection__clear {
+        display: none !important;
+    }
+
+    .select2-container .select2-selection--multiple {
+        min-height: 36px;
     }
 </style>
-<!-- Bootstrap 4 -->
 
+<form asp-action="Index" method="get">
+    <div class="row">
+        <div class="col-md-12 d-flex justify-content-end">
+            <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#filter" aria-expanded="false" aria-controls="filter">
+                <i class="fas fa-filter me-1"></i> Filtro
+            </button>
+        </div>
 
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <div class="collapse" id="filter">
+            <div class="card card-filter p-3">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label for="perfis">Perfis</label>
+                        @{
+                        var perfis = new List<string> { "assinante", "banco", "afiliado", "coprodutor" };
+                        var perfisSelecionados = ViewBag.PerfisSelecionados as List<string> ?? new List<string>();
+                        }
+
+                        <select class="select2" id="perfis" name="perfis" multiple="multiple" style="width: 100%;" data-placeholder="Selecione os perfis">
+
+                                @{
+                                    if (ViewBag.PerfisSelecionados.Contains("assinante"))
+                                    {
+                                        <option value="assinante" selected>Assinante</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="assinante">Assinante</option>
+                                    }
+
+                                    if (ViewBag.PerfisSelecionados.Contains("banco"))
+                                    {
+                                        <option value="banco" selected>Banco</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="banco">Banco</option>
+                                    }
+
+                                    if (ViewBag.PerfisSelecionados.Contains("afiliado"))
+                                    {
+                                        <option value="afiliado" selected>Afiliado</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="afiliado">Afiliado</option>
+                                    }
+
+                                    if (ViewBag.PerfisSelecionados.Contains("coprodutor"))
+                                    {
+                                        <option value="coprodutor" selected>Coprodutor</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="coprodutor">Coprodutor</option>
+                                    }
+
+                                }
+
+                        </select>
+                     </div>
+
+                    <div class="col-md-8 d-flex align-items-end">
+                        <div class="input-group w-100">
+                            <input type="text" class="form-control" name="filtro" id="filtro" value="@ViewBag.Filtro" placeholder="Buscar parceiro por nome, fantasia ou registro">
+                            <button type="button" class="btn btn-buscar" id="btnBuscar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="d-flex justify-content-between my-3">
+    <h4 class="mb-0">Parceiros de Negócio</h4>
+    @if (ViewBag.permissao == true)
+    {
+        <div>
+            <a href="/parceiro/editar?acao=1" class="btn btn-success">
+                <i class="fas fa-plus"></i> Adicionar
+            </a>
+        </div>
+    }
+</div>
+
+<div id="jsGrid"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-
-
-<script src="~/js/formataregistro.js"></script>
-
-
 <script>
-
     $(document).ready(function () {
-        $('#perfis').select2({
-            placeholder: "Selecione os perfis",
-            allowClear: true,
-            width: '100%'
+        $('.select2').select2({
+            theme: 'bootstrap-5',
+            placeholder: "Selecione perfis"
         });
-    });
 
-    $(function () {
         $("#jsGrid").jsGrid({
             width: "100%",
-            height: "400px",
-
+            height: "680px",
             sorting: true,
             paging: true,
-            pageSize: 10,                 // Define o número de registros por página
-            pageButtonCount: 5,          // Número de botões de navegação exibidos
-            pagerFormat: "Páginas: {pages} {prev} {next} {first} {last}",  // Formato do pager,
+            pageSize: 12,
+            pageButtonCount: 5,
             pageLoading: false,
-            pagePrevText: "Anterior", // Texto para o botão "Anterior"
-            pageNextText: "Próximo",  // Texto para o botão "Próximo",
-            pageFirstText: "Primeira",  // Adicionando "Primeira" página
-            pageLastText: "Última",     // Adicionando "Última" página
-
-
-            autoload: true,
+            pagerFormat: "Páginas: {pages} {prev} {next} {first} {last}",
+            pagePrevText: "Anterior",
+            pageNextText: "Próximo",
+            pageFirstText: "Primeira",
+            pageLastText: "Última",
+            autoload: false,
             noDataContent: "<div class='custom-no-data'>Nenhum dado encontrado</div>",
 
             controller: {
-                
                 loadData: function () {
-                   const perfisSelecionados = $('#perfis').val(); 
-
-                   return $.ajax({
-                   type: "GET",
-                   url: "/parceiro/GetData",
-                   data: {
-                        idorganizacao: $('#idorg').val(),
-                        filtro: "@ViewBag.filtro",
-                        perfis: perfisSelecionados
-                   },
-                   traditional: true, // para arrays no query string
-                   dataType: "json"
-        });
+                    return $.ajax({
+                        type: "GET",
+                        url: "/parceiro/GetData",
+                        data: {
+                            filtro: $("#filtro").val(),
+                            perfis: $("#perfis").val() || []
+                        },
+                        traditional: true,
+                        dataType: "json"
+                    });
                 }
             },
 
             fields: [
-                { name: "id", type: "text", width: 20, title: "ID", visible: false },
-                { name: "razaoSocial", type: "text", width: 80, title: "Razão Social" },
-                { name: "fantasia", type: "text", width: 120, title: "Fantasia" },
-                { name: "desctipo", type: "text", width: 20, title: "Tipo" },
+                { name: "id", type: "text", visible: false },
+                { name: "razaoSocial", title: "Razão Social", width: 100 },
+                { name: "fantasia", title: "Fantasia", width: 120 },
+                { name: "desctipo", title: "Tipo", width: 40 },
                 {
-                    name: "registro", type: "text", width: 50, title: "Registro",
-
+                    name: "registro",
+                    title: "Registro",
+                    width: 80,
                     itemTemplate: function (value) {
-                        // Formata o valor DateTime para 'dd/MM/yyyy'
-                        
                         return formatreg(value);
                     }
-                },                
+                },
                 {
-                    type: "control",
+                    title: "Ações",
+                    width: 120,
+                    align: "center",
+                    sorting: false,
                     itemTemplate: function (_, item) {
-                        var $result = $("<div>").addClass("dropdown");
-
-                        var $button = $("<button>").addClass("btn btn-default dropdown-toggle")
-                            .attr("type", "button")
-                            .attr("id", "dropdownMenuButton")
-                            .attr("data-bs-toggle", "dropdown")
-                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
-                            .text("Ações");
-
-                        var $menu = $("<div>").addClass("dropdown-menu")
-                            .attr("aria-labelledby", "dropdownMenuButton");
-
-                        var $details = $("<a>").addClass("dropdown-item")
-                            .attr("href", "#")
-                            .text("Visualizar")
-                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
-                            .on("click", function () {
-                                window.location.href = '/parceiro/editar/' + item.id + '?acao=3';
+                        var $viewBtn = $('<button>')
+                            .addClass('btn btn-sm btn-info me-1')
+                            .attr('title', 'Visualizar')
+                            .html('<i class="fas fa-eye"></i>')
+                            .on('click', function () {
+                                window.location.href = '/parceiro/editar/' + item.id + '?acao=4';
                             });
 
-                        var $edit = $("<a>").addClass("dropdown-item")
-                            .attr("href", "#")
-                            .text("Editar")
-                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
-                            .on("click", function () {
+                        var $editBtn = $('<button>')
+                            .addClass('btn btn-sm btn-warning me-1')
+                            .attr('title', 'Editar')
+                            .html('<i class="fas fa-edit"></i>')
+                            .on('click', function () {
                                 window.location.href = '/parceiro/editar/' + item.id + '?acao=2';
                             });
 
-                        var $delete = $("<a>").addClass("dropdown-item")
-                            .attr("href", "#")
-                            .text("Excluir")
-                            .addClass(("@ViewBag.permissao" != "True") ? "disabled" : "")
-                            .on("click", function () {
-                                window.location.href = '/parceiro/excluir/' + item.id;
+                        var $deleteBtn = $('<button>')
+                            .addClass('btn btn-sm btn-danger')
+                            .attr('title', 'Excluir')
+                            .html('<i class="fas fa-trash"></i>')
+                            .on('click', function () {
+                                window.location.href = '/parceiro/excluir/' + item.id+'?acao=3';
                             });
 
-                        $menu.append($details).append($edit).append($delete);
-                        $result.append($button).append($menu);
-
-                        return $result;
+                        return $('<div>').append($viewBtn, $editBtn, $deleteBtn);
                     }
-                }]
+                }
+
+            ]
+        });
+
+        // Dispara o grid no load inicial
+        $("#jsGrid").jsGrid("loadData");
+
+        $("#btnBuscar").on("click", function () {
+            $("#jsGrid").jsGrid("loadData");
         });
     });
 
-
-
+    function formatreg(value) {
+        if (!value) return "";
+        let num = value.replace(/\D/g, "");
+        if (num.length === 11) {
+            return num.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+        } else if (num.length === 14) {
+            return num.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+        } else {
+            return value;
+        }
+    }
 
 </script>

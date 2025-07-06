@@ -1,0 +1,21 @@
+﻿/* theme-green.css */
+
+.slim-menu .nav-link:hover,
+.slim-menu .nav-link.active {
+    background-color: #28a745;
+    color: #fff;
+}
+
+    .slim-menu .nav-link:hover i,
+    .slim-menu .nav-link.active i {
+        color: #fff;
+    }
+
+.slim-menu .nav-treeview .nav-link:hover {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.slim-menu .nav-icon {
+    color: #28a745;
+}

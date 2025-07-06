@@ -1,287 +1,97 @@
 ﻿@model ADUSClient.Parceiro.ParceiroViewModel
 
+@section styles {
+    <style>
+        /* Garantir rolagem do body caso CSS global restrinja overflow */
+        body {
+            overflow-y: auto;
+        }
+
+        .content-wrapper {
+            padding: 1rem;
+        }
+
+        .form-check-inline {
+    margin-right: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.form-check-label {
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+    </style>
+
+}
+
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Editar um Parceiro de Negócio</h1>
+                <h1 class="mb-0">@ViewBag.Titulo</h1>
             </div>
         </div>
     </div>
 </section>
 
-<div class="wrapper">
-    <section class="content" style="overflow-y: auto; max-height: calc(100vh - 150px);">
-        <div class="container-fluid">
-            <div class="card card-primary card-outline">
-                <form asp-action="editar">
-                    @Html.AntiForgeryToken()
-                    <div class="card-body">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<section class="content">
+    <div class="container-fluid">
+        <form asp-action="@ViewBag.acao" class="needs-validation" novalidate>
+            @Html.AntiForgeryToken()
 
-                        <!-- Campo ID -->
-                        <div class="row">
-                            <div class="col-md-5">
-                                <div class="form-group">
-                                    <label asp-for="id"></label>
-                                    <input asp-for="id" class="form-control" readonly />
-                                </div>
-                            </div>
-                        </div>
+            <div class="card card-success">
+                <div class="card-header">
+                    <h3 class="card-title">Dados do Parceiro</h3>
+                </div>
+                <div class="card-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    @if (ViewBag.acao == "Excluir" || ViewBag.acao == "Visualizar")
+                    {
+                        <fieldset disabled>
+                            @Html.Partial("_ParceiroFormFields", Model)
+                        </fieldset>
+                    }
+                    else
+                    {
+                        @Html.Partial("_ParceiroFormFields", Model)
+                    }
+                </div>
 
-                        <!-- Dados principais -->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="razaoSocial"></label>
-                                    <input asp-for="razaoSocial" class="form-control" />
-                                    <span asp-validation-for="razaoSocial" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="fantasia"></label>
-                                    <input asp-for="fantasia" class="form-control" />
-                                    <span asp-validation-for="fantasia" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label asp-for="tipodePessoa"></label>
-                                    <select asp-for="tipodePessoa" class="form-control" asp-items="@ViewBag.TiposPessoa"></select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label asp-for="registro"></label>
-                                    <input asp-for="registro" class="form-control" />
-                                    <span asp-validation-for="registro" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label asp-for="sexo"></label>
-                                    <select asp-for="sexo" class="form-control" asp-items="@ViewBag.TipoSexo"></select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label asp-for="estadoCivil"></label>
-                                    <select asp-for="estadoCivil" class="form-control" asp-items="@ViewBag.TipoEstadoCivil"></select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label asp-for="dtNascimento"></label>
-                                    <input asp-for="dtNascimento" class="form-control" />
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label asp-for="profissao"></label>
-                                    <input asp-for="profissao" class="form-control" />
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label asp-for="idRepresentante"></label>
-                                    <select asp-for="idRepresentante" class="form-control" asp-items="@ViewBag.Representantes"></select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label asp-for="cep"></label>
-                                    <input asp-for="cep" class="form-control" onchange="buscarEndereco()" />
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="logradouro"></label>
-                                    <input asp-for="logradouro" class="form-control" />
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label asp-for="numero"></label>
-                                    <input asp-for="numero" class="form-control" />
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label asp-for="complemento"></label>
-                                    <input asp-for="complemento" class="form-control" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label asp-for="bairro"></label>
-                                    <input asp-for="bairro" class="form-control" />
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label asp-for="fone1"></label>
-                                    <input asp-for="fone1" class="form-control" />
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label asp-for="fone2"></label>
-                                    <input asp-for="fone2" class="form-control" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label asp-for="iduf"></label>
-                                    <input asp-for="nomeuf" id="iduf" class="form-control"  disabled/>
-                                    <input asp-for="iduf" type="hidden" id="huf" />
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label asp-for="idCidade"></label>
-                                    <input asp-for="nomecidade" id="idmun" class="form-control" disabled/>
-                                    <input asp-for="idCidade" id="hcidade" type="hidden" />
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="email"></label>
-                                    <input asp-for="email" class="form-control" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion mt-4" id="accordionPerfis">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingPerfis">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePerfis" aria-expanded="false" aria-controls="collapsePerfis">
-                                        Perfis e Comissões
-                                    </button>
-                                </h2>
-                                <div id="collapsePerfis" class="accordion-collapse collapse" aria-labelledby="headingPerfis" data-bs-parent="#accordionPerfis">
-                                    <div class="accordion-body">
-                                        <div class="row">
-                                            <div class="col-md-12">
-
-
-                                                <div class="form-check form-check-inline">
-                                                    <input asp-for="isassinante" class="form-check-input" type="checkbox" />
-                                                    <label asp-for="isassinante" class="form-check-label"></label>
-                                                </div>
-
-                                                <div class="form-check form-check-inline">
-                                                    <input asp-for="isbanco" class="form-check-input" type="checkbox" />
-                                                    <label asp-for="isbanco" class="form-check-label"></label>
-                                                </div>
-
-                                                <div class="form-check form-check-inline">
-                                                    <input asp-for="isafiliado" class="form-check-input" type="checkbox" />
-                                                    <label asp-for="isafiliado" class="form-check-label"></label>
-                                                </div>
-
-                                                <div class="form-check form-check-inline">
-                                                    <input asp-for="iscoprodutor" class="form-check-input" type="checkbox" />
-                                                    <label asp-for="iscoprodutor" class="form-check-label"></label>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mt-3">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label asp-for="idcoprodutor"></label>
-                                                    <select asp-for="idcoprodutor" class="form-control" asp-items="@ViewBag.coprodutores"></select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label asp-for="percomissao"></label>
-                                                    <input asp-for="percomissao" class="form-control" id="percomissao" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row mt-3">
-                                            <div class="col-md-10">
-                                                <div class="form-group">
-                                                    <label asp-for="urlafiliado"></label>
-                                                    <input asp-for="urlafiliado" class="form-control">
-                                                    <button type="button" class="btn btn-outline-secondary" onclick="gerarLinkAfiliado()">Gerar Link</button>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mt-3">
-                                            <div class="col-md-10">
-                                                <div class="form-group">
-                                                    <label asp-for="idwallet"></label>
-                                                    <input asp-for="idwallet" class="form-control">
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-footer">
-                        <div class="row">
-                            <div class="col text-right">
-                                <button type="submit" class="btn btn-success">Salvar</button>
-                                <a href="/parceiro/index" class="btn btn-default">Voltar</a>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                <div class="card-footer text-end">
+                    @if (ViewBag.acao == "Adicionar" || ViewBag.acao == "Editar")
+                    {
+                            <button type="submit" class="btn btn-success me-2"><i class="fas fa-save me-1"></i> Salvar</button>
+                    }
+                    else if (ViewBag.acao=="Excluir")
+                    {
+                    <button type="submit" class="btn btn-success me-2"><i class="fas fa-trash me"></i> Excluir</button>
+                    }                    
+                    <a href="/parceiro/index" class="btn btn-secondary"><i class="fas fa-arrow-left me-1"></i> Voltar</a>
+                </div>
             </div>
-        </div>
-    </section>
-</div>
+        </form>
+    </div>
+</section>
+
 @section scripts {
     <script>
-        var cidades = []
-
         $(document).ready(function () {
-            // Executa no carregamento da página
             toggleCamposCoprodutor();
 
-            // Executa ao mudar estado dos checkboxes
             $('#iscoprodutor, #isafiliado').on('change', function () {
                 toggleCamposCoprodutor();
             });
-            
-            $('#idmun').trigger('change');
-
         });
 
-
         function formatCpfCnpj(input) {
-            let value = input.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+            let value = input.value.replace(/\D/g, '');
             let formattedValue;
 
-            if (value.length <= 11) { // Formatação de CPF
+            if (value.length <= 11) {
                 formattedValue = value.replace(/(\d{3})(\d)/, '$1.$2')
                     .replace(/(\d{3})(\d)/, '$1.$2')
                     .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-            } else { // Formatação de CNPJ
+            } else {
                 formattedValue = value.replace(/^(\d{2})(\d)/, '$1.$2')
                     .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
                     .replace(/\.(\d{3})(\d)/, '.$1/$2')
@@ -298,39 +108,13 @@
                 $("#estadocivil").prop('disabled', true);
                 $("#sexo").val("Indiferente");
                 $("#estadocivil").val("Indiferente");
-            }
-            else {
+            } else {
                 $("#idrepresentante").prop('disabled', true);
                 $("#idrepresentante").val(null);
                 $("#sexo").prop('disabled', false);
                 $("#estadocivil").prop('disabled', false);
-
             }
         }
-
-
-        function loadcidades(ibge) {
-            $.ajax({
-                type: "get",
-                url: "/localidade/getcidadebyibge?ibge="+ibge,
-                data: {},
-                dataType: 'json',
-                aSync:false,
-                contentType: "application/json; charset=utf-8",
-                success: function (obj) {
-                    if (obj != null) {
-                        var data = obj;
-                   //     $("#idmun").val(data.nome);
-                   //     $("#iduf").val(data.siglauf);
-                        $("#huf").val(data.idUF);
-                        $("#hcidade").val(data.id);
-                    }
-                }
-            });
-        }
-
-
-
 
         function buscarEndereco() {
             const cep = document.getElementById("cep").value.replace(/\D/g, "");
@@ -346,14 +130,21 @@
                     if (data.erro) {
                         alert("CEP não encontrado.");
                     } else {
-                        document.getElementById("logradouro").value = data.logradouro;
-                        document.getElementById("bairro").value = data.bairro;
-                        document.getElementById("idmun").value = data.localidade;
-                        document.getElementById("iduf").value = data.uf;
-
-
-                        loadcidades(data.ibge);
-
+                        if (@ViewBag.acao!="Adicionar")
+                        {
+                            document.getElementById("logradouro").value = data.logradouro;
+                            document.getElementById("bairro").value = data.bairro;
+                            document.getElementById("idmun").value = data.localidade;
+                            document.getElementById("iduf").value = data.uf;
+                        }
+                        else 
+                        {
+                            $("#logradouro").val(data.logradouro);
+                            $("#bairro").val(data.bairro);
+                            $("#idmun").val(data.localidade);
+                            $("#iduf").val(data.uf);
+                            loadcidades(data.ibge);
+                        }
 
                     }
                 })
@@ -363,13 +154,9 @@
                 });
         }
 
-
-        
-
         function toggleCamposCoprodutor() {
             const isCoprodutor = $('#iscoprodutor').is(':checked');
             const isAfiliado = $('#isafiliado').is(':checked');
-
             const habilitar = isCoprodutor || isAfiliado;
 
             $('#idcoprodutor').prop('disabled', !habilitar);
@@ -387,11 +174,5 @@
             const url = `https://localhost:7030/home/index?afiliado=${idParceiro}&plataforma=asaas`;
             document.getElementById("urlafiliado").value = url;
         }
-
-
-
-
     </script>
 }
-
-<!-- /.content -->

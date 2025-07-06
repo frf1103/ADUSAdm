@@ -119,7 +119,7 @@ namespace ADUSAdm.Controllers
                 1 => "Adicionar",
                 2 => "Editar",
                 3 => "Excluir",
-                _ => "Ver"
+                _ => "Visualizar"
             };
             if (acao == 4)
             {

@@ -115,7 +115,7 @@ namespace ADUSAdm.Controllers
                 else if (acao == 4)
                 {
                     ViewBag.Titulo = "Visualizar Parcela";
-                    ViewBag.Acao = "ver";
+                    ViewBag.Acao = "visualizar";
                 }
             }
 

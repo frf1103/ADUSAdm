@@ -141,9 +141,24 @@ namespace ADUSAdm.Controllers
         [Authorize(Roles = "Admin,Super,User")]
         public async Task<IActionResult> Editar(string id, int acao = 0)
         {
-            ViewBag.acao = acao;
-            Task<ADUSClient.Assinatura.AssinaturaViewModel> ret = _culturaAPI.ListaById(id);
-            ADUSClient.Assinatura.AssinaturaViewModel c = await ret;
+
+            ADUSClient.Assinatura.AssinaturaViewModel c;
+
+            if (acao != 1)
+            {
+                c = await _culturaAPI.ListaById(id);
+                ViewBag.acao = (acao == 2) ? "Editar" : (acao == 3) ? "Excluir" : "Visualizar";
+                ViewBag.Id = id;
+                ViewBag.Titulo = ViewBag.acao + " Assinatura";
+            }
+            else
+            {
+                ViewBag.acao = "Adicionar";
+                c = new ADUSClient.Assinatura.AssinaturaViewModel { id = Guid.NewGuid().ToString() };
+                ViewBag.Titulo = "Nova Assinatura";
+            }
+
+            
 
             ViewBag.Id = id;
             ViewBag.Status = new[] {
