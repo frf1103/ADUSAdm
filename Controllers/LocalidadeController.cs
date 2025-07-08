@@ -25,7 +25,7 @@ namespace ADUSAdm.Controllers
 
             return Json(c);
         }
-
+        [AllowAnonymous]
         public async Task<JsonResult> GetCidadeByIBGE(string ibge)
         {
             Task<ADUSClient.Localidade.MunicipioViewModel> ret = _sharedAPI.ListaCidadeIBGE(ibge);

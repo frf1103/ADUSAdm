@@ -1,8 +1,13 @@
-﻿@{
+﻿@model ADUSClient.Parceiro.ParceiroViewModel
+
+@{
     ViewData["Title"] = "Pagamento realizado com sucesso";
 }
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+
 <div class="container mt-5">
+
     <div class="alert alert-success text-center">
         <h4 class="alert-heading">✅ Pagamento criado com sucesso!</h4>
         <p>@ViewBag.Mensagem</p>
@@ -22,9 +27,9 @@
         <div class="alert alert-info text-center">
             <h5>Pagamento via PIX</h5>
             <p>Escaneie o QR Code abaixo ou copie a chave Pix:</p>
-            <img src="https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=@Uri.EscapeDataString((string)ViewBag.QrCode)" alt="QR Code Pix" />
+            <img src="https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=@Uri.EscapeDataString((string)ViewBag.QrCode)" alt="QR Code Pix" class="mb-3" />
 
-            <textarea id="pixChave" class="form-control mt-3 text-center" rows="4" readonly>@ViewBag.QrCode</textarea>
+            <textarea id="pixChave" class="form-control text-center" rows="3" readonly>@ViewBag.QrCode</textarea>
 
             <button class="btn btn-outline-secondary mt-2" onclick="copiarTexto('pixChave')">Copiar Chave PIX</button>
         </div>
@@ -41,12 +46,186 @@
         </div>
     }
 
-    <div class="text-center mt-4">
-        <a href="@Url.Action("Index", "Checkout")" class="btn btn-secondary">Voltar</a>
-    </div>
+    <hr class="my-4" />
+
+    <h4 class="mb-3">Dados do Assinante</h4>
+
+    <form id="formParceiro" asp-controller="Parceiro" asp-action="AdicionarParceiro" method="post">
+        @Html.AntiForgeryToken()
+
+        @* Campos escondidos do parceiro *@
+        <input asp-for="id" type="hidden" />
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label asp-for="razaoSocial" class="form-label fw-bold"></label>
+                <input asp-for="razaoSocial" readonly class="form-control" required />
+            </div>
+            <div class="col-md-6">
+                <label asp-for="fantasia" class="form-label fw-bold"></label>
+                <input asp-for="fantasia" class="form-control" readonly/>
+            </div>
+        </div>
+
+        <div class="row g-3 mt-2">
+            <div class="col-md-3">
+                <label asp-for="registro" class="form-label fw-bold"></label>
+                <input asp-for="registro" class="form-control" readonly />
+            </div>
+
+            <div class="col-md-3">
+                <label asp-for="tipodePessoa" class="form-label fw-bold">Tipo Pessoa</label>
+                <input asp-for="tipodePessoa" class="form-control" readonly />
+            </div>
+
+            <div class="col-md-3" id="divSexo">
+                <label asp-for="sexo" class="form-label fw-bold"></label>
+                <select asp-for="sexo" class="form-select" asp-items="@ViewBag.TipoSexo"></select>
+            </div>
+            <div class="col-md-3" id="divEstadoCivil">
+                <label asp-for="estadoCivil" class="form-label fw-bold"></label>
+                <select asp-for="estadoCivil" class="form-select" asp-items="@ViewBag.TipoEstadoCivil"></select>
+            </div>
+        </div>
+
+        <div class="row g-3 mt-2">
+            <div class="col-md-3" id="divDtNascimento">
+                <label asp-for="dtNascimento" class="form-label fw-bold"></label>
+                <input asp-for="dtNascimento" type="date" class="form-control" />
+            </div>
+            <div class="col-md-3" id="divProfissao">
+                <label asp-for="profissao" class="form-label fw-bold"></label>
+                <input asp-for="profissao" class="form-control" />
+            </div>
+        </div>
+
+        @* Para Jurídica – Representante *@
+        <div id="divCpfRepresentante" class="mt-3" style="display:none;">
+            <label class="fw-bold">CPF do Representante Legal</label>
+            <input type="text" class="form-control" id="cpfRepresentante" maxlength="14" placeholder="Digite o CPF e pressione Enter" />
+        </div>
+
+        <div id="divCadastroRepresentante" style="display:none;" class="mt-4">
+            <h5 class="mb-3">Cadastrar Representante Legal</h5>
+            @Html.Partial("_Formrepresentante", new ADUSClient.Parceiro.ParceiroViewModel());
+        </div>
+
+        <div class="text-end mt-4">
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-save me-1"></i> Gravar Dados
+            </button>
+            <a href="@Url.Action("Index", "Checkout")" class="btn btn-secondary">Voltar</a>
+        </div>
+    </form>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
+
+    $(document).ready(function () {
+        verificaTipoPessoa();
+
+        $("#cpfRepresentante").on("keypress", function (e) {
+            if (e.which == 13) {
+                e.preventDefault();
+                buscarRepresentantePorCpf();
+            }
+        });
+
+        // Eventualmente, se o campo cep existir no DOM
+        $(document).on("change", "#cep", function () {
+            buscarEndereco();
+        });
+    });
+
+    function verificaTipoPessoa() {
+        var tipo = $("#tipodePessoa").val();
+        if (tipo === "Jurídica") {
+            $("#divCpfRepresentante").show();
+            $("#divSexo, #divEstadoCivil, #divDtNascimento, #divProfissao").hide();
+        } else {
+            $("#divCpfRepresentante").hide();
+            $("#divCadastroRepresentante").hide();
+            $("#divSexo, #divEstadoCivil, #divDtNascimento, #divProfissao").show();
+        }
+    }
+
+    function buscarRepresentantePorCpf() {
+        var cpf = $("#cpfRepresentante").val();
+
+        if (!cpf || cpf.length < 11) {
+            alert("Digite um CPF válido.");
+            return;
+        }
+
+        $.ajax({
+            url: '/Parceiro/BuscarPorCpf',
+            type: 'GET',
+            data: { cpf: cpf },
+            success: function (data) {
+                if (data && data.id!="X") {
+                    $("#idrepresentante").val(data.id);
+                    $("#divCadastroRepresentante").hide();
+                    alert("Representante encontrado: " + data.razaoSocial);
+                } else {
+                    $("#divCadastroRepresentante").show();
+                    $("#idrepresentante").val("");
+                }
+            },
+            error: function () {
+                alert("Erro ao buscar representante.");
+            }
+        });
+    }
+
+    function buscarEndereco() {
+        const cep = $("#cep").val().replace(/\D/g, "");
+        console.log(cep);
+        if (cep.length !== 8) {
+            alert("CEP inválido. Deve conter 8 dígitos.");
+            return;
+        }
+
+        fetch(`https://viacep.com.br/ws/${cep}/json/`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.erro) {
+                    alert("CEP não encontrado.");
+                } else {
+                    $("#logradouro").val(data.logradouro);
+                    $("#bairro").val(data.bairro);
+                    $("#idmun").val(data.localidade);
+                    $("#iduf").val(data.uf);
+                    loadCidadesPorIbge(data.ibge);
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao buscar o CEP:", error);
+                alert("Erro ao buscar o CEP.");
+            });
+    }
+
+    function loadCidadesPorIbge(ibge) {
+        if (!ibge) return;
+
+        $.ajax({
+            url: `/localidade/getcidadebyibge?ibge=${ibge}`,
+            type: 'GET',
+            dataType: 'json',
+            success: function (obj) {
+                if (obj) {
+                    $("#huf").val(obj.idUF);
+                    $("#hcidade").val(obj.id);
+                }
+            },
+            error: function () {
+                console.log("Erro ao buscar cidade pelo IBGE.");
+            }
+        });
+    }
+
     function copiarTexto(idCampo) {
         var campo = document.getElementById(idCampo);
         if (campo) {
@@ -55,4 +234,19 @@
                 .catch(err => alert('Erro ao copiar: ' + err));
         }
     }
+
+    function formatCpfCnpj(input) {
+        var value = input.value.replace(/\D/g, "");
+        if (value.length <= 11) {
+            input.value = value.replace(/(\d{3})(\d)/, '$1.$2')
+                .replace(/(\d{3})(\d)/, '$1.$2')
+                .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        } else {
+            input.value = value.replace(/^(\d{2})(\d)/, "$1.$2")
+                .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
+                .replace(/\.(\d{3})(\d)/, ".$1/$2")
+                .replace(/(\d{4})(\d{1,2})$/, "$1-$2");
+        }
+    }
+
 </script>

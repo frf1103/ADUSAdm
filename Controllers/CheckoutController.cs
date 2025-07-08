@@ -23,6 +23,7 @@ using static RootObject;
 using ADUSClient;
 using Microsoft.VisualBasic;
 using ADUSAdm.Services;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 [RequireHttps]
 public class CheckoutController : Controller
@@ -41,7 +42,6 @@ public class CheckoutController : Controller
     private readonly ASAASSettings _AsaasSettings;
     private readonly LogCheckoutControllerClient _log;
     private readonly CheckoutService _checkout;
-    
 
     public CheckoutController(IConfiguration config, IHttpClientFactory httpClientFactory, ILogger<CheckoutController> logger,
         ILogService logService, ADUScontext context, ParametroGuruControllerClient parametros,
@@ -64,7 +64,6 @@ public class CheckoutController : Controller
         _AsaasSettings = asaasSettings.Value;
         _log = log;
         _checkout = checkout;
-        
     }
 
     public IActionResult Logcheckout(DateTime? dataInicio, DateTime? dataFim, string? filtro = null)
@@ -136,8 +135,7 @@ public class CheckoutController : Controller
             await RegistrarLog(model.Nome, remoteIp, "Validade Cartão Inválida", "", "", "", "400", "Formato da validade inválido");
             return null;
         }
-
-        string invoiceUrl = await _checkout.ProcessarCheckout(model,  remoteIp, idAfiliado, null, null);
+        string invoiceUrl = await _checkout.ProcessarCheckout(model, remoteIp, idAfiliado, null, null);
 
         if (invoiceUrl == null)
         {
@@ -145,7 +143,46 @@ public class CheckoutController : Controller
         }
 
         ViewBag.Link = invoiceUrl;
-        return View("Sucesso");
+        return RedirectToAction("Sucesso", new { registro = model.cpfCnpj });
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Sucesso(string registro)
+    {
+        if (!Request.Cookies.ContainsKey("session_id"))
+        {
+            return View("Falha");
+        }
+        var parceiro = await _parceiro.ListaByRegistro(FBSLIb.StringLib.Somentenumero(registro));
+        if (parceiro != null)
+        {
+            ViewBag.TiposPessoa = new[] {
+                new SelectListItem { Text = "Física", Value = TipodePessoa.Física.ToString() },
+                new SelectListItem { Text = "Jurídica", Value = TipodePessoa.Jurídica.ToString() }
+            };
+
+            ViewBag.TipoSexo = new[] {
+                new SelectListItem {Text = "Masculino", Value = TipoSexo.Masculino.ToString()},
+                new SelectListItem { Text = "Feminino", Value = TipoSexo.Feminino.ToString() },
+                new SelectListItem { Text = "Indiferente", Value = TipoSexo.Indiferente.ToString() }
+            };
+
+            ViewBag.TipoEstadoCivil = new[] {
+                new SelectListItem {Text = "Solteiro", Value =TipoEstadoCivil.Solteiro.ToString()},
+                new SelectListItem {Text = "Casado", Value =TipoEstadoCivil.Casado.ToString()},
+                new SelectListItem {Text = "Divorciado", Value =TipoEstadoCivil.Divorciado.ToString()},
+                new SelectListItem {Text = "Viuvo", Value =TipoEstadoCivil.Viuvo.ToString()},
+                new SelectListItem {Text = "Indiferente", Value =TipoEstadoCivil.Indiferente.ToString()},
+            };
+            if (parceiro.tipodePessoa == TipodePessoa.Jurídica)
+            {
+                parceiro.representante = new ParceiroViewModel { tipodePessoa = TipodePessoa.Física };
+            }
+
+            return View(parceiro);
+        }
+
+        return null;
     }
 
     public async Task<string> AddAssinaturaADUS(CheckoutViewModel m, string id, string idcliente, string idafiliado)
@@ -297,7 +334,6 @@ public class CheckoutController : Controller
         var response = await client.SendAsync(request);
         var body = await response.Content.ReadAsStringAsync();
 
-        
         if (!response.IsSuccessStatusCode)
         {
             await RegistrarLog(model.Nome, remoteip, "POST Cobranca", _AsaasSettings.urlsubscription, json, body, response.StatusCode.ToString(), (!response.IsSuccessStatusCode ? "Erro na cobranca" : null));
@@ -367,7 +403,7 @@ public class CheckoutController : Controller
                                 descontos = 0,
                                 databaixa = (billingType == "CREDIT_CARD" && status == "CONFIRMED" && i == 1) ? DateTime.Now.Date : null
                             };
-                            await _parcela.Adicionar(parcela);                            
+                            await _parcela.Adicionar(parcela);
 
                             mes++;
                             if (mes > 12)
@@ -504,7 +540,7 @@ public class CheckoutController : Controller
         public decimal Value { get; set; }
     }
 
-    private async Task RegistrarLog(string nomeCliente, string ip, string tipoOperacao, string url, string payload, string retorno, string statusHttp, string erro = null,string? idparcela=null)
+    private async Task RegistrarLog(string nomeCliente, string ip, string tipoOperacao, string url, string payload, string retorno, string statusHttp, string erro = null, string? idparcela = null)
     {
         var log = new LogCheckoutViewModel
         {
@@ -516,7 +552,7 @@ public class CheckoutController : Controller
             RetornoApi = retorno,
             StatusHttp = statusHttp,
             Erro = erro,
-            idparcela=idparcela
+            idparcela = idparcela
         };
         _log.Adicionar(log);
     }

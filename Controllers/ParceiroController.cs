@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using ADUSClient.Parceiro;
 using ADUSClient.Localidade;
 using System.Net.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace ADUSAdm.Controllers
 {
@@ -213,6 +214,21 @@ namespace ADUSAdm.Controllers
             return View("excluir");
         }
 
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<JsonResult> BuscarPorCpf(string cpf)
+
+        {
+            var c = await _culturaAPI.ListaByRegistro(cpf);
+            if (c != null)
+            {
+                return Json(c);
+            }
+
+            return Json(new { id = "X" });
+        }
+
+        [AllowAnonymous]
         public async Task<JsonResult> GetData(string? filtro, List<string> perfis)
         {
             bool isbanco = (perfis.Contains("banco"));
@@ -224,6 +240,64 @@ namespace ADUSAdm.Controllers
             List<ADUSClient.Parceiro.ListParceiroViewModel> c = await ret;
 
             return Json(c);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> AdicionarParceiro(ParceiroViewModel model)
+        {
+            if (model.tipodePessoa == TipodePessoa.Jurídica)
+            {
+                if (string.IsNullOrEmpty(model.idRepresentante))
+                {
+                    var p = await _culturaAPI.ListaByRegistro(model.representante.registro);
+                    if (p == null)
+                    {
+                        var representanteModel = model.representante;
+                        var novoRepresentante = new ParceiroViewModel
+                        {
+                            id = Guid.NewGuid().ToString(),
+                            razaoSocial = representanteModel.razaoSocial,
+                            fantasia = representanteModel.fantasia,
+                            registro = representanteModel.registro,
+                            sexo = representanteModel.sexo,
+                            estadoCivil = representanteModel.estadoCivil,
+                            dtNascimento = representanteModel.dtNascimento,
+                            profissao = representanteModel.profissao,
+                            email = representanteModel.email,
+                            fone1 = representanteModel.fone1,
+                            idCidade = representanteModel.idCidade,
+                            iduf = representanteModel.iduf,
+                            cep = representanteModel.cep,
+                            numero=representanteModel.numero,
+                            bairro=representanteModel.bairro,
+                            logradouro=representanteModel.logradouro
+                        };
+
+                        await _culturaAPI.Adicionar(novoRepresentante);
+
+                        model.idRepresentante = novoRepresentante.id;
+                    }
+                    else
+                    {
+                        model.idRepresentante = p.id;
+                    }
+                    var x = await _culturaAPI.ListaById(model.id);
+                    x.idRepresentante = model.idRepresentante;
+                    await _culturaAPI.Salvar(x.id, x);
+                }
+            }
+            else
+            {
+                var p = await _culturaAPI.ListaById(model.id);
+                p.sexo = model.sexo;
+                p.profissao = model.profissao;
+                p.dtNascimento = model.dtNascimento;
+                p.estadoCivil = model.estadoCivil;
+                await _culturaAPI.Salvar(model.id, p);
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

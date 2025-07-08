@@ -394,7 +394,7 @@ namespace ADUSAdm.Services
                 dueDate = vcto,
                 description = $"{model.QuantidadeArvores} ARVORES PROJETO TECA SOCIAL",
                 installmentCount = (model.FormaPagamento == "Parcelado") ? model.Parcelas : null,
-                totalValue = model.ValorTotal,
+                totalValue = model.ValorTotal*(model.FormaPagamento == "Parcelado" ? 84 : 1),
                 creditCardToken = cctoken,
                 externalReference = idsub,
                 remoteIp = remoteIp,

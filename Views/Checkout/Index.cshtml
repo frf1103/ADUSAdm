@@ -19,7 +19,7 @@
             </div>           
 
             <p class="fw-bold fs-5 mt-2">TOTAL: <span id="valorTotal">R$ 47,00</span></p>
-            <p class="text-muted small">Cobrada a cada 1 mês<br>Automaticamente por 84 ciclos</p>
+            <p class="text-muted small">Cobrada a cada 1 mês<br>Automaticamente por 84 meses</p>
         </div>
 
         <!-- Coluna da direita -->
@@ -174,7 +174,7 @@
         let combo = document.getElementById("comboParcelas");
         combo.innerHTML = "";
         for (let i = 1; i <= 21; i++) {
-            let valorParcela = (valorTotal / i).toFixed(2);
+            let valorParcela = (84*valorTotal / i).toFixed(2);
             let opt = document.createElement("option");
             opt.value = i;
             opt.text = `${i}x de R$${valorParcela.replace('.', ',')}`;
