@@ -357,6 +357,14 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\images\\Imagem do WhatsApp de 2025-02-24 à(s) 16.03.00_e0928f23.jpg",
+      "PackagePath": "staticwebassets\\images\\Imagem do WhatsApp de 2025-02-24 à(s) 16.03.00_e0928f23.jpg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\images\\Imagem do WhatsApp de 2025-02-24 à(s) 16.03.15_f4782b53.jpg",
+      "PackagePath": "staticwebassets\\images\\Imagem do WhatsApp de 2025-02-24 à(s) 16.03.15_f4782b53.jpg"
+    },
+    {
       "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\images\\fundo.png",
       "PackagePath": "staticwebassets\\images\\fundo.png"
     },
@@ -367,6 +375,10 @@
     {
       "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\images\\logoadus.png",
       "PackagePath": "staticwebassets\\images\\logoadus.png"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\images\\tecasocial.webp",
+      "PackagePath": "staticwebassets\\images\\tecasocial.webp"
     },
     {
       "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\js\\Comuns.js",

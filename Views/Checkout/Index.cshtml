@@ -8,7 +8,7 @@
     <div class="row g-0">
         <!-- Coluna da esquerda -->
         <div class="col-md-5 col-12 bg-light p-4 text-center">
-            <img src="/images/teca-social.jpg" class="img-fluid mb-3" style="max-height: 160px;">
+            <img src="~/images/tecasocial.webp" class="img-fluid mb-3" style="max-height: 160px;">
             <h5 class="fw-bold">Árvore Teca Social - Tectona Grandis</h5>
             <p class="mb-0 text-muted">Assinatura</p>
             <p class="mb-0">R$ 47,00 cada</p>
@@ -26,7 +26,10 @@
         <div class="col-md-7 col-12 p-4">
             <form asp-action="Index" method="post" onsubmit="return validarFormulario()">
                 @Html.AntiForgeryToken()
-                <h5 class="mb-3">OS SEUS DADOS</h5>
+                <h5 class="mb-3">
+                    🌳 Preencha os dados abaixo e selecione a quantidade de Árvores Teca que você deseja adquirir.
+                    Quanto mais árvores você escolhe, mais crianças carentes têm acesso à educação de qualidade.
+                </h5>
                 <div class="row g-2">
                     <div class="col-md-12">
                         <input asp-for="Nome" class="form-control" placeholder="Nome e sobrenome *" value="@ViewBag.nome" required />
@@ -88,8 +91,7 @@
                         <select asp-for="FormaPagamento" class="form-select" onchange="mostrarParcelas(this.value)" required>
                             <option value="Recorrente">Cartão de Crédito (Recorrente)</option>
                             <option value="Parcelado">Cartão de Crédito (Parcelado)</option>
-                            <option value="Boleto">Boleto</option>
-                            <option value="Pix">Pix</option>
+                            <option value="Boleto">Boleto</option>                            
                         </select>
                     </div>
                     <div id="parcelas" class="col-md-6" style="display:none;">

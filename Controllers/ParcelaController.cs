@@ -27,14 +27,14 @@ namespace ADUSAdm.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(DateTime ini, DateTime fim, int tipodata = 0, int status = 3, string idparceiro = "0", int forma = 3, string idassinatura = "", string? filtro = "")
+        public async Task<IActionResult> Index(DateTime ini, DateTime fim, int tipodata = 0, int status = 3, string idparceiro = "0", int forma = 3, string idassinatura = "", string? filtro = "", int? checkout = 2)
         {
             ViewBag.Titulo = "Parcelas";
             ViewBag.idBanco = ""; // se for necessário para filtro em select
             ViewBag.Descricao = filtro;
+            ViewBag.slCheckout = checkout;
 
-            Task<List<ListParceiroViewModel>> retc = _parceiroAPI.Lista("", true, false, false, false);
-            List<ListParceiroViewModel> t = await retc;
+            List<ListParceiroViewModel> t = await _parceiroAPI.Lista("", true, false, false, false);
 
             var a = await _assinaturaAPI.ListaById(idassinatura);
 
@@ -201,9 +201,9 @@ namespace ADUSAdm.Controllers
         }
 
         [HttpGet]
-        public async Task<JsonResult> GetData(DateTime ini, DateTime fim, int tipodata, int status, string idparceiro, int forma, string idassinatura, string? filtro)
+        public async Task<JsonResult> GetData(DateTime ini, DateTime fim, int tipodata, int status, string idparceiro, int forma, string idassinatura, string? filtro, int? checkout = 2)
         {
-            var lista = await _clienteAPI.ListarParcela(ini, fim, tipodata, status, idparceiro ?? "0", forma, idassinatura ?? "0", filtro ?? " ");
+            var lista = await _clienteAPI.ListarParcela(ini, fim, tipodata, status, idparceiro ?? "0", forma, idassinatura ?? "0", filtro ?? " ", checkout);
             var x = lista.OrderBy(x => x.datavencimento);
             return Json(x);
         }

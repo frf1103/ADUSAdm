@@ -269,12 +269,12 @@ namespace ADUSAdm.Controllers
                             idCidade = representanteModel.idCidade,
                             iduf = representanteModel.iduf,
                             cep = representanteModel.cep,
-                            numero=representanteModel.numero,
-                            bairro=representanteModel.bairro,
-                            logradouro=representanteModel.logradouro
+                            numero = representanteModel.numero,
+                            bairro = representanteModel.bairro,
+                            logradouro = representanteModel.logradouro
                         };
 
-                        await _culturaAPI.Adicionar(novoRepresentante);
+                        var xa = await _culturaAPI.Adicionar(novoRepresentante);
 
                         model.idRepresentante = novoRepresentante.id;
                     }
@@ -284,7 +284,7 @@ namespace ADUSAdm.Controllers
                     }
                     var x = await _culturaAPI.ListaById(model.id);
                     x.idRepresentante = model.idRepresentante;
-                    await _culturaAPI.Salvar(x.id, x);
+                    var xp = await _culturaAPI.Salvar(x.id, x);
                 }
             }
             else
@@ -296,8 +296,8 @@ namespace ADUSAdm.Controllers
                 p.estadoCivil = model.estadoCivil;
                 await _culturaAPI.Salvar(model.id, p);
             }
-
-            return RedirectToAction("Index");
+            TempData["Msgsucesso"] = "Dados Gravados com Sucesso";
+            return RedirectToAction("sucesso", "checkout",new {registro=model.registro});
         }
     }
 }

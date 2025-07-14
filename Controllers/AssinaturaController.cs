@@ -31,7 +31,7 @@ using ADUSClient;
 
 namespace ADUSAdm.Controllers
 {
-    [Authorize(Roles = "Admin,Super,User, UserV")]
+    [Authorize(Roles = "Admin,Super,User, UserV,Afiliado,Coprodutor")]
     public class AssinaturaController : Controller
     {
         private readonly ADUSClient.Controller.AssinaturaControllerClient _culturaAPI;
@@ -65,18 +65,14 @@ namespace ADUSAdm.Controllers
 
         public async Task<IActionResult> Index(DateTime ini, DateTime fim, string? filtro, int pagina = 1, string? idparceiro = "0", int status = 3, int forma = 3)
         {
-            //Task<List<ADUSClient.Assinatura.ListAssinaturaViewModel>> ret = _culturaAPI.Lista(filtro);
-            //List<ADUSClient.Assinatura.ListAssinaturaViewModel> c = await ret;
-
-            Task<List<ListParceiroViewModel>> retc = _parceiroAPI.Lista("", true, false, false, false);
-            List<ListParceiroViewModel> t = await retc;
+            List<ListParceiroViewModel> t = await _parceiroAPI.Lista("", true, false, false, false);
 
             ViewBag.parceiros = t.Select(m => new SelectListItem { Text = m.razaoSocial, Value = m.id.ToString() });
 
             ViewBag.filtro = filtro;
             ViewBag.role = _sessionManager.userrole;
             ViewBag.SelectedOptionS = idparceiro.ToString();
-            ViewBag.permissao = (_sessionManager.userrole != "UserV");
+            ViewBag.permissao = (_sessionManager.userrole == "Admin" || _sessionManager.userrole == "Super");
 
             if (ini.Year == 1)
             {
@@ -97,11 +93,16 @@ namespace ADUSAdm.Controllers
             ViewBag.Status = status.ToString();
             ViewBag.Forma = forma.ToString();
             ViewBag.urlconvite = _sessionManager.urlconvite;
+            if (_sessionManager.userrole == "Afiliado" || _sessionManager.userrole == "Coprodutor")
+            {
+                ViewBag.userrole = _sessionManager.userrole;
+            }
+
             return View();
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin,Super,User")]
+        [Authorize(Roles = "Admin,Super")]
         public async Task<IActionResult> Adicionar()
         {
             ADUSClient.Assinatura.AssinaturaViewModel c = new ADUSClient.Assinatura.AssinaturaViewModel();
@@ -141,7 +142,6 @@ namespace ADUSAdm.Controllers
         [Authorize(Roles = "Admin,Super,User")]
         public async Task<IActionResult> Editar(string id, int acao = 0)
         {
-
             ADUSClient.Assinatura.AssinaturaViewModel c;
 
             if (acao != 1)
@@ -157,8 +157,6 @@ namespace ADUSAdm.Controllers
                 c = new ADUSClient.Assinatura.AssinaturaViewModel { id = Guid.NewGuid().ToString() };
                 ViewBag.Titulo = "Nova Assinatura";
             }
-
-            
 
             ViewBag.Id = id;
             ViewBag.Status = new[] {
@@ -189,6 +187,58 @@ namespace ADUSAdm.Controllers
             }
 
             return View(c);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,Super,User,Afiliado,Coprodutor")]
+        public async Task<IActionResult> Visualizar(string id)
+        {
+            ADUSClient.Assinatura.AssinaturaViewModel c;
+            int acao = 4;
+
+            if (acao != 1)
+            {
+                c = await _culturaAPI.ListaById(id);
+                ViewBag.acao = (acao == 2) ? "Editar" : (acao == 3) ? "Excluir" : "Visualizar";
+                ViewBag.Id = id;
+                ViewBag.Titulo = ViewBag.acao + " Assinatura";
+            }
+            else
+            {
+                ViewBag.acao = "Adicionar";
+                c = new ADUSClient.Assinatura.AssinaturaViewModel { id = Guid.NewGuid().ToString() };
+                ViewBag.Titulo = "Nova Assinatura";
+            }
+
+            ViewBag.Id = id;
+            ViewBag.Status = new[] {
+                new SelectListItem { Text = "Ativa", Value = StatusAssinatura.Ativa.ToString() },
+                new SelectListItem { Text = "Pendente", Value = StatusAssinatura.Pendente.ToString() },
+                new SelectListItem { Text = "Cancelada", Value = StatusAssinatura.Cancelada.ToString() }
+            };
+
+            ViewBag.FormaPagto = new[] {
+                new SelectListItem {Text = "Cartão", Value = FormaPagto.Cartao.ToString()},
+                new SelectListItem { Text = "Boleto", Value = FormaPagto.Boleto.ToString() },
+                new SelectListItem { Text = "Pix", Value = FormaPagto.Pix.ToString() },
+            };
+
+            Task<List<ListParceiroViewModel>> retc = _parceiroAPI.Lista("", true, false, false, false);
+            List<ListParceiroViewModel> t = await retc;
+
+            ViewBag.Parceiros = t.Select(m => new SelectListItem { Text = m.razaoSocial, Value = m.id.ToString() });
+
+            if (TempData["Erro"] != null)
+            {
+                if (TempData["dados"] != null)
+                {
+                    var dadosJson = TempData["dados"].ToString();
+                    c = JsonConvert.DeserializeObject<AssinaturaViewModel>(dadosJson);
+                }
+                ModelState.AddModelError(string.Empty, TempData["Erro"].ToString());
+            }
+
+            return View("editar");
         }
 
         [HttpGet]
@@ -282,6 +332,7 @@ namespace ADUSAdm.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Super,User")]
         public async Task<IActionResult> Cancelar(string id, string motivo)
         {
             motivo = "MOTIVO: " + motivo.Trim() + " CANCELADA POR: " + _sessionManager.username + " EM " + DateTime.Now.ToString();
@@ -295,10 +346,18 @@ namespace ADUSAdm.Controllers
             return View("index");
         }
 
+        [Authorize(Roles = "Admin,Super,User,Afiliado,Coprodutor")]
         public async Task<JsonResult> GetData(DateTime ini, DateTime fim, string idparceiro, string status, int forma, string? filtro)
         {
-            Task<List<ADUSClient.Assinatura.ListAssinaturaViewModel>> ret = _culturaAPI.Lista(ini, fim, idparceiro, status, forma, filtro);
-            List<ADUSClient.Assinatura.ListAssinaturaViewModel> c = await ret;
+            List<ADUSClient.Assinatura.ListAssinaturaViewModel> c;
+            if (_sessionManager.userrole == "Afiliado" || _sessionManager.userrole == "Coprodutor")
+            {
+                c = await _culturaAPI.ListaByAfiliado(_sessionManager.idafiliado, (_sessionManager.idafiliado == "" ? 2 : 1), ini, fim, idparceiro, status, forma, filtro);
+            }
+            else
+            {
+                c = await _culturaAPI.Lista(ini, fim, idparceiro, status, forma, filtro);
+            }
             var cx = c.OrderBy(x => x.datavenda);
 
             return Json(cx);

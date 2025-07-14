@@ -143,11 +143,11 @@ public class CheckoutController : Controller
         }
 
         ViewBag.Link = invoiceUrl;
-        return RedirectToAction("Sucesso", new { registro = model.cpfCnpj });
+        return RedirectToAction("Sucesso", new { registro = model.cpfCnpj,invoiceurl=invoiceUrl});
     }
 
     [HttpGet]
-    public async Task<IActionResult> Sucesso(string registro)
+    public async Task<IActionResult> Sucesso(string registro,string invoiceurl)
     {
         if (!Request.Cookies.ContainsKey("session_id"))
         {
@@ -178,6 +178,7 @@ public class CheckoutController : Controller
             {
                 parceiro.representante = new ParceiroViewModel { tipodePessoa = TipodePessoa.Física };
             }
+            ViewBag.Link = invoiceurl;
 
             return View(parceiro);
         }

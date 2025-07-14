@@ -128,6 +128,8 @@ public class AuthController : Controller
         _sessionManager.username = dados.Username;
 
         _sessionManager.urlconvite = _configuration.GetValue<string>("AppSettings:urlconvite");
+        _sessionManager.idafiliado = "";
+        _sessionManager.idcoprodutor = "";
 
         if (role == "Afiliado" || role == "Coprodutor")
         {
@@ -136,13 +138,14 @@ public class AuthController : Controller
             {
                 _sessionManager.idafiliado = parc.id;
                 _sessionManager.idcoprodutor = parc.idcoprodutor ?? parc.id;
-                return RedirectToAction("meusconvites", "convite");
+                return RedirectToAction("index", "assinatura");
             }
             else
             {
                 _sessionManager.idafiliado = "";
                 _sessionManager.idcoprodutor = parc.id;
             }
+            return RedirectToAction("index", "assinatura");
         }
 
         //_sessionManager.idconta = conta.idconta;

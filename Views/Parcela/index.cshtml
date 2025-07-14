@@ -47,9 +47,9 @@
                             <label class="form-label">Status</label>
                             <select class="select2" name="status" id="status">
                                 <option value="0">Pendente</option>
-                                <option value="1">Baixada</option>
-                                <option value="2">Caixa</option>
-                                <option value="3">Todas</option>
+                                <option value="1">Baixada(A Compensar)</option>
+                                <option value="2">Caixa</option>                                
+                                <option value="4">Todas</option>
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -69,7 +69,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="row g-3">
+                    <div class="row g-3 mt-2">
                         <div class="col-md-2">
                             <label class="form-label">Início</label>
                             <input type="date" class="form-control" id="dtinicio" name="ini" value="@ViewBag.dtinicio">
@@ -78,7 +78,15 @@
                             <label class="form-label">Fim</label>
                             <input type="date" class="form-control" id="dtfim" name="fim" value="@ViewBag.dtfim">
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-md-2">
+                            <label class="form-label">Checkout</label>
+                            <select class="select2" name="checkout" id="checkout" value=@ViewBag.slCheckout>
+                                <option value="2">Todos</option>
+                                <option value="1">Sim</option>
+                                <option value="0">Não</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
                             <label class="form-label">Busca</label>
                             <div class="d-flex gap-2">
                                 <input type="text" class="form-control" id="idassinatura" name="idassinatura" value="@ViewBag.idassinatura" placeholder="busque pela assinatura">
@@ -92,7 +100,7 @@
                 </div>
             </div>
         </div>
-    </form>
+    </form>    
 
 
     <div class="d-flex justify-content-between my-3">
@@ -131,6 +139,7 @@
 
             $('#status').val(@ViewBag.Status).trigger('change');
             $('#forma').val(@ViewBag.Forma).trigger('change');
+            $('#checkout').val(@ViewBag.slCheckout).trigger('change');
             $('#tipodata').val(@ViewBag.tipodata).trigger('change');
             $("#idparceiro").val("@ViewBag.idparceiro");
             $("#idassinatura").val("@ViewBag.idassinatura");
@@ -218,6 +227,7 @@
                             status: @ViewBag.Status,
                             forma: @ViewBag.Forma,
                             tipodata: @ViewBag.tipodata,
+                            checkout:@ViewBag.slCheckout,
                             filtro: $("input[name='filtro']").val()
                         },
                         dataType: "json"
@@ -294,6 +304,25 @@
                         }
                         else {
                             return " ";
+                        }
+                    }
+                },
+                {
+                    name: "ischeckout",
+                    title: "Checkout",
+                    type: "text",
+                    width: 25,
+                    align: "center",
+                    sorting: false,
+                    itemTemplate: function (value) {
+                        if (value === true || value === "true") {
+                            return $("<i>")
+                                .addClass("fas fa-check-circle text-success")
+                                .attr("title", "Sim");
+                        } else {
+                            return $("<i>")
+                                .addClass("fas fa-times-circle text-danger")
+                                .attr("title", "Não");
                         }
                     }
                 },
