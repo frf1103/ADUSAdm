@@ -1,4 +1,5 @@
-﻿using ADUSClient.Controller;
+﻿using ADUSAdm.Shared;
+using ADUSClient.Controller;
 using ADUSClient.Parceiro;
 using ADUSClient.Parcela;
 using Humanizer;
@@ -12,29 +13,32 @@ using System.Text.Json;
 
 namespace ADUSAdm.Controllers
 {
-    [Authorize(Roles = "Super")]
+    [Authorize(Roles = "Admin,Super,User, UserV,Afiliado,Coprodutor")]
     public class ParcelaController : Controller
     {
         private readonly ParcelaControllerClient _clienteAPI;
         private readonly ParceiroControllerClient _parceiroAPI;
         private readonly AssinaturaControllerClient _assinaturaAPI;
+        private readonly SessionManager _sessionManager;
 
-        public ParcelaController(ParcelaControllerClient clienteAPI, ParceiroControllerClient parceiroAPI, AssinaturaControllerClient assinaturaAPI)
+        public ParcelaController(ParcelaControllerClient clienteAPI, ParceiroControllerClient parceiroAPI, AssinaturaControllerClient assinaturaAPI, SessionManager sessionManager)
         {
             _clienteAPI = clienteAPI;
             _parceiroAPI = parceiroAPI;
             _assinaturaAPI = assinaturaAPI;
+            _sessionManager = sessionManager;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(DateTime ini, DateTime fim, int tipodata = 0, int status = 3, string idparceiro = "0", int forma = 3, string idassinatura = "", string? filtro = "")
+        public async Task<IActionResult> Index(DateTime ini, DateTime fim, int tipodata = 0, int status = 3, string idparceiro = "0", int forma = 3, string idassinatura = "", string? filtro = "", int? checkout = 2)
         {
+            ViewBag.permissao = (_sessionManager.userrole == "Admin" || _sessionManager.userrole == "Super");
             ViewBag.Titulo = "Parcelas";
             ViewBag.idBanco = ""; // se for necessário para filtro em select
             ViewBag.Descricao = filtro;
+            ViewBag.slCheckout = checkout;
 
-            Task<List<ListParceiroViewModel>> retc = _parceiroAPI.Lista("");
-            List<ListParceiroViewModel> t = await retc;
+            List<ListParceiroViewModel> t = await _parceiroAPI.Lista("", true, false, false, false);
 
             var a = await _assinaturaAPI.ListaById(idassinatura);
 
@@ -83,6 +87,7 @@ namespace ADUSAdm.Controllers
             return View("Index");
         }
 
+        [Authorize(Roles = "Admin,Super")]
         [HttpGet]
         public async Task<IActionResult> Adicionar(string id, DateTime ini, DateTime fim, int acao = 0, string idparceiro = "0", string idassinatura = "0", int forma = 0, int tipodata = 0, int status = 0
             )
@@ -116,7 +121,7 @@ namespace ADUSAdm.Controllers
                 else if (acao == 4)
                 {
                     ViewBag.Titulo = "Visualizar Parcela";
-                    ViewBag.Acao = "ver";
+                    ViewBag.Acao = "visualizar";
                 }
             }
 
@@ -150,6 +155,66 @@ namespace ADUSAdm.Controllers
             return View(c);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin,Super,User,Afiliado,Coprodutor")]
+        public async Task<IActionResult> Visualizar(string id)
+        {
+            ParcelaViewModel c;
+
+            int acao = 4;
+            if (acao == 1)
+            {
+                c = new ParcelaViewModel
+                {
+                    id = Guid.NewGuid().ToString("N"),
+                };
+                ViewBag.Titulo = "Adicionar Parcela";
+                ViewBag.Acao = "adicionar";
+            }
+            else
+            {
+                c = await _clienteAPI.ListaById(id);
+                if (acao == 2)
+                {
+                    ViewBag.Titulo = "Editar Parcela";
+                    ViewBag.Acao = "editar";
+                }
+                else if (acao == 3)
+                {
+                    ViewBag.Titulo = "Excluir Parcela";
+                    ViewBag.Acao = "excluir";
+                }
+                else if (acao == 4)
+                {
+                    ViewBag.Titulo = "Visualizar Parcela";
+                    ViewBag.Acao = "visualizar";
+                }
+            }
+
+            if (TempData["Erro"] != null)
+            {
+                if (TempData["dados"] != null)
+                {
+                    var dadosJson = TempData["dados"].ToString();
+                    c = JsonConvert.DeserializeObject<ParcelaViewModel>(dadosJson);
+                }
+                ModelState.AddModelError(string.Empty, TempData["Erro"].ToString());
+            }
+
+            ViewBag.Formas = new List<SelectListItem>
+            {
+            new SelectListItem { Text = "Cartão", Value = "0" },
+            new SelectListItem { Text = "Boleto", Value = "1" },
+            new SelectListItem { Text = "Pix", Value = "2" }
+            };
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+            Console.WriteLine($"idassinatura = {c.idassinatura}");
+
+            return View("adicionar");
+        }
+
+        [Authorize(Roles = "Admin,Super")]
         [HttpPost]
         public async Task<IActionResult> Adicionar(ParcelaViewModel dados)
         {
@@ -168,6 +233,7 @@ namespace ADUSAdm.Controllers
             return View("Adicionar", dados);
         }
 
+        [Authorize(Roles = "Admin,Super")]
         [HttpPost]
         public async Task<IActionResult> Editar(ParcelaViewModel dados)
         {
@@ -186,6 +252,7 @@ namespace ADUSAdm.Controllers
             return RedirectToAction("Adicionar", new { acao = 2, id = dados.id });
         }
 
+        [Authorize(Roles = "Admin,Super")]
         [HttpPost]
         public async Task<IActionResult> Excluir(string id, ParcelaViewModel dados)
         {
@@ -201,18 +268,20 @@ namespace ADUSAdm.Controllers
             return View("Adicionar");
         }
 
+        [Authorize(Roles = "Admin,Super")]
         [HttpGet]
-        public async Task<JsonResult> GetData(DateTime ini, DateTime fim, int tipodata, int status, string idparceiro, int forma, string idassinatura, string? filtro)
+        public async Task<JsonResult> GetData(DateTime ini, DateTime fim, int tipodata, int status, string idparceiro, int forma, string idassinatura, string? filtro, int? checkout = 2)
         {
-            var lista = await _clienteAPI.ListarParcela(ini, fim, tipodata, status, idparceiro ?? "0", forma, idassinatura ?? "0", filtro ?? " ");
+            var lista = await _clienteAPI.ListarParcela(ini, fim, tipodata, status, idparceiro ?? "0", forma, idassinatura ?? "0", filtro ?? " ", checkout);
             var x = lista.OrderBy(x => x.datavencimento);
             return Json(x);
         }
 
+        [Authorize(Roles = "Admin,Super")]
         [HttpGet]
         public async Task<IActionResult> visaogeralcarteira(DateTime vencimentoInicio, DateTime vencimentoFim, string idparceiro = "0", int acao = 0)
         {
-            List<ListParceiroViewModel> t = await _parceiroAPI.Lista("");
+            List<ListParceiroViewModel> t = await _parceiroAPI.Lista("", true, false, false, false);
 
             ViewBag.parceiros = t.Select(m => new SelectListItem { Text = m.razaoSocial, Value = m.id.ToString() });
 

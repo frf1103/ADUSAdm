@@ -1,5 +1,6 @@
 ﻿using ADUSAdm.Data;
 using ADUSAdm.FormatingConfiguration;
+using ADUSAdm.Services;
 using ADUSAdm.Shared;
 using MathNet.Numerics;
 using Microsoft.AspNetCore.Identity;
@@ -61,8 +62,51 @@ builder.Services.AddHttpClient<ADUSClient.Controller.TransacBancoControllerClien
 // Configuração de serviços auxiliares
 // --------------------------------------
 
+builder.Services.AddHttpClient<ADUSClient.Controller.CentroCustoControllerClient>(client =>
+{
+    client.BaseAddress = new Uri(urlAPI.ToString());
+});
+
+builder.Services.AddHttpClient<ADUSClient.Controller.PlanoContaControllerClient>(client =>
+{
+    client.BaseAddress = new Uri(urlAPI.ToString());
+});
+
+builder.Services.AddHttpClient<ADUSClient.Controller.TransacaoControllerClient>(client =>
+{
+    client.BaseAddress = new Uri(urlAPI.ToString());
+});
+
+builder.Services.AddHttpClient<ADUSClient.Controller.TransacBancoControllerClient>(client =>
+{
+    client.BaseAddress = new Uri(urlAPI.ToString());
+});
+
+builder.Services.AddHttpClient<ADUSClient.Controller.ConviteControllerClient>(client =>
+{
+    client.BaseAddress = new Uri(urlAPI.ToString());
+});
+
+builder.Services.AddHttpClient<ADUSClient.Controller.CartaoAssinaturaControllerClient>(client =>
+{
+    client.BaseAddress = new Uri(urlAPI.ToString());
+});
+
+builder.Services.AddHttpClient<ADUSClient.Controller.LogCheckoutControllerClient>(client =>
+{
+    client.BaseAddress = new Uri(urlAPI.ToString());
+});
+
+builder.Services.AddScoped<CobrancaAsaasService>();
+builder.Services.AddHostedService<AsaasSyncService>();
+builder.Services.AddScoped<CheckoutService>();
+builder.Services.AddScoped<ComumService>();
+
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+builder.Services.Configure<ASAASSettings>(builder.Configuration.GetSection("ASAASSettings"));
 builder.Services.AddTransient<ADUSAdm.Shared.IEmailSender, EmailSender>();
+builder.Services.AddTransient<ADUSAdm.Shared.ASAASSettings, ASAASSettings>();
+//builder.Services.AddTransient<IUsuarioService, UsuContservice>();
 
 builder.Services.AddControllers(options =>
 {
@@ -83,6 +127,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<SessionManager>();
 
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.AddScoped<ILogService, LogService>();
 
 builder.Services.AddScoped<ImportacaoService>();
 builder.Services.AddSignalR();

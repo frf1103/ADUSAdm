@@ -2,7 +2,7 @@ using ADUSAdm.Data;
 using ADUSAdm.Shared;
 using ADUSAdm.ViewModel.Auth;
 using ADUSAdm.ViewModel.Usuario;
-
+using ADUSClient.Controller;
 using FluentValidation.Validators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -35,10 +35,12 @@ public class AuthController : Controller
     //   private readonly AGMContext _Agmcontext;
     private readonly RoleManager<IdentityRole> _roleManager;
 
+    private readonly ParceiroControllerClient _parceiro;
+
     public AuthController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager,
         ADUScontext context,
         //AGMContext agmcontext,
-        RoleManager<IdentityRole> roleManager, IEmailSender emailSender, SessionManager sessionManager, IConfiguration configuration)
+        RoleManager<IdentityRole> roleManager, IEmailSender emailSender, SessionManager sessionManager, IConfiguration configuration, ParceiroControllerClient parceiro)
     {
         _signInManager = signInManager;
         _userManager = userManager;
@@ -51,6 +53,7 @@ public class AuthController : Controller
         //_organizacaoClient = organizacaoClient;
         _sessionManager = sessionManager;
         _configuration = configuration;
+        _parceiro = parceiro;
         //_contaAPI = contaAPI;
     }
 
@@ -125,6 +128,25 @@ public class AuthController : Controller
         _sessionManager.username = dados.Username;
 
         _sessionManager.urlconvite = _configuration.GetValue<string>("AppSettings:urlconvite");
+        _sessionManager.idafiliado = "";
+        _sessionManager.idcoprodutor = "";
+
+        if (role == "Afiliado" || role == "Coprodutor")
+        {
+            var parc = await _parceiro.ListaByEmail(_sessionManager.username);
+            if (role == "Afiliado")
+            {
+                _sessionManager.idafiliado = parc.id;
+                _sessionManager.idcoprodutor = parc.idcoprodutor ?? parc.id;
+                return RedirectToAction("index", "assinatura");
+            }
+            else
+            {
+                _sessionManager.idafiliado = "";
+                _sessionManager.idcoprodutor = parc.id;
+            }
+            return RedirectToAction("index", "assinatura");
+        }
 
         //_sessionManager.idconta = conta.idconta;
 
@@ -238,7 +260,14 @@ public class AuthController : Controller
             var pwd = "PwdF2024#!";
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var result = await _userManager.ResetPasswordAsync(user, token, pwd);
-            await _emailSender.SendEmailAsync(uid.ToString(), "Acesso à plataforma", "Seja muito bem-vindo(a) a plataforma ADUS, segue sua senha provisória: " + pwd);
+            try
+            {
+                await _emailSender.SendEmailAsync(uid.ToString(), "Acesso à plataforma", "Seja muito bem-vindo(a) a plataforma da AUDS, segue sua senha provisória: " + pwd);
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message.ToString(), "Erro ao enviar email");
+            }
             return View("resetarsenha");
         }
         return View("Login");

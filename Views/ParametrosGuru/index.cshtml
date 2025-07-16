@@ -160,21 +160,25 @@
         <div class="tab-pane fade" id="import" role="tabpanel">
             <form asp-action="Importar" method="post" id="formImportar">
                 <div class="row mb-3">
-                    <div class="col-md-4">
+                    <div class="col-sm-3">
                         <label class="form-label fw-bold">Data Inicial</label>
                         <input type="date" name="dataInicio" class="form-control" required />
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-sm-3">
                         <label class="form-label fw-bold">Data Final</label>
                         <input type="date" name="dataFim" class="form-control" required />
                     </div>
-                    <div class="col-md-4 d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary w-100" id="btnImportar" >
-                            <i class="fas fa-download me-1"></i> Importar Dados
+                    <div class="col-sm-3 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100" id="btnImportar" name="acao" value="Importar">
+                            <i class="fas fa-download me-1"></i> Importar Recebimentos
+                        </button>
+                     </div>
+                     <div class="col-sm-3 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100" id="btnParcelas" name="acao" value="GerarParcelas">
+                            <i class="fas fa-receipt"></i> Gerar Parcelas
                         </button>
                     </div>
-                </div>
-
+               </div>
                 <input type="hidden" id="connectionId" name="connectionId" value="abc"  />
 
                 <div id="progressContainer" class="mt-4" style="display: none;">
@@ -269,6 +273,7 @@
 
                     e.preventDefault(); // impede redirecionamento tradicional
 
+                    const botaoClicado = e.submitter;
                     const currentId = document.getElementById("connectionId").value;
                     const dataInicio = formImportar.querySelector("input[name='dataInicio']").value;
                     const dataFim = formImportar.querySelector("input[name='dataFim']").value;
@@ -288,7 +293,15 @@
                     }
                     if (@ViewBag.idplataforma== 2) 
                     {
+                        if (botaoClicado.value === "Importar") 
+                        {
                          url = `/ParametrosGuru/GetBaixasAsaasByData?ini=${encodeURIComponent(dataInicio)}&fim=${encodeURIComponent(dataFim)}&connectionId=${encodeURIComponent(currentId)}`;
+                       
+                        } else if (botaoClicado.value === "GerarParcelas") 
+                        {
+                            url = `/ParametrosGuru/GerarParcelasAsaasByData?ini=${encodeURIComponent(dataInicio)}&fim=${encodeURIComponent(dataFim)}&connectionId=${encodeURIComponent(currentId)}`;
+                        // faça outra coisa
+                        }
                     }
                     if (@ViewBag.idplataforma== 3) {
                          url = `/ParametrosGuru/GetBaixasPagarmeByData?ini=${encodeURIComponent(dataInicio)}&fim=${encodeURIComponent(dataFim)}&connectionId=${encodeURIComponent(currentId)}`;

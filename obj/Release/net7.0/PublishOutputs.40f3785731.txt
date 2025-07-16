@@ -25,8 +25,6 @@ C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\ADUSAdm.ru
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\ADUSAdm.pdb
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\AutoMapper.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
-C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Azure.Core.dll
-C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Azure.Identity.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\FluentValidation.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\FluentValidation.AspNetCore.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\FluentValidation.DependencyInjectionExtensions.dll
@@ -38,7 +36,6 @@ C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\MethodDeco
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.AspNetCore.Identity.UI.dll
-C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.Data.SqlClient.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.EntityFrameworkCore.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.EntityFrameworkCore.Abstractions.dll
@@ -46,14 +43,11 @@ C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.EntityFrameworkCore.Relational.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.EntityFrameworkCore.SqlServer.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.Identity.Client.dll
-C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.Identity.Client.Extensions.Msal.dll
-C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.IdentityModel.Abstractions.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.IdentityModel.JsonWebTokens.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.IdentityModel.Logging.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.IdentityModel.Protocols.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.IdentityModel.Tokens.dll
-C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.SqlServer.Server.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.Win32.SystemEvents.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Newtonsoft.Json.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\PagSeguro.DotNet.Sdk.dll
@@ -67,7 +61,6 @@ C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\RestSharp.
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\System.Configuration.ConfigurationManager.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\System.Drawing.Common.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\System.IdentityModel.Tokens.Jwt.dll
-C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\System.Memory.Data.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\System.Net.Http.Json.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\System.Runtime.Caching.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\System.Security.Cryptography.ProtectedData.dll

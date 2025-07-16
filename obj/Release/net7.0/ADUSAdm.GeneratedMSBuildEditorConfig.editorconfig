@@ -452,6 +452,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzaW5hdHVyYVxpbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Assinatura/revisardados.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzaW5hdHVyYVxyZXZpc2FyZGFkb3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Assinatura/_AssinaturaFormFields.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzaW5hdHVyYVxfQXNzaW5hdHVyYUZvcm1GaWVsZHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Auth/AlterarSenha.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxBbHRlcmFyU2VuaGEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -480,12 +488,56 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2VudHJvQ3VzdG9caW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Checkout/detalhes.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hlY2tvdXRcZGV0YWxoZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Checkout/falha.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hlY2tvdXRcZmFsaGEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Checkout/Index - Copy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hlY2tvdXRcSW5kZXggLSBDb3B5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Checkout/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hlY2tvdXRcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Checkout/indexmobile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hlY2tvdXRcaW5kZXhtb2JpbGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Checkout/logcheckout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hlY2tvdXRcbG9nY2hlY2tvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Checkout/sucesso.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hlY2tvdXRcc3VjZXNzby5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Checkout/_Formrepresentante.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hlY2tvdXRcX0Zvcm1yZXByZXNlbnRhbnRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/user/source/repos/ADUS/ADUSAdm/Views/ContaCorrente/Adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFDb3JyZW50ZVxBZGljaW9uYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/user/source/repos/ADUS/ADUSAdm/Views/ContaCorrente/index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFDb3JyZW50ZVxpbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Convite/adicionar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udml0ZVxhZGljaW9uYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Convite/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udml0ZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Convite/meusconvites.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udml0ZVxtZXVzY29udml0ZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Home/Index.cshtml]
@@ -536,6 +588,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW92aW1lbnRvQ2FpeGFcaW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/MovimentoCaixa/_MovimentoCaixaFormFields.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW92aW1lbnRvQ2FpeGFcX01vdmltZW50b0NhaXhhRm9ybUZpZWxkcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/user/source/repos/ADUS/ADUSAdm/Views/ParametrosGuru/index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFyYW1ldHJvc0d1cnVcaW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -556,6 +612,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFyY2Vpcm9cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Parceiro/_ParceiroFormFields.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFyY2Vpcm9cX1BhcmNlaXJvRm9ybUZpZWxkcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Parcela/adicionar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFyY2VsYVxhZGljaW9uYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -566,6 +626,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Parcela/visaogeralcarteira.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFyY2VsYVx2aXNhb2dlcmFsY2FydGVpcmEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Parcela/_ParcelaFormFields.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFyY2VsYVxfUGFyY2VsYUZvcm1GaWVsZHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/user/source/repos/ADUS/ADUSAdm/Views/PlanoConta/adicionar.cshtml]
@@ -586,6 +650,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Shared/_layoutcheckout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9sYXlvdXRjaGVja291dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Shared/_LoginPartial.cshtml]

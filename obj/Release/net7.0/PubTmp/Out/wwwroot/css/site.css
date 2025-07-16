@@ -17,16 +17,30 @@ body {
     overflow: hidden;
 }
 
-body * {
-    font-family: 'Roboto', sans-serif;
-}
+    body * {
+        font-family: 'Roboto', sans-serif;
+    }
 
 img.icon {
     width: 20px;
 }
 
-
 .alinha-direita {
     text-align: right !important;
 }
 
+html, body {
+    height: auto;
+    min-height: 100%;
+    overflow-y: auto;
+}
+
+.wrapper {
+    height: auto !important;
+}
+
+.content-wrapper {
+    height: auto !important;
+    min-height: 100%;
+    overflow-y: visible;
+}

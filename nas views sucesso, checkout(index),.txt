@@ -1,0 +1,64 @@
+nas views sucesso, checkout(index), falha nao usar o layout da plataforma...elas são abertas pra acesso allowanonymus
+
+e apos a view de sucesso, depois gravar os dados mostrar aquela mensagem de dados gravados e voltar pra ela
+
+
+DECLARE @RET FLOAT SELECT @RET = (ISNULL(DBO.FGetRetencaoAgendaCLASS(8652,11400,1600,0,638,'S'), 0.00))  
+
+SELECT @RET RET
+
+
+
+
+
+Select D.Empresa, D.ValorTotal, C.IndicadorMatriz,C.TipoRegimeInd ,D.Pessoa, C.IdentLan,C.Conta,C.Tipo,C.Valor,
+                          C.CResultado,C.IdentDoc,C.CompHistorico1,C.Identificador, D.Dedutivel DedutivelDoc, C.IdentDocOrigem
+                          from ClassifRetencao C 
+                          Join Documentos D on C.IdentDoc = D.Sequencial Where D.Sequencial =3264
+                          And Not EXISTS (SELECT ml.IdentlanRetencao FROM MovLanc ML Join Titulos T  on ml.SEQTITULO= T.Sequencial
+                          Where T.SeqDoc =  3264  And Ml.identlanretencao = c.IdentLan and c.TipoRegimeInd = '1')
+                          Order by C.valor
+
+
+Coloca aqui nesse filtro um select chamado checkout com as opcçoes Sim, Não, Todos...default é Todos.
+
+Incluir nos fields o campo bool ischeckout...quando for true colocar uma imagem Sim e false imaem Não
+
+
+PwdF2024#!
+
+a condiçao nao esta funcionando e vem sempre tudo...no profiler do SQL não aparece o sql com os where...somente a query inteira sem as condicoes
+
+
+Tenho dois branchs, um main que é a versao de producao e outro chamadao junho2025 que é uma versao nova que esta em teste. Nesse momento quero fazer um merge dos dois branchs conservando o da versão atual. No Branch main fiz pequenas alterações. Como faco isso pelo GIT para ser mais pratico? Estou usando o vs2002 e tem o GIT nele.
+
+
+os conflitos deverão ser resolvidos por mim, serão poucos.
+
+
+preciso pegar o ip do meu cliente de internet para passar pro Asaas...quero rotina considerando proxy inclusive
+
+
+implementar o mostrarprocessando()
+
+É possível eu recuperar um token de cartão de credito de uma assinatura ou cobrança que foi usado no Asaas??
+
+
+Vamos lá: Tenho um branch remoto main que é a versão de produção e no meu branch local já tem a atualização dele, porém não fiz o commit ainda e nem fiz push. Queria criar um outro branch chamado produção a partir desse branch remoto main. Como faço isso sem perder as coisas que estão em meu branch local?
+
+
+EM DECISAO CONJUNTA COM O ANALISTA DE NEGOCIOS JEFFERSON FICOU DECIDIDO QUE IRIAMOS USAR DUAS CASAS DECIMAIS COMO ERA ANTES E O TESTE SERA MAIOR QUE ZERO. 
+MANTIDA A FUNCAO DE ARREDONDAMENTO ARREDONDARABNT DO BANCO.
+
+  var parcela = await _context.parcelas
+                .Include(p => p.assinatura).FirstOrDefaultAsync(p => p.nossonumero == null 
+                && p.idassinatura==idassinatura)...quero que traga a primeira em ordem de data, ou seja, a mais antiga
+
+Preciso montar um documento que esta no word e preenche-lo com dados variaves e depois envia-lo para o Assinei para que possa iniciar o processo de assinatura digital, não irei usar certificado.
+
+ const $btnEditar = $("<a>")
+                            .addClass("btn btn-sm btn-warning me-1")
+                            .attr("href", `/Parcela/Adicionar?id=${item.id}&acao=2&idassinatura=@ViewBag.idassinatura&idparceiro=@ViewBag.idparceiro&forma=@ViewBag.forma&status=@ViewBag.status&ini=@ViewBag.dtinicio&fim=@ViewBag.dtfim`)
+                            .html('<i class="fas fa-edit"></i>');
+
+como desabilitar um botão de acordo com uma determinada condição.

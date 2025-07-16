@@ -1,6 +1,4 @@
-﻿
-
-@{
+﻿@{
     ViewData["Title"] = "Parcelas";
 }
 
@@ -9,115 +7,114 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
 
-
 @await Html.PartialAsync("_ModalProcessando")
+
 <section class="content">
     <form asp-action="index" method="get">
-        <div class="row">
-            <div class="col-md-12">
-                <button class="btn btn-default" type="button" data-bs-toggle="collapse" data-bs-target="#filter" aria-expanded="false" aria-controls="filter">
-                    <img class="icon" src="/svg/icons/filter.svg" />
-                    Filtro
+        <div class="row mb-3">
+            <div class="col-md-12 d-flex justify-content-end">
+                <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#filter" aria-expanded="false" aria-controls="filter">
+                    <i class="fas fa-filter"></i> Filtro
                 </button>
+            </div>
+        </div>
 
-                <div class="collapse mt-2" id="filter">
-                    <div class="card card-primary card-outline">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-container">
-
-                                    <select class="select2" name="idparceiro" id="idparceiro" data-placeholder="escolha um parceiro" style="width: 100%;">
-                                        <option value="0">escolha um parceiro</option>
-                                        @foreach (var item in ViewBag.parceiros)
-                                        {
-                                            if (@item.Value == ViewBag.idparceiro)
-                                            {
-                                                <option value="@item.Value" selected>@item.Text</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@item.Value">@item.Text</option>
-                                            }
-                                        }
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-container">
-
-                                    <select class="select2" name="status" id="status" data-placeholder="escolha um status" style="width: 100%;">
-                                        <option value="0">Pendente</option>
-                                        <option value="1">Baixada</option>
-                                        <option value="2">Caixa</option>
-                                        <option value="3">Todas</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-container">
-
-                                    <select class="select2" name="forma" id="forma" data-placeholder="escolha uma forma" style="width: 100%;">
-                                        <option value="0">Cartão</option>
-                                        <option value="1">Boleto</option>
-                                        <option value="1">Pix</option>
-                                        <option value="3">Todos</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-container">    
-                                    <select class="select2" name="tipodata" id="tipodata" data-placeholder="data base" style="width: 100%;">
-                                        <option value="0">Vencimento</option>
-                                        <option value="1">Baixa</option>
-                                    </select>
-                                </div>
-                            </div>
+        <div id="filter" class="collapse">
+            <div class="card card-success card-outline">
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Parceiro</label>
+                            <select class="select2" name="idparceiro" id="idparceiro" data-placeholder="escolha um parceiro">
+                                <option value="0">escolha um parceiro</option>
+                                @foreach (var item in ViewBag.parceiros)
+                                {
+                                    if (ViewBag.idparceiro?.ToString() == item.Value)
+                                    {
+                                        <option value="@item.Value" selected>@item.Text</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            </select>
                         </div>
-
-                        <div class="row">
-
-                            <div class="col-md-2">
-                                
-                                <input type="date" class="form-control" id="dtinicio" name="ini" value="@ViewBag.dtinicio">
-                            </div>
-                            <div class="col-md-2">
-                                
-                                <input type="date" class="form-control" id="dtfim" name="fim" value="@ViewBag.dtfim">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="d-flex gap-2">
-                                    <input type="text" class="form-control" id="idassinatura" name="idassinatura" value="@ViewBag.idassinatura" placeholder="busque pela assinatura">
-                                    <input type="text" class="form-control" id="filtro" name="filtro" value="@ViewBag.filtro" placeholder="busque pela observação ou ID da plataforma">
-                                    <button type="submit" class="btn btn-md btn-default">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </div>
-
-                            </div>
-
+                        <div class="col-md-2">
+                            <label class="form-label">Status</label>
+                            <select class="select2" name="status" id="status">
+                                <option value="0">Pendente</option>
+                                <option value="1">Baixada(A Compensar)</option>
+                                <option value="2">Caixa</option>
+                                <option value="3">Todas</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Forma</label>
+                            <select class="select2" name="forma" id="forma">
+                                <option value="0">Cartão</option>
+                                <option value="1">Boleto</option>
+                                <option value="2">Pix</option>
+                                <option value="3">Todos</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Tipo Data</label>
+                            <select class="select2" name="tipodata" id="tipodata">
+                                <option value="0">Vencimento</option>
+                                <option value="1">Baixa</option>
+                            </select>
                         </div>
                     </div>
-                    <!-- /.card-body -->
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-2">
+                            <label class="form-label">Início</label>
+                            <input type="date" class="form-control" id="dtinicio" name="ini" value="@ViewBag.dtinicio">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Fim</label>
+                            <input type="date" class="form-control" id="dtfim" name="fim" value="@ViewBag.dtfim">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Checkout</label>
+                            <select class="select2" name="checkout" id="checkout" value=@ViewBag.slCheckout>
+                                <option value="2">Todos</option>
+                                <option value="1">Sim</option>
+                                <option value="0">Não</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Busca</label>
+                            <div class="d-flex gap-2">
+                                <input type="text" class="form-control" id="idassinatura" name="idassinatura" value="@ViewBag.idassinatura" placeholder="busque pela assinatura">
+                                <input type="text" class="form-control" id="filtro" name="filtro" value="@ViewBag.filtro" placeholder="busque pela observação ou ID da plataforma">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
             </div>
         </div>
     </form>
 
-    <h2>Parcelas</h2>
-
-    <div class="col text-right mb-2">
-        <a href="@Url.Action("Adicionar", new { acao = 1,forma=ViewBag.forma, status= ViewBag.status,tipodata=ViewBag.tipodata,ini=ViewBag.dtinicio,fim=ViewBag.dtfim,idassinatura=ViewBag.idassinatura,idparceiro=ViewBag.idparceiro})" class="btn btn-default">
-            <img class="icon" src="/svg/icons/plus.svg" />
-        </a>        
-        
-        <a href="#" class="btn btn-default" id="btnSyncGuru" title="Sincronizar Recebíveis">
-            <i class="fas fa-sync-alt"></i>
-        </a>
-        <a href="#" class="btn btn-default" id="btnExcel" title="Exportar pro Excel">
-            <i class="fas fa-file-excel"></i>
-        </a>
-
+    <div class="d-flex justify-content-between my-3">
+        <h4 class="mb-3">Parcelas</h4>
+        <div>
+            @if (@ViewBag.permissao)
+            {
+                <a href="@Url.Action("adicionar", new { acao = 1, forma = ViewBag.forma, status = ViewBag.status, tipodata = ViewBag.tipodata, ini = ViewBag.dtinicio, fim = ViewBag.dtfim, idassinatura = ViewBag.idassinatura, idparceiro = ViewBag.idparceiro })" class="btn btn-success me-2" title="Adicionar Parcela">
+                    <i class="fas fa-plus"></i> Adicionar
+                </a>
+                <a href="#" class="btn btn-success me-2" id="btnSyncGuru" title="Sincronizar Recebíveis">
+                    <i class="fas fa-sync-alt"></i> Sincronizar
+            </a>
+            }
+            <a href="#" class="btn btn-success" id="btnExportExcel" title="Exportar para Excel" onclick="parcelasExcel()">
+                <i class="fas fa-file-excel"></i> Excel
+            </a>
+        </div>
     </div>
 
     <div id="jsGrid"></div>
@@ -128,37 +125,33 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    
+
     <script src='~/js/excelexportjs.js'></script>
     <script src="~/js/comuns.js"></script>
 
     <script>
         $(document).ready(function () {
 
-
-
-            $('select').select2();
+            $(".select2").select2({
+                theme: "bootstrap-5"
+            });
 
             $('#status').val(@ViewBag.Status).trigger('change');
             $('#forma').val(@ViewBag.Forma).trigger('change');
+            $('#checkout').val(@ViewBag.slCheckout).trigger('change');
             $('#tipodata').val(@ViewBag.tipodata).trigger('change');
-
-
             $("#idparceiro").val("@ViewBag.idparceiro");
             $("#idassinatura").val("@ViewBag.idassinatura");
-            //$('#idfazenda').trigger("change");
 
-            $("#btnExcel").on("click", function (e) {
+            $("#btnExportExcel").on("click", function (e) {
                 e.preventDefault();
-                parcelasExcel();                
+                parcelasExcel();
             });
-
-
         });
 
 
         parcelasExcel = function () {
-        
+
             $.ajax({
                 type: "GET",
                 url: "/Parcela/GetData",
@@ -212,45 +205,212 @@
             XLSX.utils.book_append_sheet(wb, ws, "Parcelas");
             XLSX.writeFile(wb, "parcelas.xlsx");
         }
+        
 
+        $("#jsGrid").jsGrid({
+            width: "100%",
+            height: "680px",
+            sorting: true,
+            paging: true,
+            pageSize: 12,
+            pageButtonCount: 5,
+            autoload: true,
+            pagePrevText: "Anterior",
+            pageNextText: "Próximo",
+            pageFirstText: "Primeira",
+            pageLastText: "Última",
+            noDataContent: "<div class='custom-no-data'>Nenhuma parcela encontrada</div>",
+            controller: {
+                loadData: function () {
+                    return $.ajax({
+                        type: "GET",
+                        url: "/Parcela/GetData",
+                        data: {
+                            ini: $("input[name='ini']").val(),
+                            fim: $("input[name='fim']").val(),
+                            idparceiro: "@ViewBag.idparceiro",
+                            idassinatura: "@ViewBag.idassinatura",
+                            status: @ViewBag.Status,
+                            forma: @ViewBag.Forma,
+                            tipodata: @ViewBag.tipodata,
+                            checkout:@ViewBag.slCheckout,
+                            filtro: $("input[name='filtro']").val()
+                        },
+                        dataType: "json"
+                    });
+                }
+            },
+            fields: [
+                { name: "numparcela", type: "text", title: "Num", width: 10 },
+                {
+                    name: "valor", type: "number", title: "Valor", width: 20,
+                    headerTemplate: function () {
+                        return $("<div>").text("Valor").css("text-align", "right");
+                    },
 
+                    itemTemplate: function (value) {
+                        return parseFloat(value).toLocaleString("pt-BR", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        });
+                    }
+                },
 
-        function excelconsulta(parcelas) {
+                {
+                    name: "descontoplataforma", type: "number", title: "Valor", width: 25,
+                    headerTemplate: function () {
+                        return $("<div>").text("Desc Plataforma").css("text-align", "right");
+                    },
 
-            xdata = [];
+                    itemTemplate: function (value) {
+                        return parseFloat(value).toLocaleString("pt-BR", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        });
+                    }
+                },
 
-            for (var i = 0; i <= parcelas.length - 1; i++) {
+                {
+                    name: "comissao", type: "number", title: "Valor", width: 25,
+                    headerTemplate: function () {
+                        return $("<div>").text("Comissão").css("text-align", "right");
+                    },
 
-                xdata.push({
-                    //"Talhao": data[i].codigo,
-                    "Numero": parcelas[i].numparcela,
-                    "Valor": parcelas[i].valor.toLocaleString('pt-br', { style: 'decimal', maximumFractionDigits: 2 }),
-                    "Desc Plat": parcelas[i].descontoplataforma.toLocaleString('pt-br', { style: 'decimal', maximumFractionDigits: 2 }),
-                    "Comissao": parcelas[i].comissao.toLocaleString('pt-br', { style: 'decimal', maximumFractionDigits: 2 }),
-                    "Vcto": parcelas[i].datavencimento,
-                    "Parceiro": parcelas[i].nomeparceiro,
-                    "Plataforma": parcelas[i].plataforma,
-                    "Situacao": parcelas[i].status,
-                    "Forma": parcelas[i].descforma
+                    itemTemplate: function (value) {
+                        return parseFloat(value).toLocaleString("pt-BR", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        });
+                    }
+                },
 
-                })
-            }
-           try { 
-               $("#jsGrid").excelexportjs({
-                    containerid: "jsGrid"
-                    , datatype: 'json'
-                    , dataset: xdata
-                    , columns: getColumns(xdata)
-                });
-           } 
-           catch (ex) 
-           {
-            console.error("Erro durante exportação:", ex);
-            alert("Erro durante exportação: " + ex.message);
-           }
+                {
+                    name: "datavencimento", type: "text", title: "Vencimento", width: 25,
+                    itemTemplate: function (value) {
+                        const data = new Date(value);
+                        const dia = String(data.getDate()).padStart(2, '0');
+                        const mes = String(data.getMonth() + 1).padStart(2, '0');
+                        const ano = String(data.getFullYear()).slice(2); // apenas 2 dígitos
+                        return `${dia}/${mes}/${ano}`;
+                    }
+                },
+                { name: "nomeparceiro", type: "text", title: "Parceiro", width: 80 },
+                { name: "status", type: "text", title: "Status", width: 20 },
+                { name: "descforma", type: "text", title: "Forma Pag", width: 20 },
+                {
+                    name: "dataestimadapagto", type: "text", title: "Data Estimada", width: 28,
+                    itemTemplate: function (value) {
+                        const data = new Date(value);
+                        if (data.toLocaleDateString() != "31/12/2500") {
+                            const dia = String(data.getDate()).padStart(2, '0');
+                            const mes = String(data.getMonth() + 1).padStart(2, '0');
+                            const ano = String(data.getFullYear()).slice(0); // apenas 2 dígitos
+                            return `${dia}/${mes}/${ano}`;
+                        }
+                        else {
+                            return " ";
+                        }
+                    }
+                },
+                {
+                    name: "ischeckout",
+                    title: "Checkout",
+                    type: "text",
+                    width: 25,
+                    align: "center",
+                    sorting: false,
+                    itemTemplate: function (value) {
+                        if (value === true || value === "true") {
+                            return $("<i>")
+                                .addClass("fas fa-check-circle text-success")
+                                .attr("title", "Sim");
+                        } else {
+                            return $("<i>")
+                                .addClass("fas fa-times-circle text-danger")
+                                .attr("title", "Não");
+                        }
+                    }
+                },
 
+                {
+                    type: "control",
+                    itemTemplate: function (_, item) {
 
-        }
+                        const $viewBtn = $('<button>')
+                            .addClass('btn btn-sm btn-info me-1')
+                            .attr('title', 'Visualizar')
+                            .html('<i class="fas fa-eye"></i>')
+                            .on('click', function () {
+                                window.location.href = '/parcela/visualizar/' + item.id;
+                            });
+
+                        const $btnEditar = $("<a>")
+                            .addClass("btn btn-sm btn-warning me-1")
+                            .html('<i class="fas fa-edit"></i>');
+                        var y = "@ViewBag.permissao"
+                        x = (y == "True");
+                        if (x) 
+                        {
+                            $btnEditar.attr("href", `/Parcela/Adicionar?id=${item.id}&acao=2&idassinatura=@ViewBag.idassinatura&idparceiro=@ViewBag.idparceiro&forma=@ViewBag.forma&status=@ViewBag.status&ini=@ViewBag.dtinicio&fim=@ViewBag.dtfim`)
+                        }
+                        else 
+                        {
+                            $btnEditar
+                                .addClass("disabled")
+                                .attr("aria-disabled", "true")
+                                .attr("tabindex", "-1")
+                                .css("pointer-events", "none")
+                                .attr("title", "Não permitido");
+
+                        }
+
+                        const $btnExcluir = $("<a>")
+                            .addClass("btn btn-sm btn-danger me-1")
+                            .html('<i class="fas fa-trash"></i>')
+                            .attr("href", `/Parcela/Adicionar?id=${item.id}&acao=3&idassinatura=@ViewBag.idassinatura&idparceiro=@ViewBag.idparceiro&forma=@ViewBag.forma&status=@ViewBag.status&ini=@ViewBag.dtinicio&fim=@ViewBag.dtfim`)
+
+                        x = (y == "true");
+                        if (x) 
+                        {
+                            $btnExcluir.attr("href", `/Parcela/Adicionar?id=${item.id}&acao=3&idassinatura=@ViewBag.idassinatura&idparceiro=@ViewBag.idparceiro&forma=@ViewBag.forma&status=@ViewBag.status&ini=@ViewBag.dtinicio&fim=@ViewBag.dtfim`)
+                        }
+                        else 
+                        {
+                            $btnExcluir
+                                .addClass("disabled")
+                                .attr("aria-disabled", "true")
+                                .attr("tabindex", "-1")
+                                .css("pointer-events", "none")
+                                .attr("title", "Não permitido");
+
+                        }
+
+                        const $btnCaixa = $("<a>")
+                            .addClass("btn btn-sm btn-success")
+                            
+                            .html('<i class="fas fa-money-bill-wave"></i>');
+                        x = (y == "true");
+                        if (x) 
+                        {
+                            $btnCaixa.attr("href", `/movimentocaixa/adicionar?acao=4&id=${item.idcaixa}`)
+                        }
+                        else 
+                        {
+                            $btnCaixa
+                                .addClass("disabled")
+                                .attr("aria-disabled", "true")
+                                .attr("tabindex", "-1")
+                                .css("pointer-events", "none")
+                                .attr("title", "Não permitido");
+
+                        }
+
+                        return $("<div class='d-flex'>").append($viewBtn,$btnEditar, $btnExcluir, $btnCaixa);
+                    }
+                }
+            ]
+        });
+
 
 
         function mostrarProcessando() {
@@ -268,13 +428,15 @@
             }
         }
 
+
+
         document.addEventListener("DOMContentLoaded", function () {
             const btnSync = document.getElementById("btnSyncGuru");
             if (btnSync) {
                 btnSync.addEventListener("click", function (e) {
                     e.preventDefault();
 
-                    atualizarTextoModalProcessando("Processando Pagarme...","Favor aguardar");
+                    atualizarTextoModalProcessando("Processando Pagarme...", "Favor aguardar");
                     mostrarProcessando();
 
                     const hoje = formatarData(new Date());
@@ -282,7 +444,7 @@
                     ontem.setDate(ontem.getDate() - 1);
                     ontem = formatarData(ontem);
 
-                    url = "/ParametrosGuru/GetBaixasPagarmeByData?ini="+ontem+"&fim="+hoje+"&connectionId=null";
+                    url = "/ParametrosGuru/GetBaixasPagarmeByData?ini=" + ontem + "&fim=" + hoje + "&connectionId=null";
 
                     fetch(url, {
                         method: "GET"
@@ -314,7 +476,7 @@
                         .then(data => {
                             esconderProcessando();
                             alert("Sincronização Asaas concluída!");
-                            Opcional: location.reload(); 
+                            Opcional: location.reload();
                         })
                         .catch(err => {
                             esconderProcessando();
@@ -323,156 +485,6 @@
                 });
             }
         });
-
-            $("#jsGrid").jsGrid({
-                width: "100%",
-                height: "400px",
-                sorting: true,
-                paging: true,
-                pageSize: 10,
-                pageButtonCount: 5,
-                autoload: true,
-                pagePrevText: "Anterior",
-                pageNextText: "Próximo",
-                pageFirstText: "Primeira",
-                pageLastText: "Última",
-                noDataContent: "<div class='custom-no-data'>Nenhuma parcela encontrada</div>",
-                controller: {
-                    loadData: function () {
-                        return $.ajax({
-                            type: "GET",
-                            url: "/Parcela/GetData",
-                            data: {
-                                ini: $("input[name='ini']").val(),
-                                fim: $("input[name='fim']").val(),
-                                idparceiro: "@ViewBag.idparceiro",
-                                idassinatura: "@ViewBag.idassinatura",
-                                status: @ViewBag.Status,
-                                forma: @ViewBag.Forma,
-                                tipodata: @ViewBag.tipodata ,
-                                filtro: $("input[name='filtro']").val()
-                            },
-                            dataType: "json"
-                        });
-                    }
-                },
-                fields: [
-                    { name: "numparcela", type: "text", title: "Num", width: 10 },
-                    { name: "valor", type: "number", title: "Valor", width: 20,
-                    headerTemplate: function () {
-                        return $("<div>").text("Valor").css("text-align", "right");
-                    },
-
-                    itemTemplate: function (value) {
-                        return parseFloat(value).toLocaleString("pt-BR", {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        });
-                    }
-                    },
-
-                {
-                    name: "descontoplataforma", type: "number", title: "Valor", width: 25,
-                    headerTemplate: function () {
-                        return $("<div>").text("Desc Plataforma").css("text-align", "right");
-                    },
-
-                    itemTemplate: function (value) {
-                        return parseFloat(value).toLocaleString("pt-BR", {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        });
-                    }
-                },
-
-                {
-                    name: "comissao", type: "number", title: "Valor", width: 25,
-                    headerTemplate: function () {
-                        return $("<div>").text("Comissão").css("text-align", "right");
-                    },
-
-                    itemTemplate: function (value) {
-                        return parseFloat(value).toLocaleString("pt-BR", {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        });
-                    }
-                },
-
-
-                    { name: "datavencimento", type: "text", title: "Vencimento", width: 25,
-                    itemTemplate: function (value) {
-                        const data = new Date(value);
-                        const dia = String(data.getDate()).padStart(2, '0');
-                        const mes = String(data.getMonth() + 1).padStart(2, '0');
-                        const ano = String(data.getFullYear()).slice(2); // apenas 2 dígitos
-                        return `${dia}/${mes}/${ano}`;
-                    }
-                },
-                { name: "nomeparceiro", type: "text", title: "Parceiro", width: 80 },
-                    { name: "status", type: "text", title: "Status", width: 20 },
-                    { name: "descforma", type: "text", title: "Forma Pag", width: 20 },
-                {
-                    name: "dataestimadapagto", type: "text", title: "Data Estimada", width: 28,
-                    itemTemplate: function (value) {
-                        const data = new Date(value);
-                        if (data.toLocaleDateString()!="31/12/2500"){
-                        const dia = String(data.getDate()).padStart(2, '0');
-                        const mes = String(data.getMonth() + 1).padStart(2, '0');
-                        const ano = String(data.getFullYear()).slice(0); // apenas 2 dígitos
-                        return `${dia}/${mes}/${ano}`;}
-                        else {
-                            return " ";
-                        }
-                    }
-                },
-                    {
-                        type: "control",
-                        itemTemplate: function (_, item) {
-                            var $result = $("<div>").addClass("dropdown");
-
-                            var $button = $("<button>").addClass("btn btn-default dropdown-toggle")
-                                .attr("type", "button")
-                                .attr("data-bs-toggle", "dropdown")
-                                .text("Ações");
-
-                            var $menu = $("<div>").addClass("dropdown-menu");
-
-                            var $edit = $("<a>").addClass("dropdown-item")
-                            .attr("href", "/Parcela/Adicionar?id=" + item.id + "&acao=2&idassinatura=@ViewBag.idassinatura&idparceiro=@ViewBag.idparceiro&forma=@ViewBag.forma&status=@ViewBag.status&ini=@ViewBag.dtinicio&fim=@ViewBag.dtfim")
-                                .text("Editar");
-
-                            var $delete = $("<a>").addClass("dropdown-item")
-                            .attr("href", "/Parcela/Adicionar?id=" + item.id + "&acao=3&idassinatura=@ViewBag.idassinatura&idparceiro=@ViewBag.idparceiro&forma=@ViewBag.forma&status=@ViewBag.status&ini=@ViewBag.dtinicio&fim=@ViewBag.dtfim")
-                                .text("Excluir");
-
-                            $menu.append($edit).append($delete);
-                            $result.append($button).append($menu);
-
-                            return $result;
-                        },
-                    },
-                    {
-                        type: "control",
-                        
-                            itemTemplate: function (_, item) {
-                            var link = $("<a>")
-                                .addClass("btn btn-sm btn-success")
-                                .attr("href", "/movimentocaixa/adicionar?acao=4&id=" + item.idcaixa)
-                                .attr("title", "Ir para Movimento de Caixa");
-
-                            var icon = $("<i>")
-                                .addClass("fas fa-money-bill-wave");
-
-                            link.append(icon);
-                            return link;
-                        }
-                    }
-                ]
-            });
-
-        
-
-        
+       
     </script>
 }

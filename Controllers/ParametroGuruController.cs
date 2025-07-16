@@ -21,6 +21,10 @@ using ADUSClient.Parcela;
 using System.Drawing;
 using Humanizer;
 using MathNet.Numerics;
+using Microsoft.AspNetCore.Authorization;
+using ADUSAdm.Shared;
+using Microsoft.Extensions.Options;
+using ADUSAdm.Services;
 
 public class ParametrosGuruController : Controller
 {
@@ -36,11 +40,14 @@ public class ParametrosGuruController : Controller
     private readonly PlanoContaControllerClient _categoriaAPI;
     private readonly ContaCorrenteControllerClient _contaCorrenteAPI;
     private readonly MovimentoCaixaControllerClient _movcaixaAPI;
+    private readonly ASAASSettings _AsaasSettings;
+    private readonly CobrancaAsaasService _cobranca;
 
     public ParametrosGuruController(ParametroGuruControllerClient client, ImportacaoService service, IHubContext<ImportProgressHub> hubContext, ParceiroControllerClient parceiroapi, ParcelaControllerClient parcela,
         AssinaturaControllerClient assinatura, SharedControllerClient shared, TransacaoControllerClient transacaoAPI,
         CentroCustoControllerClient centroCustoAPI, PlanoContaControllerClient categoriaAPI,
-        ContaCorrenteControllerClient contaCorrenteAPI, MovimentoCaixaControllerClient movcaixaAPI)
+        ContaCorrenteControllerClient contaCorrenteAPI, MovimentoCaixaControllerClient movcaixaAPI,
+        IOptions<ASAASSettings> asaasSettings, CobrancaAsaasService cobranca)
     {
         _client = client;
         _service = service;
@@ -52,12 +59,15 @@ public class ParametrosGuruController : Controller
         _transacaoAPI = transacaoAPI;
         _centroCustoAPI = centroCustoAPI;
         _categoriaAPI = categoriaAPI;
+        _AsaasSettings = asaasSettings.Value;
 
         _contaCorrenteAPI = contaCorrenteAPI;
         _movcaixaAPI = movcaixaAPI;
+        _cobranca = cobranca;
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> Index(int idplataforma = 1)
     {
         var model = await _client.ListaById(idplataforma);
@@ -72,7 +82,7 @@ public class ParametrosGuruController : Controller
         var categorias = await _categoriaAPI.ListarAsync("");
         ViewBag.Categorias = new SelectList(categorias, "Id", "Descricao");
 
-        var parceiros = await _parceiroapi.Lista("");
+        var parceiros = await _parceiroapi.Lista("", true, false, false, false);
         ViewBag.Parceiros = new SelectList(parceiros, "id", "razaoSocial");
 
         var contas = await _contaCorrenteAPI.Listar("", null);
@@ -383,6 +393,14 @@ public class ParametrosGuruController : Controller
         return Json("OK");
     }
 
+    public async Task<JsonResult> GerarParcelasAsaasByData(string ini, string fim, string connectionId)
+    {
+        DateTime.TryParse(ini, out DateTime inicio);
+        DateTime.TryParse(fim, out DateTime final);
+        await _cobranca.EnviarCobrancasPendentesAsync(inicio, final, " ", 3, connectionId);
+        return null;
+    }
+
     public async Task<JsonResult> GetBaixasAsaasByData(string ini, string fim, string connectionId)
     {
         var model = await _client.ListaById(2);
@@ -400,7 +418,7 @@ public class ParametrosGuruController : Controller
 
         while (hasMore)
         {
-            string url = model.urltransac;
+            string url = _AsaasSettings.urlpayments;//model.urltransac;
 
             url += "?creditDateStart=" + ini + "&creditDateFinish=" + fim;
             url = url + "&status=RECEIVED&limit=" + limit.ToString() +
@@ -409,7 +427,7 @@ public class ParametrosGuruController : Controller
             var client = new RestClient(options);
 
             var request = new RestRequest();
-            request.AddHeader("access_token", secretKey);
+            request.AddHeader("access_token", _AsaasSettings.access_token);
 
             request.AddHeader("accept", "application/json");
 
@@ -480,7 +498,7 @@ public class ParametrosGuruController : Controller
                                 Observacao = "PAGTO COMISSAO",
                                 idmovbanco = item.GetProperty("id").GetString()
                             });
-                            /*
+
                             if (item.GetProperty("value").GetDecimal() != item.GetProperty("netValue").GetDecimal())
                             {
                                 var resptaxa = await _movcaixaAPI.AdicionarAsync(new ADUSClient.MovimentoCaixa.MovimentoCaixaViewModel
@@ -497,7 +515,6 @@ public class ParametrosGuruController : Controller
                                     idmovbanco = item.GetProperty("id").GetString()
                                 });
                             };
-                            */
 
                             string y = await respc.Content.ReadAsStringAsync();
                             var result = JsonConvert.DeserializeObject<MovimentoCaixaViewModel>(y);

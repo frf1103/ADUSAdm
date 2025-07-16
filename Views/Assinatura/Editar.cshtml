@@ -1,157 +1,75 @@
 ﻿@model ADUSClient.Assinatura.AssinaturaViewModel
 
+@section styles {
+    <style>
+        body {
+            overflow-y: auto;
+        }
 
+        .content-wrapper {
+            padding: 1rem;
+        }
+    </style>
+}
 
-
-
-<!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Editar uma Assinatura</h1>
+                <h1 class="mb-0">@ViewBag.Titulo</h1>
             </div>
         </div>
-    </div><!-- /.container-fluid -->
+    </div>
 </section>
+<label>@ViewBag.acao</label>
+<section class="content">
+    <div class="container-fluid">
+        <form asp-action="@ViewBag.acao" class="needs-validation" novalidate>
+            @Html.AntiForgeryToken()
 
-<!-- Main content -->
-
-
-<div class="wrapper">
-    <section class="content">
-        <div class="container-fluid">
-            <div class="card card-primary card-outline">
-                <div class="card-body">
-                    <div class="tab-content" id="custom-content-above-tabContent">
-                        <div class="tab-pane fade show active" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab">
-                            <form asp-action="editar">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label asp-for="id" class="control-label"></label>
-                                                    <input asp-for="id" class="form-control" readonly />
-                                                    <span asp-validation-for="id" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label asp-for="idparceiro" class="control-label"></label>
-                                                    <select asp-for="idparceiro" class="form-control" id="idparceiro" asp-items="@ViewBag.parceiros"></select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-2">
-                                                <div class="form-group">
-                                                    <label asp-for="datavenda" class="control-label"></label>
-                                                    <input asp-for="datavenda" class="form-control" id="datavenda" />
-                                                    <span asp-validation-for="datavenda" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <div class="form-group">
-                                                    <label asp-for="idformapagto" class="control-label"></label>
-                                                    <select asp-for="idformapagto" class="form-control" id="tipopessoa" asp-items="@ViewBag.FormaPagto"></select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label asp-for="status" class="control-label"></label>
-                                                    <select asp-for="status" class="form-control" id="status" asp-items="@ViewBag.Status"></select>
-                                                </div>
-
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-group">
-                                                    <label asp-for="qtd" class="control-label"></label>
-                                                    <input asp-for="qtd" class="form-control" id="qtd" />
-                                                    <span asp-validation-for="qtd" class="text-danger"></span>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-2">
-                                                <div class="form-group">
-                                                    <label asp-for="preco" class="control-label"></label>
-                                                    <input asp-for="preco" class="form-control" id="preco" />
-                                                    <span asp-validation-for="preco" class="text-danger"></span>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label asp-for="valor" class="control-label"></label>
-                                                    <input asp-for="valor" class="form-control" id="valor" />
-                                                    <span asp-validation-for="valor" class="text-danger"></span>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label asp-for="observacao" class="control-label"></label>
-                                                    <input asp-for="observacao" class="form-control">
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <div class="form-group">
-                                                    <label asp-for="idplataforma" class="control-label"></label>
-                                                    <input asp-for="idplataforma" class="form-control" readonly>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label asp-for="plataforma" class="control-label"></label>
-                                                    <input asp-for="plataforma" class="form-control" readonly>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <!-- /.card-body -->
-                                    <div class="card-footer">
-                                        <div class="row">
-                                            <div class="col text-right">
-                                                <button type="submit" class="btn btn-success">Salvar</button>
-                                                <a href="/assinatura/index" class="btn btn-default">Voltar</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-
-                        </div>
-
-
-                    </div>
+            <div class="card card-success">
+                <div class="card-header">
+                    <h3 class="card-title">Dados da Assinatura</h3>
                 </div>
-                <!-- /.card -->
-            </div>
-            <!-- /.card -->
-        </div>
-        <!-- /.container-fluid -->
-    </section>
+                <div class="card-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-</div>
+                    @if (ViewBag.acao == "Excluir" || ViewBag.acao == "Visualizar")
+                    {
+                        <fieldset disabled>
+                            @Html.Partial("_AssinaturaFormFields", Model)
+                        </fieldset>
+                    }
+                    else
+                    {
+                        @Html.Partial("_AssinaturaFormFields", Model)
+                    }
+                </div>
+
+                <div class="card-footer text-end">
+                    @if (ViewBag.acao == "Adicionar" || ViewBag.acao == "Editar")
+                    {
+                        <button type="submit" class="btn btn-success me-2">
+                            <i class="fas fa-save me-1"></i> Salvar
+                        </button>
+                    }
+                    else if (ViewBag.acao == "Excluir")
+                    {
+                        <button type="submit" class="btn btn-danger me-2">
+                            <i class="fas fa-trash me-1"></i> Excluir
+                        </button>
+                    }
+                    <a href="/assinatura/index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-1"></i> Voltar
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
 
 @section scripts {
     <script>
-
-
-
-
+        
     </script>
 }
-
-<!-- /.content -->

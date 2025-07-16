@@ -355,14 +355,14 @@ namespace ADUSAdm.Services
                 idsub = subsid;
                 idcliente = await BuscarClienteAsaas(model, remoteIp);
             }
-
             List<object> split = null;
-            /*
-            var afiliado = await _parceiro.ListaById(idAfiliado);
-
-            if (afiliado != null)
+            if (_asaasSettings.split == "1")
             {
-                split = new List<object>
+                var afiliado = await _parceiro.ListaById(idAfiliado);
+
+                if (afiliado != null)
+                {
+                    split = new List<object>
                 {
                     new {
                         walletId = afiliado.idwallet,
@@ -375,8 +375,8 @@ namespace ADUSAdm.Services
                         status = "RECEIVED"
                     }
                 };
+                }
             }
-            */
             string? invoiceurl = null;
             DateTime vcto = DateTime.Now.Date;
             if (subsid != null || billingType == "BOLETO")
@@ -394,7 +394,7 @@ namespace ADUSAdm.Services
                 dueDate = vcto,
                 description = $"{model.QuantidadeArvores} ARVORES PROJETO TECA SOCIAL",
                 installmentCount = (model.FormaPagamento == "Parcelado") ? model.Parcelas : null,
-                totalValue = model.ValorTotal*(model.FormaPagamento == "Parcelado" ? 84 : 1),
+                totalValue = model.ValorTotal * (model.FormaPagamento == "Parcelado" ? 84 : 1),
                 creditCardToken = cctoken,
                 externalReference = idsub,
                 remoteIp = remoteIp,

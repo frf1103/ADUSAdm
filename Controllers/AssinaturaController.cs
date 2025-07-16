@@ -22,31 +22,36 @@ using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Text;
 using RestSharp;
-using Azure.Core;
+
 using Humanizer;
 using MathNet.Numerics;
-using Azure;
+using ADUSClient.Controller;
+using ADUSAdm.Services;
+using ADUSClient;
 
 namespace ADUSAdm.Controllers
 {
-    [Authorize(Roles = "Admin,Super,User, UserV")]
+    [Authorize(Roles = "Admin,Super,User, UserV,Afiliado,Coprodutor")]
     public class AssinaturaController : Controller
     {
         private readonly ADUSClient.Controller.AssinaturaControllerClient _culturaAPI;
         private readonly ADUSClient.Controller.SharedControllerClient _shareAPI;
         private readonly ADUSClient.Controller.ParceiroControllerClient _parceiroAPI;
         private readonly ADUSClient.Controller.ParametroGuruControllerClient _parametroAPI;
+        private readonly CartaoAssinaturaControllerClient _cartoes;
+        private readonly CheckoutService _check;
 
         private readonly ADUSClient.Controller.ParcelaControllerClient _parcelaAPI;
         private const int TAMANHO_PAGINA = 5;
         private readonly SessionManager _sessionManager;
+        private readonly ComumService _comum;
 
         public AssinaturaController(ADUSClient.Controller.AssinaturaControllerClient culturaAPI, ADUSClient.Controller.ParceiroControllerClient parceiroAPI, SessionManager sessionManager,
             ADUSClient.Controller.SharedControllerClient shareAPI,
             ADUSClient.Controller.ParametroGuruControllerClient parametroAPI,
 
             ADUSClient.Controller.ParcelaControllerClient parcelaAPI
-            )
+, CartaoAssinaturaControllerClient cartoes, CheckoutService check, ComumService comum)
         {
             _culturaAPI = culturaAPI;
             _sessionManager = sessionManager;
@@ -55,22 +60,21 @@ namespace ADUSAdm.Controllers
             _parametroAPI = parametroAPI;
 
             _parcelaAPI = parcelaAPI;
+            _cartoes = cartoes;
+            _check = check;
+            _comum = comum;
         }
 
         public async Task<IActionResult> Index(DateTime ini, DateTime fim, string? filtro, int pagina = 1, string? idparceiro = "0", int status = 3, int forma = 3)
         {
-            //Task<List<ADUSClient.Assinatura.ListAssinaturaViewModel>> ret = _culturaAPI.Lista(filtro);
-            //List<ADUSClient.Assinatura.ListAssinaturaViewModel> c = await ret;
-
-            Task<List<ListParceiroViewModel>> retc = _parceiroAPI.Lista("");
-            List<ListParceiroViewModel> t = await retc;
+            List<ListParceiroViewModel> t = await _parceiroAPI.Lista("", true, false, false, false);
 
             ViewBag.parceiros = t.Select(m => new SelectListItem { Text = m.razaoSocial, Value = m.id.ToString() });
 
             ViewBag.filtro = filtro;
             ViewBag.role = _sessionManager.userrole;
             ViewBag.SelectedOptionS = idparceiro.ToString();
-            ViewBag.permissao = (_sessionManager.userrole != "UserV");
+            ViewBag.permissao = (_sessionManager.userrole == "Admin" || _sessionManager.userrole == "Super");
 
             if (ini.Year == 1)
             {
@@ -90,11 +94,17 @@ namespace ADUSAdm.Controllers
             }
             ViewBag.Status = status.ToString();
             ViewBag.Forma = forma.ToString();
+            ViewBag.urlconvite = _sessionManager.urlconvite;
+            if (_sessionManager.userrole == "Afiliado" || _sessionManager.userrole == "Coprodutor")
+            {
+                ViewBag.userrole = _sessionManager.userrole;
+            }
+
             return View();
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin,Super,User")]
+        [Authorize(Roles = "Admin,Super")]
         public async Task<IActionResult> Adicionar()
         {
             ADUSClient.Assinatura.AssinaturaViewModel c = new ADUSClient.Assinatura.AssinaturaViewModel();
@@ -111,7 +121,7 @@ namespace ADUSAdm.Controllers
                 new SelectListItem { Text = "Pix", Value = FormaPagto.Pix.ToString() },
             };
 
-            Task<List<ListParceiroViewModel>> retc = _parceiroAPI.Lista("");
+            Task<List<ListParceiroViewModel>> retc = _parceiroAPI.Lista("", true, false, false, false);
             List<ListParceiroViewModel> t = await retc;
 
             ViewBag.parceiros = t.Select(m => new SelectListItem { Text = m.razaoSocial, Value = m.id.ToString() });
@@ -134,9 +144,21 @@ namespace ADUSAdm.Controllers
         [Authorize(Roles = "Admin,Super,User")]
         public async Task<IActionResult> Editar(string id, int acao = 0)
         {
-            ViewBag.acao = acao;
-            Task<ADUSClient.Assinatura.AssinaturaViewModel> ret = _culturaAPI.ListaById(id);
-            ADUSClient.Assinatura.AssinaturaViewModel c = await ret;
+            ADUSClient.Assinatura.AssinaturaViewModel c;
+
+            if (acao != 1)
+            {
+                c = await _culturaAPI.ListaById(id);
+                ViewBag.acao = (acao == 2) ? "Editar" : (acao == 3) ? "Excluir" : "Visualizar";
+                ViewBag.Id = id;
+                ViewBag.Titulo = ViewBag.acao + " Assinatura";
+            }
+            else
+            {
+                ViewBag.acao = "Adicionar";
+                c = new ADUSClient.Assinatura.AssinaturaViewModel { id = Guid.NewGuid().ToString() };
+                ViewBag.Titulo = "Nova Assinatura";
+            }
 
             ViewBag.Id = id;
             ViewBag.Status = new[] {
@@ -151,7 +173,7 @@ namespace ADUSAdm.Controllers
                 new SelectListItem { Text = "Pix", Value = FormaPagto.Pix.ToString() },
             };
 
-            Task<List<ListParceiroViewModel>> retc = _parceiroAPI.Lista("");
+            Task<List<ListParceiroViewModel>> retc = _parceiroAPI.Lista("", true, false, false, false);
             List<ListParceiroViewModel> t = await retc;
 
             ViewBag.Parceiros = t.Select(m => new SelectListItem { Text = m.razaoSocial, Value = m.id.ToString() });
@@ -170,6 +192,58 @@ namespace ADUSAdm.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Super,User,Afiliado,Coprodutor")]
+        public async Task<IActionResult> Visualizar(string id)
+        {
+            ADUSClient.Assinatura.AssinaturaViewModel c;
+            int acao = 4;
+
+            if (acao != 1)
+            {
+                c = await _culturaAPI.ListaById(id);
+                ViewBag.acao = (acao == 2) ? "Editar" : (acao == 3) ? "Excluir" : "Visualizar";
+                ViewBag.Id = id;
+                ViewBag.Titulo = ViewBag.acao + " Assinatura";
+            }
+            else
+            {
+                ViewBag.acao = "Adicionar";
+                c = new ADUSClient.Assinatura.AssinaturaViewModel { id = Guid.NewGuid().ToString() };
+                ViewBag.Titulo = "Nova Assinatura";
+            }
+
+            ViewBag.Id = id;
+            ViewBag.Status = new[] {
+                new SelectListItem { Text = "Ativa", Value = StatusAssinatura.Ativa.ToString() },
+                new SelectListItem { Text = "Pendente", Value = StatusAssinatura.Pendente.ToString() },
+                new SelectListItem { Text = "Cancelada", Value = StatusAssinatura.Cancelada.ToString() }
+            };
+
+            ViewBag.FormaPagto = new[] {
+                new SelectListItem {Text = "Cartão", Value = FormaPagto.Cartao.ToString()},
+                new SelectListItem { Text = "Boleto", Value = FormaPagto.Boleto.ToString() },
+                new SelectListItem { Text = "Pix", Value = FormaPagto.Pix.ToString() },
+            };
+
+            Task<List<ListParceiroViewModel>> retc = _parceiroAPI.Lista("", true, false, false, false);
+            List<ListParceiroViewModel> t = await retc;
+
+            ViewBag.Parceiros = t.Select(m => new SelectListItem { Text = m.razaoSocial, Value = m.id.ToString() });
+
+            if (TempData["Erro"] != null)
+            {
+                if (TempData["dados"] != null)
+                {
+                    var dadosJson = TempData["dados"].ToString();
+                    c = JsonConvert.DeserializeObject<AssinaturaViewModel>(dadosJson);
+                }
+                ModelState.AddModelError(string.Empty, TempData["Erro"].ToString());
+            }
+
+            return View("editar");
+        }
+
+        [HttpGet]
         [Authorize(Roles = "Admin,Super,User")]
         public async Task<IActionResult> Excluir(string id)
         {
@@ -185,7 +259,7 @@ namespace ADUSAdm.Controllers
                 new SelectListItem { Text = "Boleto", Value = FormaPagto.Boleto.ToString() }
             };
 
-            Task<List<ListParceiroViewModel>> retc = _parceiroAPI.Lista("");
+            Task<List<ListParceiroViewModel>> retc = _parceiroAPI.Lista("", true, false, false, false);
             List<ListParceiroViewModel> t = await retc;
 
             ViewBag.Parceiros = t.Select(m => new SelectListItem { Text = m.razaoSocial, Value = m.id.ToString() });
@@ -260,6 +334,7 @@ namespace ADUSAdm.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Super,User")]
         public async Task<IActionResult> Cancelar(string id, string motivo)
         {
             motivo = "MOTIVO: " + motivo.Trim() + " CANCELADA POR: " + _sessionManager.username + " EM " + DateTime.Now.ToString();
@@ -273,10 +348,18 @@ namespace ADUSAdm.Controllers
             return View("index");
         }
 
+        [Authorize(Roles = "Admin,Super,User,Afiliado,Coprodutor")]
         public async Task<JsonResult> GetData(DateTime ini, DateTime fim, string idparceiro, string status, int forma, string? filtro)
         {
-            Task<List<ADUSClient.Assinatura.ListAssinaturaViewModel>> ret = _culturaAPI.Lista(ini, fim, idparceiro, status, forma, filtro);
-            List<ADUSClient.Assinatura.ListAssinaturaViewModel> c = await ret;
+            List<ADUSClient.Assinatura.ListAssinaturaViewModel> c;
+            if (_sessionManager.userrole == "Afiliado" || _sessionManager.userrole == "Coprodutor")
+            {
+                c = await _culturaAPI.ListaByAfiliado(_sessionManager.idafiliado, (_sessionManager.idafiliado == "" ? 2 : 1), ini, fim, idparceiro, status, forma, filtro);
+            }
+            else
+            {
+                c = await _culturaAPI.Lista(ini, fim, idparceiro, status, forma, filtro);
+            }
             var cx = c.OrderBy(x => x.datavenda);
 
             return Json(cx);
@@ -1105,6 +1188,106 @@ namespace ADUSAdm.Controllers
                 */
             }
             return Json("OK");
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> RevisarDados(string idAssinatura)
+        {
+            // Carregar assinatura
+            var assinatura = await _culturaAPI.ListaById(idAssinatura);
+
+            var parceiro = await _parceiroAPI.ListaById(assinatura.idparceiro);
+
+            var cartoes = await _cartoes.ListarPorAssinatura(idAssinatura);
+
+            var vm = new RevisarCartoesViewModel
+            {
+                IdParceiro = parceiro.id,
+                Nome = parceiro.razaoSocial,
+                IdAssinatura = assinatura.id,
+                valor = (decimal)assinatura.valor,
+                Email = parceiro.email,
+                cpfCnpj = parceiro.registro,
+                Telefone = parceiro.fone1,
+                Bairro = parceiro.bairro,
+                Complemento = parceiro.complemento,
+                logradouro = parceiro.logradouro,
+                Numero = parceiro.numero,
+                Cep = parceiro.cep,
+
+                CartoesAtivos = cartoes
+                    .Where(c => c.Ativo)
+                    .Select(c => new CartaoAtivoViewModel
+                    {
+                        Bandeira = c.Bandeira,
+                        UltimosDigitos = c.UltimosDigitos,
+                        ativo = c.Ativo,
+                        id = (int)c.Id
+                    })
+                    .ToList()
+            };
+            var cartaoativo = vm.CartoesAtivos.Where(c => c.ativo).FirstOrDefault();
+            ViewBag.idativo = 0;
+            if (cartaoativo != null)
+            {
+                ViewBag.idativo = cartaoativo.id;
+            }
+
+            return View("RevisarDados", vm);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> CadastrarNovoCartao(RevisarCartoesViewModel model, int idcartao)
+        {
+            if (!ModelState.IsValid)
+                return View("RevisarDados", model);
+
+            // Tokenizar novo cartão via seu serviço ASAAS
+
+            // Inativa todos os anteriores:
+
+            TokenCartaoViewModel tc = new TokenCartaoViewModel
+            {
+                Email = model.Email,
+                Cep = model.Cep,
+                Nome = model.Nome,
+                NomeTitular = model.NomeTitular,
+                Complemento = model.Complemento,
+                cpfCnpj = model.cpfCnpj,
+                Cvv = model.Cvv,
+                Numero = model.Numero,
+                NumeroCartao = model.NumeroCartao,
+                Telefone = model.Telefone,
+                Validade = model.Validade
+            };
+
+            string remoteIp;
+            remoteIp = _comum.GetClientIp();
+
+            string cctoken = "", bandeira = "", ccdigitos = "";
+            (cctoken, bandeira, ccdigitos) = await _check.TokenizarCartao(tc, "X", remoteIp);
+            if (!string.IsNullOrEmpty(cctoken))
+            {
+                CartaoAssinaturaViewModel cass = new CartaoAssinaturaViewModel
+                {
+                    IdAssinatura = model.IdAssinatura,
+                    Ativo = true,
+                    Bandeira = bandeira,
+                    IdToken = cctoken,
+                    UltimosDigitos = ccdigitos
+                };
+                await _cartoes.Adicionar(cass);
+                if (idcartao != 0)
+                {
+                    await _cartoes.Inativar(idcartao);
+                }
+            }
+            // Salva novo cartão
+
+            TempData["Sucesso"] = "Novo cartão salvo e cartões antigos inativados.";
+            return RedirectToAction("RevisarDados", new { idAssinatura = model.IdAssinatura });
         }
     }
 }

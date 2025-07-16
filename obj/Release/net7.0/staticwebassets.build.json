@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "wFPC/OjpkyaZ+RYaN2GWuOjbCiU1msDeRZCzfie2wC8=",
+  "Hash": "TV8rJBQtEZ+vdjfj/C91o+TPBVawt+DwWsCVvlvt9OM=",
   "Source": "ADUSAdm",
   "BasePath": "_content/ADUSAdm",
   "Mode": "Default",
@@ -1256,6 +1256,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\theme.css"
+    },
+    {
+      "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\css\\theme-green.css",
+      "SourceId": "ADUSAdm",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\",
+      "BasePath": "_content/ADUSAdm",
+      "RelativePath": "css/theme-green.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\theme-green.css"
     },
     {
       "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\css\\toastr.min.css",
@@ -2567,6 +2584,40 @@
       "OriginalItemSpec": "wwwroot\\images\\fundo.png"
     },
     {
+      "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\images\\Imagem do WhatsApp de 2025-02-24 à(s) 16.03.00_e0928f23.jpg",
+      "SourceId": "ADUSAdm",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\",
+      "BasePath": "_content/ADUSAdm",
+      "RelativePath": "images/Imagem do WhatsApp de 2025-02-24 à(s) 16.03.00_e0928f23.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\Imagem do WhatsApp de 2025-02-24 à(s) 16.03.00_e0928f23.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\images\\Imagem do WhatsApp de 2025-02-24 à(s) 16.03.15_f4782b53.jpg",
+      "SourceId": "ADUSAdm",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\",
+      "BasePath": "_content/ADUSAdm",
+      "RelativePath": "images/Imagem do WhatsApp de 2025-02-24 à(s) 16.03.15_f4782b53.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\Imagem do WhatsApp de 2025-02-24 à(s) 16.03.15_f4782b53.jpg"
+    },
+    {
       "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\images\\logo.png",
       "SourceId": "ADUSAdm",
       "SourceType": "Discovered",
@@ -2599,6 +2650,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\logoadus.png"
+    },
+    {
+      "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\images\\tecasocial.webp",
+      "SourceId": "ADUSAdm",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\",
+      "BasePath": "_content/ADUSAdm",
+      "RelativePath": "images/tecasocial.webp",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\tecasocial.webp"
     },
     {
       "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\js\\adminlte.min.js",
@@ -38046,6 +38114,23 @@
       "OriginalItemSpec": "wwwroot\\svg\\icons\\company.svg"
     },
     {
+      "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\svg\\icons\\copy.svg",
+      "SourceId": "ADUSAdm",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\",
+      "BasePath": "_content/ADUSAdm",
+      "RelativePath": "svg/icons/copy.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\svg\\icons\\copy.svg"
+    },
+    {
       "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\svg\\icons\\crop.svg",
       "SourceId": "ADUSAdm",
       "SourceType": "Discovered",
@@ -38078,6 +38163,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\svg\\icons\\dollar-sign.svg"
+    },
+    {
+      "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\svg\\icons\\email.svg",
+      "SourceId": "ADUSAdm",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\",
+      "BasePath": "_content/ADUSAdm",
+      "RelativePath": "svg/icons/email.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\svg\\icons\\email.svg"
     },
     {
       "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\svg\\icons\\farm.svg",
@@ -38571,6 +38673,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\svg\\icons\\users.svg"
+    },
+    {
+      "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\svg\\icons\\whatsapp.svg",
+      "SourceId": "ADUSAdm",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\",
+      "BasePath": "_content/ADUSAdm",
+      "RelativePath": "svg/icons/whatsapp.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\svg\\icons\\whatsapp.svg"
     },
     {
       "Identity": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\webfonts\\check-circle.svg",

@@ -37,7 +37,7 @@ namespace ADUSAdm.Services
                                 .GetRequiredService<CobrancaAsaasService>();
 
                             //await meuServico.EnviarCobrancasPendentesAsync(DateTime.Now.Date, DateTime.Now.Date);
-                            await meuServico.EnviarCobrancasPendentesAsync(DateTime.Now.AddDays(62).Date, DateTime.Now.AddDays(62).Date, null, 3, null);
+                            await meuServico.EnviarCobrancasPendentesAsync(DateTime.Now.AddDays(-15).Date, DateTime.Now.AddDays(0).Date, null, 3, null);
                         }
                     }
                     catch (Exception ex)

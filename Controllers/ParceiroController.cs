@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using ADUSClient.Parceiro;
 using ADUSClient.Localidade;
 using System.Net.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace ADUSAdm.Controllers
 {
@@ -28,14 +29,14 @@ namespace ADUSAdm.Controllers
             _shareAPI = shareAPI;
         }
 
-        public async Task<IActionResult> Index(string? filtro, int pagina = 1)
+        public async Task<IActionResult> Index(string? filtro, List<string> perfis, int pagina = 1)
         {
-            Task<List<ADUSClient.Parceiro.ListParceiroViewModel>> ret = _culturaAPI.Lista(filtro);
-            List<ADUSClient.Parceiro.ListParceiroViewModel> c = await ret;
-
             ViewBag.filtro = filtro;
             ViewBag.role = _sessionManager.userrole;
             ViewBag.permissao = (_sessionManager.userrole != "UserV");
+            if (perfis.Count == 0)
+                ViewBag.PerfisSelecionados = new List<string> { "assinante" };
+            else ViewBag.PerfisSelecionados = perfis;
             return View();
         }
 
@@ -64,7 +65,7 @@ namespace ADUSAdm.Controllers
                 new SelectListItem {Text = "Indiferente", Value =TipoEstadoCivil.Indiferente.ToString()},
             };
 
-            Task<List<ListParceiroViewModel>> retc = _culturaAPI.Lista("");
+            Task<List<ListParceiroViewModel>> retc = _culturaAPI.Lista("", true, false, false, false);
             List<ListParceiroViewModel> t = await retc;
 
             ViewBag.Representantes = t.Select(m => new SelectListItem { Text = m.razaoSocial, Value = m.id.ToString() });
@@ -91,11 +92,21 @@ namespace ADUSAdm.Controllers
         [Authorize(Roles = "Admin,Super,User")]
         public async Task<IActionResult> Editar(string id, int acao = 0)
         {
-            ViewBag.acao = acao;
-            Task<ADUSClient.Parceiro.ParceiroViewModel> ret = _culturaAPI.ListaById(id);
-            ADUSClient.Parceiro.ParceiroViewModel c = await ret;
+            ADUSClient.Parceiro.ParceiroViewModel c;
 
-            ViewBag.Id = id;
+            if (acao != 1)
+            {
+                c = await _culturaAPI.ListaById(id);
+                ViewBag.acao = (acao == 2) ? "Editar" : (acao == 3) ? "Excluir" : "Visualizar";
+                ViewBag.Id = id;
+                ViewBag.Titulo = ViewBag.acao + " Parceiro";
+            }
+            else
+            {
+                ViewBag.acao = "Adicionar";
+                c = new ADUSClient.Parceiro.ParceiroViewModel { id = Guid.NewGuid().ToString() };
+                ViewBag.Titulo = "Novo Parceiro";
+            }
             ViewBag.TiposPessoa = new[] {
                 new SelectListItem { Text = "Física", Value = TipodePessoa.Física.ToString() },
                 new SelectListItem { Text = "Jurídica", Value = TipodePessoa.Jurídica.ToString() }
@@ -115,13 +126,14 @@ namespace ADUSAdm.Controllers
                 new SelectListItem {Text = "Indiferente", Value =TipoEstadoCivil.Indiferente.ToString()},
             };
 
-            Task<List<ListParceiroViewModel>> retc = _culturaAPI.Lista("");
-            List<ListParceiroViewModel> t = await retc;
+            List<ListParceiroViewModel> t = await _culturaAPI.Lista("", true, false, false, true);
 
             ViewBag.Representantes = t.Select(m => new SelectListItem { Text = m.razaoSocial, Value = m.id.ToString() });
 
-            Task<List<UFViewModel>> retu = _shareAPI.ListaUF("");
-            List<UFViewModel> uf = await retu;
+            var coprod = t.Where(x => x.iscoprodutor == true);
+            ViewBag.coprodutores = coprod.Select(m => new SelectListItem { Text = m.razaoSocial, Value = m.id.ToString() });
+
+            List<UFViewModel> uf = await _shareAPI.ListaUF("");
 
             ViewBag.Ufs = uf.Select(m => new SelectListItem { Text = m.sigla, Value = m.id.ToString() });
 
@@ -136,29 +148,6 @@ namespace ADUSAdm.Controllers
             }
             ViewBag.iduf = c.iduf;
             ViewBag.idcid = c.idCidade;
-            if (acao == 3)
-            {
-                ViewBag.acao = "disable";
-            }
-            else
-            {
-                ViewBag.acao = "";
-            }
-
-            return View(c);
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "Admin,Super,User")]
-        public async Task<IActionResult> Excluir(string id)
-        {
-            Task<ADUSClient.Parceiro.ParceiroViewModel> ret = _culturaAPI.ListaById(id);
-            ADUSClient.Parceiro.ParceiroViewModel c = await ret;
-            ViewBag.TiposPessoa = new[] {
-                new SelectListItem { Text = "Física", Value = TipodePessoa.Física.ToString() },
-                new SelectListItem { Text = "Jurídica", Value = TipodePessoa.Jurídica.ToString() }
-            };
-            //ViewBag.tipoclasse = c.tipoParceiro;
 
             return View(c);
         }
@@ -225,12 +214,90 @@ namespace ADUSAdm.Controllers
             return View("excluir");
         }
 
-        public async Task<JsonResult> GetData(string? filtro)
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<JsonResult> BuscarPorCpf(string cpf)
+
         {
-            Task<List<ADUSClient.Parceiro.ListParceiroViewModel>> ret = _culturaAPI.Lista(filtro);
+            var c = await _culturaAPI.ListaByRegistro(cpf);
+            if (c != null)
+            {
+                return Json(c);
+            }
+
+            return Json(new { id = "X" });
+        }
+
+        [AllowAnonymous]
+        public async Task<JsonResult> GetData(string? filtro, List<string> perfis)
+        {
+            bool isbanco = (perfis.Contains("banco"));
+            bool isassinante = (perfis.Contains("assinante"));
+            bool isafiliado = (perfis.Contains("afiliado"));
+            bool iscoprodutor = (perfis.Contains("coprodutor"));
+
+            Task<List<ADUSClient.Parceiro.ListParceiroViewModel>> ret = _culturaAPI.Lista(filtro, isassinante, isbanco, isafiliado, iscoprodutor);
             List<ADUSClient.Parceiro.ListParceiroViewModel> c = await ret;
 
             return Json(c);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> AdicionarParceiro(ParceiroViewModel model)
+        {
+            if (model.tipodePessoa == TipodePessoa.Jurídica)
+            {
+                if (string.IsNullOrEmpty(model.idRepresentante))
+                {
+                    var p = await _culturaAPI.ListaByRegistro(model.representante.registro);
+                    if (p == null)
+                    {
+                        var representanteModel = model.representante;
+                        var novoRepresentante = new ParceiroViewModel
+                        {
+                            id = Guid.NewGuid().ToString(),
+                            razaoSocial = representanteModel.razaoSocial,
+                            fantasia = representanteModel.fantasia,
+                            registro = representanteModel.registro,
+                            sexo = representanteModel.sexo,
+                            estadoCivil = representanteModel.estadoCivil,
+                            dtNascimento = representanteModel.dtNascimento,
+                            profissao = representanteModel.profissao,
+                            email = representanteModel.email,
+                            fone1 = representanteModel.fone1,
+                            idCidade = representanteModel.idCidade,
+                            iduf = representanteModel.iduf,
+                            cep = representanteModel.cep,
+                            numero = representanteModel.numero,
+                            bairro = representanteModel.bairro,
+                            logradouro = representanteModel.logradouro
+                        };
+
+                        var xa = await _culturaAPI.Adicionar(novoRepresentante);
+
+                        model.idRepresentante = novoRepresentante.id;
+                    }
+                    else
+                    {
+                        model.idRepresentante = p.id;
+                    }
+                    var x = await _culturaAPI.ListaById(model.id);
+                    x.idRepresentante = model.idRepresentante;
+                    var xp = await _culturaAPI.Salvar(x.id, x);
+                }
+            }
+            else
+            {
+                var p = await _culturaAPI.ListaById(model.id);
+                p.sexo = model.sexo;
+                p.profissao = model.profissao;
+                p.dtNascimento = model.dtNascimento;
+                p.estadoCivil = model.estadoCivil;
+                await _culturaAPI.Salvar(model.id, p);
+            }
+            TempData["Msgsucesso"] = "Dados Gravados com Sucesso";
+            return RedirectToAction("sucesso", "checkout",new {registro=model.registro});
         }
     }
 }

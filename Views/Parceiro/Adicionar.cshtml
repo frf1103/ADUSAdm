@@ -1,330 +1,298 @@
 ﻿@model ADUSClient.Parceiro.ParceiroViewModel
 
+@section styles {
+    <style>
+        /* Garantir rolagem do body caso CSS global restrinja overflow */
+        body {
+            overflow-y: auto;
+        }
 
+        .content-wrapper {
+            padding: 1rem;
+        }
+    </style>
+}
 
-
-
-<!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Adicionar um Parceiro de Negócio</h1>
+                <h1 class="mb-0">Adicionar Parceiro de Negócio</h1>
             </div>
         </div>
-    </div><!-- /.container-fluid -->
+    </div>
 </section>
 
-<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <form asp-action="adicionar" class="needs-validation" novalidate>
+            @Html.AntiForgeryToken()
 
-
-<div class="wrapper">
-    <section class="content">
-        <div class="container-fluid">
-            <div class="card card-primary card-outline">
+            <div class="card card-success">
+                <div class="card-header">
+                    <h3 class="card-title">Dados do Parceiro</h3>
+                </div>
                 <div class="card-body">
-                    <div class="tab-content" id="custom-content-above-tabContent">
-                        <div class="tab-pane fade show active" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab">
-                            <form asp-action="adicionar">
-                                @Html.AntiForgeryToken()
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                        <div class="row">                                        
-                                            <div class="form-group">
-                                                <label asp-for="id" class="control-label"></label>
-                                                <input asp-for="id" class="form-control" readonly />
-                                                <span asp-validation-for="id" class="text-danger"></span>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-2">
+                            <label asp-for="id" class="form-label mb-2"></label>
+                            <input asp-for="id" class="form-control" readonly />
+                            <span asp-validation-for="id" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-5">
+                            <label asp-for="razaoSocial" class="form-label mb-2"></label>
+                            <input asp-for="razaoSocial" class="form-control" required />
+                            <span asp-validation-for="razaoSocial" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-5">
+                            <label asp-for="fantasia" class="form-label mb-2"></label>
+                            <input asp-for="fantasia" class="form-control" />
+                            <span asp-validation-for="fantasia" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-2">
+                            <label asp-for="tipodePessoa" class="form-label mb-2"></label>
+                            <select asp-for="tipodePessoa" class="form-select" asp-items="@ViewBag.TiposPessoa" onchange="mudatipopessoa()"></select>
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="registro" class="form-label mb-2"></label>
+                            <input asp-for="registro" class="form-control" id="registro" oninput="formatCpfCnpj(this)" maxlength="18" />
+                            <span asp-validation-for="registro" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <label asp-for="sexo" class="form-label mb-2"></label>
+                            <select asp-for="sexo" class="form-select" asp-items="@ViewBag.TipoSexo"></select>
+                            <span asp-validation-for="sexo" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <label asp-for="estadoCivil" class="form-label mb-2"></label>
+                            <select asp-for="estadoCivil" class="form-select" asp-items="@ViewBag.TipoEstadoCivil"></select>
+                            <span asp-validation-for="estadoCivil" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="dtNascimento" class="form-label mb-2"></label>
+                            <input asp-for="dtNascimento" class="form-control" type="date" />
+                            <span asp-validation-for="dtNascimento" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-5">
+                            <label asp-for="profissao" class="form-label mb-2"></label>
+                            <input asp-for="profissao" class="form-control" />
+                        </div>
+                        <div class="col-md-7">
+                            <label asp-for="idRepresentante" class="form-label mb-2"></label>
+                            <select asp-for="idRepresentante" id="idrepresentante" class="form-select" asp-items="@ViewBag.Representantes"></select>
+                            <span asp-validation-for="idRepresentante" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <h5 class="mb-3">Endereço</h5>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-2">
+                            <label asp-for="cep" class="form-label mb-2"></label>
+                            <input asp-for="cep" class="form-control" onchange="buscarEndereco()" />
+                        </div>
+                        <div class="col-md-7">
+                            <label asp-for="logradouro" class="form-label mb-2"></label>
+                            <input asp-for="logradouro" id="logradouro" class="form-control" />
+                            <span asp-validation-for="logradouro" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="numero" class="form-label mb-2"></label>
+                            <input asp-for="numero" class="form-control" />
+                            <span asp-validation-for="numero" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label asp-for="complemento" class="form-label mb-2"></label>
+                            <input asp-for="complemento" class="form-control" />
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="bairro" class="form-label mb-2"></label>
+                            <input asp-for="bairro" id="bairro" class="form-control" />
+                            <span asp-validation-for="bairro" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <label asp-for="fone1" class="form-label mb-2"></label>
+                            <input asp-for="fone1" class="form-control" />
+                            <span asp-validation-for="fone1" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="fone2" class="form-label mb-2"></label>
+                            <input asp-for="fone2" class="form-control" />
+                            <span asp-validation-for="fone2" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-2">
+                            <label asp-for="iduf" class="form-label mb-2"></label>
+                            <input asp-for="nomeuf" id="iduf" class="form-control" disabled />
+                            <input asp-for="iduf" type="hidden" id="huf" />
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="idCidade" class="form-label mb-2"></label>
+                            <input asp-for="nomecidade" id="idmun" class="form-control" disabled />
+                            <input asp-for="idCidade" id="hcidade" type="hidden" />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="email" class="form-label mb-2"></label>
+                            <input asp-for="email" class="form-control" type="email" />
+                            <span asp-validation-for="email" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <h5 class="mb-3">Perfis e Comissões</h5>
+                    <div class="accordion mb-3" id="accordionPerfis">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingPerfis">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePerfis" aria-expanded="false" aria-controls="collapsePerfis">
+                                    Perfis e Comissões
+                                </button>
+                            </h2>
+                            <div id="collapsePerfis" class="accordion-collapse collapse" aria-labelledby="headingPerfis">
+                                <div class="accordion-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-12 d-flex flex-wrap gap-3">
+                                            <div class="form-check form-switch">
+                                                <input asp-for="isassinante" class="form-check-input" type="checkbox" />
+                                                <label asp-for="isassinante" class="form-check-label"></label>
+                                            </div>
+                                            <div class="form-check form-switch">
+                                                <input asp-for="isbanco" class="form-check-input" type="checkbox" />
+                                                <label asp-for="isbanco" class="form-check-label"></label>
+                                            </div>
+                                            <div class="form-check form-switch">
+                                                <input asp-for="isafiliado" class="form-check-input" type="checkbox" />
+                                                <label asp-for="isafiliado" class="form-check-label"></label>
+                                            </div>
+                                            <div class="form-check form-switch">
+                                                <input asp-for="iscoprodutor" class="form-check-input" type="checkbox" />
+                                                <label asp-for="iscoprodutor" class="form-check-label"></label>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="form-group">
-                                                <label asp-for="razaoSocial" class="control-label"></label>
-                                                <input asp-for="razaoSocial" class="form-control" />
-                                                <span asp-validation-for="razaoSocial" class="text-danger"></span>
-                                            </div>
-                                        </div>           
-                                        <div class="row">
-                                            <div class="form-group">
-                                                <label asp-for="fantasia" class="control-label"></label>
-                                                <input asp-for="fantasia" class="form-control" />
-                                                <span asp-validation-for="fantasia" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <div class="form-group">
-                                                    <label asp-for="tipodePessoa" class="control-label" ></label>
-                                                    <select asp-for="tipodePessoa" class="form-control" id="tipopessoa" asp-items="@ViewBag.TiposPessoa"  onchange="mudatipopessoa()"></select>                                                    
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label asp-for="registro" class="control-label"></label>
-                                                    <input asp-for="registro" class="form-control" id="registro" oninput="formatCpfCnpj(this)" maxlength="18" />
-                                                    <span asp-validation-for="registro" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-group">
-                                                    <label asp-for="sexo" class="control-label"></label>
-                                                    <select asp-for="sexo" class="form-control" id="sexo" asp-items="@ViewBag.TipoSexo"></select>
-                                                    <span asp-validation-for="sexo" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-group">
-                                                    <label asp-for="estadoCivil" class="control-label"></label>
-                                                    <select asp-for="estadoCivil" class="form-control" id="estadocivil" asp-items="@ViewBag.TipoEstadoCivil"></select>
-                                                    <span asp-validation-for="estadoCivil" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label asp-for="dtNascimento" class="control-label"></label>
-                                                    <input asp-for="dtNascimento" class="form-control" id="dtNascimento"  />
-                                                    <span asp-validation-for="dtNascimento" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="row">
-                                            <div class="col-md-5">
-                                                <div class="form-group">
-                                                    <label asp-for="profissao" class="control-label"></label>
-                                                    <input asp-for="profissao" class="form-control" >
-                                                </div>
-                                            </div>
-                                            <div class="col-md-7">
-                                                <div class="form-group">
-                                                    <label asp-for="idRepresentante" class="control-label"></label>
-                                                    <select asp-for="idRepresentante" id="idrepresentante" class="form-control" asp-items="@ViewBag.Representantes"></select>
-                                                    <span asp-validation-for="idRepresentante" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <div class="form-group">
-                                                    <label asp-for="cep" class="control-label"></label>
-                                                    <input asp-for="cep" class="form-control" onchange="buscarEndereco()">                                                   
-                                                    
-                                                </div>
-                                            </div>
-                                            <div class="col-md-7">
-                                                <div class="form-group">
-                                                    <label asp-for="logradouro" class="control-label"></label>
-                                                    <input asp-for="logradouro" id="logradouro" class="form-control" id="logradouro" />
-                                                    <span asp-validation-for="logradouro" class="text-danger"></span>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-2">
-                                                <div class="form-group">
-                                                    <label asp-for="numero" class="control-label"></label>
-                                                    <input asp-for="numero" class="form-control" id="numero" />
-                                                    <span asp-validation-for="numero" class="text-danger"></span>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label asp-for="complemento" class="control-label"></label>
-                                                    <input asp-for="complemento" class="form-control">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label asp-for="bairro" class="control-label"></label>
-                                                    <input asp-for="bairro" id="bairro" class="form-control" id="fone1" />
-                                                    <span asp-validation-for="bairro" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="form-group">
-                                                    <label asp-for="fone1" class="control-label"></label>
-                                                    <input asp-for="fone1" class="form-control" id="fone1" />
-                                                    <span asp-validation-for="fone1" class="text-danger"></span>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-2">
-                                                <div class="form-group">
-                                                    <label asp-for="fone2" class="control-label"></label>
-                                                    <input asp-for="fone2" class="form-control" id="numero" />
-                                                    <span asp-validation-for="fone2" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <div class="form-group">
-                                                    <label asp-for="iduf" class="control-label"></label>
-                                                    <select asp-for="iduf" id="iduf" class="form-control" asp-items="@ViewBag.Ufs" disabled onchange="loadcidades()"></select>
-                                                    <input asp-for="iduf" type="hidden" id="huf"  />
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label asp-for="idCidade" class="control-label"></label>
-                                                    <select asp-for="idCidade" id="idmun" class="form-control" asp-items="@ViewBag.municipios" disabled></select>
-                                                    <input asp-for="idCidade" type="hidden" id="hcidade" />
-                                                    <span asp-validation-for="idCidade" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label asp-for="email" class="control-label"></label>
-                                                    <input asp-for="email" class="form-control" id="numero" />
-                                                    <span asp-validation-for="email" class="text-danger"></span>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-
                                     </div>
-                                    <!-- /.card-body -->
-                                    <div class="card-footer">
-                                        <div class="row">
-                                            <div class="col text-right">
-                                                <button type="submit" class="btn btn-success">Salvar</button>
-                                                <a href="/parceiro/index" class="btn btn-default">Voltar</a>
-                                            </div>                                     
+
+                                    <div class="row g-3 mb-3">
+                                        <div class="col-md-6">
+                                            <label asp-for="idcoprodutor" class="form-label mb-2"></label>
+                                            <select asp-for="idcoprodutor" class="form-select" asp-items="@ViewBag.coprodutores"></select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label asp-for="percomissao" class="form-label mb-2"></label>
+                                            <input asp-for="percomissao" class="form-control" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-3 mb-3">
+                                        <div class="col-md-12">
+                                            <label asp-for="urlafiliado" class="form-label mb-2"></label>
+                                            <input asp-for="urlafiliado" class="form-control" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-3 mb-3">
+                                        <div class="col-md-12">
+                                            <label asp-for="idwallet" class="form-label mb-2"></label>
+                                            <input asp-for="idwallet" class="form-control" />
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-
-                        </div>                      
-                        
-
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <!-- /.card -->
-            </div>
-            <!-- /.card -->
-        </div>
-        <!-- /.container-fluid -->
-    </section>
 
-</div>
+                <div class="card-footer text-end mt-4">
+                    <button type="submit" class="btn btn-success me-2"><i class="fas fa-save me-1"></i> Salvar</button>
+                    <a href="/parceiro/index" class="btn btn-secondary"><i class="fas fa-arrow-left me-1"></i> Voltar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
 
 @section scripts {
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@4.0.0/dist/jquery.validate.unobtrusive.min.js"></script>
 
-
     <script>
-        var cidades=[]
+        var cidades = [];
 
         function formatCpfCnpj(input) {
-            let value = input.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+            let value = input.value.replace(/\D/g, '');
             let formattedValue;
-
-            if (value.length <= 11) { // Formatação de CPF
+            if (value.length <= 11) {
                 formattedValue = value.replace(/(\d{3})(\d)/, '$1.$2')
                     .replace(/(\d{3})(\d)/, '$1.$2')
                     .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-            } else { // Formatação de CNPJ
+            } else {
                 formattedValue = value.replace(/^(\d{2})(\d)/, '$1.$2')
                     .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
                     .replace(/\.(\d{3})(\d)/, '.$1/$2')
                     .replace(/(\d{4})(\d{1,2})$/, '$1-$2');
             }
-
             input.value = formattedValue;
         }
 
-        function mudatipopessoa()
-        {
-            if ($("#tipopessoa").val() == "Jurídica") {
+        function mudatipopessoa() {
+            if ($("#tipopessoa").val() === "Jurídica") {
                 $("#idrepresentante").prop('disabled', false);
-                $("#sexo").prop('disabled', true);
-                $("#estadocivil").prop('disabled', true);
-                $("#sexo").val("Indiferente");
-                $("#estadocivil").val("Indiferente");
-            }
-            else {
-                $("#idrepresentante").prop('disabled', true);
-                $("#idrepresentante").val(null);
+                $("#sexo").prop('disabled', true).val("Indiferente");
+                $("#estadocivil").prop('disabled', true).val("Indiferente");
+            } else {
+                $("#idrepresentante").prop('disabled', true).val(null);
                 $("#sexo").prop('disabled', false);
                 $("#estadocivil").prop('disabled', false);
-
             }
         }
 
-
-
-        function loadcidades(uf,mun) {
+        function loadcidades(ibge) {
             $.ajax({
                 type: "get",
-                url: "/localidade/getcidades?iduf=" + $("#iduf").val(),
-                data: {},
+                url: "/localidade/getcidadebyibge?ibge=" + ibge,
                 dataType: 'json',
-                aSync:false,
-                contentType: "application/json; charset=utf-8",
+                async: false,
                 success: function (obj) {
-                    if (obj != null) {
-                        var data = obj;
-                        var selectbox = $('#idmun');
-                        selectbox.find('option').remove();
-                        cidade2=[]
-                        $.each(data, function (i, d) {
-                            $('<option>').val(d.id).text(d.nome).appendTo(selectbox);
-                            cidades.push({"id":d.id,"nome":d.nome});
-                        });
-                        if (mun!="0")
-                        {
-                            cidade = cidades.filter(l => l.nome.trim().toLowerCase() == mun);
-                            if (cidade.length > 0) {
-                                x = cidade[0].id.toString();
-                                $("#idmun").val(x);
-                                $("#hcidade").val(x);
-                            }
-                        }
+                    if (obj) {
+                        $("#huf").val(obj.idUF);
+                        $("#hcidade").val(obj.id);
                     }
                 }
             });
         }
 
         function buscarEndereco() {
-            const cep = document.getElementById("cep").value.replace(/\D/g, "");
-
+            const cep = $("#cep").val().replace(/\D/g, "");
             if (cep.length !== 8) {
                 alert("CEP inválido. Deve conter 8 dígitos.");
                 return;
             }
-
             fetch(`https://viacep.com.br/ws/${cep}/json/`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.erro) {
                         alert("CEP não encontrado.");
                     } else {
-                        document.getElementById("logradouro").value = data.logradouro;
-                        document.getElementById("bairro").value = data.bairro;
-                      //  document.getElementById("idmun").value = data.localidade;
-                      //  document.getElementById("iduf").value = data.uf;
-                      
-                        selectuf = document.getElementById("iduf");
-                        options = Array.from(selectuf.options);
-
-                        encontrada = options.find(opt => opt.text.trim().toLowerCase() === data.uf.trim().toLowerCase());
-                        $("#iduf").val(encontrada.value);
-                        $("#huf").val(encontrada.value);
-
-                        loadcidades(encontrada.value, data.localidade.trim().toLowerCase());
-                        
-                       
+                        $("#logradouro").val(data.logradouro);
+                        $("#bairro").val(data.bairro);
+                        $("#idmun").val(data.localidade);
+                        $("#iduf").val(data.uf);
+                        loadcidades(data.ibge);
                     }
                 })
                 .catch(error => {
@@ -333,10 +301,15 @@
                 });
         }
 
+        $(document).ready(function () {
+            toggleCamposCoprodutor();
+            $('#iscoprodutor, #isafiliado').on('change', toggleCamposCoprodutor);
+        });
 
-       
-
+        function toggleCamposCoprodutor() {
+            const habilitar = $('#iscoprodutor').is(':checked') || $('#isafiliado').is(':checked');
+            $('#idcoprodutor').prop('disabled', !habilitar);
+            $('#percomissao').prop('disabled', !habilitar);
+        }
     </script>
 }
-
-<!-- /.content -->

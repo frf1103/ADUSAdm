@@ -45,6 +45,10 @@
       "PackagePath": "staticwebassets\\css\\sweetalert2.css"
     },
     {
+      "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\css\\theme-green.css",
+      "PackagePath": "staticwebassets\\css\\theme-green.css"
+    },
+    {
       "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\css\\theme.css",
       "PackagePath": "staticwebassets\\css\\theme.css"
     },
@@ -353,6 +357,14 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\images\\Imagem do WhatsApp de 2025-02-24 à(s) 16.03.00_e0928f23.jpg",
+      "PackagePath": "staticwebassets\\images\\Imagem do WhatsApp de 2025-02-24 à(s) 16.03.00_e0928f23.jpg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\images\\Imagem do WhatsApp de 2025-02-24 à(s) 16.03.15_f4782b53.jpg",
+      "PackagePath": "staticwebassets\\images\\Imagem do WhatsApp de 2025-02-24 à(s) 16.03.15_f4782b53.jpg"
+    },
+    {
       "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\images\\fundo.png",
       "PackagePath": "staticwebassets\\images\\fundo.png"
     },
@@ -363,6 +375,10 @@
     {
       "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\images\\logoadus.png",
       "PackagePath": "staticwebassets\\images\\logoadus.png"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\images\\tecasocial.webp",
+      "PackagePath": "staticwebassets\\images\\tecasocial.webp"
     },
     {
       "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\js\\Comuns.js",
@@ -8705,12 +8721,20 @@
       "PackagePath": "staticwebassets\\svg\\icons\\company.svg"
     },
     {
+      "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\svg\\icons\\copy.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\copy.svg"
+    },
+    {
       "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\svg\\icons\\crop.svg",
       "PackagePath": "staticwebassets\\svg\\icons\\crop.svg"
     },
     {
       "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\svg\\icons\\dollar-sign.svg",
       "PackagePath": "staticwebassets\\svg\\icons\\dollar-sign.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\svg\\icons\\email.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\email.svg"
     },
     {
       "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\svg\\icons\\farm.svg",
@@ -8827,6 +8851,10 @@
     {
       "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\svg\\icons\\users.svg",
       "PackagePath": "staticwebassets\\svg\\icons\\users.svg"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\svg\\icons\\whatsapp.svg",
+      "PackagePath": "staticwebassets\\svg\\icons\\whatsapp.svg"
     },
     {
       "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\webfonts\\check-circle.svg",

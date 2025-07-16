@@ -10,5 +10,6 @@
         public string access_token { get; set; }
         public string sincronize { get; set; }
         public string timesinc { get; set; }
+        public string split { get; set; }
     }
 }

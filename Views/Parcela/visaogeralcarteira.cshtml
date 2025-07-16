@@ -74,7 +74,9 @@
     <table class="table table-bordered table-striped" id="tabelaCarteira">
         <thead class="table-light">
             <tr>
-                <th class="text-start" style="width: 280px;">Parceiro</th>
+                <th class="text-start" style="width: 200px;">Parceiro</th>
+                <th class="text-start" style="width: 100px;">Fone</th>
+                <th class="text-start" style="width: 100px;">Email</th>
                 <th class="text-start" style="width: 160px;">Forma de Pagto</th>
                 <th class="text-start" style="width: 160px;">Plataforma</th>
                 <th class="alinha-direita" style="width: 70px;">Árvores</th>
@@ -94,6 +96,8 @@
             {
                 <tr>
                     <td class="text-start">@item.nomeParceiro</td>
+                    <td class="text-start">@item.fone</td>
+                    <td class="text-start">@item.email</td>
                     <td class="text-start">@item.formaPagamento</td>
                     <td class="text-start">@item.plataForma</td>
                     <td class="alinha-direita">@item.arvores.ToString()</td>
@@ -111,7 +115,7 @@
         </tbody>
         <tfoot class="table-light fw-bold">
             <tr>
-                <td colspan="3" class="text-end">Totais:</td>
+                <td colspan="5" class="text-end">Totais:</td>
                 <td class="alinha-direita">@ViewBag.arvores?.ToString()</td>
                 <td class="alinha-direita">@ViewBag.TotalValor?.ToString("C")</td>
                 <td class="alinha-direita">@ViewBag.TotalPago?.ToString("C")</td>
@@ -147,7 +151,7 @@
                 const ws = XLSX.utils.table_to_sheet(tabela, { raw: true });
 
                 // Corrige valores monetários para números
-                const colunasNumericas = [4, 5, 6, 7, 8, 9, 10, 11, 12];
+                const colunasNumericas = [6, 7, 8, 9, 10,11, 12, 13, 14];
                 for (const R in ws) {
                     if (R[0] === '!') continue;
                     const colIndex = XLSX.utils.decode_cell(R).c;
