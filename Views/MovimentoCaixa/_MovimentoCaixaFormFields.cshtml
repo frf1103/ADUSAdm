@@ -1,0 +1,59 @@
+﻿@model ADUSClient.MovimentoCaixa.MovimentoCaixaViewModel
+
+<div class="row g-3 mb-3">
+    <div class="col-md-3">
+        <label asp-for="IdTransacao" class="form-label fw-bold"></label>
+        <select asp-for="IdTransacao" class="form-select" asp-items="ViewBag.Transacoes"></select>
+        <span asp-validation-for="IdTransacao" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="IdCentroCusto" class="form-label fw-bold"></label>
+        <select asp-for="IdCentroCusto" class="form-select" asp-items="ViewBag.CentroCustos"></select>
+        <span asp-validation-for="IdCentroCusto" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="IdContaCorrente" class="form-label fw-bold"></label>
+        <select asp-for="IdContaCorrente" class="form-select" asp-items="ViewBag.Contas"></select>
+        <span asp-validation-for="IdContaCorrente" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="IdCategoria" class="form-label fw-bold"></label>
+        <select asp-for="IdCategoria" class="form-select" asp-items="ViewBag.Categorias"></select>
+        <span asp-validation-for="IdCategoria" class="text-danger small"></span>
+    </div>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-4">
+        <label asp-for="idparceiro" class="form-label fw-bold"></label>
+        <select asp-for="idparceiro" class="form-select" asp-items="ViewBag.Parceiros"></select>
+        <span asp-validation-for="idparceiro" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-2">
+        <label asp-for="Sinal" class="form-label fw-bold"></label>
+        <select asp-for="Sinal" class="form-select" asp-items="ViewBag.Sinais"></select>
+        <span asp-validation-for="Sinal" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="valorInput" class="form-label fw-bold"></label>
+        <input asp-for="valorInput" class="form-control moeda" id="valorInput" />
+        <span asp-validation-for="valorInput" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="DataMov" class="form-label fw-bold"></label>
+        <input asp-for="DataMov" class="form-control" type="date" />
+        <span asp-validation-for="DataMov" class="text-danger small"></span>
+    </div>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Observacao" class="form-label fw-bold"></label>
+    <textarea asp-for="Observacao" class="form-control" rows="3"></textarea>
+    <span asp-validation-for="Observacao" class="text-danger small"></span>
+</div>

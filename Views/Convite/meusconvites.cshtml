@@ -1,0 +1,122 @@
+﻿@model List<ADUSClient.Convite.ConviteViewModel>
+
+@{
+    ViewData["Title"] = "Convites";
+}
+
+
+<style>
+    td, th {
+        padding: 0.75rem;
+        font-size: 1rem;
+    }
+
+    @@media (max-width: 576px) {
+        td, th {
+            font-size: 0.9rem;
+        }
+
+        .btn-sm img {
+            width: 20px;
+        }
+
+        input#filtroBusca {
+            font-size: 1rem;
+        }
+    }
+</style>
+
+
+<h4 class="mb-3">Convites</h4>
+
+<div class="row mb-3">
+    <div class="col-md-6 col-12 mb-2">
+        <input type="text" class="form-control" id="filtroBusca" placeholder="Buscar por e-mail ou telefone..." onkeyup="filtrarTabela()" />
+    </div>
+    <div class="col-md-6 col-12 text-md-end">
+        <a class="btn btn-success" asp-action="Adicionar">
+            ➕ Adicionar Novo Convite
+        </a>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle" id="tabelaConvites">
+        <thead class="table-dark text-center">
+            <tr>
+                <th width="30%">Nome</th>
+                <th width="20%">Email</th>
+                <th width="10%">Telefone</th>
+                <th width="5%">Data Criação</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.titular</td>
+                    <td>@item.Email</td>
+                    <td>@item.Fone</td>
+                    <td>@item.DataCriacao.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td class="text-center">
+                        <div class="d-grid gap-1 d-md-flex justify-content-md-center">
+                            <button class="btn btn-outline-secondary btn-sm" onclick="copiarTexto('@item.IdConvite')">
+                                <img src="~/svg/icons/copy.svg" alt="Copiar" width="16" />
+                            </button>
+
+                            <a class="btn btn-outline-success btn-sm"
+                           href="https://wa.me/55@item.fone?text=@System.Net.WebUtility.UrlEncode("Olá! Aqui está seu convite: " + ViewBag.urlconvite+@item.IdConvite)"
+                           target="_blank">
+                                <img src="~/svg/icons/whatsapp.svg" alt="WhatsApp" width="16" />
+                            </a>
+
+                            <button class="btn btn-outline-primary btn-sm" onclick="enviarEmail('@item.Email', 'Convite para Teca Social', '@ViewBag.urlconvite+@item.IdConvite')">
+                                <img src="~/svg/icons/email.svg" alt="Email" width="16" />
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+    function copiarTexto(texto) {
+        navigator.clipboard.writeText(texto)
+            .then(() => alert("Convite copiado para a área de transferência!"))
+            .catch(err => alert("Erro ao copiar: " + err));
+    }
+
+    function enviarEmail(email, idconvite, url) {
+        fetch('/Convite/MailConvite?ref=12345', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, idconvite, url })
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.success)
+                    alert("Sucesso: email enviado");
+                else
+                    alert("Erro: " + res.message);
+            })
+            .catch(err => alert("Erro ao enviar: " + err)); 
+    }
+
+    function filtrarTabela() {
+        let input = document.getElementById("filtroBusca").value.toLowerCase();
+        let linhas = document.querySelectorAll("#tabelaConvites tbody tr");
+
+        linhas.forEach(row => {
+            let email = row.cells[1].textContent.toLowerCase();
+            let telefone = row.cells[2].textContent.toLowerCase();
+            let nome = row.cells[0].textContent.toLowerCase();
+            row.style.display = (email.includes(input) || telefone.includes(input) || nome.includes(input)) ? "" : "none";
+        });
+    }
+</script>

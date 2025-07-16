@@ -1,0 +1,66 @@
+﻿@model ADUSClient.Assinatura.AssinaturaViewModel
+
+<div class="row g-3 mb-3">
+    <div class="col-md-4">
+        <label asp-for="id" class="form-label"></label>
+        <input asp-for="id" class="form-control" readonly />
+        <span asp-validation-for="id" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="idparceiro" class="form-label"></label>
+        <select asp-for="idparceiro" class="form-select" asp-items="@ViewBag.parceiros"></select>
+        <span asp-validation-for="idparceiro" class="text-danger"></span>
+    </div>
+    <div class="col-md-2">
+        <label asp-for="datavenda" class="form-label"></label>
+        <input asp-for="datavenda" class="form-control" type="date" />
+        <span asp-validation-for="datavenda" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-2">
+        <label asp-for="idformapagto" class="form-label"></label>
+        <select asp-for="idformapagto" class="form-select" asp-items="@ViewBag.FormaPagto"></select>
+        <span asp-validation-for="idformapagto" class="text-danger"></span>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="status" class="form-label"></label>
+        <select asp-for="status" class="form-select" asp-items="@ViewBag.Status"></select>
+        <span asp-validation-for="status" class="text-danger"></span>
+    </div>
+    <div class="col-md-2">
+        <label asp-for="qtd" class="form-label"></label>
+        <input asp-for="qtd" class="form-control" />
+        <span asp-validation-for="qtd" class="text-danger"></span>
+    </div>
+    <div class="col-md-2">
+        <label asp-for="preco" class="form-label"></label>
+        <input asp-for="preco" class="form-control" />
+        <span asp-validation-for="preco" class="text-danger"></span>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="valor" class="form-label"></label>
+        <input asp-for="valor" class="form-control" />
+        <span asp-validation-for="valor" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-12">
+        <label asp-for="observacao" class="form-label"></label>
+        <input asp-for="observacao" class="form-control" />
+        <span asp-validation-for="observacao" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-8">
+        <label asp-for="idplataforma" class="form-label"></label>
+        <input asp-for="idplataforma" class="form-control" readonly />
+    </div>
+    <div class="col-md-4">
+        <label asp-for="plataforma" class="form-label"></label>
+        <input asp-for="plataforma" class="form-control" readonly />
+    </div>
+</div>

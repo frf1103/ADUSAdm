@@ -1,0 +1,94 @@
+﻿@model ADUSClient.Parcela.ParcelaViewModel
+
+<!-- Campos Identificadores -->
+<div class="row g-3 mb-3">
+    <div class="col-md-3">
+        <label asp-for="id" class="form-label"></label>
+        <input asp-for="id" class="form-control" readonly />
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="idassinatura" class="form-label"></label>
+        <input asp-for="idassinatura" class="form-control" readonly />
+    </div>
+
+    <div class="col-md-2">
+        <label asp-for="numparcela" class="form-label"></label>
+        <input asp-for="numparcela" class="form-control" />
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="idcaixa" class="form-label"></label>
+        <input asp-for="idcaixa" class="form-control" readonly />
+    </div>
+</div>
+
+<!-- Datas e Plataforma -->
+<div class="row g-3 mb-3">
+    <div class="col-md-3">
+        <label asp-for="idformapagto" class="form-label"></label>
+        <select asp-for="idformapagto" class="form-select" asp-items="ViewBag.Formas"></select>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="datavencimento" class="form-label"></label>
+        <input asp-for="datavencimento" type="date" class="form-control" />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="databaixa" class="form-label"></label>
+        <input asp-for="databaixa" type="date" class="form-control" />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="plataforma" class="form-label"></label>
+        <input asp-for="plataforma" class="form-control" />
+    </div>
+</div>
+
+<!-- Valores Monetários -->
+<div class="row g-3 mb-3">
+    <div class="col-md-2">
+        <label asp-for="valorInput" class="form-label"></label>
+        <input asp-for="valorInput" id="valorInput" class="form-control moeda" />
+    </div>
+    <div class="col-md-2">
+        <label asp-for="comissaoInput" class="form-label"></label>
+        <input asp-for="comissaoInput" id="comissaoInput" class="form-control moeda" />
+    </div>
+    <div class="col-md-2">
+        <label asp-for="descontoplataformaInput" class="form-label"></label>
+        <input asp-for="descontoplataformaInput" id="descontoplataformaInput" class="form-control moeda" />
+    </div>
+    <div class="col-md-2">
+        <label asp-for="descontoantecipacaoInput" class="form-label"></label>
+        <input asp-for="descontoantecipacaoInput" id="descontoantecipacaoInput" class="form-control moeda" />
+    </div>
+    <div class="col-md-2">
+        <label asp-for="acrescimosInput" class="form-label"></label>
+        <input asp-for="acrescimosInput" id="acrescimosInput" class="form-control moeda" />
+    </div>
+    <div class="col-md-2">
+        <label asp-for="descontosInput" class="form-label"></label>
+        <input asp-for="descontosInput" id="descontosInput" class="form-control moeda" />
+    </div>
+</div>
+
+<!-- Valor Líquido -->
+<div class="row g-3 mb-3">
+    <div class="col-md-4">
+        <label asp-for="valorliquidoInput" class="form-label"></label>
+        <input asp-for="valorliquidoInput" id="valorliquidoInput" class="form-control moeda" readonly />
+    </div>
+    <div class="col-md-4">
+        <label asp-for="idcheckout" class="form-label"></label>
+        <input asp-for="idcheckout" class="form-control" readonly />
+    </div>
+    <div class="col-md-4">
+        <label asp-for="nossonumero" class="form-label"></label>
+        <input asp-for="nossonumero" class="form-control" readonly />
+    </div>
+</div>
+
+<!-- Observações -->
+<div class="form-group">
+    <label asp-for="observacao" class="form-label"></label>
+    <textarea asp-for="observacao" class="form-control" rows="3"></textarea>
+</div>

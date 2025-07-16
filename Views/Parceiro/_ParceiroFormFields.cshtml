@@ -1,0 +1,193 @@
+﻿@model ADUSClient.Parceiro.ParceiroViewModel
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-2">
+        <label asp-for="id" class="form-label"></label>
+        <input asp-for="id" class="form-control" readonly />
+       
+    </div>
+    <div class="col-md-5">
+        <label asp-for="razaoSocial" class="form-label"></label>
+        <input asp-for="razaoSocial" class="form-control" required />
+        <span asp-validation-for="razaoSocial" class="text-danger"></span>
+    </div>
+    <div class="col-md-5">
+        <label asp-for="fantasia" class="form-label"></label>
+        <input asp-for="fantasia" class="form-control" />
+        <span asp-validation-for="fantasia" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-2">
+        <label asp-for="tipodePessoa" class="form-label"></label>
+        <select asp-for="tipodePessoa" class="form-select" asp-items="@ViewBag.TiposPessoa" onchange="mudatipopessoa()"></select>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="registro" class="form-label"></label>
+        <input asp-for="registro" class="form-control" id="registro" oninput="formatCpfCnpj(this)" maxlength="18" />
+        <span asp-validation-for="registro" class="text-danger"></span>
+    </div>
+    <div class="col-md-2">
+        <label asp-for="sexo" class="form-label"></label>
+        <select asp-for="sexo" class="form-select" asp-items="@ViewBag.TipoSexo"></select>
+        <span asp-validation-for="sexo" class="text-danger"></span>
+    </div>
+    <div class="col-md-2">
+        <label asp-for="estadoCivil" class="form-label"></label>
+        <select asp-for="estadoCivil" class="form-select" asp-items="@ViewBag.TipoEstadoCivil"></select>
+        <span asp-validation-for="estadoCivil" class="text-danger"></span>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="dtNascimento" class="form-label"></label>
+        <input asp-for="dtNascimento" class="form-control" type="date" />
+        <span asp-validation-for="dtNascimento" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-5">
+        <label asp-for="profissao" class="form-label"></label>
+        <input asp-for="profissao" class="form-control" />
+    </div>
+    <div class="col-md-7">
+        <label asp-for="idRepresentante" class="form-label"></label>
+        <select asp-for="idRepresentante" id="idrepresentante" class="form-select" asp-items="@ViewBag.Representantes"></select>
+        <span asp-validation-for="idRepresentante" class="text-danger"></span>
+    </div>
+</div>
+
+<hr class="my-4">
+
+<h5 class="mb-3">Endereço</h5>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-2">
+        <label asp-for="cep" class="form-label"></label>
+        <input asp-for="cep" class="form-control" onchange="buscarEndereco()" />
+    </div>
+    <div class="col-md-7">
+        <label asp-for="logradouro" class="form-label"></label>
+        <input asp-for="logradouro" id="logradouro" class="form-control" />
+        <span asp-validation-for="logradouro" class="text-danger"></span>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="numero" class="form-label"></label>
+        <input asp-for="numero" class="form-control" />
+        <span asp-validation-for="numero" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-4">
+        <label asp-for="complemento" class="form-label"></label>
+        <input asp-for="complemento" class="form-control" />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="bairro" class="form-label"></label>
+        <input asp-for="bairro" id="bairro" class="form-control" />
+        <span asp-validation-for="bairro" class="text-danger"></span>
+    </div>
+    <div class="col-md-2">
+        <label asp-for="fone1" class="form-label"></label>
+        <input asp-for="fone1" class="form-control" />
+        <span asp-validation-for="fone1" class="text-danger"></span>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="fone2" class="form-label"></label>
+        <input asp-for="fone2" class="form-control" />
+        <span asp-validation-for="fone2" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-2">
+        <label asp-for="iduf" class="form-label"></label>
+        <input asp-for="nomeuf" id="iduf" class="form-control" disabled />
+        <input asp-for="iduf" type="hidden" id="huf" />
+    </div>
+    <div class="col-md-4">
+        <label asp-for="idCidade" class="form-label"></label>
+        <input asp-for="nomecidade" id="idmun" class="form-control" disabled />
+        <input asp-for="idCidade" id="hcidade" type="hidden" />
+    </div>
+    <div class="col-md-6">
+        <label asp-for="email" class="form-label"></label>
+        <input asp-for="email" class="form-control" type="email" />
+        <span asp-validation-for="email" class="text-danger"></span>
+    </div>
+</div>
+
+<hr class="my-4">
+
+<h5 class="mb-3">Perfis e Comissões</h5>
+
+<div class="accordion mb-3" id="accordionPerfis">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingPerfis">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePerfis" aria-expanded="false" aria-controls="collapsePerfis">
+                Perfis e Comissões
+            </button>
+        </h2>
+        <div id="collapsePerfis" class="accordion-collapse collapse" aria-labelledby="headingPerfis">
+            <div class="accordion-body">
+                <div class="col-md-12 d-flex flex-wrap">
+                    <div class="form-check form-switch me-4 mb-2">
+                        <label class="form-check-label d-flex align-items-center gap-2">
+                            <input asp-for="isassinante" class="form-check-input" type="checkbox" />
+                            @Html.DisplayNameFor(m => m.isassinante)
+                        </label>
+                    </div>
+                    <div class="form-check form-switch me-4 mb-2">
+                        <label class="form-check-label d-flex align-items-center gap-2">
+                            <input asp-for="isbanco" class="form-check-input" type="checkbox" />
+                            @Html.DisplayNameFor(m => m.isbanco)
+                        </label>
+                    </div>
+                    <div class="form-check form-switch me-4 mb-2">
+                        <label class="form-check-label d-flex align-items-center gap-2">
+                            <input asp-for="isafiliado" class="form-check-input" type="checkbox" />
+                            @Html.DisplayNameFor(m => m.isafiliado)
+                        </label>
+                    </div>
+                    <div class="form-check form-switch me-4 mb-2">
+                        <label class="form-check-label d-flex align-items-center gap-2">
+                            <input asp-for="iscoprodutor" class="form-check-input" type="checkbox" />
+                            @Html.DisplayNameFor(m => m.iscoprodutor)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="idcoprodutor" class="form-label"></label>
+                        <select asp-for="idcoprodutor" class="form-select" asp-items="@ViewBag.coprodutores"></select>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="percomissao" class="form-label"></label>
+                        <input asp-for="percomissao" class="form-control" id="percomissao" />
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-10">
+                        <label asp-for="urlafiliado" class="form-label"></label>
+                        <div class="input-group">
+                            <input asp-for="urlafiliado" id="urlafiliado" class="form-control" />
+                            <button type="button" class="btn btn-outline-secondary" onclick="gerarLinkAfiliado()">Gerar Link</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-10">
+                        <label asp-for="idwallet" class="form-label"></label>
+                        <input asp-for="idwallet" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

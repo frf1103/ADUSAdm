@@ -1,0 +1,263 @@
+﻿@model List<ADUSClient.Convite.ConviteViewModel>
+
+@{
+    ViewData["Title"] = "Convites";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+
+<section class="content">
+    <form asp-action="index" method="get">
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-default" type="button" data-bs-toggle="collapse" data-bs-target="#filter" aria-expanded="false" aria-controls="filter">
+                    <img class="icon" src="/svg/icons/filter.svg" />
+                    Filtro
+                </button>
+
+                <div class="collapse mt-2" id="filter">
+                    <div class="card card-primary card-outline">
+                        <div class="row">
+                            @{
+                            if (User.IsInRole("Afiliado")) {
+                                <div class="col-md-3">
+                                     <select class="select2"  id="idAfiliado"  disabled data-placeholder="Escolha um afiliado" style="width: 100%;">
+                                 
+                                        @foreach (var item in ViewBag.Afiliados)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                               
+                                    </select>
+                                    <input type="hidden" name="idAfiliado"  value="@ViewBag.idAfiliado" />
+                                </div>
+                            }
+                            else 
+                            {
+                                <div class="col-md-3">
+                                     <select class="select2" name="idAfiliado" id="idAfiliado"  data-placeholder="Escolha um afiliado" style="width: 100%;">
+                                 
+                                        @foreach (var item in ViewBag.Afiliados)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                               
+                                    </select>
+                                </div>
+
+                            }
+                            }
+
+                            @{
+                            if (User.IsInRole("Coprodutor") || User.IsInRole("Afiliado")) {
+                                <div class="col-md-3">
+                                    <select class="select2"  id="idCoprodutor" disabled  data-placeholder="Escolha um coprodutor" style="width: 100%;">
+                              
+                                        @foreach (var item in ViewBag.Coprodutores)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <input type="hidden" name="idCoprodutor"  value="@ViewBag.idCoprodutor" />
+                            }
+                            else 
+                            {
+                                <div class="col-md-3">
+                                    <select class="select2" name="idCoprodutor" id="idCoprodutor"  data-placeholder="Escolha um coprodutor" style="width: 100%;">
+                              
+                                        @foreach (var item in ViewBag.Coprodutores)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    </select>
+                                </div>
+
+                            }
+                            }
+
+                            <div class="col-md-2">
+                                <select class="form-control" name="status" id="status">
+                                    <option value="3">Todos</option>
+                                    <option value="0">Checkout Incompleto</option>
+                                    <option value="1">Checkout Falho</option>
+                                    <option value="2">Checkout Efetivado</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-2">
+                                <select class="form-control" name="expirados" id="expirados">
+                                    <option value="2">Todos</option>
+                                    <option value="0">Válidos</option>
+                                    <option value="1">Expirados</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-md btn-default mt-1">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <h2>Convites</h2>
+    <input id="urlconvite" hidden value="@ViewBag.urlconvite"/>
+    @{
+        if (User.IsInRole("Afiliado")) 
+        {
+    
+            <div class="col text-right mb-2">
+                <a href="@Url.Action("Adicionar", new { idAfiliado = ViewBag.idAfiliado, idCoprodutor = ViewBag.idCoprodutor, acao = 1 })" class="btn btn-default">
+                    <img class="icon" src="/svg/icons/plus.svg"/>
+                </a>
+            </div>
+        }
+    }
+    <div id="jsGrid"></div>
+</section>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+    <script src="~/js/Comuns.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2({ theme: 'bootstrap-5' });
+
+            $("#idAfiliado").val("@ViewBag.idAfiliado").trigger("change");
+            $("#idCoprodutor").val("@ViewBag.idCoprodutor").trigger("change");
+            $("#status").val("@ViewBag.status").trigger("change");
+            $("#expirados").val("@ViewBag.expirados").trigger("change");
+            
+
+            function calcularExpirado(dataExpStr) {
+                const exp = new Date(dataExpStr);
+                const agora = new Date();
+                
+                return  exp>agora? "Expirado" : "Válido";
+            }
+
+            function copiarParaClipboard(texto) {
+                navigator.clipboard.writeText(texto)
+                    .then(() => alert("Convite copiado para a área de transferência!"))
+                    .catch(err => alert("Erro ao copiar: " + err));
+            }
+
+            $("#jsGrid").jsGrid({
+                width: "100%",
+                height: "400px",
+                sorting: true,
+                paging: true,
+                pageSize: 10,
+                pageButtonCount: 5,
+                autoload: true,
+                pagePrevText: "Anterior",
+                pageNextText: "Próximo",
+                pageFirstText: "Primeira",
+                pageLastText: "Última",
+                noDataContent: "<div class='custom-no-data'>Nenhum convite encontrado</div>",
+                controller: {
+                    loadData: function () {
+                        return $.ajax({
+                            type: "GET",
+                            url: "/Convite/GetData?idAfiliado=" + $("#idAfiliado").val()
+                                + "&idCoprodutor=" + $("#idCoprodutor").val()
+                                + "&status=" + $("#status").val()
+                                + "&expirados=" + $("#expirados").val(),
+                            dataType: "json"
+                        });
+                    }
+                },
+                fields: [
+                    { name: "idConvite", type: "text", title: "ID", width: 50, visible: false },
+                    { name: "titular", type: "text", title: "Nome", width: 40, visible: false },
+                    { name: "fone", type: "text", title: "Fone", width: 30 },
+                    //{ name: "email", type: "text", title: "Email", width: 100 },
+                    {
+                        name: "dataCriacao",
+                        title: "Criado em",
+                        itemTemplate: function (value) {
+                            const date = new Date(value);
+                            return date.toLocaleDateString("pt-BR") + ' ' + date.toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' });
+                        },
+                        width: 40
+                    },
+                    {
+                        name: "dataExpiracao",
+                        title: "Expira em",
+                        itemTemplate: function (value) {
+                            const date = new Date(value);
+                            return date.toLocaleDateString("pt-BR") + ' ' + date.toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' });
+                        },
+                        width: 40
+                    },
+                    {
+                        name: "statusConvite",
+                        title: "Validade",
+                        itemTemplate: function (_, item) {
+                            return calcularExpirado(item.dataexpiracao);
+                        },
+                        width: 25
+                    },
+                    {
+                        type: "control",
+                        itemTemplate: function (_, item) {
+                            var $result = $("<div>").addClass("d-flex align-items-center gap-1");
+
+                            var $copy = $("<button>").addClass("btn btn-sm btn-light").attr("title", "Copiar Convite")
+                                .html("<img src='/svg/icons/copy.svg' style='width:16px;'>")
+                                .on("click", function () {
+                                    copiarParaClipboard($("#urlconvite").val()+"/"+item.idConvite);
+                                });
+
+                            var $whatsapp = $("<button>").addClass("btn btn-sm btn-light").attr("title", "Enviar via WhatsApp")
+                                .html("<img src='/svg/icons/whatsapp.svg' style='width:16px;'>")
+                                .on("click", function () {
+                                    enviarWhatsapp(item.fone,$("#urlconvite").val() + "/" + item.idConvite);
+                                });
+                                ;
+
+                            var $email = $("<button>").addClass("btn btn-sm btn-light").attr("title", "Enviar por E-mail")
+                                .html("<img src='/svg/icons/email.svg' style='width:16px;'>")
+                                .on("click",function(){
+                                    enviarconviteEmail(item.email, item.idConvite,$("#urlconvite").val() +  item.idConvite);
+                                })
+                                ;
+
+                            var $actions = $("<div>").addClass("dropdown");
+                            var $button = $("<button>").addClass("btn btn-default dropdown-toggle")N~çao 
+                                .attr("type", "button")
+                                .attr("data-bs-toggle", "dropdown")
+                                .text("Ações");
+                            var $menu = $("<div>").addClass("dropdown-menu");
+
+                            var $edit = $("<a>").addClass("dropdown-item")
+                                .attr("href", "/Convite/Adicionar?id=" + item.idConvite + "&acao=2")
+                                .text("Editar");
+
+                            var $delete = $("<a>").addClass("dropdown-item")
+                                .attr("href", "/Convite/Adicionar?id=" + item.idConvite + "&acao=3")
+                                .text("Excluir");
+
+                            $menu.append($edit).append($delete);
+                            $actions.append($button).append($menu);
+
+                            $result.append($copy).append($whatsapp).append($email).append($actions);
+                            return $result;
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}

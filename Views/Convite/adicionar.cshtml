@@ -1,0 +1,126 @@
+﻿@model ADUSClient.Convite.ConviteViewModel
+
+<link rel="stylesheet" href="~/sweetalert2.min.css">
+<link rel="stylesheet" href="~/toastr.min.css">
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>@ViewBag.Titulo</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-primary card-outline">
+                <div class="card-body">
+                    <form asp-action="@ViewBag.Acao">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label asp-for="IdConvite" class="control-label"></label>
+                                            <input asp-for="IdConvite" class="form-control" readonly />
+                                            <span asp-validation-for="IdConvite" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>                                
+
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label asp-for="titular" class="control-label"></label>
+                                            <input asp-for="titular" class="form-control" />
+                                            <span asp-validation-for="titular" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="Fone" class="control-label"></label>
+                                            <input asp-for="Fone" class="form-control" />
+                                            <span asp-validation-for="Fone" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label asp-for="Email" class="control-label"></label>
+                                            <input asp-for="Email" class="form-control" />
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="DataCriacao" class="control-label"></label>
+                                            <input asp-for="DataCriacao" type="datetime-local" class="form-control" readonly/>
+                                            <span asp-validation-for="DataCriacao" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="DataExpiracao" class="control-label"></label>
+                                            <input asp-for="DataExpiracao" type="datetime-local" class="form-control" readonly/>
+                                            <span asp-validation-for="DataExpiracao" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="Status" class="control-label"></label>
+                                            <select asp-for="Status" class="form-control" disabled>
+                                                <option value="0">Checkout Incompleto</option>
+                                                <option value="1">Checkout Falho</option>
+                                                <option value="1">Checkout Efetivado</option>
+                                            </select>
+                                            <span asp-validation-for="Status" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="IdPlataforma" class="control-label"></label>
+                                            <select asp-for="IdPlataforma" class="form-control">
+                                                <option value="1">ASaaS</option>
+                                                <option value="2">Pagarme</option>
+                                            </select>
+                                            <span asp-validation-for="IdPlataforma" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                              
+                            </div>
+
+                            <div class="card-footer">
+                                <div class="row">
+                                    <div class="col text-right">
+                                        @if (ViewBag.idacao <= 2)
+                                        {
+                                            <button type="submit" class="btn btn-success">Salvar</button> 
+                                            <a href="/convite/adicionar?acao=1" class="btn btn-default">Novo</a>
+                                        }
+                                        else if (ViewBag.idacao == 3)
+                                        {
+                                            <button type="submit" class="btn btn-danger">Excluir</button>
+                                        }
+                                        <a href="/convite?idAfiliado=@ViewBag.idAfiliado&idCoprodutor=@ViewBag.idCoprodutor" class="btn btn-default">Voltar</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+

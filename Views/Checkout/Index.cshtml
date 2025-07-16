@@ -1,0 +1,226 @@
+﻿@model ADUSClient.Assinatura.CheckoutViewModel
+@{
+    ViewData["Title"] = "Checkout Mobile - Teca Social";
+    Layout = "_LayoutCheckout";
+}
+
+<div class="container-fluid px-0">
+    <div class="row g-0">
+        <!-- Coluna da esquerda -->
+        <div class="col-md-5 col-12 bg-light p-4 text-center">
+            <img src="~/images/tecasocial.webp" class="img-fluid mb-3" style="max-height: 160px;">
+            <h5 class="fw-bold">Árvore Teca Social - Tectona Grandis</h5>
+            <p class="mb-0 text-muted">Assinatura</p>
+            <p class="mb-0">R$ 47,00 cada</p>
+            <div class="d-flex justify-content-center align-items-center my-3">
+                <label for="quantidade" class="me-2 mb-0">Qtd:</label>
+                <input type="number" name="Qtd" id="Qtd" min="1" value="1" class="form-control w-auto text-center" style="max-width: 80px;" onchange="atualizarValor()">
+
+            </div>           
+
+            <p class="fw-bold fs-5 mt-2">TOTAL: <span id="valorTotal">R$ 47,00</span></p>
+            <p class="text-muted small">Cobrada a cada 1 mês<br>Automaticamente por 84 meses</p>
+        </div>
+
+        <!-- Coluna da direita -->
+        <div class="col-md-7 col-12 p-4">
+            <form asp-action="Index" method="post" onsubmit="return validarFormulario()">
+                @Html.AntiForgeryToken()
+                <h5 class="mb-3">
+                    🌳 Preencha os dados abaixo e selecione a quantidade de Árvores Teca que você deseja adquirir.
+                    Quanto mais árvores você escolhe, mais crianças carentes têm acesso à educação de qualidade.
+                </h5>
+                <div class="row g-2">
+                    <div class="col-md-12">
+                        <input asp-for="Nome" class="form-control" placeholder="Nome e sobrenome *" value="@ViewBag.nome" required />
+                    </div>
+                    <div class="col-md-12">
+                        <input asp-for="cpfCnpj" id="cpfCnpj" class="form-control" placeholder="CPF ou CNPJ *" title="Informe um CPF (11 dígitos) ou CNPJ (14 dígitos)" />
+                    </div>
+                    <div class="col-md-6">
+                        <input asp-for="Email" class="form-control" placeholder="E-mail *" required type="email" value="@ViewBag.email" />
+                    </div>
+                    <div class="col-md-6">
+                        <input asp-for="EmailConfirmacao" class="form-control" placeholder="Confirme o e-mail *" required type="email" />
+                    </div>
+                    <div class="col-md-6 d-flex">
+                        <select asp-for="Ddi" class="form-select me-2" style="max-width: 100px;">
+                            <option value="55">🇧🇷 +55</option>
+                            <option value="1">🇺🇸 +1</option>
+                        </select>
+                        <input asp-for="Telefone" class="form-control" placeholder="Celular *" value="@ViewBag.fone" required pattern="\d{9,15}" />
+                    </div>
+                    <div class="col-md-6">
+                        <input asp-for="Cep" class="form-control" id="cep" placeholder="CEP *" onchange="buscarEndereco()" required pattern="\d{8}" />
+                    </div>
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                            <input asp-for="Logradouro" id="logradouro" class="form-control" placeholder="Logradouro"  />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <input asp-for="Numero" class="form-control" placeholder="Número *" required />
+                    </div>
+                    <div class="col-md-6">
+                        <input asp-for="Complemento" class="form-control" placeholder="Complemento" />
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-signpost"></i></span>
+                            <input asp-for="Bairro" id="bairro" class="form-control" placeholder="Bairro"  />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-building"></i></span>
+                            <input asp-for="Cidade" id="cidade" class="form-control" placeholder="Cidade"  />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-flag"></i></span>
+                            <input asp-for="Estado" id="estado" class="form-control" placeholder="Estado"  />
+                        </div>
+                    </div>
+                </div>
+
+                <h5 class="mb-3 mt-4">MÉTODO DE PAGAMENTO</h5>
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <select asp-for="FormaPagamento" class="form-select" onchange="mostrarParcelas(this.value)" required>
+                            <option value="Recorrente">Cartão de Crédito (Recorrente)</option>
+                            <option value="Parcelado">Cartão de Crédito (Parcelado)</option>
+                            <option value="Boleto">Boleto</option>                            
+                        </select>
+                    </div>
+                    <div id="parcelas" class="col-md-6" style="display:none;">
+                        <select asp-for="Parcelas" id="comboParcelas" class="form-select"></select>
+                    </div>
+                </div>
+
+
+
+                <div id="vencimentoBoleto" class="mb-3" style="display:none;">
+                    <label for="dataVencimento">Data de vencimento do boleto:</label>
+                    <input type="date" id="dataVencimento" name="dataVencimento" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                </div>
+
+                <div id="cartaoFields">
+                    <div class="mb-2">
+                        <input asp-for="NumeroCartao" class="form-control" placeholder="Número do Cartão *" pattern="\d{13,19}" />
+                    </div>
+                    <div class="mb-2">
+                        <input asp-for="NomeTitular" class="form-control" placeholder="Nome Impresso no Cartão *" />
+                    </div>
+                    <div class="row g-2">
+                        <div class="col">
+                            <input asp-for="Validade" class="form-control" placeholder="Validade * (MM/AAAA)" pattern="(0[1-9]|1[0-2])/\d{4}" />
+                        </div>
+                        <div class="col">
+                            <input asp-for="Cvv" class="form-control" placeholder="CVV *" pattern="\d{3,4}" />
+                        </div>
+                        <input asp-for="QuantidadeArvores" type="text" class="form-control" hidden/>
+                    </div>
+                </div>                
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-success w-100">Confirmar Pagamento</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function validarFormulario() {
+        const email = document.querySelector('[name="Email"]').value;
+        const emailConf = document.querySelector('[name="EmailConfirmacao"]').value;
+        if (email !== emailConf) {
+            alert("Os e-mails não coincidem.");
+            return false;
+        }
+        const qtd = parseInt(document.querySelector('[name="Qtd"]')?.value || 0);
+        if (qtd <= 0) {
+            alert("A quantidade de árvores deve ser maior que zero.");
+            return false;
+        }
+
+        const cpfCnpj = document.querySelector('[name="CpfCnpj"]');
+        if (cpfCnpj) {
+            const valor = cpfCnpj.value.replace(/\D/g, "");
+            if (!(valor.length === 11 || valor.length === 14)) {
+                alert("Informe um CPF com 11 dígitos ou CNPJ com 14 dígitos.");
+                return false;
+            }
+        }  
+        x=document.getElementById("QuantidadeArvores");
+        x.value=qtd;
+
+        return true;
+    }
+    
+    function atualizarValor() {
+        const qtd = parseInt(document.querySelector('[name="Qtd"]')?.value || 1);
+        const total = qtd * 47;
+        const totalEl = document.getElementById("valorTotal");
+        if (totalEl) totalEl.innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+            gerarParcelas(total);
+    }
+    function mostrarParcelas(valor) {
+        const isCartao = valor === "Recorrente" || valor === "Parcelado";
+        document.getElementById("parcelas").style.display = valor === "Parcelado" ? "block" : "none";
+        document.getElementById("cartaoFields").style.display = isCartao ? "block" : "none";
+        document.getElementById("vencimentoBoleto").style.display = valor === "Boleto" ? "block" : "none";
+    }
+    function gerarParcelas(valorTotal) {
+        let combo = document.getElementById("comboParcelas");
+        combo.innerHTML = "";
+        for (let i = 1; i <= 21; i++) {
+            let valorParcela = (84*valorTotal / i).toFixed(2);
+            let opt = document.createElement("option");
+            opt.value = i;
+            opt.text = `${i}x de R$${valorParcela.replace('.', ',')}`;
+            combo.appendChild(opt);
+            
+        }
+    }
+    async function buscarEndereco() {
+        const cep = document.getElementById("cep").value.replace(/\D/g, "");
+        if (cep.length !== 8) return;
+        try {
+            const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+            const data = await res.json();
+            if (data.erro) return alert("CEP não encontrado.");
+            const logradouro = document.getElementById("logradouro");
+            const bairro = document.getElementById("bairro");
+            const cidade = document.getElementById("cidade");
+            const estado = document.getElementById("estado");
+            if (logradouro) logradouro.value = data.logradouro || "";
+            if (bairro) bairro.value = data.bairro || "";
+            if (cidade) cidade.value = data.localidade || "";
+            if (estado) estado.value = data.uf || "";
+        } catch (error) {
+            console.error("Erro ao buscar o CEP:", error);
+            alert("Erro ao buscar o CEP.");
+        }
+    }
+    document.addEventListener("DOMContentLoaded", () => {
+        atualizarValor();
+        const forma = document.querySelector('[name="FormaPagamento"]');
+        if (forma) mostrarParcelas(forma.value);
+
+        const cpfCnpjInput = document.getElementById("cpfCnpj");
+        if (cpfCnpjInput) {
+            cpfCnpjInput.addEventListener("input", () => {
+                let val = cpfCnpjInput.value.replace(/\D/g, "");
+                if (val.length <= 11) {
+                    val = val.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+                } else {
+                    val = val.replace(/(\d{2})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{4})(\d{2})$/, "$1/$2-$3");
+                }
+                cpfCnpjInput.value = val;
+            });
+        }
+    });
+
+</script>

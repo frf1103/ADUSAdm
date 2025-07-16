@@ -1,0 +1,119 @@
+﻿@model ADUSClient.Parceiro.ParceiroViewModel
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-2">
+        <label asp-for="representante.id" class="form-label"></label>
+        <input asp-for="representante.id" class="form-control" readonly />
+       
+    </div>
+    <div class="col-md-5">
+        <label asp-for="representante.razaoSocial" class="form-label"></label>
+        <input asp-for="representante.razaoSocial" class="form-control" required />
+        <span asp-validation-for="representante.razaoSocial" class="text-danger"></span>
+    </div>
+    <div class="col-md-5">
+        <label asp-for="representante.fantasia" class="form-label"></label>
+        <input asp-for="representante.fantasia" class="form-control" />
+        <span asp-validation-for="representante.fantasia" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-2">
+        <label asp-for="representante.tipodePessoa" class="form-label"></label>
+        <select asp-for="representante.tipodePessoa" class="form-select" asp-items="@ViewBag.TiposPessoa" onchange="mudatipopessoa()"></select>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="representante.registro" class="form-label"></label>
+        <input asp-for="representante.registro" class="form-control" id="registro" oninput="formatCpfCnpj(this)" maxlength="18" />
+        <span asp-validation-for="representante.registro" class="text-danger"></span>
+    </div>
+    <div class="col-md-2">
+        <label asp-for="representante.sexo" class="form-label"></label>
+        <select asp-for="representante.sexo" class="form-select" asp-items="@ViewBag.TipoSexo"></select>
+        <span asp-validation-for="representante.sexo" class="text-danger"></span>
+    </div>
+    <div class="col-md-2">
+        <label asp-for="representante.estadoCivil" class="form-label"></label>
+        <select asp-for="representante.estadoCivil" class="form-select" asp-items="@ViewBag.TipoEstadoCivil"></select>
+        <span asp-validation-for="representante.estadoCivil" class="text-danger"></span>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="representante.dtNascimento" class="form-label"></label>
+        <input asp-for="representante.dtNascimento" class="form-control" type="date" />
+        <span asp-validation-for="representante.dtNascimento" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-5">
+        <label asp-for="representante.profissao" class="form-label"></label>
+        <input asp-for="representante.profissao" class="form-control" />
+    </div>
+</div>
+
+<hr class="my-4">
+
+<h5 class="mb-3">Endereço</h5>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-2">
+        <label asp-for="representante.cep" class="form-label"></label>
+        <input asp-for="representante.cep" id="cep" class="form-control" onchange="buscarEndereco()" />
+    </div>
+    <div class="col-md-7">
+        <label asp-for="representante.logradouro" class="form-label"></label>
+        <input asp-for="representante.logradouro" id="logradouro" class="form-control" />
+        <span asp-validation-for="representante.logradouro" class="text-danger"></span>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="representante.numero" class="form-label"></label>
+        <input asp-for="representante.numero" class="form-control" />
+        <span asp-validation-for="representante.numero" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-4">
+        <label asp-for="representante.complemento" class="form-label"></label>
+        <input asp-for="representante.complemento" class="form-control" />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="representante.bairro" class="form-label"></label>
+        <input asp-for="representante.bairro" id="bairro" class="form-control" />
+        <span asp-validation-for="representante.bairro" class="text-danger"></span>
+    </div>
+    <div class="col-md-2">
+        <label asp-for="representante.fone1" class="form-label"></label>
+        <input asp-for="representante.fone1" class="form-control" />
+        <span asp-validation-for="representante.fone1" class="text-danger"></span>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="representante.fone2" class="form-label"></label>
+        <input asp-for="representante.fone2" class="form-control" />
+        <span asp-validation-for="representante.fone2" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-2">
+        <label asp-for="representante.iduf" class="form-label"></label>
+        <input asp-for="representante.nomeuf" id="iduf" class="form-control" disabled />
+        <input asp-for="representante.iduf" type="hidden" id="huf" />
+    </div>
+    <div class="col-md-4">
+        <label asp-for="representante.idCidade" class="form-label"></label>
+        <input asp-for="representante.nomecidade" id="idmun" class="form-control" disabled />
+        <input asp-for="representante.idCidade" id="hcidade" type="hidden" />
+    </div>
+    <div class="col-md-6">
+        <label asp-for="representante.email" class="form-label"></label>
+        <input asp-for="representante.email" class="form-control" type="email" />
+        <span asp-validation-for="representante.email" class="text-danger"></span>
+    </div>
+</div>
+
+
+
