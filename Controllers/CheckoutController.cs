@@ -24,7 +24,9 @@ using ADUSClient;
 using Microsoft.VisualBasic;
 using ADUSAdm.Services;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
+[AllowAnonymous]
 [RequireHttps]
 public class CheckoutController : Controller
 {

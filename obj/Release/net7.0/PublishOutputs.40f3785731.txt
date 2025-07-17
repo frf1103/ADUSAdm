@@ -48,6 +48,7 @@ C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.IdentityModel.Protocols.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.IdentityModel.Tokens.dll
+C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.SqlServer.Server.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Microsoft.Win32.SystemEvents.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\Newtonsoft.Json.dll
 C:\Users\user\source\repos\ADUS\ADUSAdm\obj\Release\net7.0\PubTmp\Out\PagSeguro.DotNet.Sdk.dll

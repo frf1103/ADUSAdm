@@ -111,3 +111,4 @@ C:\Users\user\source\repos\ADUS\ADUSAdm\bin\Release\net7.0\publish\publish\publi
 C:\Users\user\source\repos\ADUS\ADUSAdm\bin\Release\net7.0\publish\publish\publish\wwwroot\dist\js\.eslintrc.json
 C:\Users\user\source\repos\ADUS\ADUSAdm\bin\Release\net7.0\publish\publish\wwwroot\dist\js\.eslintrc.json
 C:\Users\user\source\repos\ADUS\ADUSAdm\bin\Release\net7.0\publish\wwwroot\dist\js\.eslintrc.json
+C:\Users\user\source\repos\ADUS\ADUSAdm\bin\Release\net7.0\Microsoft.SqlServer.Server.dll

@@ -211,7 +211,7 @@ namespace ADUSAdm.Controllers
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
             Console.WriteLine($"idassinatura = {c.idassinatura}");
 
-            return View("adicionar");
+            return View("adicionar",c);
         }
 
         [Authorize(Roles = "Admin,Super")]

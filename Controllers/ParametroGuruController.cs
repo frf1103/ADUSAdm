@@ -420,7 +420,7 @@ public class ParametrosGuruController : Controller
         {
             string url = _AsaasSettings.urlpayments;//model.urltransac;
 
-            url += "?creditDateStart=" + ini + "&creditDateFinish=" + fim;
+            url += "?paymentDate[ge]=" + ini + "&paymentDate[le]=" + fim;
             url = url + "&status=RECEIVED&limit=" + limit.ToString() +
                 "&offset=" + offset.ToString();
             var options = new RestClientOptions(url);

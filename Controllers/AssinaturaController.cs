@@ -240,7 +240,7 @@ namespace ADUSAdm.Controllers
                 ModelState.AddModelError(string.Empty, TempData["Erro"].ToString());
             }
 
-            return View("editar");
+            return View("editar",c);
         }
 
         [HttpGet]

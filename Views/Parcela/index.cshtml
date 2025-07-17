@@ -369,7 +369,7 @@
                             .html('<i class="fas fa-trash"></i>')
                             .attr("href", `/Parcela/Adicionar?id=${item.id}&acao=3&idassinatura=@ViewBag.idassinatura&idparceiro=@ViewBag.idparceiro&forma=@ViewBag.forma&status=@ViewBag.status&ini=@ViewBag.dtinicio&fim=@ViewBag.dtfim`)
 
-                        x = (y == "true");
+                        
                         if (x) 
                         {
                             $btnExcluir.attr("href", `/Parcela/Adicionar?id=${item.id}&acao=3&idassinatura=@ViewBag.idassinatura&idparceiro=@ViewBag.idparceiro&forma=@ViewBag.forma&status=@ViewBag.status&ini=@ViewBag.dtinicio&fim=@ViewBag.dtfim`)
@@ -389,7 +389,7 @@
                             .addClass("btn btn-sm btn-success")
                             
                             .html('<i class="fas fa-money-bill-wave"></i>');
-                        x = (y == "true");
+                        
                         if (x) 
                         {
                             $btnCaixa.attr("href", `/movimentocaixa/adicionar?acao=4&id=${item.idcaixa}`)
