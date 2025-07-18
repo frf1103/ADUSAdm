@@ -94,6 +94,7 @@ namespace ADUSAdm.Controllers
         {
             ADUSClient.Parceiro.ParceiroViewModel c;
 
+            ViewBag.urlconvite = _sessionManager.urlconvite;
             if (acao != 1)
             {
                 c = await _culturaAPI.ListaById(id);
@@ -297,7 +298,7 @@ namespace ADUSAdm.Controllers
                 await _culturaAPI.Salvar(model.id, p);
             }
             TempData["Msgsucesso"] = "Dados Gravados com Sucesso";
-            return RedirectToAction("sucesso", "checkout",new {registro=model.registro});
+            return RedirectToAction("sucesso", "checkout", new { registro = model.registro });
         }
     }
 }

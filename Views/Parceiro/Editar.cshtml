@@ -130,7 +130,7 @@
                     if (data.erro) {
                         alert("CEP não encontrado.");
                     } else {
-                        if (@ViewBag.acao!="Adicionar")
+                        if ("@ViewBag.acao"!="Adicionar")
                         {
                             document.getElementById("logradouro").value = data.logradouro;
                             document.getElementById("bairro").value = data.bairro;
@@ -154,6 +154,22 @@
                 });
         }
 
+        function loadcidades(ibge) {
+            $.ajax({
+                type: "get",
+                url: "/localidade/getcidadebyibge?ibge=" + ibge,
+                dataType: 'json',
+                async: false,
+                success: function (obj) {
+                    if (obj) {
+                        $("#huf").val(obj.idUF);
+                        $("#hcidade").val(obj.id);
+                    }
+                }
+            });
+        }
+
+
         function toggleCamposCoprodutor() {
             const isCoprodutor = $('#iscoprodutor').is(':checked');
             const isAfiliado = $('#isafiliado').is(':checked');
@@ -170,8 +186,8 @@
                 alert("ID do parceiro não encontrado.");
                 return;
             }
-
-            const url = `https://localhost:7030/home/index?afiliado=${idParceiro}&plataforma=asaas`;
+            const url="@ViewBag.urlconvite"+"irprateca?idfil="+idParceiro+"&idplataforma=asaas";
+            //const url = `https://localhost:7030/home/index?afiliado=${idParceiro}&plataforma=asaas`;
             document.getElementById("urlafiliado").value = url;
         }
     </script>

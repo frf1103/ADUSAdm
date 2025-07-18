@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ADUSAdm.Controllers
 {
-    [Authorize(Roles = "Super,Afiliado,Coprodutor")]
+    [AllowAnonymous]
     public class ConviteController : Controller
     {
         private readonly ConviteControllerClient _clienteAPI;
@@ -232,6 +232,13 @@ namespace ADUSAdm.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        public async Task<IActionResult> tecasocial()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Irprateca(string @idfil, string @idplataforma)
         {
             /*
@@ -277,7 +284,7 @@ namespace ADUSAdm.Controllers
 
                 Response.Cookies.Append("idplataforma", @idplataforma, options);
             }
-            return Redirect("http://localhost:5000/");
+            return View("tecasocial");
             //return Json(new { success = true, redirectUrl = "https://localhost:7030" });
             // Redireciona para a página que desejar
             //return Redirect("https://localhost:7030/");

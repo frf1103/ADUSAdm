@@ -106,6 +106,7 @@ public class CheckoutController : Controller
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public IActionResult Mobile(string nome, string fone, string email)
     {
         ViewBag.nome = nome;
@@ -116,7 +117,7 @@ public class CheckoutController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Index(CheckoutViewModel model)
+    public async Task<IActionResult> Processando(CheckoutViewModel model)
     {
         if (!Request.Cookies.ContainsKey("session_id"))
         {
