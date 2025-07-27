@@ -26,6 +26,9 @@
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="import-tab" data-bs-toggle="tab" data-bs-target="#import" type="button" role="tab">Importar Dados</button>
         </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="assinei-tab" data-bs-toggle="tab" data-bs-target="#assinei" type="button" role="tab">Assinei</button>
+        </li>
     </ul>
 
     <div class="tab-content border p-3 shadow-sm bg-white" id="parametrosTabsContent">
@@ -194,6 +197,54 @@
                 <div class="mt-3">
                     <label class="form-label fw-bold">Registros com erro</label>
                     <div id="logArea" class="form-control" style="height: 200px; overflow-y: auto; background-color: #f8f9fa; font-family: monospace; white-space: pre-wrap;"></div>
+                </div>
+            </form>
+        </div>
+
+        <div class="tab-pane fade" id="assinei" role="tabpanel">
+            <form asp-action="SalvarAssinei" method="post">
+                <input type="hidden" asp-for="id" />
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label asp-for="emailassinei" class="form-label fw-bold">E-mail</label>
+                        <input asp-for="emailassinei" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="senhaassinei" class="form-label fw-bold">Senha</label>
+                        <input asp-for="senhaassinei" class="form-control" type="password" />
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <label asp-for="subscriptionkeyassinei" class="form-label fw-bold">Subscription Key</label>
+                        <input asp-for="subscriptionkeyassinei" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="tenantassinei" class="form-label fw-bold">Tenant</label>
+                        <input asp-for="tenantassinei" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <label asp-for="loginassinei" class="form-label fw-bold">Login</label>
+                        <input asp-for="loginassinei" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="senhaloginassinei" class="form-label fw-bold">Senha do Login</label>
+                        <input asp-for="senhaloginassinei" class="form-control" type="password" />
+                    </div>
+                </div>
+
+                <div class="text-end mt-4">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save me-1"></i> Salvar Assinei
+                    </button>
                 </div>
             </form>
         </div>

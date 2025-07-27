@@ -206,7 +206,12 @@ namespace ADUSAdm.Services
                     name = model.Nome,
                     email = model.Email,
                     phone = $"+{model.Ddi}{model.Telefone}",
-                    cpfCnpj = model.cpfCnpj
+                    cpfCnpj = model.cpfCnpj,
+                    address=model.Logradouro,
+                    addressNumber=model.Numero,
+                    complement=model.Complemento,
+                    postalCode=model.Cep,
+                    province=model.Bairro
                 };
 
                 var json = JsonSerializer.Serialize(clientePayload);

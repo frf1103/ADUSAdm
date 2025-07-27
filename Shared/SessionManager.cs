@@ -169,6 +169,30 @@ namespace ADUSAdm.Shared
             }
         }
 
+        public string caminhoDoc
+        {
+            get
+            {
+                return Session.GetString("caminhoDoc");
+            }
+            set
+            {
+                Session.SetString("caminhoDoc", value);
+            }
+        }
+
+        public string caminhoDestino
+        {
+            get
+            {
+                return Session.GetString("caminhoDestino");
+            }
+            set
+            {
+                Session.SetString("caminhoDestino", value);
+            }
+        }
+
         public string idcoprodutor
         {
             get

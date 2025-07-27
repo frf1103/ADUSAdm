@@ -9,8 +9,10 @@ using ADUSAdm.Shared;
 using Newtonsoft.Json;
 using ADUSClient.Parceiro;
 using ADUSClient.Localidade;
+
 using System.Net.Http;
 using Microsoft.EntityFrameworkCore;
+using ADUSAdm.Services;
 
 namespace ADUSAdm.Controllers
 {
@@ -20,6 +22,7 @@ namespace ADUSAdm.Controllers
         private readonly ADUSClient.Controller.ParceiroControllerClient _culturaAPI;
         private readonly ADUSClient.Controller.SharedControllerClient _shareAPI;
         private const int TAMANHO_PAGINA = 5;
+
         private readonly SessionManager _sessionManager;
 
         public ParceiroController(ADUSClient.Controller.ParceiroControllerClient culturaAPI, SessionManager sessionManager, ADUSClient.Controller.SharedControllerClient shareAPI)
@@ -298,6 +301,7 @@ namespace ADUSAdm.Controllers
                 await _culturaAPI.Salvar(model.id, p);
             }
             TempData["Msgsucesso"] = "Dados Gravados com Sucesso";
+
             return RedirectToAction("sucesso", "checkout", new { registro = model.registro });
         }
     }

@@ -154,6 +154,7 @@ public class CheckoutController : Controller
     [HttpGet]
     public async Task<IActionResult> Sucesso(string registro, string invoiceurl)
     {
+        TempData["Sucesso"] = "1";
         if (!Request.Cookies.ContainsKey("session_id"))
         {
             return View("Falha");

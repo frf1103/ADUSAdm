@@ -9,12 +9,12 @@
        
     </div>
     <div class="col-md-5">
-        <label asp-for="representante.razaoSocial" class="form-label"></label>
+        <label asp-for="representante.razaoSocial" class="form-label">Nome</label>
         <input asp-for="representante.razaoSocial" class="form-control" required />
         <span asp-validation-for="representante.razaoSocial" class="text-danger"></span>
     </div>
     <div class="col-md-5">
-        <label asp-for="representante.fantasia" class="form-label"></label>
+        <label asp-for="representante.fantasia" class="form-label">Primeiro Nome</label>
         <input asp-for="representante.fantasia" class="form-control" />
         <span asp-validation-for="representante.fantasia" class="text-danger"></span>
     </div>
@@ -23,10 +23,10 @@
 <div class="row g-3 mb-3">
     <div class="col-md-2">
         <label asp-for="representante.tipodePessoa" class="form-label"></label>
-        <select asp-for="representante.tipodePessoa" class="form-select" asp-items="@ViewBag.TiposPessoa" onchange="mudatipopessoa()"></select>
+        <select asp-for="representante.tipodePessoa" class="form-select" asp-items="@ViewBag.TiposPessoa" value="0" onchange="mudatipopessoa()" readonly></select>
     </div>
     <div class="col-md-3">
-        <label asp-for="representante.registro" class="form-label"></label>
+        <label asp-for="representante.registro" class="form-label">CPF</label>
         <input asp-for="representante.registro" class="form-control" id="registro" oninput="formatCpfCnpj(this)" maxlength="18" />
         <span asp-validation-for="representante.registro" class="text-danger"></span>
     </div>

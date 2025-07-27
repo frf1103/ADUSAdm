@@ -49,7 +49,11 @@
           "dependencies": {
             "FluentValidation.AspNetCore": {
               "target": "Package",
-              "version": "[11.3.0, )"
+              "version": "[11.3.1, )"
+            },
+            "HtmlAgilityPack": {
+              "target": "Package",
+              "version": "[1.12.2, )"
             },
             "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
               "target": "Package",
@@ -75,9 +79,21 @@
               "target": "Package",
               "version": "[1.0.0, )"
             },
+            "Microsoft.TeamFoundationServer.ExtendedClient": {
+              "target": "Package",
+              "version": "[19.225.1, )"
+            },
+            "QuestPDF": {
+              "target": "Package",
+              "version": "[2025.7.0, )"
+            },
             "jquery-globalize": {
               "target": "Package",
               "version": "[1.4.2, )"
+            },
+            "jsreport.Types": {
+              "target": "Package",
+              "version": "[3.9.4, )"
             },
             "restsharp": {
               "target": "Package",

@@ -440,6 +440,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzaW5hdHVyYVxBZGljaW9uYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Assinatura/Contrato.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzaW5hdHVyYVxDb250cmF0by5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Assinatura/Editar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzaW5hdHVyYVxFZGl0YXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -458,6 +462,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Assinatura/_AssinaturaFormFields.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzaW5hdHVyYVxfQXNzaW5hdHVyYUZvcm1GaWVsZHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Assinatura/_clausulas.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzaW5hdHVyYVxfY2xhdXN1bGFzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/user/source/repos/ADUS/ADUSAdm/Views/Auth/AlterarSenha.cshtml]

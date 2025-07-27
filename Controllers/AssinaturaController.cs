@@ -8,26 +8,18 @@ using ADUSAdm.Shared;
 
 using Newtonsoft.Json;
 using ADUSClient.Assinatura;
-using ADUSClient.Localidade;
-using ADUSAdm.ViewModel;
+
 using ADUSClient.Parceiro;
 
 using JsonSerializer = System.Text.Json.JsonSerializer;
-using Microsoft.Extensions.Options;
-using Microsoft.EntityFrameworkCore;
-using System.Net.Http;
 using System.Text.Json.Serialization;
-using System.IO;
-using System.Collections.Generic;
-using System.Net.Http.Headers;
 using System.Text;
 using RestSharp;
 
-using Humanizer;
-using MathNet.Numerics;
 using ADUSClient.Controller;
 using ADUSAdm.Services;
 using ADUSClient;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 
 namespace ADUSAdm.Controllers
 {
@@ -40,6 +32,8 @@ namespace ADUSAdm.Controllers
         private readonly ADUSClient.Controller.ParametroGuruControllerClient _parametroAPI;
         private readonly CartaoAssinaturaControllerClient _cartoes;
         private readonly CheckoutService _check;
+        private readonly AssinaturaControllerClient _assinatura;
+        private readonly ICompositeViewEngine _viewEngine;
 
         private readonly ADUSClient.Controller.ParcelaControllerClient _parcelaAPI;
         private const int TAMANHO_PAGINA = 5;
@@ -51,7 +45,7 @@ namespace ADUSAdm.Controllers
             ADUSClient.Controller.ParametroGuruControllerClient parametroAPI,
 
             ADUSClient.Controller.ParcelaControllerClient parcelaAPI
-, CartaoAssinaturaControllerClient cartoes, CheckoutService check, ComumService comum)
+, CartaoAssinaturaControllerClient cartoes, CheckoutService check, ComumService comum, AssinaturaControllerClient assinatura, ICompositeViewEngine viewEngine)
         {
             _culturaAPI = culturaAPI;
             _sessionManager = sessionManager;
@@ -63,6 +57,8 @@ namespace ADUSAdm.Controllers
             _cartoes = cartoes;
             _check = check;
             _comum = comum;
+            _assinatura = assinatura;
+            _viewEngine = viewEngine;
         }
 
         public async Task<IActionResult> Index(DateTime ini, DateTime fim, string? filtro, int pagina = 1, string? idparceiro = "0", int status = 3, int forma = 3)
@@ -240,7 +236,7 @@ namespace ADUSAdm.Controllers
                 ModelState.AddModelError(string.Empty, TempData["Erro"].ToString());
             }
 
-            return View("editar",c);
+            return View("editar", c);
         }
 
         [HttpGet]
@@ -346,6 +342,14 @@ namespace ADUSAdm.Controllers
             ModelState.AddModelError(string.Empty, "Ocorreu um erro ao tentar cancelar a assinatura");
 
             return View("index");
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,Super,User")]
+        public async Task<IActionResult> Contrato(string id)
+        {
+            var ass = await _assinatura.ListaContratoById(id);
+            return View("contrato", ass);
         }
 
         [Authorize(Roles = "Admin,Super,User,Afiliado,Coprodutor")]
@@ -1288,6 +1292,55 @@ namespace ADUSAdm.Controllers
 
             TempData["Sucesso"] = "Novo cartão salvo e cartões antigos inativados.";
             return RedirectToAction("RevisarDados", new { idAssinatura = model.IdAssinatura });
+        }
+
+        [HttpPost]
+        public IActionResult GerarContratoServidor([FromBody] AssinaturaContratoViewModel model)
+        {
+            var clausulas = System.IO.File.ReadAllText("Views/Assinatura/_ClausulasContrato.html"); // ou do banco
+            var pdfBytes = ContratoPdfGenerator.Gerar(model);
+            return File(pdfBytes, "application/pdf", "Contrato_ADUS.pdf");
+        }
+
+        [HttpPost]
+        public IActionResult ReceberContratoPdf([FromBody] AssinaturaContratoViewModel model)
+        {
+            // Carrega o HTML da partial "_ClausulasContrato" renderizado em string
+            var clausulasHtml = RenderPartialViewToString("_Clausulas");
+
+            // Gera o PDF com base no model e nas cláusulas
+            try
+            {
+                var pdfBytes = ContratoPdfGenerator.Gerar(model);
+
+                return File(pdfBytes, "application/pdf", "Contrato_" + model.registrocomprador + ".pdf");
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private string RenderPartialViewToString(string viewName)
+        {
+            var controllerContext = this.ControllerContext;
+            using var writer = new StringWriter();
+            var viewResult = _viewEngine.FindView(controllerContext, viewName, false);
+
+            if (!viewResult.Success)
+                throw new InvalidOperationException($"View '{viewName}' não encontrada.");
+
+            var viewContext = new ViewContext(
+                controllerContext,
+                viewResult.View,
+                ViewData,
+                TempData,
+                writer,
+                new Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelperOptions()
+            );
+
+            viewResult.View.RenderAsync(viewContext).Wait();
+            return writer.GetStringBuilder().ToString();
         }
     }
 }

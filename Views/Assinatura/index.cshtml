@@ -372,8 +372,12 @@
                             .html('<i class="fas fa-dollar"></i>')
                             .on('click', () => window.location.href = "/parcela?idassinatura="+item.id+"&idparceiro="+item.idparceiro);
 
-
-                        return $('<div>').append($view, $edit, $del, $copy, $cancel, $parcela);
+                        var $gerarContrato = $('<button>')
+                            .addClass("btn btn-sm btn-primary me-1")
+                            .attr('title', 'Gerar contrato')
+                            .html('<i class="fas fa-file-contract"></i>')
+                            .on('click', () => window.location.href = `/assinatura/contrato/${item.id}`);
+                        return $('<div>').append($view, $edit, $del, $copy, $cancel, $parcela, $gerarContrato);
                     }
                 }
             ]

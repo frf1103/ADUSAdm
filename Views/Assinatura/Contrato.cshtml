@@ -1,0 +1,190 @@
+﻿@model ADUSClient.Assinatura.AssinaturaContratoViewModel
+
+@{
+    
+    Layout = "";
+}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Contrato de Compra e Venda</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            text-align: justify;
+        }
+
+        h1, h2, h3 {
+            text-align: center;
+            page-break-after: avoid;
+        }
+
+        .section-title {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .preambulo {
+            margin-top: 30px;
+        }
+
+        .assinatura {
+            margin-top: 50px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        td, th {
+            border: 1px solid #000;
+            padding: 6px;
+        }
+
+        .no-border td, .no-border th {
+            border: none;
+        }
+
+        .clausulas h3 {
+            page-break-before: auto;
+            margin-top: 24px;
+        }
+
+        .clausulas p {
+            page-break-inside: avoid;
+            margin: 4px 0;
+        }
+
+        #contrato {
+            padding: 0 15mm;
+        }
+    </style>
+</head>
+<body>
+    <div id="contrato">
+        <h1>CONTRATO DE COMPRA E VENDA DE ÁRVORE EM PÉ PARA ENTREGA FUTURA</h1>
+
+        <div class="preambulo">
+            <h2>PREÂMBULO</h2>
+            <table>
+                <tr><td><strong>COMPRADOR:</strong></td><td>@Model.comprador</td></tr>
+                @if (Model.registrocomprador.Length<=11)
+                {
+                    <tr><td><strong>CPF:</strong></td><td>@Model.registrocomprador</td></tr>
+                }
+                else
+                {
+                    <tr><td><strong>CNPJ:</strong></td><td>@Model.registrocomprador</td></tr>
+                }
+
+                <tr><td><strong>Email:</strong></td><td>@Model.emailcomprador</td></tr>
+                <tr><td><strong>Endereço:</strong></td><td>@Model.enderecocomprador</td></tr>
+                <tr><td><strong>Município:</strong></td><td>@Model.municipiocomprador</td></tr>
+                <tr><td><strong>Estado:</strong></td><td>@Model.ufcomprador</td></tr>
+                <tr><td><strong>CEP:</strong></td><td>@Model.cepcomprador</td></tr>
+                <tr><td><strong>Telefone:</strong></td><td>@Model.fonecomprador</td></tr>
+                @if (Model.registrocomprador.Length > 11)
+                {
+                    <table>
+                        <tr><td><strong>Representante Legal</strong></td><td>@Model.nomerepresentante</td></tr>
+                        <tr><td><strong>CPF Representante Legal:</strong></td><td>@Model.cpfrepresentante</td></tr>
+                    </table>
+
+                }
+
+            </table>
+            <br>
+            <table>
+                <tr><td><strong>VENDEDOR:</strong></td><td>ASSOCIAÇÃO DO DESENVOLVIMENTO URBANO SUSTENTÁVEL - ADUS</td></tr>
+                <tr><td><strong>CNPJ:</strong></td><td>36.987.628/0001-70</td></tr>
+                <tr><td><strong>Endereço:</strong></td><td>RUA VENEZA, Nº 36, RESIDENCIAL FLORENÇA, SINOP - MT</td></tr>
+                <tr><td><strong>Email:</strong></td><td>adus@gfn.agr.br</td></tr>
+                <tr><td><strong>Telefone:</strong></td><td>(62) 99418-1626</td></tr>
+                <tr><td><strong>Representante Legal:</strong></td><td>VILSON JOSÉ VIAN</td></tr>
+            </table>
+            <br>
+            <table>
+                <tr><td><strong>Quantidade de Árvores:</strong></td><td>@Model.qtd</td></tr>
+                <tr><td><strong>Valor Total:</strong></td><td>R$ @Model.valor</td></tr>
+                <tr><td><strong>Forma de Pagamento:</strong></td><td>@Model.formapagto</td></tr>
+            </table>
+
+        </div>
+
+        <div class="corpo-contrato clausulas">
+            @Html.Partial("_Clausulas")
+        </div>
+
+        <div class="assinatura">
+            <p>Sinop - MT, ___ de ___________ de 2025.</p>
+            <br><br>
+            <p>__________________________________________<br>ADUS - VENDEDORA</p>
+            <br><br>
+            <p>__________________________________________<br>@Model.comprador - COMPRADOR</p>
+            <br><br>
+            <table>
+                <tr>
+                    <th>Nome da Testemunha</th>
+                    <th>CPF</th>
+                </tr>
+                <tr>
+                    <td>___________________________________</td>
+                    <td>______________________________</td>
+                </tr>
+                <tr>
+                    <td>___________________________________</td>
+                    <td>______________________________</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 50px;">
+        <button onclick="gerarPdf()">Gerar PDF e Baixar</button>
+    </div>
+
+    <script>
+        function gerarPdf() {
+            const model = {
+                comprador: '@Model.comprador',
+                registrocomprador: '@Model.registrocomprador',
+                emailcomprador: '@Model.emailcomprador',
+                enderecocomprador: '@Model.enderecocomprador',
+                municipiocomprador: '@Model.municipiocomprador',
+                ufcomprador: '@Model.ufcomprador',
+                cepcomprador: '@Model.cepcomprador',
+                fonecomprador: '@Model.fonecomprador',
+                qtd: '@Model.qtd',
+                valor: '@Model.valor',
+                formapagto: '@Model.formapagto',
+                estadocivil:'@Model.estadocivil',
+                cpfrepresentante:'@Model.cpfrepresentante',
+                nomerepresentante:'@Model.nomerepresentante',
+                datavenda:'@Model.datavenda'
+            };
+
+            fetch('/Assinatura/ReceberContratoPdf', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(model)
+            })
+                .then(res => res.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = "Contrato_ADUS_"+@Model.registrocomprador+".pdf";
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                });
+        }
+    </script>
+</body>
+</html>

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using QuestPDF.Infrastructure;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -44,6 +45,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 // --------------------------------------
 
 var urlAPI = builder.Configuration.GetSection("AppSettings").GetSection("urlapi").Value;
+//var staticToken = builder.Configuration.GetSection("AppSettings").GetSection("StaticToken").Value;
 
 builder.Services.AddHttpClient<ADUSClient.Controller.MoedaControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
 builder.Services.AddHttpClient<ADUSClient.Controller.ParceiroControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
@@ -111,6 +113,7 @@ builder.Services.AddLocalization(options => options.ResourcesPath = "Resources")
 
 builder.Services.AddScoped<ImportacaoService>();
 builder.Services.AddScoped<ILogService, LogService>();
+
 builder.Services.AddSignalR();
 
 // --------------------------------------
@@ -140,6 +143,7 @@ builder.Services.AddDataProtection()
     .PersistKeysToFileSystem(new DirectoryInfo(@"C:\inetpub\wwwroot\adusnovo\keys"))
     .SetApplicationName("ADUSCheckout");
 
+QuestPDF.Settings.License = LicenseType.Community;
 var app = builder.Build();
 
 // ✅ ✅ ADICIONADO PARA FUNCIONAR EM APLICATIVO VIRTUAL:

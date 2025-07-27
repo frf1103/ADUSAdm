@@ -27,7 +27,7 @@
 <div class="row g-3 mb-3">
     <div class="col-md-3">
         <label asp-for="idformapagto" class="form-label"></label>
-        <select asp-for="idformapagto" class="form-select" asp-items="ViewBag.Formas"></select>
+        <select asp-for="idformapagto" class="form-select" asp-items="@ViewBag.Formas"></select>
     </div>
     <div class="col-md-3">
         <label asp-for="datavencimento" class="form-label"></label>
@@ -83,7 +83,7 @@
     </div>
     <div class="col-md-4">
         <label asp-for="nossonumero" class="form-label"></label>
-        <input asp-for="nossonumero" class="form-control" readonly />
+        <input asp-for="nossonumero" class="form-control"  />
     </div>
 </div>
 

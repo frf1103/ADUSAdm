@@ -23,7 +23,6 @@
                 </div>
                 <div class="card-body">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
                     @if (ViewBag.acao == "excluir" || ViewBag.acao == "visualizar")
                     {
                         <fieldset disabled>
@@ -35,6 +34,14 @@
                         @Html.Partial("_ParcelaFormFields", Model)
                     }
                 </div>
+                <input asp-for="id" class="form-control" hidden />
+                <input asp-for="valorliquido" class="form-control" hidden />
+                <input asp-for="idassinatura" class="form-control" hidden />
+                <input asp-for="nossonumero" class="form-control" hidden />
+                <input asp-for="idassinatura" class="form-control" hidden />
+                <input asp-for="idcaixa" class="form-control" hidden />
+                <input asp-for="idcheckout" class="form-control" hidden />
+
                 <div class="card-footer text-end">
                     @if (ViewBag.acao == "adicionar" || ViewBag.acao == "editar")
                     {

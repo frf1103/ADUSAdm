@@ -89,7 +89,7 @@ namespace ADUSAdm.Controllers
 
         [Authorize(Roles = "Admin,Super")]
         [HttpGet]
-        public async Task<IActionResult> Adicionar(string id, DateTime ini, DateTime fim, int acao = 0, string idparceiro = "0", string idassinatura = "0", int forma = 0, int tipodata = 0, int status = 0
+        public async Task<IActionResult> Adicionar(string id, DateTime ini, DateTime fim, int acao = 0, string idparceiro = "0", string idassina = "0", int forma = 0, int tipodata = 0, int status = 0
             )
         {
             ParcelaViewModel c;
@@ -100,7 +100,7 @@ namespace ADUSAdm.Controllers
                 c = new ParcelaViewModel
                 {
                     id = Guid.NewGuid().ToString("N"),
-                    idassinatura = idassinatura
+                    idassinatura = idassina
                 };
                 ViewBag.Titulo = "Adicionar Parcela";
                 ViewBag.Acao = "adicionar";
@@ -142,7 +142,7 @@ namespace ADUSAdm.Controllers
                 new SelectListItem { Text = "Pix", Value = "2" }
             };
             ViewBag.idparceiro = idparceiro;
-            ViewBag.idassinatura = idassinatura;
+            ViewBag.idassinatura = idassina;
             ViewBag.tipodada = tipodata;
             ViewBag.forma = forma;
             ViewBag.ini = ini.ToString("yyyy-MM-dd");
@@ -211,7 +211,7 @@ namespace ADUSAdm.Controllers
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
             Console.WriteLine($"idassinatura = {c.idassinatura}");
 
-            return View("adicionar",c);
+            return View("adicionar", c);
         }
 
         [Authorize(Roles = "Admin,Super")]

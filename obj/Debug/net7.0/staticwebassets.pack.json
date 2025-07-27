@@ -5,6 +5,38 @@
       "PackagePath": "staticwebassets\\ADUSAdm.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\Doc\\PF.docx",
+      "PackagePath": "staticwebassets\\Doc\\PF.docx"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\Doc\\PJ.docx",
+      "PackagePath": "staticwebassets\\Doc\\PJ.docx"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\contratos\\Contrato_20250721_223302.pdf",
+      "PackagePath": "staticwebassets\\contratos\\Contrato_20250721_223302.pdf"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\contratos\\Contrato_20250721_223602.pdf",
+      "PackagePath": "staticwebassets\\contratos\\Contrato_20250721_223602.pdf"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\contratos\\Contrato_20250721_224117.pdf",
+      "PackagePath": "staticwebassets\\contratos\\Contrato_20250721_224117.pdf"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\contratos\\Contrato_20250721_225002.pdf",
+      "PackagePath": "staticwebassets\\contratos\\Contrato_20250721_225002.pdf"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\contratos\\Contrato_20250721_230404.pdf",
+      "PackagePath": "staticwebassets\\contratos\\Contrato_20250721_230404.pdf"
+    },
+    {
+      "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\contratos\\Contrato_20250721_230850.pdf",
+      "PackagePath": "staticwebassets\\contratos\\Contrato_20250721_230850.pdf"
+    },
+    {
       "Id": "C:\\Users\\user\\source\\repos\\ADUS\\ADUSAdm\\wwwroot\\css\\adminlte.min.css",
       "PackagePath": "staticwebassets\\css\\adminlte.min.css"
     },
