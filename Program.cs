@@ -1,5 +1,6 @@
 ﻿using ADUSAdm.Data;
 using ADUSAdm.FormatingConfiguration;
+using ADUSAdm.Handlers;
 using ADUSAdm.Services;
 using ADUSAdm.Shared;
 using MathNet.Numerics;
@@ -44,38 +45,6 @@ builder.Services.ConfigureApplicationCookie(options =>
 // Configuração dos HttpClients
 // --------------------------------------
 
-var urlAPI = builder.Configuration.GetSection("AppSettings").GetSection("urlapi").Value;
-//var staticToken = builder.Configuration.GetSection("AppSettings").GetSection("StaticToken").Value;
-
-builder.Services.AddHttpClient<ADUSClient.Controller.MoedaControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
-builder.Services.AddHttpClient<ADUSClient.Controller.ParceiroControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
-builder.Services.AddHttpClient<ADUSClient.Controller.SharedControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
-builder.Services.AddHttpClient<ADUSClient.Controller.AssinaturaControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
-builder.Services.AddHttpClient<ADUSClient.Controller.ParcelaControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
-builder.Services.AddHttpClient<ADUSClient.Controller.ParametroGuruControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
-builder.Services.AddHttpClient<ADUSClient.Controller.BancoControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
-builder.Services.AddHttpClient<ADUSClient.Controller.ContaCorrenteControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
-builder.Services.AddHttpClient<ADUSClient.Controller.MovimentoCaixaControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
-builder.Services.AddHttpClient<ADUSClient.Controller.CentroCustoControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
-builder.Services.AddHttpClient<ADUSClient.Controller.PlanoContaControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
-builder.Services.AddHttpClient<ADUSClient.Controller.TransacaoControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
-builder.Services.AddHttpClient<ADUSClient.Controller.TransacBancoControllerClient>(c => c.BaseAddress = new Uri(urlAPI));
-
-builder.Services.AddHttpClient<ADUSClient.Controller.ConviteControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<ADUSClient.Controller.CartaoAssinaturaControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
-builder.Services.AddHttpClient<ADUSClient.Controller.LogCheckoutControllerClient>(client =>
-{
-    client.BaseAddress = new Uri(urlAPI.ToString());
-});
-
 // --------------------------------------
 // Configuração de serviços auxiliares
 // --------------------------------------
@@ -88,6 +57,12 @@ builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpS
 builder.Services.Configure<ASAASSettings>(builder.Configuration.GetSection("ASAASSettings"));
 builder.Services.AddTransient<ADUSAdm.Shared.IEmailSender, EmailSender>();
 builder.Services.AddTransient<ADUSAdm.Shared.ASAASSettings, ASAASSettings>();
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+
+builder.Services.AddTransient<JwtTokenHandler>();
+
+builder.Services.AddHttpClient("ApiComJwt")
+    .AddHttpMessageHandler<JwtTokenHandler>();
 
 builder.Services.AddTransient<ADUSAdm.Shared.IEmailSender, EmailSender>();
 
@@ -95,6 +70,40 @@ builder.Services.AddControllers(options =>
 {
     options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
 });
+
+var urlAPI = builder.Configuration.GetSection("AppSettings").GetSection("urlapi").Value;
+//var staticToken = builder.Configuration.GetSection("AppSettings").GetSection("StaticToken").Value;
+
+builder.Services.AddHttpClient<ADUSClient.Controller.MoedaControllerClient>(c => c.BaseAddress = new Uri(urlAPI)).AddHttpMessageHandler<JwtTokenHandler>();
+builder.Services.AddHttpClient<ADUSClient.Controller.ParceiroControllerClient>(c => c.BaseAddress = new Uri(urlAPI)).AddHttpMessageHandler<JwtTokenHandler>();
+builder.Services.AddHttpClient<ADUSClient.Controller.SharedControllerClient>(c => c.BaseAddress = new Uri(urlAPI)).AddHttpMessageHandler<JwtTokenHandler>();
+builder.Services.AddHttpClient<ADUSClient.Controller.AssinaturaControllerClient>(c => c.BaseAddress = new Uri(urlAPI)).AddHttpMessageHandler<JwtTokenHandler>();
+builder.Services.AddHttpClient<ADUSClient.Controller.ParcelaControllerClient>(c => c.BaseAddress = new Uri(urlAPI)).AddHttpMessageHandler<JwtTokenHandler>();
+builder.Services.AddHttpClient<ADUSClient.Controller.ParametroGuruControllerClient>(c => c.BaseAddress = new Uri(urlAPI)).AddHttpMessageHandler<JwtTokenHandler>();
+
+builder.Services.AddHttpClient<ADUSClient.Controller.BancoControllerClient>(c => c.BaseAddress = new Uri(urlAPI)).AddHttpMessageHandler<JwtTokenHandler>();
+
+builder.Services.AddHttpClient<ADUSClient.Controller.ContaCorrenteControllerClient>(c => c.BaseAddress = new Uri(urlAPI)).AddHttpMessageHandler<JwtTokenHandler>();
+builder.Services.AddHttpClient<ADUSClient.Controller.MovimentoCaixaControllerClient>(c => c.BaseAddress = new Uri(urlAPI)).AddHttpMessageHandler<JwtTokenHandler>();
+builder.Services.AddHttpClient<ADUSClient.Controller.CentroCustoControllerClient>(c => c.BaseAddress = new Uri(urlAPI)).AddHttpMessageHandler<JwtTokenHandler>();
+builder.Services.AddHttpClient<ADUSClient.Controller.PlanoContaControllerClient>(c => c.BaseAddress = new Uri(urlAPI)).AddHttpMessageHandler<JwtTokenHandler>();
+builder.Services.AddHttpClient<ADUSClient.Controller.TransacaoControllerClient>(c => c.BaseAddress = new Uri(urlAPI)).AddHttpMessageHandler<JwtTokenHandler>();
+builder.Services.AddHttpClient<ADUSClient.Controller.TransacBancoControllerClient>(c => c.BaseAddress = new Uri(urlAPI)).AddHttpMessageHandler<JwtTokenHandler>();
+
+builder.Services.AddHttpClient<ADUSClient.Controller.ConviteControllerClient>(client =>
+{
+    client.BaseAddress = new Uri(urlAPI.ToString());
+}).AddHttpMessageHandler<JwtTokenHandler>(); ;
+
+builder.Services.AddHttpClient<ADUSClient.Controller.CartaoAssinaturaControllerClient>(client =>
+{
+    client.BaseAddress = new Uri(urlAPI.ToString());
+}).AddHttpMessageHandler<JwtTokenHandler>(); ;
+
+builder.Services.AddHttpClient<ADUSClient.Controller.LogCheckoutControllerClient>(client =>
+{
+    client.BaseAddress = new Uri(urlAPI.ToString());
+}).AddHttpMessageHandler<JwtTokenHandler>();
 
 builder.Services.AddControllersWithViews();
 
@@ -105,6 +114,7 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<SessionManager>();
@@ -113,6 +123,7 @@ builder.Services.AddLocalization(options => options.ResourcesPath = "Resources")
 
 builder.Services.AddScoped<ImportacaoService>();
 builder.Services.AddScoped<ILogService, LogService>();
+builder.Services.AddHttpClient<AppClientService>();
 
 builder.Services.AddSignalR();
 
