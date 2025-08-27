@@ -58,6 +58,44 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalReprogramar" tabindex="-1" aria-labelledby="modalReprogramarLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalReprogramarLabel">
+                    <i class="fas fa-calendar-alt me-2 text-primary"></i>Reprogramar Vencimento
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+
+            <div class="modal-body">
+                <input type="hidden" id="idAssinatura" />
+
+                <div class="mb-3">
+                    <label for="vencimentoOriginal" class="form-label">Vencimento Original</label>
+                    <input type="date" class="form-control" id="vencimentoOriginal" />
+                </div>
+                <div class="mb-3">
+                    <label for="vencimentoReprogramado" class="form-label">Vencimento Reprogramado</label>
+                    <input type="date" class="form-control" id="vencimentoReprogramado" />
+                </div>
+                <div class="form-check mb-3">
+                    <input type="checkbox" class="form-check-input" id="atualizarDemaisParcelas" />
+                    <label class="form-check-label" for="atualizarDemaisParcelas">Atualizar demais parcelas?</label>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="confirmarReprogramacao()">Atualizar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
 <form id="formCancelamento" method="post" action="/assinatura/cancelar" style="display:none;">
     <input type="hidden" name="id" id="cancelarId" />
     <input type="hidden" name="motivo" id="cancelarMotivo" />
@@ -200,6 +238,55 @@
         });
     }
 
+    function abrirModalReprogramar(id) {
+        var modal = new bootstrap.Modal(document.getElementById('modalReprogramar'));
+        $("#idAssinatura").val(id);
+        modal.show();
+    }
+
+    function confirmarReprogramacao() {
+        const id = document.getElementById('idAssinatura').value;
+        const vctoOriginal = document.getElementById('vencimentoOriginal').value;
+        const vctoNovo = document.getElementById('vencimentoReprogramado').value;
+        const atualizar = document.getElementById('atualizarDemaisParcelas').checked;
+
+        if (!vctoOriginal || !vctoNovo) {
+            Swal.fire('Campos obrigatórios', 'Preencha as datas antes de continuar.', 'warning');
+            return;
+        }
+
+        Swal.fire({
+            title: 'Confirmar alteração?',
+            text: "Deseja reprogramar o(s) vencimento(s)?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sim, atualizar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch('/Assinatura/ReprogramarParcelas', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    body: JSON.stringify({
+                        idAssinatura: id,
+                        vencimentoOriginal: vctoOriginal,
+                        vencimentoReprogramado: vctoNovo,
+                        atualizarDemaisParcelas: atualizar
+                    })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            Swal.fire('Sucesso!', 'Parcelas reprogramadas.', 'success').then(() => location.reload());
+                        } else {
+                            Swal.fire('Erro!', 'Falha ao reprogramar parcelas.', 'error');
+                        }
+                    });
+            }
+        });
+    }
     function copiarLink(idParceiro, idAssinatura) {
         const urlConvite = "@ViewBag.urlconvite";
         const url = `${urlConvite}/assinatura/RevisarDados?idAssinatura=${idAssinatura}`;
@@ -361,23 +448,64 @@
                                 $cancel.addClass("disabled")
                                 .attr("aria-disabled", "true")
                                 .attr("tabindex", "-1")
-                                .css("pointer-events", "none")
+                                
                                 .attr("title", "Não permitido");
 
                             }
 
                         var $parcela = $('<button>')
                             .addClass("btn btn-sm btn-success")
-                            .attr('title', 'Parcelas')
                             .html('<i class="fas fa-dollar"></i>')
+                            
+                        
+                        if (x) {
+                            $parcela
                             .on('click', () => window.location.href = "/parcela?idassinatura="+item.id+"&idparceiro="+item.idparceiro);
+                        }
+                        else
+                        {
+                             $parcela.addClass("disabled")
+                                 .attr('title', 'Não permitido')
+                                .css("pointer-events", "none")
+                        }
 
                         var $gerarContrato = $('<button>')
                             .addClass("btn btn-sm btn-primary me-1")
-                            .attr('title', 'Gerar contrato')
                             .html('<i class="fas fa-file-contract"></i>')
+                        if (x)
+                        {
+                            $gerarContrato
+                            .attr('title', 'Gerar contrato')
+                            
                             .on('click', () => window.location.href = `/assinatura/contrato/${item.id}`);
-                        return $('<div>').append($view, $edit, $del, $copy, $cancel, $parcela, $gerarContrato);
+                        }
+                        else 
+                        {
+                             $gerarContrato.addClass("disabled")
+                                .attr('title', 'Não permitido')
+                                .css("pointer-events", "none")
+
+                        }
+
+                        var $reprogramarParcela = $('<button>')
+                            .addClass("btn btn-sm btn-info me-1")
+                            .html('<i class="fas fa-calendar"></i>')
+                        if (x)
+                        {
+                            $reprogramarParcela
+                            .attr('title', 'Reprogramar Parcelas')
+
+                            .on('click', () => abrirModalReprogramar(item.id));
+                        }
+                        else 
+                        {
+                            $reprogramarParcela.addClass("disabled")
+                                .attr('title', 'Não permitido')
+                                .css("pointer-events", "none")
+
+                        }
+
+                        return $('<div>').append($view, $edit, $del, $copy, $cancel, $parcela, $gerarContrato, $reprogramarParcela);
                     }
                 }
             ]

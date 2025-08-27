@@ -6,6 +6,22 @@
 }
 
 <div class="container mt-4">
+
+    @if (TempData["Sucesso"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>@TempData["Sucesso"]
+          
+        </div>
+    }
+
+    @if (TempData["Erro"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>@TempData["Erro"]            
+        </div>
+    }
+
     <h3 class="mb-4">Dados do Parceiro</h3>
 
     <div class="card mb-4">

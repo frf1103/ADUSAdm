@@ -186,9 +186,30 @@
                 alert("ID do parceiro não encontrado.");
                 return;
             }
-            const url="@ViewBag.urlconvite"+"irprateca?idfil="+idParceiro+"&idplataforma=asaas";
+            const url = "cloud.adus.agr.br/convite/irprateca?idfil=" + idParceiro + "&idplataforma=asaas";
+           // const url="@ViewBag.urlconvite"+"irprateca?idfil="+idParceiro+"&idplataforma=asaas";
             //const url = `https://localhost:7030/home/index?afiliado=${idParceiro}&plataforma=asaas`;
             document.getElementById("urlafiliado").value = url;
+        }
+
+        function criarSubcontaAsaas() {
+            id=$("#id").val();
+            if (!confirm("Deseja realmente criar a subconta no Asaas?")) return;
+
+            fetch(`/Parceiro/CriarSubconta?id=${id}`, {
+                method: 'POST'
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error("Erro ao criar subconta.");
+                    return response.json();
+                })
+                .then(data => {
+                    alert("Subconta criada com sucesso! ID Wallet: " + data.idwallet);
+                    document.getElementById("idwallet").value = data.idwallet;
+                })
+                .catch(error => {
+                    alert("Falha ao criar subconta: " + error.message);
+                });
         }
     </script>
 }

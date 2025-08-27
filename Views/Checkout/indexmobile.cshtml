@@ -22,7 +22,17 @@
         .form-control, .form-select {
             width: 100% !important;
         }
+     }
+    .qty-group .qty-input {
+      max-width: 110px; /* garante que caiba confortavelmente no mobile */
     }
+    .qty-btn {
+      min-width: 38px;  /* alvos de toque maiores */
+    }
+    @@media (max-width: 576px) {
+      .qty-group .qty-input { max-width: 100px; }
+    }
+
 </style>
 
 <div class="container-fluid px-2">
@@ -30,13 +40,48 @@
         <div class="col-12 text-center bg-light py-3">
             <img loading="lazy" src="~/images/tecasocial.webp" class="img-fluid mb-2" style="max-height: 120px;">
             <h6 class="fw-bold mb-1">Teca Social - Tectona Grandis</h6>
-            <small class="text-muted">Assinatura mensal</small>
-            <p class="mb-0">R$ 47,00 por árvore</p>
+            <p class="mb-0 text-muted" id="texto1">
+                Assinatura
+            </p>
+            <p class="mb-0" id="texto2">R$ 47,00 cada</p>
+            <p class="mb-0" id="texto3"></p>
             <div class="my-2">
-                <label for="quantidade" class="form-label mb-0">Qtd:</label>
-                <input type="number" name="Qtd" id="Qtd" min="1" value="1" class="form-control w-75 mx-auto text-center" onchange="atualizarValor()">
+                <label for="Qtd" class="form-label mb-1">Qtd:</label>
+                <div class="input-group justify-content-center qty-group">
+                    <button type="button"
+                            class="btn btn-outline-secondary btn-sm qty-btn"
+                            onclick="alterarQtd(-1)"
+                            aria-label="Diminuir quantidade">
+                        −
+                    </button>
+
+                    <input type="number"
+                           name="Qtd"
+                           id="Qtd"
+                           min="1"
+                           step="1"
+                           value="1"
+                           inputmode="numeric"
+                           pattern="[0-9]*"
+                           class="form-control text-center qty-input w-50"
+                           onchange="atualizarValor()"
+                           oninput="atualizarValor()">
+
+                    <button type="button"
+                            class="btn btn-outline-secondary btn-sm qty-btn"
+                            onclick="alterarQtd(1)"
+                            aria-label="Aumentar quantidade">
+                        +
+                    </button>
+                </div>
             </div>
-            <p class="fw-bold">TOTAL: <span id="valorTotal">R$ 47,00</span></p>
+
+           <p class="fw-bold fs-5 mt-2">
+            TOTAL: <span id="valorTotal">R$ 47,00</span>
+            </p>
+            <p class="text-muted small" id="textoCobranca">
+                Cobrada a cada 1 mês<br>Automaticamente por 84 meses
+            </p>
         </div>
 
         <div class="col-12 p-3">
@@ -118,126 +163,184 @@
 @section Scripts {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script defer>
-        function validarFormulario() {
-            const email = document.querySelector('[name="Email"]').value;
-            const emailConf = document.querySelector('[name="EmailConfirmacao"]').value;
-            if (email !== emailConf) {
-                alert("Os e-mails não coincidem.");
-                return false;
-            }
-            const qtd = parseInt(document.querySelector('[name="Qtd"]')?.value || 0);
-            if (qtd <= 0) {
-                alert("A quantidade de árvores deve ser maior que zero.");
-                return false;
-            }
+<script>
+    
+    function mostrarModalProcessando() {
+        const modal = new bootstrap.Modal(document.getElementById('modalProcessando'));
+        modal.show();
+        setTimeout(() => {
+            document.getElementById('checkoutForm').submit();
+        }, 1000);
+    }
 
-            const cpfCnpj = document.querySelector('[name="CpfCnpj"]');
-            if (cpfCnpj) {
-                const valor = cpfCnpj.value.replace(/\D/g, "");
-                if (!(valor.length === 11 || valor.length === 14)) {
-                    alert("Informe um CPF com 11 dígitos ou CNPJ com 14 dígitos.");
-                    return false;
-                }
-            }
-            let x = document.getElementById("QuantidadeArvores");
-            if (x) x.value = qtd;
-            return true;
+    function validarFormulario() {
+        const email = document.querySelector('[name="Email"]').value;
+        const emailConf = document.querySelector('[name="EmailConfirmacao"]').value;
+        if (email !== emailConf) {
+            alert("Os e-mails não coincidem.");
+            return false;
+        }
+        const qtd = parseInt(document.querySelector('[name="Qtd"]')?.value || 0);
+        if (qtd <= 0) {
+            alert("A quantidade de árvores deve ser maior que zero.");
+            return false;
         }
 
-        function atualizarValor() {
-            const qtd = parseInt(document.querySelector('[name="Qtd"]')?.value || 1);
-            const total = qtd * 47;
-            const totalEl = document.getElementById("valorTotal");
-            if (totalEl) totalEl.innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+        const cpfCnpj = document.querySelector('[name="CpfCnpj"]');
+        if (cpfCnpj) {
+            const valor = cpfCnpj.value.replace(/\D/g, "");
+            if (!(valor.length === 11 || valor.length === 14)) {
+                alert("Informe um CPF com 11 dígitos ou CNPJ com 14 dígitos.");
+                return false;
+            }
+        }  
+        x=document.getElementById("QuantidadeArvores");
+        x.value=qtd;
+
+        return true;
+    }
+    
+    function atualizarValor() {
+        const qtd = parseInt(document.querySelector('[name="Qtd"]')?.value || 1);
+        const totalEl = document.getElementById("valorTotal");
+        const textoCobranca = document.getElementById("textoCobranca");
+        const forma = document.querySelector('[name="FormaPagamento"]')?.value;
+        let total = qtd * 47;
+        if (totalEl) totalEl.innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
             gerarParcelas(total);
-        }
+        mostrarParcelas(forma);
 
+     }
         function mostrarParcelas(valor) {
+
+            const qtd = parseInt(document.querySelector('[name="Qtd"]')?.value || 1);
+            const totalEl = document.getElementById("valorTotal");
+            const textoCobranca = document.getElementById("textoCobranca");
+            const texto1 = document.getElementById("texto1");
+            const texto2 = document.getElementById("texto2");
+            const texto3 = document.getElementById("texto3");
+            total = qtd * 47;
+            tot1 = qtd * 47;
+
+            const forma = valor;
+            if (forma === "Parcelado") {
+                const qtd = parseInt(document.querySelector('[name="Qtd"]')?.value || 1);
+
+                let total = qtd * 47;
+                total *= 84;
+                const valorParcela = total / 21;
+                let vlarvore = 47 * 84;
+                if (totalEl) totalEl.innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+                if (textoCobranca) textoCobranca.innerText = `Parcelado em até 21x de R$ ${valorParcela.toFixed(2).replace('.', ',')}`;
+                if (texto1) texto1.innerText = 'Valor de cada Árvore Teca';
+                if (texto2) texto2.innerText = `R$ ${vlarvore.toFixed(2).replace('.', ',')}`;
+                if (texto3) texto3.innerHTML = '';
+
+            } else if (forma === "Boleto") {
+                let totalgeral = total * 84;
+                let vlarvore = 47 * 84;
+
+                if (totalEl) totalEl.innerText = `R$ ${totalgeral.toFixed(2).replace('.', ',')}`;
+                if (textoCobranca) textoCobranca.innerText = `Parcele no Boleto em 84 vezes de R$ ${total.toFixed(2).replace('.', ',')}`;
+                if (texto1) texto1.innerText = 'Valor de cada Árvore Teca';
+                if (texto2) texto2.innerText = `R$ ${vlarvore.toFixed(2).replace('.', ',')}`;
+                if (texto3) texto3.innerHTML = '';
+
+            } else { // Recorrente
+                let vlarvore = 47;
+                let total = vlarvore * 84;
+                let totalgeral = tot1 * 84;
+                let parcela=totalgeral/84;
+                if (totalEl) totalEl.innerText = `R$ ${totalgeral.toFixed(2).replace('.', ',')}`;
+                if (textoCobranca) textoCobranca.innerHTML = 'PARCELE EM 84 VEZES DE R$ ' + parcela.toFixed(2).replace('.', ',');
+                if (texto1) texto1.innerText = 'Valor  de cada Árvore Teca';
+                if (texto2) texto2.innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+                if (texto3) texto3.innerHTML = `Parcele em 84 vezes no cartão de crédito sem juros<br>Parcela recorrente sem comprometer o limite do cartão`;
+
+            }
+
             const isCartao = valor === "Recorrente" || valor === "Parcelado";
             document.getElementById("parcelas").style.display = valor === "Parcelado" ? "block" : "none";
+
+
             document.getElementById("cartaoFields").style.display = isCartao ? "block" : "none";
             document.getElementById("vencimentoBoleto").style.display = valor === "Boleto" ? "block" : "none";
         }
 
-        function mostrarModalProcessando() {
-            const modal = new bootstrap.Modal(document.getElementById('modalProcessando'));
-            modal.show();
-            setTimeout(() => {
-                document.getElementById('checkoutForm').submit();
-            }, 1000);
-        }
-
-
         function gerarParcelas(valorTotal) {
-            let combo = document.getElementById("comboParcelas");
-            combo.innerHTML = "";
-            for (let i = 1; i <= 21; i++) {
-                let valorParcela = (84 * valorTotal / i).toFixed(2);
-                let opt = document.createElement("option");
-                opt.value = i;
-                opt.text = `${i}x de R$${valorParcela.replace('.', ',')}`;
-                combo.appendChild(opt);
-            }
+        let combo = document.getElementById("comboParcelas");
+        combo.innerHTML = "";
+        for (let i = 1; i <= 21; i++) {
+            let valorParcela = (84*valorTotal / i).toFixed(2);
+            let opt = document.createElement("option");
+            opt.value = i;
+            opt.text = `${i}x de R$${valorParcela.replace('.', ',')}`;
+            combo.appendChild(opt);
+            
+        }
+    }
+    async function buscarEndereco() {
+        const cep = document.getElementById("cep").value.replace(/\D/g, "");
+        if (cep.length !== 8) return;
+        try {
+            const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+            const data = await res.json();
+            if (data.erro) return alert("CEP não encontrado.");
+            const logradouro = document.getElementById("logradouro");
+            const bairro = document.getElementById("bairro");
+            const cidade = document.getElementById("cidade");
+            const estado = document.getElementById("estado");
+            if (logradouro) logradouro.value = data.logradouro || "";
+            if (bairro) bairro.value = data.bairro || "";
+            if (cidade) cidade.value = data.localidade || "";
+            if (estado) estado.value = data.uf || "";
+        } catch (error) {
+            console.error("Erro ao buscar o CEP:", error);
+            alert("Erro ao buscar o CEP.");
+        }
+    }
+    document.addEventListener("DOMContentLoaded", () => {
+        atualizarValor();
+        const forma = document.querySelector('[name="FormaPagamento"]');
+        if (forma) mostrarParcelas(forma.value);
+
+        const cpfCnpjInput = document.getElementById("cpfCnpj");
+        if (cpfCnpjInput) {
+            cpfCnpjInput.addEventListener("input", () => {
+                let val = cpfCnpjInput.value.replace(/\D/g, "");
+                if (val.length <= 11) {
+                    val = val.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+                } else {
+                    val = val.replace(/(\d{2})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{4})(\d{2})$/, "$1/$2-$3");
+                }
+                cpfCnpjInput.value = val;
+            });
         }
 
-        async function buscarEndereco() {
-            const cep = document.getElementById("cep").value.replace(/\D/g, "");
-            if (cep.length !== 8) return;
-            try {
-                const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-                const data = await res.json();
-                if (data.erro) return alert("CEP não encontrado.");
-                const logradouro = document.getElementById("logradouro");
-                const bairro = document.getElementById("bairro");
-                const cidade = document.getElementById("cidade");
-                const estado = document.getElementById("estado");
-                if (logradouro) logradouro.value = data.logradouro || "";
-                if (bairro) bairro.value = data.bairro || "";
-                if (cidade) cidade.value = data.localidade || "";
-                if (estado) estado.value = data.uf || "";
-            } catch (error) {
-                console.error("Erro ao buscar o CEP:", error);
-                alert("Erro ao buscar o CEP.");
-            }
+        const validade = document.getElementById("validadeCartao");
+        if (validade) {
+            validade.addEventListener("input", () => {
+                let v = validade.value.replace(/[^\d]/g, "");
+                if (v.length >= 2) {
+                    v = v.slice(0, 6).replace(/(\d{2})(\d{0,4})/, "$1/$2");
+                }
+                validade.value = v;
+            });
         }
+    });
 
-        document.addEventListener("DOMContentLoaded", () => {
+        function alterarQtd(delta) {
+            const qtdEl = document.getElementById("Qtd");
+            let atual = parseInt(qtdEl.value || "1", 10);
+            if (isNaN(atual)) atual = 1;
+
+            let novo = atual + delta;
+            if (novo < 1) novo = 1;
+
+            qtdEl.value = novo;
             atualizarValor();
-            const forma = document.querySelector('[name="FormaPagamento"]');
-            if (forma) mostrarParcelas(forma.value);
+        }
 
-            const userAgent = navigator.userAgent.toLowerCase();
-            if (userAgent.includes("iphone") || userAgent.includes("ipad")) {
-                document.body.classList.add("ios-device");
-            } else if (userAgent.includes("android")) {
-                document.body.classList.add("android-device");
-            }
+</script>
 
-            const cpfCnpjInput = document.getElementById("cpfCnpj");
-            if (cpfCnpjInput) {
-                cpfCnpjInput.addEventListener("input", () => {
-                    let val = cpfCnpjInput.value.replace(/\D/g, "");
-                    if (val.length <= 11) {
-                        val = val.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-                    } else {
-                        val = val.replace(/(\d{2})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{4})(\d{2})$/, "$1/$2-$3");
-                    }
-                    cpfCnpjInput.value = val;
-                });
-            }
-
-            const validade = document.getElementById("validadeCartao");
-            if (validade) {
-                validade.addEventListener("input", () => {
-                    let v = validade.value.replace(/[^\d]/g, "");
-                    if (v.length >= 2) {
-                        v = v.slice(0, 6).replace(/(\d{2})(\d{0,4})/, "$1/$2");
-                    }
-                    validade.value = v;
-                });
-            }
-
-        });
-    </script>
 }

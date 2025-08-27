@@ -11,5 +11,6 @@
         public string sincronize { get; set; }
         public string timesinc { get; set; }
         public string split { get; set; }
+        public string urlsubconta { get; set; }
     }
 }

@@ -398,7 +398,7 @@ public class ParametrosGuruController : Controller
         DateTime.TryParse(ini, out DateTime inicio);
         DateTime.TryParse(fim, out DateTime final);
         await _cobranca.EnviarCobrancasPendentesAsync(inicio, final, " ", 3, connectionId);
-        return null;
+        return Json("OK");
     }
 
     public async Task<JsonResult> GetBaixasAsaasByData(string ini, string fim, string connectionId)
@@ -482,7 +482,8 @@ public class ParametrosGuruController : Controller
                                 Valor = item.GetProperty("value").GetDecimal(),
                                 Sinal = "C",
                                 Observacao = sobs,
-                                idmovbanco = item.GetProperty("id").GetString()
+                                idmovbanco = item.GetProperty("id").GetString(),
+                                idparcela = parc.id
                             });
 
                             var respcomiss = await _movcaixaAPI.AdicionarAsync(new ADUSClient.MovimentoCaixa.MovimentoCaixaViewModel
@@ -496,7 +497,8 @@ public class ParametrosGuruController : Controller
                                 Valor = parc.comissao,
                                 Sinal = "D",
                                 Observacao = "PAGTO COMISSAO",
-                                idmovbanco = item.GetProperty("id").GetString()
+                                idmovbanco = item.GetProperty("id").GetString(),
+                                idparcela = parc.id
                             });
 
                             if (item.GetProperty("value").GetDecimal() != item.GetProperty("netValue").GetDecimal())
@@ -512,7 +514,8 @@ public class ParametrosGuruController : Controller
                                     Valor = item.GetProperty("value").GetDecimal() - item.GetProperty("netValue").GetDecimal(),
                                     Sinal = "D",
                                     Observacao = "TAXA PLATAFORMA ",
-                                    idmovbanco = item.GetProperty("id").GetString()
+                                    idmovbanco = item.GetProperty("id").GetString(),
+                                    idparcela = parc.id
                                 });
                             };
 
@@ -663,7 +666,8 @@ public class ParametrosGuruController : Controller
                                             Valor = (decimal)(comissao),
                                             Sinal = "D",
                                             idmovbanco = item.GetProperty("id").GetUInt64().ToString(),
-                                            Observacao = "PAGTO COMISSÂO "
+                                            Observacao = "PAGTO COMISSÂO ",
+                                            idparcela = parc.id
                                         });
                                     }
                                 }
@@ -680,7 +684,8 @@ public class ParametrosGuruController : Controller
                                     Valor = (decimal)(valor + comissao),
                                     Sinal = "C",
                                     idmovbanco = item.GetProperty("id").GetUInt64().ToString(),
-                                    Observacao = "RECEBIMENTO"
+                                    Observacao = "RECEBIMENTO",
+                                    idparcela = parc.id
                                 });
                                 if (adiant != 0)
                                 {
@@ -696,7 +701,8 @@ public class ParametrosGuruController : Controller
                                         Valor = (decimal)(adiant),
                                         Sinal = "D",
                                         idmovbanco = item.GetProperty("id").GetUInt64().ToString(),
-                                        Observacao = "TAXA ANTECIPACAO "
+                                        Observacao = "TAXA ANTECIPACAO ",
+                                        idparcela = parc.id
                                     });
                                 }
 
@@ -714,7 +720,8 @@ public class ParametrosGuruController : Controller
                                         Valor = (decimal)(taxa),
                                         Sinal = "D",
                                         idmovbanco = item.GetProperty("id").GetUInt64().ToString(),
-                                        Observacao = "TAXA PLATAFORMA"
+                                        Observacao = "TAXA PLATAFORMA",
+                                        idparcela = parc.id
                                     });
                                 }
 

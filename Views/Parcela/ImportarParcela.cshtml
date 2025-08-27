@@ -1,0 +1,422 @@
+﻿@model List<ADUSClient.Parcela.ImportarParcelaViewModel>
+
+@{
+    ViewData["Title"] = "Importar parcela";
+}
+
+
+@if (ViewBag.Erro != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert" id="mensagemErro">
+        @ViewBag.Erro
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
+}
+
+<!-- CSS Select2 -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+<style>
+    .s2-row {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+    }
+
+    .s2-col-venc {
+        flex: 0 0 110px;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .s2-col-nome {
+        flex: 1 1 auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .s2-col-tipo {
+        flex: 0 0 100px;
+        text-align: right;
+        color: #6c757d;
+    }
+
+    .select2-results__options .s2-header {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        display: flex;
+        gap: .5rem;
+        padding: .25rem .5rem;
+        background: #fff;
+        border-bottom: 1px solid #eee;
+        font-size: .8rem;
+        color: #6c757d;
+    }
+
+        .select2-results__options .s2-header .s2-col-venc {
+            flex: 0 0 110px;
+        }
+
+        .select2-results__options .s2-header .s2-col-nome {
+            flex: 1 1 auto;
+        }
+
+        .select2-results__options .s2-header .s2-col-tipo {
+            flex: 0 0 100px;
+            text-align: right;
+        }
+
+
+        .filter-row .btn-eq {
+            height: 38px;
+        }
+        /* ~altura padrão do .form-control */
+
+        /* Ajustes do Select2 com tema Bootstrap 5 para casar a altura */
+        .filter-row .select2-container--bootstrap-5 .select2-selection,
+        .filter-row .select2-container--bootstrap-5 .select2-selection--single {
+            min-height: 38px;
+        }
+
+        .filter-row .select2-container--bootstrap-5 .select2-selection__rendered {
+            line-height: 38px;
+        }
+
+        .filter-row .select2-container--bootstrap-5 .select2-selection__arrow {
+            height: 38px;
+        }
+</style>
+
+
+
+
+<h4 class="mb-4">Associar Parcelas</h4>
+
+<form asp-action="MostrarParcelas"
+      method="get"
+      class="row g-2 align-items-end filter-row mb-4">
+
+    <div class="col-md-3">
+        <label for="dataInicio" class="form-label fw-bold">Data Início</label>
+        <input type="date" class="form-control" id="dataInicio" name="dataInicio" required value="@ViewBag.inicio" />
+    </div>
+
+    <div class="col-md-3">
+        <label for="dataFim" class="form-label fw-bold">Data Fim</label>
+        <input type="date" class="form-control" id="dataFim" name="dataFim" required value="@ViewBag.fim" />
+    </div>
+
+    <div class="col-md-3">
+        <label for="plataforma" class="form-label fw-bold">Plataforma</label>
+        <select class="form-select select2" id="plataforma" name="plataforma" data-placeholder="Selecione a plataforma" style="width:100%;" required>
+            <option></option>
+            @if (ViewBag.plataforma == "pagarme")
+            {
+                <option value="pagarme" selected>Pagar.me</option>
+            }
+            else
+            {
+                <option value="pagarme">Pagar.me</option>
+            }
+            @if (ViewBag.plataforma == "asaas")
+            {
+                <option value="asaas" selected>Asaas</option>
+            }
+            else
+            {
+                <option value="asaas">Asaas</option>
+            }
+        </select>
+    </div>
+
+    <div class="col-md-3 d-flex gap-2">
+        <button type="submit" class="btn btn-primary btn-eq">
+            <i class="fas fa-search me-1"></i> Consultar
+        </button>
+        <button id="btnImportarExtrato" class="btn btn-success btn-eq">
+            <i class="fas fa-save me-1"></i> Salvar Parcelas
+        </button>
+    </div>
+</form>
+
+
+@if (Model != null && Model.Any())
+{
+    <div style="max-height: 70vh; overflow-y: auto;">
+        <table class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th width="8%">ID</th>
+                    <th width="12%">Data</th>                   
+                    <th width="20%">Nome</th>
+                    <th width="12%">Valor</th>
+                    <th width="8%">Tipo</th>
+                    <th width="40%">Parcela</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <tr>
+                        <td>@Model[i].id</td>
+                        <td>@Model[i].data.ToString("dd/MM/yyyy")</td>
+                        <td hidden>@Model[i].registro</td>
+                        <td>@Model[i].nome</td>
+                        <td>@Model[i].valor</td>
+                        <td>@Model[i].tipo</td>
+                       <td>
+                            <select name="[@i].id"
+                                    class="form-select select2-transacao"
+                                    data-row-index="@i"
+                                    data-registro="@(Model[i].registro)"
+                                    style="width:100%;">
+                                <option></option>
+                            </select>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<!-- JS Select2 -->
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            /*
+            $('.select2, .select2-transacao, .select2-conta, .select2-categoria, .select2-centrocusto').select2({
+                theme: 'bootstrap-5',
+                allowClear: true
+            });
+            */
+            $('#plataforma').val("@ViewBag.plataforma");
+            $('#dataInicio').val("@ViewBag.inicio");
+            $('#dataFim').val("@ViewBag.fim");
+
+            $('.select2, .select2-conta, .select2-categoria, .select2-centrocusto').select2({
+                theme: 'bootstrap-5',
+                allowClear: true
+            });
+
+            // Inicializa Select2 da última coluna com AJAX
+            $('table tbody .select2-transacao').each(function () {
+                initSelect2Transacao($(this), { dropdownParent: $('body') });
+            });
+
+
+            function mostrarMensagem(tipo, mensagem) {
+                const alertBox = `<div class="alert alert-${tipo} alert-dismissible fade show mt-3" role="alert">
+                    ${mensagem}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>`;
+                $('.alert').remove();
+                $('form').after(alertBox);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                // Auto-dismiss após 5 segundos
+                setTimeout(() => {
+                    $('.alert').fadeOut('slow', function () {
+                        $(this).remove();
+                    });
+                }, 5000);
+            }
+
+            setTimeout(function () {
+                const alerta = document.getElementById("mensagemErro");
+                if (alerta) {
+                    alerta.classList.remove("show");
+                    alerta.classList.add("fade");
+                    alerta.style.display = "none";
+                }
+            }, 10000); // 5 segundos
+            $('#btnImportarExtrato').on('click', function (e) {
+                e.preventDefault();
+                const $btn = $(this);
+                $btn.prop('disabled', true).text('Salvando...');
+
+                const itens = [];
+
+                $('table tbody tr').each(function () {
+                    const $tr = $(this);
+
+                    // 1) Conteúdo da primeira coluna (ID exibido na tabela)
+                    //    Ajuste o índice se mudar a ordem das colunas.
+                    const idPrimeiraColuna = $tr.children('td').eq(0).text().trim();
+
+                    // 2) Valor selecionado no Select2 da última coluna
+                    //    (procura por name [...].IdTransacao ou pela classe .select2-transacao)
+                    const idSelecionado =
+                        $tr.find('select[name$=".id"]').val()
+                        || $tr.find('select.select2-transacao').val()
+                        || null;
+
+                    // Só adiciona se houver seleção
+                    if (idPrimeiraColuna && idSelecionado) {
+                        itens.push({
+                            idcheckout: idPrimeiraColuna,             // 1ª coluna
+                            idParcela: idSelecionado        // ID escolhido no Select2
+                        });
+                    }
+                });
+
+                if (itens.length === 0) {
+                    mostrarMensagem('warning', 'Nenhuma linha selecionada para salvar.');
+                    $btn.prop('disabled', false).text('Salvar Parcelas');
+                    return;
+                }
+
+                $.ajax({
+                    url: '/parcela/SalvarParcelas',   // mantenha ou ajuste sua rota
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(itens),
+                    success: function () {
+                        mostrarMensagem('success', 'Associações salvas com sucesso!');
+                    },
+                    error: function (xhr, status, error) {
+                        mostrarMensagem('danger', 'Erro ao salvar: ' + error);
+                    },
+                    complete: function () {
+                        $btn.prop('disabled', false).text('Salvar Extrato');
+                    }
+                });
+            });
+
+        
+            function fmtBRDate(iso) {
+                if (!iso) return '';
+                const d = new Date(iso);
+                if (isNaN(d)) {
+                    const m = String(iso).match(/^(\d{4})-(\d{2})-(\d{2})/);
+                    if (m) return `${m[3]}/${m[2]}/${m[1]}`;
+                    return String(iso);
+                }
+                const dd = String(d.getDate()).padStart(2, '0');
+                const mm = String(d.getMonth() + 1).padStart(2, '0');
+                const yy = d.getFullYear();
+                return `${dd}/${mm}/${yy}`;
+            }
+
+        function obterRegistroDaLinha($sel) {
+            // 1) Preferência: atributo data-registro no próprio <select>
+            let registro = $sel.data('registro');
+            if (registro) return String(registro).trim();
+
+            // 2) Input hidden com sufixo .registro / .Registro na mesma linha
+            const $tr = $sel.closest('tr');
+            const $inp = $tr.find('input[name$=".registro"], input[name$=".Registro"]');
+            if ($inp.length && $inp.val()) return String($inp.val()).trim();
+
+            // 3) Texto da coluna “Registro” (terceira célula da linha no seu layout atual)
+            //    Ajuste o índice se a ordem das colunas mudar!
+            const possivel = $tr.children('td').eq(2).text().trim();
+            if (possivel) return possivel;
+
+            return null; // não achou
+        }
+
+        function initSelect2Transacao($sel, opts = {}) {
+            $sel.select2({
+                theme: 'bootstrap-5',
+                width: 'resolve',
+                placeholder: 'Selecione...',
+                allowClear: true,
+                dropdownParent: opts.dropdownParent || $sel.closest('body'),
+                minimumInputLength: 1,
+                ajax: {
+                    url: '/Parcela/ParcelasDisponiveis',
+                    dataType: 'json',
+                    delay: 250,
+                    cache: true,
+                    data: function (params) {
+                        const inicio = $('#dataInicio').val();
+                        const fim = $('#dataFim').val();
+                        const plataforma = $('#plataforma').val();
+                        const registro = obterRegistroDaLinha($sel); // <<< AQUI pegamos dinamicamente
+
+                        return {
+                            inicio: inicio,
+                            fim: fim,
+                            plataforma: plataforma,
+                            registro: registro,          // enviado ao backend
+                            term: params.term || '',
+                            page: params.page || 1,
+                            pageSize: 20
+                        };
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+                        const pageSize = data.pageSize || 20;
+                        const results = (data.items || []).map(x => ({
+                            id: x.id,
+                            text: x.nome || '',
+                            vencimento: x.vencimento,
+                            nome: x.nome,
+                            tipo: x.tipo
+                        }));
+                        return {
+                            results,
+                            pagination: { more: (params.page * pageSize) < (data.total || 0) }
+                        };
+                    }
+                },
+                templateResult: function (item) {
+                    if (!item.id) return item.text;
+                    const venc = fmtBRDate(item.vencimento);
+                    const nome = item.nome ?? item.text ?? '';
+                    const tipo = item.tipo ?? '';
+                    const html = `
+                  <div class="s2-row">
+                    <span class="s2-col-venc">${venc}</span>
+                    <span class="s2-col-nome" title="${(nome || '').replace(/"/g, '&quot;')}">${nome}</span>
+                    <span class="s2-col-tipo">${tipo}</span>
+                  </div>`;
+                    return $(html);
+                },
+                templateSelection: function (item) {
+                    if (!item.id) return item.text || '';
+                    const venc = fmtBRDate(item.vencimento);
+                    const nome = item.nome ?? item.text ?? '';
+                    const tipo = item.tipo ? ` (${item.tipo})` : '';
+                    return `${venc ? venc + ' · ' : ''}${nome}${tipo}`;
+                },
+                escapeMarkup: m => m
+            })
+                .on('select2:open', function () {
+                    const $results = $('.select2-results__options');
+                    if ($results.find('.s2-header').length === 0) {
+                        $results.prepend(
+                            `<li class="s2-header" role="presentation">
+                     <span class="s2-col-venc">Vencimento</span>
+                     <span class="s2-col-nome">Nome</span>
+                     <span class="s2-col-tipo">Tipo</span>
+                   </li>`
+                        );
+                    }
+                });
+        }
+
+            // Mantém suas outras inicializações
+
+            // Se filtros mudarem, limpa as seleções
+            /*
+            $('#dataInicio, #dataFim, #plataforma').on('change', function () {
+                $('table tbody .select2-transacao').each(function () {
+                    $(this).val(null).trigger('change');
+                });
+            });
+            */
+        });
+    
+
+
+    </script>
+
+
+
+}

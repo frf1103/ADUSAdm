@@ -10,16 +10,23 @@
         <div class="col-md-5 col-12 bg-light p-4 text-center">
             <img src="~/images/tecasocial.webp" class="img-fluid mb-3" style="max-height: 160px;">
             <h5 class="fw-bold">Árvore Teca Social - Tectona Grandis</h5>
-            <p class="mb-0 text-muted">Assinatura</p>
-            <p class="mb-0">R$ 47,00 cada</p>
+
+            <p class="mb-0 text-muted" id="texto1">Assinatura
+            </p>
+            <p class="mb-0" id="texto2">R$ 47,00 cada</p>
+            <p class="mb-0" id="texto3"></p>
             <div class="d-flex justify-content-center align-items-center my-3">
                 <label for="quantidade" class="me-2 mb-0">Qtd:</label>
                 <input type="number" name="Qtd" id="Qtd" min="1" value="1" class="form-control w-auto text-center" style="max-width: 80px;" onchange="atualizarValor()">
 
-            </div>           
+            </div>
 
-            <p class="fw-bold fs-5 mt-2">TOTAL: <span id="valorTotal">R$ 47,00</span></p>
-            <p class="text-muted small">Cobrada a cada 1 mês<br>Automaticamente por 84 meses</p>
+            <p class="fw-bold fs-5 mt-2">
+            TOTAL: <span id="valorTotal">R$ 47,00</span>
+            </p>
+            <pclass="text-muted small" id="textoCobranca">
+                Cobrada a cada 1 mês<br>Automaticamente por 84 meses
+            </p>
         </div>
 
         <!-- Coluna da direita -->
@@ -181,14 +188,67 @@
     
     function atualizarValor() {
         const qtd = parseInt(document.querySelector('[name="Qtd"]')?.value || 1);
-        const total = qtd * 47;
         const totalEl = document.getElementById("valorTotal");
+        const textoCobranca = document.getElementById("textoCobranca");
+        const forma = document.querySelector('[name="FormaPagamento"]')?.value;
+        let total = qtd * 47;
         if (totalEl) totalEl.innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
             gerarParcelas(total);
-    }
+        mostrarParcelas(forma);
+
+     }
     function mostrarParcelas(valor) {
+
+        const qtd = parseInt(document.querySelector('[name="Qtd"]')?.value || 1);
+        const totalEl = document.getElementById("valorTotal");
+        const textoCobranca = document.getElementById("textoCobranca");
+        const texto1 = document.getElementById("texto1");
+        const texto2= document.getElementById("texto2");
+        const texto3= document.getElementById("texto3");
+        total = qtd * 47;
+        tot1=qtd * 47;
+
+        const forma = valor;
+        if (forma === "Parcelado") {
+            const qtd = parseInt(document.querySelector('[name="Qtd"]')?.value || 1);
+
+            let total = qtd * 47;
+            total *= 84;
+            const valorParcela = total / 21;
+            let vlarvore = 47 * 84;
+            if (totalEl) totalEl.innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+            if (textoCobranca) textoCobranca.innerText = `Parcelado em até 21x de R$ ${valorParcela.toFixed(2).replace('.', ',')}`;
+            if (texto1) texto1.innerText = 'Valor de cada Árvore Teca';
+            if (texto2) texto2.innerText = `R$ ${vlarvore.toFixed(2).replace('.', ',')}`;
+            if (texto3) texto3.innerHTML='';
+
+        } else if (forma === "Boleto") {
+            let totalgeral = total*84;
+            let vlarvore=47*84;
+            
+            if (totalEl) totalEl.innerText = `R$ ${totalgeral.toFixed(2).replace('.', ',')}`;
+            if (textoCobranca) textoCobranca.innerText = `Parcele no Boleto em 84 vezes de R$ ${total.toFixed(2).replace('.', ',')}`;
+            if (texto1) texto1.innerText='Valor de cada Árvore Teca';
+            if (texto2) texto2.innerText = `R$ ${vlarvore.toFixed(2).replace('.', ',')}`;
+            if (texto3) texto3.innerHTML='';
+
+        } else { // Recorrente
+            let vlarvore=47;
+            let total=vlarvore * 84;
+            let totalgeral =tot1*84 ;
+            let parcela=totalgeral/84;
+            if (totalEl) totalEl.innerText = `R$ ${totalgeral.toFixed(2).replace('.', ',')}`;
+            if (textoCobranca) textoCobranca.innerHTML = 'PARCELE EM 84 VEZES DE R$ ' + parcela.toFixed(2).replace('.', ',');
+            if (texto1) texto1.innerText = 'Valor  de cada Árvore Teca';
+            if (texto2) texto2.innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+            if (texto3) texto3.innerHTML = `Parcele em 84 vezes no cartão de crédito sem juros<br>Parcela recorrente sem comprometer o limite do cartão`;
+
+        }
+
         const isCartao = valor === "Recorrente" || valor === "Parcelado";
         document.getElementById("parcelas").style.display = valor === "Parcelado" ? "block" : "none";
+        
+        
         document.getElementById("cartaoFields").style.display = isCartao ? "block" : "none";
         document.getElementById("vencimentoBoleto").style.display = valor === "Boleto" ? "block" : "none";
     }

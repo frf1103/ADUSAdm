@@ -9,6 +9,7 @@ using RestSharp;
 using System.Text.Json;
 using System.Text;
 using ADUSClient.Banco;
+using Microsoft.Extensions.Options;
 
 namespace ADUSAdm.Controllers
 {
@@ -25,6 +26,7 @@ namespace ADUSAdm.Controllers
         private readonly TransacBancoControllerClient _extratoAPI;
         private readonly ParametroGuruControllerClient _parametro;
         private readonly ParcelaControllerClient _parcela;
+        private readonly ASAASSettings _asaasSettings;
 
         public MovimentoCaixaController(
             MovimentoCaixaControllerClient clienteAPI,
@@ -36,7 +38,8 @@ namespace ADUSAdm.Controllers
             SessionManager sessionManager,
             TransacBancoControllerClient extratoAPI,
             ParametroGuruControllerClient parametro,
-            ParcelaControllerClient parcela)
+            ParcelaControllerClient parcela,
+            IOptions<ASAASSettings> asaasSettings)
         {
             _clienteAPI = clienteAPI;
             _transacaoAPI = transacaoAPI;
@@ -48,6 +51,7 @@ namespace ADUSAdm.Controllers
             _extratoAPI = extratoAPI;
             _parametro = parametro;
             _parcela = parcela;
+            _asaasSettings = asaasSettings.Value;
         }
 
         private async Task CarregarViewBagsAsync()
@@ -356,8 +360,8 @@ namespace ADUSAdm.Controllers
             List<ExtratoViewModel>? lista = new List<ExtratoViewModel>();
             var model = await _parametro.ListaById(2);
 
-            var secretKey = model.token;
-
+            //var secretKey = model.token;
+            var secretKey = _asaasSettings.access_token;
             bool hasMore = true;
             int linhas = 0, linha = 0;
             int offset = 0;
@@ -379,13 +383,18 @@ namespace ADUSAdm.Controllers
                 request.AddHeader("accept", "application/json");
 
                 var response = await client.ExecuteGetAsync(request);
-                /*
-                                if (!response.IsSuccessful)
-                                {
-                                    Console.WriteLine("Erro: " + response.ErrorMessage);
-                                    break;
-                                }
-                */
+
+                if (!response.IsSuccessful)
+                {
+                    Console.WriteLine("Erro: " + response.ErrorMessage);
+                    break;
+                }
+                else
+                {
+                    var json1 = response.Content;
+                    Console.WriteLine("Json: " + json1);
+                }
+
                 // Adicione sua lógica de deserialização aqui
 
                 var json = response.Content; // string com JSON recebido do Pagar.me
@@ -410,7 +419,10 @@ namespace ADUSAdm.Controllers
                             var movcaixa = await _clienteAPI.ListarAsync(null, null, null, null, null, idcontacorrente, null, null, item.GetProperty("id").ToString());
                             if (movcaixa == null || movcaixa.Count == 0)
                             {
+                                Console.WriteLine("Nao achou");
+                                Console.WriteLine("Buscar transacao ");
                                 var v = await BuscaTransacao(item.GetProperty("type").GetString(), bancoid);
+                                Console.WriteLine("TRansacao buscada");
                                 string idparceiro = model.idparceiro;
                                 if (item.GetProperty("type").GetString() == "PAYMENT_FEE")
                                 {
@@ -437,6 +449,9 @@ namespace ADUSAdm.Controllers
                                     idbanco = bancoid,
                                     Valor = item.GetProperty("value").GetDecimal()
                                 }); ;
+                            }
+                            else
+                            {
                             }
                         }
                     }

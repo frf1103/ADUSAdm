@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+
+using Microsoft.AspNetCore.Mvc.Rendering;
+
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using ADUSClient.Enum;
@@ -20,6 +23,7 @@ using ADUSClient.Controller;
 using ADUSAdm.Services;
 using ADUSClient;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.EntityFrameworkCore;
 
 namespace ADUSAdm.Controllers
 {
@@ -97,6 +101,13 @@ namespace ADUSAdm.Controllers
             }
 
             return View();
+        }
+
+        public async Task<IActionResult> MinhasAssinaturas(string id)
+        {
+            var m = await _assinatura.MinhasAssinaturas(id);
+
+            return View(m);
         }
 
         [HttpGet]
@@ -1287,10 +1298,14 @@ namespace ADUSAdm.Controllers
                 {
                     await _cartoes.Inativar(idcartao);
                 }
+                TempData["Erro"] = "Novo cartão salvo e cartões antigos inativados.";
+            }
+            else
+            {
+                TempData["Sucesso"] = "Atualização não realizada, revise os dados do seu cartão";
             }
             // Salva novo cartão
 
-            TempData["Sucesso"] = "Novo cartão salvo e cartões antigos inativados.";
             return RedirectToAction("RevisarDados", new { idAssinatura = model.IdAssinatura });
         }
 
@@ -1341,6 +1356,53 @@ namespace ADUSAdm.Controllers
 
             viewResult.View.RenderAsync(viewContext).Wait();
             return writer.GetStringBuilder().ToString();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Super,User")]
+        public async Task<IActionResult> ReprogramarParcelas([FromBody] ReprogramarParcelasDto dto)
+        {
+            if (dto == null || string.IsNullOrEmpty(dto.IdAssinatura))
+                return BadRequest("Dados inválidos.");
+
+            var id = dto.IdAssinatura;
+
+            var parcelas = await _parcelaAPI.ListarParcela(dto.VencimentoOriginal, !dto.AtualizarDemaisParcelas ? dto.VencimentoOriginal : DateTime.Now.AddMonths(84).Date, 0, 0, "0", 3, id);
+
+            if (!parcelas.Any())
+                return NotFound("Nenhuma parcela encontrada com o vencimento original informado.");
+            DateTime d = dto.VencimentoReprogramado;
+            int mes, ano, dia;
+            var p1 = parcelas.OrderBy(p => p.numparcela);
+            foreach (var parcela in p1)
+            {
+                var p = await _parcelaAPI.ListaById(parcela.id);
+                if (p != null)
+                {
+                    p.datavencimento = d;
+                    await _parcelaAPI.Salvar(p.id, p);
+                    mes = d.Month;
+                    ano = d.Year;
+                    dia = d.Day;
+                    mes++;
+                    if (mes > 12)
+                    {
+                        mes = 1;
+                        ano = ano + 1;
+                    }
+                    d = FBSLIb.DateLib.ObterDataComDiaFixo(ano, mes, dia);
+                }
+            }
+            return Ok(new { sucesso = true, mensagem = "Parcelas reprogramadas com sucesso." });
+        }
+
+        public class ReprogramarParcelasDto
+        {
+            public string IdAssinatura { get; set; }
+            public DateTime VencimentoOriginal { get; set; }
+            public DateTime VencimentoReprogramado { get; set; }
+            public bool AtualizarDemaisParcelas { get; set; }
         }
     }
 }

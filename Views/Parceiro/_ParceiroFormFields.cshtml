@@ -5,7 +5,7 @@
 <div class="row g-3 mb-3">
     <div class="col-md-2">
         <label asp-for="id" class="form-label"></label>
-        <input asp-for="id" class="form-control" readonly />
+        <input asp-for="id" id="id" class="form-control" readonly />
        
     </div>
     <div class="col-md-5">
@@ -181,11 +181,15 @@
                     </div>
                 </div>
 
-                <div class="row g-3 mb-3">
-                    <div class="col-md-10">
-                        <label asp-for="idwallet" class="form-label"></label>
+                <div class="col-md-6">
+                    <label asp-for="idwallet" class="form-label fw-bold">ID Wallet</label>
+                    <div class="input-group">
                         <input asp-for="idwallet" class="form-control" />
+                        <button type="button" class="btn btn-outline-primary" onclick="criarSubcontaAsaas()">
+                            <i class="fas fa-plus-circle"></i> Criar Subconta
+                        </button>
                     </div>
+                    <span asp-validation-for="idwallet" class="text-danger small"></span>
                 </div>
             </div>
         </div>

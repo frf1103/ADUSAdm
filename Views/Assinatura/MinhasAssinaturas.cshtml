@@ -1,0 +1,332 @@
+﻿@model ADUSClient.Assinatura.MinhaAssinaturaViewModel
+@{
+    ViewData["Title"] = "Minhas Assinaturas";
+}
+
+<div class="container py-4">
+    <h2 class="mb-4">Painel do Afiliado</h2>
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="card shadow-sm border-start border-success border-5">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-file-contract text-success me-2"></i>Total de Assinaturas</h5>
+                    <h3 class="card-text">@Model.TotalAssinaturas.ToString("N2")</h3>
+                    <button class="btn btn-outline-success mt-2" data-bs-toggle="modal" data-bs-target="#modalAssinaturas">Ver detalhes</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-start border-warning border-5">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-exclamation-circle text-warning me-2"></i>Parcelas em Aberto</h5>
+                    <h3 class="card-text">@Model.ValorParcelasAbertas.ToString("N2")</h3>
+                    <button class="btn btn-outline-warning mt-2" data-bs-toggle="modal" data-bs-target="#modalParcelasAbertas">Ver detalhes</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-start border-primary border-5">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-check-circle text-primary me-2"></i>Parcelas A Compensar</h5>
+                    <h3 class="card-text">@Model.ValorParcelasACompensar.ToString("N2")</h3>
+                    <button class="btn btn-outline-primary mt-2" data-bs-toggle="modal" data-bs-target="#modalParcelasPagas">Ver detalhes</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-start border-primary border-5">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-check-circle text-primary me-2"></i>Parcelas Compensadas</h5>
+                    <h3 class="card-text">@Model.ValorParcelasCompensadas.ToString("N2")</h3>
+                    <button class="btn btn-outline-primary mt-2" data-bs-toggle="modal" data-bs-target="#modalParcelasPagas">Ver detalhes</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm border-start border-danger border-5">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-money-bill-wave text-danger me-2"></i>Comissões a Pagar</h5>
+                    <h3 class="card-text">@Model.ValorComissoesPendentes.ToString("N2")</h3>
+                    <button class="btn btn-outline-danger mt-2" data-bs-toggle="modal" data-bs-target="#modalComissoesPendentes">Ver detalhes</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm border-start border-info border-5">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-receipt text-info me-2"></i>Comissões Pagas</h5>
+                    <h3 class="card-text">@Model.ValorComissoesPagas.ToString("N2")</h3>
+                    <button class="btn btn-outline-info mt-2" data-bs-toggle="modal" data-bs-target="#modalComissoesPagas">Ver detalhes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalAssinaturas" tabindex="-1" aria-labelledby="modalAssinaturasLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAssinaturasLabel">Detalhamento das Assinaturas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Data</th>
+                            <th>Assinante</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ListaAssinaturas)
+                        {
+                            <tr>
+                                <td>@item.id</td>
+                                <td>@item.datavenda.ToString("dd/MM/yyyy")</td>
+                                <td>@item.nomeparceiro</td>
+                                <td>@item.valor.ToString("N2")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalParcelasAbertas" tabindex="-1" aria-labelledby="modalParcelasAbertasLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalParcelasAbertasLabel">Parcelas em Aberto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Número</th>
+                            <th>Assinante</th>
+                            <th>Vencimento</th>
+                            <th>Data Baixa</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ParcelasEmAberto)
+                        {
+                            <tr>
+                                <td>@item.numparcela</td>
+                                <td>@item.nomeparceiro</td>
+                                <td>@item.datavencimento.ToString("dd/MM/yyyy")</td>
+                                @if (item.databaixa!=null)
+                                {
+                                    <td>item.databaixa.ToString("dd/MM/yyyy")</td>
+                                }
+                                else 
+                                {
+                                    <td></td>
+                                }
+                                
+                                <td>R$ @item.valor.ToString("N2")</td>
+                                <td>@item.status.ToString()</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalParcelasPagas" tabindex="-1" aria-labelledby="modalParcelasPagasLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalParcelasPagasLabel">Parcelas Pagas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Número</th>
+                            <th>Assinante</th>
+                            <th>Vencimento</th>
+                            <th>Data Baixa</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ParcelasAcompensar)
+                        {
+                            <tr>
+                                <td>@item.numparcela</td>
+                                <td>@item.nomeparceiro</td>
+                                <td>@item.datavencimento.ToString("dd/MM/yyyy")</td>
+                                @if (item.databaixa != null)
+                                {
+                                    <td>@item.databaixa.ToString()</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+
+                                <td>R$ @item.valor.ToString("N2")</td>
+                                <td>@item.status.ToString()</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalParcelasCompensadas" tabindex="-1" aria-labelledby="modalParcelasCompensadasLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalParcelasPagasLabel">Parcelas Compensadas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Número</th>
+                            <th>Assinante</th>
+                            <th>Vencimento</th>
+                            <th>Data Baixa</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ParcelasCompensadas)
+                        {
+                            <tr>
+                                <td>@item.numparcela</td>
+                                <td>@item.nomeparceiro</td>
+                                <td>@item.datavencimento.ToString("dd/MM/yyyy")</td>
+                                @if (item.databaixa != null)
+                                {
+                                    <td>item.databaixa.ToString("dd/MM/yyyy")</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+
+                                <td>R$ @item.valor.ToString("N2")</td>
+                                <td>@item.status.ToString()</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="modalComissoesPendentes" tabindex="-1" aria-labelledby="modalComissoesPendentesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalComissoesPendentesLabel">Comissões a Pagar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Número</th>
+                            <th>Assinante</th>
+                            <th>Vencimento</th>
+                            <th>Data Baixa</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ComissoesPendentesDetalhes)
+                        {
+                            <tr>
+                                <td>@item.numparcela</td>
+                                <td>@item.nomeparceiro</td>
+                                <td>@item.datavencimento.ToString("dd/MM/yyyy")</td>
+                                @if (item.databaixa != null)
+                                {
+                                    <td>item.databaixa.ToString("dd/MM/yyyy")</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+
+                                <td>R$ @item.valor.ToString("N2")</td>
+                                <td>@item.status.ToString()</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalComissoesPagas" tabindex="-1" aria-labelledby="modalComissoesPagasLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalComissoesPagasLabel">Comissões Pagas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Número</th>
+                            <th>Assinante</th>
+                            <th>Vencimento</th>
+                            <th>Data Baixa</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ComissoesPagasDetalhes)
+                        {
+                            <tr>
+                                <td>@item.numparcela</td>
+                                <td>@item.nomeparceiro</td>
+                                <td>@item.datavencimento.ToString("dd/MM/yyyy")</td>
+                                @if (item.databaixa != null)
+                                {
+                                    <td>item.databaixa.ToString("dd/MM/yyyy")</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+
+                                <td>R$ @item.valor.ToString("N2")</td>
+                                <td>@item.status.ToString()</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

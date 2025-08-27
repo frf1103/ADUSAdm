@@ -21,15 +21,17 @@ namespace ADUSAdm.Controllers
     {
         private readonly ADUSClient.Controller.ParceiroControllerClient _culturaAPI;
         private readonly ADUSClient.Controller.SharedControllerClient _shareAPI;
+        private readonly CheckoutService _asaasservice;
         private const int TAMANHO_PAGINA = 5;
 
         private readonly SessionManager _sessionManager;
 
-        public ParceiroController(ADUSClient.Controller.ParceiroControllerClient culturaAPI, SessionManager sessionManager, ADUSClient.Controller.SharedControllerClient shareAPI)
+        public ParceiroController(ADUSClient.Controller.ParceiroControllerClient culturaAPI, SessionManager sessionManager, ADUSClient.Controller.SharedControllerClient shareAPI, CheckoutService asaasservice)
         {
             _culturaAPI = culturaAPI;
             _sessionManager = sessionManager;
             _shareAPI = shareAPI;
+            _asaasservice = asaasservice;
         }
 
         public async Task<IActionResult> Index(string? filtro, List<string> perfis, int pagina = 1)
@@ -303,6 +305,29 @@ namespace ADUSAdm.Controllers
             TempData["Msgsucesso"] = "Dados Gravados com Sucesso";
 
             return RedirectToAction("sucesso", "checkout", new { registro = model.registro });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,Super,User")]
+        public async Task<IActionResult> CriarSubconta(string id)
+        {
+            var parceiro = await _culturaAPI.ListaById(id);
+            if (parceiro == null)
+                return NotFound();
+
+            var resultado = await _asaasservice.CriarSubconta(parceiro); // método que chama a API do Asaas
+
+            if (resultado.Sucesso)
+            {
+                parceiro.idwallet = resultado.IdWallet;
+                _culturaAPI.Salvar(id, parceiro);
+
+                return Json(new { idwallet = resultado.IdWallet });
+            }
+            else
+            {
+                return StatusCode(500, "Erro ao criar subconta no Asaas.");
+            }
         }
     }
 }

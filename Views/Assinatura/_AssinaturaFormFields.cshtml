@@ -55,12 +55,19 @@
 </div>
 
 <div class="row g-3 mb-3">
-    <div class="col-md-8">
+    <div class="col-md-5">
         <label asp-for="idplataforma" class="form-label"></label>
         <input asp-for="idplataforma" class="form-control" readonly />
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <label asp-for="plataforma" class="form-label"></label>
         <input asp-for="plataforma" class="form-control" readonly />
     </div>
+
+    <div class="form-check mt-4">
+        <input type="checkbox" class="form-check-input" id="origemCheck" asp-for="origemadus" />
+        <label class="form-check-label" for="origemCheck">Origem ADUS?</label>
+    </div>
+
+
 </div>

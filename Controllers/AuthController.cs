@@ -138,14 +138,14 @@ public class AuthController : Controller
             {
                 _sessionManager.idafiliado = parc.id;
                 _sessionManager.idcoprodutor = parc.idcoprodutor ?? parc.id;
-                return RedirectToAction("index", "assinatura");
+                return RedirectToAction("MinhasAssinaturas", "assinatura");
             }
             else
             {
                 _sessionManager.idafiliado = "";
                 _sessionManager.idcoprodutor = parc.id;
             }
-            return RedirectToAction("index", "assinatura");
+            return RedirectToAction("MinhasAssinaturas", "assinatura");
         }
 
         //_sessionManager.idconta = conta.idconta;

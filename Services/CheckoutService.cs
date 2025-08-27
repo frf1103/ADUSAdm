@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -29,6 +30,7 @@ namespace ADUSAdm.Services
         private readonly ParcelaControllerClient _parcela;
         private readonly ASAASSettings _asaasSettings;
         private readonly LogCheckoutControllerClient _log;
+        private readonly ComumService _comum;
 
         public CheckoutService(
             IHttpClientFactory httpClientFactory,
@@ -42,7 +44,8 @@ namespace ADUSAdm.Services
             ParcelaControllerClient parcela,
             IOptions<ASAASSettings> asaasSettings,
             LogCheckoutControllerClient log
-        )
+,
+            ComumService comum)
         {
             _httpClientFactory = httpClientFactory;
             _logger = logger;
@@ -55,6 +58,7 @@ namespace ADUSAdm.Services
             _parcela = parcela;
             _asaasSettings = asaasSettings.Value;
             _log = log;
+            _comum = comum;
         }
 
         //ProcessarCheckout(c, p.registro, p.cctoken, p.billingType, remoteIp, p.idafiliado, " ", " ", p.idassinatura, p.numparcela.ToString());
@@ -207,11 +211,11 @@ namespace ADUSAdm.Services
                     email = model.Email,
                     phone = $"+{model.Ddi}{model.Telefone}",
                     cpfCnpj = model.cpfCnpj,
-                    address=model.Logradouro,
-                    addressNumber=model.Numero,
-                    complement=model.Complemento,
-                    postalCode=model.Cep,
-                    province=model.Bairro
+                    address = model.Logradouro,
+                    addressNumber = model.Numero,
+                    complement = model.Complemento,
+                    postalCode = model.Cep,
+                    province = model.Bairro
                 };
 
                 var json = JsonSerializer.Serialize(clientePayload);
@@ -546,6 +550,93 @@ namespace ADUSAdm.Services
             });
 
             return null;
+        }
+
+        public async Task<(bool Sucesso, string? IdWallet, string? Mensagem)> CriarSubconta(ParceiroViewModel parceiro)
+        {
+            var httpClient = _httpClientFactory.CreateClient();
+            var request = new
+            {
+                name = parceiro.razaoSocial,
+                cpfCnpj = parceiro.registro,
+                email = parceiro.email,
+                phone = parceiro.fone2,
+                mobilePhone = parceiro.fone1,
+                address = parceiro.logradouro,
+                addressNumber = parceiro.numero,
+                complement = parceiro.complemento,
+                province = parceiro.bairro,
+                postalCode = parceiro.cep,
+                incomeValue = 10980,
+                birthDate = parceiro.dtNascimento
+            };
+
+            var json = JsonSerializer.Serialize(request);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _asaasSettings.access_token);
+            httpClient.DefaultRequestHeaders.Add("accept", "application/json");
+            httpClient.DefaultRequestHeaders.Add("access_token", _asaasSettings.access_token);
+            httpClient.DefaultRequestHeaders.Add("User-Agent", _asaasSettings.useragent);
+            string remoteIp;
+            remoteIp = _comum.GetClientIp();
+
+            var response = await httpClient.PostAsync(_asaasSettings.urlsubconta, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var body = await response.Content.ReadAsStringAsync();
+                var jsonDoc = JsonDocument.Parse(body);
+                var id = jsonDoc.RootElement.GetProperty("walletId").GetString();
+                await RegistrarLog(parceiro.razaoSocial, remoteIp, "CRIAR SUBCONTA", _asaasSettings.urlsubconta, json, body, "200");
+
+                return (true, id, null);
+            }
+
+            var erro = await response.Content.ReadAsStringAsync();
+            await RegistrarLog(parceiro.razaoSocial, remoteIp, "CRIAR SUBCONTA", _asaasSettings.urlsubconta, json, erro, response.StatusCode.ToString());
+
+            return (false, null, erro);
+        }
+
+        public async Task<ParceiroViewModel> BuscarIdParceiroPorCustomerId(string customerId)
+        {
+            var httpClient = _httpClientFactory.CreateClient();
+
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{_asaasSettings.urlparceiro}/{customerId}");
+            request.Headers.Add("accept", "application/json");
+            request.Headers.Add("access_token", _asaasSettings.access_token);
+            request.Headers.Add("User-Agent", _asaasSettings.useragent);
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"Erro ao buscar cliente Asaas: {response.StatusCode}");
+            }
+
+            var body = await response.Content.ReadAsStringAsync();
+            using var jsonDoc = JsonDocument.Parse(body);
+            if (!jsonDoc.RootElement.TryGetProperty("cpfCnpj", out var cpfCnpjElement))
+            {
+                // throw new Exception("CPF/CNPJ não encontrado no retorno do Asaas.");
+                return null;
+            }
+
+            string cpfCnpj = cpfCnpjElement.GetString();
+
+            // Remove máscara se necessário
+            cpfCnpj = FBSLIb.StringLib.Somentenumero(cpfCnpj);
+
+            // Consultar na sua base ADUS
+            var parceiro = await _parceiro.ListaByRegistro(cpfCnpj);
+
+            if (parceiro == null)
+            {
+                //throw new Exception($"Parceiro com CPF/CNPJ {cpfCnpj} não encontrado na base local.");
+                return null;
+            }
+
+            return parceiro;
         }
     }
 }

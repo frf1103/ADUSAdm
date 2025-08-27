@@ -284,14 +284,14 @@ namespace ADUSAdm.Controllers
 
                 Response.Cookies.Append("idplataforma", @idplataforma, options);
             }
-            return View("tecasocial");
+            //return View("tecasocial");
             //return Json(new { success = true, redirectUrl = "https://localhost:7030" });
             // Redireciona para a página que desejar
             //return Redirect("https://localhost:7030/");
             // Redireciona para a página que desejar
             // return Redirect("https://localhost:7030/");
 
-            //return Redirect("https://lp.tecasocial.com.br");
+            return Redirect("https://lp.tecasocial.com.br");
         }
 
         public class MailConviteDTO

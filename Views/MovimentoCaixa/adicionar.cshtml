@@ -41,6 +41,7 @@
                         @Html.Partial("_MovimentoCaixaFormFields", Model)
                     }
                 </div>
+                <input asp-for="Id" hidden />
                 <div class="card-footer text-end">
                     @if (ViewBag.idacao <= 2)
                     {
